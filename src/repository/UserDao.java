@@ -1,14 +1,13 @@
 package repository;
 
-import domain.*;
+import javax.persistence.EntityNotFoundException;
 
-public class UserDao {
+import domain.LoginStatus;
+import domain.User;
 
-	public User findByUsername(String username) {
-		throw new UnsupportedOperationException();
-	}
+public interface UserDao extends GenericDao<User> {
 
-	public void registerLoginAttempt(String username, LoginStatus loginStatus) {
-		throw new UnsupportedOperationException();
-	}
+	public User findByUsername(String username) throws EntityNotFoundException;
+
+	public void registerLoginAttempt(String username, LoginStatus loginStatus);
 }
