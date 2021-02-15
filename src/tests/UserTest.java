@@ -20,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.stream.Stream;
 
+@ExtendWith(MockitoExtension.class)
 public class UserTest {
 
     private User user;
@@ -81,7 +82,20 @@ public class UserTest {
         Assertions.assertThrows(IllegalArgumentException.class,() -> new Administrator(username, password, firstName, lastName));
     }
 
+    @Test
+    public void increaseLoginAttempt_returns1_valid(){
+        user = Mockito.mock(User.class, Mockito.CALLS_REAL_METHODS);
+        user.increaseFailedLoginAttempts();
+        Assertions.assertEquals(1, user.getFailedLoginAttempts());
+    }
 
-
+    @Test
+    public void resetLoginAttempt_returns0_valid(){
+        user = Mockito.mock(User.class, Mockito.CALLS_REAL_METHODS);
+        user.increaseFailedLoginAttempts();
+        user.increaseFailedLoginAttempts();
+        user.resetLoginAttempts();
+        Assertions.assertEquals(0, user.getFailedLoginAttempts());
+    }
 
 }

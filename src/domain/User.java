@@ -16,6 +16,7 @@ public abstract class User {
 		setPassword(password);
 		setFirstName(firstName);
 		setLastName(lastName);
+
 	}
 
 	public void resetLoginAttempts() {
@@ -78,7 +79,7 @@ public abstract class User {
 		return failedLoginAttempts;
 	}
 
-	public void setFailedLoginAttempts(int failedLoginAttempts) {
+	private void setFailedLoginAttempts(int failedLoginAttempts) {
 		this.failedLoginAttempts = failedLoginAttempts;
 	}
 
