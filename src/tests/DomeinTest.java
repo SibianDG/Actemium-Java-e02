@@ -10,6 +10,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import domain.Administrator;
 import domain.DomainController;
 import domain.User;
+import repository.GenericDao;
+import repository.GenericDaoJpa;
 import repository.UserDao;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,6 +26,8 @@ public class DomeinTest {
 //    private GenericDao<User> userRepo2;
 	@Mock
     private UserDao userRepoDummy;
+	@Mock
+    private GenericDao<User> genericRepoDummy;
     @InjectMocks
     private DomainController domain;
     

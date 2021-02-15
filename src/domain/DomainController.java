@@ -1,5 +1,6 @@
 package domain;
 
+import repository.GenericDaoJpa;
 import repository.UserDao;
 import repository.UserDaoJpa;
 
