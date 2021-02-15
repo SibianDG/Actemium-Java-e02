@@ -1,8 +1,25 @@
 package domain;
 
-public abstract class User {
+import javax.persistence.*;
+import java.io.Serial;
+import java.io.Serializable;
 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@NamedQueries({
+	@NamedQuery(name = "User.findByUsername",
+			query = "SELECT u FROM User u WHERE u.username = :name")
+})
+public abstract class User implements Serializable {
+
+	@Serial
+	private static final long serialVersionUID = 1L;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private LoginAttempt loginAttempts;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int userId;
 	private String username;
 	private String password;
@@ -10,6 +27,9 @@ public abstract class User {
 	private String lastName;
 	private int failedLoginAttempts;
 	private UserStatus status;
+
+	public User() {
+	}
 
 	public User(String username, String password, String firstName, String lastName) {
 		setUsername(username);
