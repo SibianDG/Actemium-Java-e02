@@ -1,5 +1,7 @@
 package domain;
 
+import java.time.LocalDate;
+
 public class Company {
 
 	private String name;

@@ -1,5 +1,7 @@
 package domain;
 
+import java.time.LocalDateTime;
+
 public class LoginAttempt {
 
 	private LocalDateTime dateAndTime;

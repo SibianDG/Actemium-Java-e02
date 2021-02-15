@@ -10,12 +10,8 @@ public class Customer extends User {
 	private int customerNr;
 	private LocalDate registrationDate;
 
-	public Customer() {
-		throw new UnsupportedOperationException();
-	}
-
-	public Customer(LocalDate registrationDate) {
-		throw new UnsupportedOperationException();
+	public Customer(String username, String password, String firstName, String lastName) {
+		super(username, password, firstName, lastName);
 	}
 
 	public int giveCustomerSeniority() {
