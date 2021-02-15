@@ -28,7 +28,7 @@ public abstract class User {
 		failedLoginAttempts++;
 		if (failedLoginAttempts > 5) {
 			throw new IllegalArgumentException("User has reached more than 5 failed login attempts, account has been blocked.");
-		}		
+		}
 	}
 
 	public LoginAttempt getLoginAttempts() {
@@ -51,7 +51,7 @@ public abstract class User {
 		return username;
 	}
 
-	public void setUsername(String username) {		
+	public void setUsername(String username) {
 		String usernameRegex = "[A-Za-z0-9]+";
 		if(username == null || username.isBlank() || !username.matches(usernameRegex)) {
 			throw new IllegalArgumentException("Invalid Username");

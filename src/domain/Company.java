@@ -6,10 +6,10 @@ public class Company {
 
 	private String name;
 	private String address;
-	private int phoneNumber;
+	private String phoneNumber;
 	private LocalDate registrationDate;
 
-	public Company(String name, String address, int phoneNumber) {
+	public Company(String name, String address, String phoneNumber) {
 		throw new UnsupportedOperationException();
 	}
 
