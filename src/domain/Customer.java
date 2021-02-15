@@ -1,8 +1,9 @@
 package domain;
 
 import java.time.LocalDate;
+import java.time.*;
 
-public class Customer extends User {
+public class Customer extends User implements Seniority {
 
 	private Contract contracts;
 	private Company company;
@@ -14,7 +15,11 @@ public class Customer extends User {
 		super(username, password, firstName, lastName);
 	}
 
-	public int giveCustomerSeniority() {
-		throw new UnsupportedOperationException();
+	public Customer() {
+	}
+
+	@Override
+	public int giveSeniority() {
+		return LocalDate.now().getYear() - registrationDate.getYear();
 	}
 }

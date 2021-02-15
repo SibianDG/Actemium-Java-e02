@@ -1,6 +1,7 @@
 package domain;
 
 import java.time.LocalDate;
+import java.time.*;
 
 public class Company {
 
@@ -10,10 +11,6 @@ public class Company {
 	private LocalDate registrationDate;
 
 	public Company(String name, String address, String phoneNumber) {
-		throw new UnsupportedOperationException();
-	}
-
-	public int giveCompanySeniority() {
 		throw new UnsupportedOperationException();
 	}
 }

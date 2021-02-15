@@ -77,7 +77,7 @@ public class EmployeeTest {
     public void giveEmployeeSeniroity_returns_valid() {
         employee = new Employee("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0470099874", "student@student.hogent.be", "role");
         employee.setRegistrationDate(LocalDate.now().minusYears(10));
-        Assertions.assertEquals(10, employee.giveEmployeeSeniority());
+        Assertions.assertEquals(10, employee.giveSeniority());
     }
 }
 

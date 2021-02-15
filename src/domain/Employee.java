@@ -1,8 +1,9 @@
 package domain;
 
 import java.time.LocalDate;
+import java.time.*;
 
-public class Employee extends User {
+public class Employee extends User implements Seniority {
 
 	private int employeeNr;
 	private String address;
@@ -21,7 +22,8 @@ public class Employee extends User {
 		setRegistrationDate(LocalDate.now());
 	}
 
-	public int giveEmployeeSeniority() {
+	@Override
+	public int giveSeniority() {
 		return LocalDate.now().getYear() - registrationDate.getYear();
 	}
 
@@ -45,18 +47,6 @@ public class Employee extends User {
 		this.address = address;
 	}
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		String usernameRegex = "[0-9 /-]+";
-		if(phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches(usernameRegex)) {
-			throw new IllegalArgumentException("Invalid phone number");
-		}
-		this.phoneNumber = phoneNumber;
-	}
-
 	public String getEmailAddress() {
 		return emailAddress;
 	}
@@ -71,6 +61,18 @@ public class Employee extends User {
 
 	public String getRole() {
 		return role;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		String usernameRegex = "[0-9 /-]+";
+		if(phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches(usernameRegex)) {
+			throw new IllegalArgumentException("Invalid phone number");
+		}
+		this.phoneNumber = phoneNumber;
 	}
 
 	public void setRole(String role) {
