@@ -22,7 +22,7 @@ public class Employee extends User {
 	}
 
 	public int giveEmployeeSeniority() {
-		throw new UnsupportedOperationException();
+		return LocalDate.now().getYear() - registrationDate.getYear();
 	}
 
 	public int getEmployeeNr() {
