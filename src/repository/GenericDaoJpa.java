@@ -7,7 +7,7 @@ import javax.persistence.Persistence;
 
 public class GenericDaoJpa<T> implements GenericDao<T> {
 	// TODO
-    private static final String PU_NAME = "replaceThisByCorrectName";
+    private static final String PU_NAME = "TicketSystemE02";
     
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory(PU_NAME);
     protected static final EntityManager em = emf.createEntityManager();
@@ -20,8 +20,9 @@ public class GenericDaoJpa<T> implements GenericDao<T> {
         em.close();
         emf.close();
     }
-    public static void startTransaction() {
+    public static Class<? extends Throwable> startTransaction() {
         em.getTransaction().begin();
+        return null;
     }
     public static void commitTransaction() {
         em.getTransaction().commit();

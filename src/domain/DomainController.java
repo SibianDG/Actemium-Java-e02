@@ -30,9 +30,12 @@ public class DomainController {
 		this.signedInUser = signedInUser;
 	}
 
+	private void add1(User user){
+		user.increaseFailedLoginAttempts();
+	}
+
 	public void signIn(String username, String password) {
 		User user = userRepo.findByUsername(username);
-		System.out.println(user.getUsername());
 
 		if(password.isBlank()) {
 			throw new IllegalArgumentException("No password given");
@@ -41,7 +44,6 @@ public class DomainController {
 		//UserDaoJpa.startTransaction();
 
 		user.increaseFailedLoginAttempts();
-		System.out.println(user.getFailedLoginAttempts());
 
 		if(user.getFailedLoginAttempts() > USER_LOGIN_MAX_ATTEMPTS) {
 			userRepo.registerLoginAttempt(user, LoginStatus.FAILED);
@@ -57,7 +59,6 @@ public class DomainController {
 		user.resetLoginAttempts();
 
 		userRepo.registerLoginAttempt(user, LoginStatus.SUCCESS);
-		System.out.println("login registered");
 
 		//UserDaoJpa.commitTransaction();
 

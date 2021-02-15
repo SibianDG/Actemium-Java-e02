@@ -13,6 +13,7 @@ import domain.User;
 import repository.GenericDao;
 import repository.GenericDaoJpa;
 import repository.UserDao;
+import repository.UserDaoJpa;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,32 +25,34 @@ public class DomeinTest {
 
     //	@Mock
 //    private GenericDao<User> userRepo2;
-	@Mock
+    @Mock
     private UserDao userRepoDummy;
-	@Mock
+    @Mock
     private GenericDao<User> genericRepoDummy;
     @InjectMocks
     private DomainController domain;
-    
+
     @Test
     public void LoginAttempt_Valid() {
 //    	final String WINKELNAAM = "Station";
 
-//     Winkel eenWinkel = new Winkel(WINKELNAAM);   
+//     Winkel eenWinkel = new Winkel(WINKELNAAM);
 
 //     Mockito.when(userRepo2.findAll()).thenReturn(Arrays.asList(eenWinkel));
-       //Mockito.when(userRepoDummy.findByUsername(USERNAME)).thenReturn(aUser);
+        //Mockito.when(userRepoDummy.findByUsername(USERNAME)).thenReturn(aUser);
+        //Mockito.mockStatic(GenericDao.class);
+        //Mockito.doNothing().when(UserDaoJpa.startTransaction());
 
-       Mockito.when(userRepoDummy.findByUsername(USERNAME)).thenReturn(aUser);
+        Mockito.when(userRepoDummy.findByUsername(USERNAME)).thenReturn(aUser);
 //       domain.setUserRepo(userRepoDummy);
-       assertThrows(NullPointerException.class, () -> domain.giveUsername());
+        assertThrows(NullPointerException.class, () -> domain.giveUsername());
 //       assertFalse(domain.giveUsername());
-       domain.signIn(USERNAME, PASSWORD);
+        domain.signIn(USERNAME, PASSWORD);
 //       assertTrue(eenWinkel.getBierSet().contains(eenBier));
-       assertTrue(domain.giveUsername().equals(USERNAME));
+        assertTrue(domain.giveUsername().equals(USERNAME));
 //       Mockito.verify(userRepo2).findAll();
-       assertEquals(0, aUser.getFailedLoginAttempts());
-       Mockito.verify(userRepoDummy).findByUsername(USERNAME);
+        assertEquals(0, aUser.getFailedLoginAttempts());
+        Mockito.verify(userRepoDummy).findByUsername(USERNAME);
     }
 
     @Test

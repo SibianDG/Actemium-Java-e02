@@ -27,6 +27,10 @@ public class UserDaoJpa extends GenericDaoJpa<User> implements UserDao {
 		
 	}
 
+	public void test(){
+
+	}
+
 
 	@Override
 	public User findByUsername(String username) {
