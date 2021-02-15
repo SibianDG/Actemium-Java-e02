@@ -1,10 +1,13 @@
 package repository;
 
-import domain.LoginStatus;
-import domain.User;
+import java.time.LocalDateTime;
 
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
+
+import domain.LoginAttempt;
+import domain.LoginStatus;
+import domain.User;
 
 public class UserDaoJpa extends GenericDaoJpa<User> implements UserDao {
 
@@ -14,11 +17,14 @@ public class UserDaoJpa extends GenericDaoJpa<User> implements UserDao {
 		super(User.class);
 	}
 
-
-
 	@Override
-	public void registerLoginAttempt(String username, LoginStatus loginStatus) {
-		// TODO Auto-generated method stub
+	public void registerLoginAttempt(User user, LoginStatus loginStatus) {		
+		
+		LoginAttempt loginAttempt = new LoginAttempt(LocalDateTime.now(), user.getUsername(), loginStatus);
+		
+		user.addLoginAttempt(loginAttempt);
+		
+		em.persist(loginAttempt);		
 		
 	}
 
@@ -35,19 +41,19 @@ public class UserDaoJpa extends GenericDaoJpa<User> implements UserDao {
 		user.increaseFailedLoginAttempts();		
 		
 		if(user.getFailedLoginAttempts() > USER_LOGIN_MAX_ATTEMPTS) {
-			registerLoginAttempt(username, LoginStatus.FAILED);
+			registerLoginAttempt(user, LoginStatus.FAILED);
 			user.blockUser();
 			throw new IllegalArgumentException(String.format("User has reached more than %d failed login attempts, account has been blocked.", USER_LOGIN_MAX_ATTEMPTS));
 		}
 		
 		if(!user.getPassword().equals(password)) {
-			registerLoginAttempt(username, LoginStatus.FAILED);
+			registerLoginAttempt(user, LoginStatus.FAILED);
 			throw new IllegalArgumentException("Wrong password");
 		}
 		
 		user.resetLoginAttempts();		
 		
-		registerLoginAttempt(username, LoginStatus.SUCCESS);
+		registerLoginAttempt(user, LoginStatus.SUCCESS);
 		
 		UserDaoJpa.commitTransaction();
 		

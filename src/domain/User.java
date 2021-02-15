@@ -137,4 +137,9 @@ public abstract class User implements Serializable {
 	public void blockUser() {
 		setStatus(UserStatus.BLOCKED);
 	}
+	
+	public void addLoginAttempt(LoginAttempt loginAttempt) {
+		loginAttempts.add(loginAttempt);
+	}
+	
 }
