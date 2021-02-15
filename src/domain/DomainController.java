@@ -1,15 +1,27 @@
 package domain;
 
+import repository.UserDao;
 import repository.UserDaoJpa;
 
 public class DomainController {
 
 	private User signedInUser;
-	private UserDaoJpa userRepo;
+	private UserDao userRepo;
 
+	public DomainController(UserDao userRepo) {
+		this.userRepo = userRepo;
+	}
+	
+	
 	public DomainController() {
+		this(new UserDaoJpa());
+//		setUserRepo(new UserDaoJpa());
 	}
 
+	public void setUserRepo(UserDao mock){
+        userRepo = mock;
+    }
+	
 	public void setSignedInUser(User signedInUser) {
 		this.signedInUser = signedInUser;
 	}
@@ -20,7 +32,7 @@ public class DomainController {
 	}
 
 	public String giveUserType() {
-		throw new UnsupportedOperationException();
+		return signedInUser.getClass().getSimpleName();
 	}
 
 	public String giveUsername() {

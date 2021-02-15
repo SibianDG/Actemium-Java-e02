@@ -20,7 +20,7 @@ public class DomeinTest {
 //	@Mock
 //    private GenericDao<User> userRepo2;
 	@Mock
-    private UserDao userRepo;
+    private UserDao userRepoDummy;
     @InjectMocks
     private DomainController domain;
     
@@ -33,15 +33,17 @@ public class DomeinTest {
        User aUser = new Administrator(USERNAME, PASSWORD, "Thomas", "Dirven");
 
 //     Mockito.when(userRepo2.findAll()).thenReturn(Arrays.asList(eenWinkel));
-       Mockito.when(userRepo.findByUsername(USERNAME)).thenReturn(aUser);
+       Mockito.when(userRepoDummy.findByUsername(USERNAME)).thenReturn(aUser);
        
-       assertThrows(NullPointerException.class, () -> domain.giveUsername());
+//       domain.setUserRepo(userRepoDummy);
+       
+//       assertThrows(NullPointerException.class, () -> domain.giveUsername());
 //       assertFalse(domain.giveUsername());
        domain.signIn(USERNAME, PASSWORD);
 //       assertTrue(eenWinkel.getBierSet().contains(eenBier));
        assertTrue(domain.giveUsername().equals(USERNAME));
 //       Mockito.verify(userRepo2).findAll();
-       Mockito.verify(userRepo).findByUsername(USERNAME); 
+       Mockito.verify(userRepoDummy).findByUsername(USERNAME); 
     }
 
 }
