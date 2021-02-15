@@ -1,10 +1,7 @@
 package tests;
 
-import domain.Administrator;
-import domain.User;
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.stream.Stream;
 
-import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,13 +9,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.stream.Stream;
+import domain.Administrator;
+import domain.User;
 
 @ExtendWith(MockitoExtension.class)
 public class UserTest {
@@ -57,8 +52,13 @@ public class UserTest {
 
                 //firstname & lastname
                 Arguments.of("123tester", "Passwd123&", "Naam1", "Jow"),
-                Arguments.of("123tester", "Passwd123&", "Naam1", "Jow")
-
+                Arguments.of("123tester", "Passwd123&", "Naam1", "Jow"),
+                                
+                //null
+                Arguments.of(null, "Passwd123&", "Naam1", "Jow"),
+                Arguments.of("123tester", null, "Naam1", "Jow"),
+                Arguments.of("123tester", "Passwd123&", null, "Jow"),
+                Arguments.of("123tester", "Passwd123&", "Naam1", null)
         );
     }
 
@@ -76,7 +76,6 @@ public class UserTest {
     }
 
     @ParameterizedTest
-    @NullAndEmptySource
     @MethodSource("invalidUserAttributes")
     public void createUser_Failed(String username, String password, String firstName, String lastName) {
         Assertions.assertThrows(IllegalArgumentException.class,() -> new Administrator(username, password, firstName, lastName));
