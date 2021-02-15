@@ -1,29 +1,67 @@
 package repository;
 
-public class GenericDaoJpa {
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
-	private static String PU_NAME;
-	private static EnitityManagerFactory emf;
-	private static EnitityManager em;
-	private Class<T> type;
+public class GenericDaoJpa<T> implements GenericDao<T> {
+	// TODO
+    private static final String PU_NAME = "replaceThisByCorrectName";
+    
+    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory(PU_NAME);
+    protected static final EntityManager em = emf.createEntityManager();
+    private final Class<T> type;
+    
+    public GenericDaoJpa(Class<T> type) {
+        this.type = type;
+    }
+    public static void closePersistency() {
+        em.close();
+        emf.close();
+    }
+    public static void startTransaction() {
+        em.getTransaction().begin();
+    }
+    public static void commitTransaction() {
+        em.getTransaction().commit();
+    }
+    public static void rollbackTransaction() {
+        em.getTransaction().rollback();
+    }
 
-	public GenericDaoJpa(Class<T> type) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public List<T> findAll() {
+        //return em.createNamedQuery(type.getName()+".findAll", type).getResultList();
+        return em.createQuery("select entity from " + type.getName() + " entity", type).getResultList();
+    }
 
-	public static void closePersistency() {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public <U> T get(U id) {
+        T entity = em.find(type, id);
+        return entity;
+    }
 
-	public static void startTransaction() {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public T update(T object) {
+        return em.merge(object);
+    }
 
-	public static void commitTransaction() {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public void delete(T object) {
+        em.remove(em.merge(object));
+    }
 
-	public static void rollbackTransaction() {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public void insert(T object) {
+        em.persist(object);
+    }
+
+    @Override
+    public <U> boolean exists(U id) {
+        T entity = em.find(type, id);
+        return entity != null;
+    } 
+    
+    
 }

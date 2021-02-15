@@ -1,28 +1,12 @@
 package repository;
 
-public class GenericDao {
+import java.util.List;
 
-	public List<T> findAll() {
-		throw new UnsupportedOperationException();
-	}
-
-	public T get(U id) {
-		throw new UnsupportedOperationException();
-	}
-
-	public T update(T object) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void delete(T object) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void insert(T object) {
-		throw new UnsupportedOperationException();
-	}
-
-	public boolean exists(U id) {
-		throw new UnsupportedOperationException();
-	}
+public interface GenericDao<T> {
+    public List<T> findAll();  
+    public <U> T get(U id);
+    public T update(T object);
+    public void delete(T object);
+    public void insert(T object);
+    public <U> boolean exists(U id);
 }
