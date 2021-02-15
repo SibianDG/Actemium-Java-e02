@@ -21,6 +21,8 @@ public abstract class User implements Serializable {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<LoginAttempt> loginAttempts;
 
+//	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int userId;
@@ -50,9 +52,9 @@ public abstract class User implements Serializable {
 
 	public void increaseFailedLoginAttempts() {
 		failedLoginAttempts++;
-		if (failedLoginAttempts > 5) {
-			throw new IllegalArgumentException("User has reached more than 5 failed login attempts, account has been blocked.");
-		}
+//		if (failedLoginAttempts > USER_LOGIN_MAX_ATTEMPTS) {
+//			throw new IllegalArgumentException("User has reached more than 5 failed login attempts, account has been blocked.");
+//		}
 	}
 
 	public List<LoginAttempt> getLoginAttempts() {
@@ -130,5 +132,9 @@ public abstract class User implements Serializable {
 
 	public void setStatus(UserStatus status) {
 		this.status = status;
+	}
+
+	public void blockUser() {
+		setStatus(UserStatus.BLOCKED);
 	}
 }

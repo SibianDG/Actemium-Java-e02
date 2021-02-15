@@ -15,8 +15,8 @@ public class DomainController {
 	}
 
 	public void signIn(String username, String password) {
-		User signedInUser = userRepo.findByUsername(username);
-
+		User signedInUser = userRepo.attemptLogin(username, password);
+		setSignedInUser(signedInUser);
 	}
 
 	public String giveUserType() {

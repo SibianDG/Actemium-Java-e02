@@ -8,6 +8,8 @@ import javax.persistence.NoResultException;
 
 public class UserDaoJpa extends GenericDaoJpa<User> implements UserDao {
 
+	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
+	
 	public UserDaoJpa() {
 		super(User.class);
 	}
@@ -21,7 +23,7 @@ public class UserDaoJpa extends GenericDaoJpa<User> implements UserDao {
 	}
 
 	@Override
-	public void attemptLogin(String username, String password) {
+	public User attemptLogin(String username, String password) {
 		User user = findByUsername(username);
 
 		if(password.isBlank()) {
@@ -30,9 +32,27 @@ public class UserDaoJpa extends GenericDaoJpa<User> implements UserDao {
 
 		UserDaoJpa.startTransaction();
 
-		user.increaseFailedLoginAttempts();
-
+		user.increaseFailedLoginAttempts();		
+		
+		if(user.getFailedLoginAttempts() > USER_LOGIN_MAX_ATTEMPTS) {
+			registerLoginAttempt(username, LoginStatus.FAILED);
+			user.blockUser();
+			throw new IllegalArgumentException(String.format("User has reached more than %d failed login attempts, account has been blocked.", USER_LOGIN_MAX_ATTEMPTS));
+		}
+		
+		if(!user.getPassword().equals(password)) {
+			registerLoginAttempt(username, LoginStatus.FAILED);
+			throw new IllegalArgumentException("Wrong password");
+		}
+		
+		user.resetLoginAttempts();		
+		
+		registerLoginAttempt(username, LoginStatus.SUCCESS);
+		
 		UserDaoJpa.commitTransaction();
+		
+		return user;
+		
 	}
 
 	@Override
