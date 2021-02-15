@@ -64,7 +64,7 @@ public abstract class User {
 	}
 
 	public void setPassword(String password) {
-		String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,}$";
+		String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–{}:;',.?/*~$^+=<>]).{8,}$";
 		if(password == null || password.isEmpty() || !password.matches(passwordRegex)){
 			throw new IllegalArgumentException("Invalid Password");
 		}
@@ -77,8 +77,8 @@ public abstract class User {
 
 	public void setFirstName(String firstName) {
 		String firstNameRegex = "[^0-9]+";
-		if(firstName == null || firstName.isEmpty() || firstName.matches(firstNameRegex)){
-			throw new IllegalArgumentException("Invalid Password");
+		if(firstName == null || firstName.isEmpty() || !firstName.matches(firstNameRegex)){
+			throw new IllegalArgumentException("Invalid FirstName");
 		}
 		this.firstName = firstName;
 	}
@@ -89,8 +89,8 @@ public abstract class User {
 
 	public void setLastName(String lastName) {
 		String lastNameRegex = "[^0-9]+";
-		if(lastName == null || lastName.isEmpty() || lastName.matches(lastNameRegex)){
-			throw new IllegalArgumentException("Invalid Password");
+		if(lastName == null || lastName.isEmpty() || !lastName.matches(lastNameRegex)){
+			throw new IllegalArgumentException("Invalid LastName");
 		}
 		this.lastName = lastName;
 	}
