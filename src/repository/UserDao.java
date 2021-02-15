@@ -11,5 +11,4 @@ public interface UserDao extends GenericDao<User> {
 
 	public void registerLoginAttempt(User user, LoginStatus loginStatus);
 
-	public User attemptLogin(String username, String password);
 }

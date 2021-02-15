@@ -1,8 +1,5 @@
 package tests;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,9 +12,15 @@ import domain.DomainController;
 import domain.User;
 import repository.UserDao;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @ExtendWith(MockitoExtension.class)
 public class DomeinTest {
-//	@Mock
+
+    final String USERNAME = "thoDirven123", PASSWORD = "Passwd123&";
+    User aUser = new Administrator(USERNAME, PASSWORD, "Thomas", "Dirven");
+
+    //	@Mock
 //    private GenericDao<User> userRepo2;
 	@Mock
     private UserDao userRepoDummy;
@@ -25,25 +28,37 @@ public class DomeinTest {
     private DomainController domain;
     
     @Test
-    public void findByUsername() {
+    public void LoginAttempt_Valid() {
 //    	final String WINKELNAAM = "Station";
-       final String USERNAME = "thoDirven123", PASSWORD = "Passwd123&";
 
 //     Winkel eenWinkel = new Winkel(WINKELNAAM);   
-       User aUser = new Administrator(USERNAME, PASSWORD, "Thomas", "Dirven");
 
 //     Mockito.when(userRepo2.findAll()).thenReturn(Arrays.asList(eenWinkel));
        //Mockito.when(userRepoDummy.findByUsername(USERNAME)).thenReturn(aUser);
-       Mockito.when(userRepoDummy.attemptLogin(USERNAME, PASSWORD)).thenReturn(aUser);
-       
+
+       Mockito.when(userRepoDummy.findByUsername(USERNAME)).thenReturn(aUser);
 //       domain.setUserRepo(userRepoDummy);
-//       assertThrows(NullPointerException.class, () -> domain.giveUsername());
+       assertThrows(NullPointerException.class, () -> domain.giveUsername());
 //       assertFalse(domain.giveUsername());
        domain.signIn(USERNAME, PASSWORD);
 //       assertTrue(eenWinkel.getBierSet().contains(eenBier));
        assertTrue(domain.giveUsername().equals(USERNAME));
 //       Mockito.verify(userRepo2).findAll();
-       Mockito.verify(userRepoDummy).attemptLogin(USERNAME, PASSWORD);
+       assertEquals(0, aUser.getFailedLoginAttempts());
+       Mockito.verify(userRepoDummy).findByUsername(USERNAME);
     }
+
+    @Test
+    public void LoginAttempt_InValid() {
+
+//        Mockito.when(userRepoDummy.attemptLogin(USERNAME, "WRONGPASSWORD")).thenReturn(aUser);
+//        assertThrows(NullPointerException.class, () -> domain.giveUsername());
+//        domain.signIn(USERNAME, "WRONGPASSWORD");
+//        assertTrue(domain.giveUsername().equals(USERNAME));
+//        assertEquals(1, aUser.getFailedLoginAttempts());
+//        Mockito.verify(userRepoDummy).attemptLogin(USERNAME, "WRONGPASSWORD");
+    }
+
+
 
 }
