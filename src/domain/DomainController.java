@@ -1,19 +1,22 @@
 package domain;
 
+import repository.UserDaoJpa;
+
 public class DomainController {
 
 	private User signedInUser;
+	private UserDaoJpa userRepo;
 
 	public DomainController() {
-		throw new UnsupportedOperationException();
 	}
 
 	public void setSignedInUser(User signedInUser) {
-		throw new UnsupportedOperationException();
+		this.signedInUser = signedInUser;
 	}
 
 	public void signIn(String username, String password) {
-		throw new UnsupportedOperationException();
+		User signedInUser = userRepo.findByUsername(username);
+
 	}
 
 	public String giveUserType() {
@@ -21,7 +24,7 @@ public class DomainController {
 	}
 
 	public String giveUsername() {
-		throw new UnsupportedOperationException();
+		return signedInUser.getUsername();
 	}
 
 	public void registerCustomer(String username, String password, String firstName, String lastName) {

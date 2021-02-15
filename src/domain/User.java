@@ -3,12 +3,15 @@ package domain;
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
 	@NamedQuery(name = "User.findByUsername",
-			query = "SELECT u FROM User u WHERE u.username = :name")
+			query = "SELECT u FROM User u WHERE u.username = :username")
 })
 public abstract class User implements Serializable {
 
@@ -16,7 +19,7 @@ public abstract class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-	private LoginAttempt loginAttempts;
+	private List<LoginAttempt> loginAttempts;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +41,7 @@ public abstract class User implements Serializable {
 		setLastName(lastName);
 		setFailedLoginAttempts(0);
 		setStatus(UserStatus.ACTIVE);
+		loginAttempts = new ArrayList<>();
 	}
 
 	public void resetLoginAttempts() {
@@ -51,13 +55,10 @@ public abstract class User implements Serializable {
 		}
 	}
 
-	public LoginAttempt getLoginAttempts() {
-		return loginAttempts;
+	public List<LoginAttempt> getLoginAttempts() {
+		return Collections.unmodifiableList(loginAttempts);
 	}
 
-	public void setLoginAttempts(LoginAttempt loginAttempts) {
-		this.loginAttempts = loginAttempts;
-	}
 
 	public int getUserId() {
 		return userId;

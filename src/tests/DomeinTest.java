@@ -27,7 +27,7 @@ public class DomeinTest {
     @Test
     public void findByUsername() {
 //    	final String WINKELNAAM = "Station";
-       final String USERNAME = "thoDirven123", PASSWORD = "Passwd123";
+       final String USERNAME = "thoDirven123", PASSWORD = "Passwd123&";
 
 //     Winkel eenWinkel = new Winkel(WINKELNAAM);   
        User aUser = new Administrator(USERNAME, PASSWORD, "Thomas", "Dirven");
