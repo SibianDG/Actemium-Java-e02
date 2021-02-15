@@ -1,5 +1,7 @@
 package domain;
 
+import java.time.LocalDate;
+
 public class Customer extends User {
 
 	private Contract contracts;
