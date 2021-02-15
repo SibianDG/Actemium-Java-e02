@@ -33,17 +33,17 @@ public class DomeinTest {
        User aUser = new Administrator(USERNAME, PASSWORD, "Thomas", "Dirven");
 
 //     Mockito.when(userRepo2.findAll()).thenReturn(Arrays.asList(eenWinkel));
-       Mockito.when(userRepoDummy.findByUsername(USERNAME)).thenReturn(aUser);
+       //Mockito.when(userRepoDummy.findByUsername(USERNAME)).thenReturn(aUser);
+       Mockito.when(userRepoDummy.attemptLogin(USERNAME, PASSWORD)).thenReturn(aUser);
        
 //       domain.setUserRepo(userRepoDummy);
-       
 //       assertThrows(NullPointerException.class, () -> domain.giveUsername());
 //       assertFalse(domain.giveUsername());
        domain.signIn(USERNAME, PASSWORD);
 //       assertTrue(eenWinkel.getBierSet().contains(eenBier));
        assertTrue(domain.giveUsername().equals(USERNAME));
 //       Mockito.verify(userRepo2).findAll();
-       Mockito.verify(userRepoDummy).findByUsername(USERNAME); 
+       Mockito.verify(userRepoDummy).attemptLogin(USERNAME, PASSWORD);
     }
 
 }
