@@ -1,18 +1,25 @@
 package domain;
 
+import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class ContactPerson implements Serializable {
+	@Serial
 	private static final long serialVersionUID = 1L;
 	
 	private String firstName;
 	private String lastName;
 	@Id
 	private String emailAddress;
+
+	//@ManyToMany
+	//private List<Customer> customerList;
 
 	public ContactPerson() {
 		super();

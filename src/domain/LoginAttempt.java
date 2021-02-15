@@ -28,8 +28,8 @@ public class LoginAttempt implements Serializable {
 	//TODO
 	// Do we need this or is this unnecessary?
 	// A loginAttempt doesn't know who his user is? so no?
-//	@ManyToOne
-//	private User user;
+	//@ManyToOne
+	//private UserModel userModel;
 	
 	public LoginAttempt() {
 	}

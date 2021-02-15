@@ -7,21 +7,21 @@ import javax.persistence.NoResultException;
 
 import domain.LoginAttempt;
 import domain.LoginStatus;
-import domain.User;
+import domain.UserModel;
 
-public class UserDaoJpa extends GenericDaoJpa<User> implements UserDao {
+public class UserDaoJpa extends GenericDaoJpa<UserModel> implements UserDao {
 
 
 	public UserDaoJpa() {
-		super(User.class);
+		super(UserModel.class);
 	}
 
 	@Override
-	public void registerLoginAttempt(User user, LoginStatus loginStatus) {		
+	public void registerLoginAttempt(UserModel userModel, LoginStatus loginStatus) {
 		
-		LoginAttempt loginAttempt = new LoginAttempt(LocalDateTime.now(), user.getUsername(), loginStatus);
+		LoginAttempt loginAttempt = new LoginAttempt(LocalDateTime.now(), userModel.getUsername(), loginStatus);
 		
-		user.addLoginAttempt(loginAttempt);
+		//userModel.addLoginAttempt(loginAttempt);
 		
 		em.persist(loginAttempt);		
 		
@@ -33,9 +33,9 @@ public class UserDaoJpa extends GenericDaoJpa<User> implements UserDao {
 
 
 	@Override
-	public User findByUsername(String username) {
+	public UserModel findByUsername(String username) {
 		try {
-			return em.createNamedQuery("User.findByUsername", User.class)
+			return em.createNamedQuery("User.findByUsername", UserModel.class)
 					.setParameter("username", username)
 					.getSingleResult();
 		} catch (NoResultException ex) {

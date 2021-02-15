@@ -23,15 +23,15 @@ import javax.persistence.OneToMany;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
 	@NamedQuery(name = "User.findByUsername",
-			query = "SELECT u FROM User u WHERE u.username = :username")
+			query = "SELECT u FROM UserModel u WHERE u.username = :username")
 })
-public abstract class User implements Serializable {
+public abstract class UserModel implements Serializable {
 
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-	private List<LoginAttempt> loginAttempts;
+	//@OneToMany(mappedBy = "usermodel", cascade = CascadeType.REMOVE)
+	//private List<LoginAttempt> loginAttempts;
 
 //	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
 	
@@ -46,17 +46,17 @@ public abstract class User implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private UserStatus status;
 
-	public User() {
+	public UserModel() {
 	}
 
-	public User(String username, String password, String firstName, String lastName) {
+	public UserModel(String username, String password, String firstName, String lastName) {
 		setUsername(username);
 		setPassword(password);
 		setFirstName(firstName);
 		setLastName(lastName);
 		setFailedLoginAttempts(0);
 		setStatus(UserStatus.ACTIVE);
-		loginAttempts = new ArrayList<>();
+		//loginAttempts = new ArrayList<>();
 	}
 
 	public void resetLoginAttempts() {
@@ -70,9 +70,9 @@ public abstract class User implements Serializable {
 //		}
 	}
 
-	public List<LoginAttempt> getLoginAttempts() {
+	/*public List<LoginAttempt> getLoginAttempts() {
 		return Collections.unmodifiableList(loginAttempts);
-	}
+	}*/
 
 
 	public int getUserId() {
@@ -151,8 +151,8 @@ public abstract class User implements Serializable {
 		setStatus(UserStatus.BLOCKED);
 	}
 	
-	public void addLoginAttempt(LoginAttempt loginAttempt) {
+	/*public void addLoginAttempt(LoginAttempt loginAttempt) {
 		loginAttempts.add(loginAttempt);
-	}
+	}*/
 	
 }

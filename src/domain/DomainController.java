@@ -1,12 +1,11 @@
 package domain;
 
-import repository.GenericDaoJpa;
 import repository.UserDao;
 import repository.UserDaoJpa;
 
 public class DomainController {
 
-	private User signedInUser;
+	private UserModel signedInUserModel;
 	private UserDao userRepo;
 
 	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
@@ -26,16 +25,16 @@ public class DomainController {
         userRepo = mock;
     }
 	
-	public void setSignedInUser(User signedInUser) {
-		this.signedInUser = signedInUser;
+	public void setSignedInUser(UserModel signedInUserModel) {
+		this.signedInUserModel = signedInUserModel;
 	}
 
-	private void add1(User user){
-		user.increaseFailedLoginAttempts();
+	private void add1(UserModel userModel){
+		userModel.increaseFailedLoginAttempts();
 	}
 
 	public void signIn(String username, String password) {
-		User user = userRepo.findByUsername(username);
+		UserModel userModel = userRepo.findByUsername(username);
 
 		if(password.isBlank()) {
 			throw new IllegalArgumentException("No password given");
@@ -43,34 +42,34 @@ public class DomainController {
 
 		//UserDaoJpa.startTransaction();
 
-		user.increaseFailedLoginAttempts();
+		userModel.increaseFailedLoginAttempts();
 
-		if(user.getFailedLoginAttempts() > USER_LOGIN_MAX_ATTEMPTS) {
-			userRepo.registerLoginAttempt(user, LoginStatus.FAILED);
-			user.blockUser();
+		if(userModel.getFailedLoginAttempts() > USER_LOGIN_MAX_ATTEMPTS) {
+			userRepo.registerLoginAttempt(userModel, LoginStatus.FAILED);
+			userModel.blockUser();
 			throw new IllegalArgumentException(String.format("User has reached more than %d failed login attempts, account has been blocked.", USER_LOGIN_MAX_ATTEMPTS));
 		}
 
-		if(!user.getPassword().equals(password)) {
-			userRepo.registerLoginAttempt(user, LoginStatus.FAILED);
+		if(!userModel.getPassword().equals(password)) {
+			userRepo.registerLoginAttempt(userModel, LoginStatus.FAILED);
 			throw new IllegalArgumentException("Wrong password");
 		}
 
-		user.resetLoginAttempts();
+		userModel.resetLoginAttempts();
 
-		userRepo.registerLoginAttempt(user, LoginStatus.SUCCESS);
+		userRepo.registerLoginAttempt(userModel, LoginStatus.SUCCESS);
 
 		//UserDaoJpa.commitTransaction();
 
-		setSignedInUser(user);
+		setSignedInUser(userModel);
 	}
 
 	public String giveUserType() {
-		return signedInUser.getClass().getSimpleName();
+		return signedInUserModel.getClass().getSimpleName();
 	}
 
 	public String giveUsername() {
-		return signedInUser.getUsername();
+		return signedInUserModel.getUsername();
 	}
 
 	public void registerCustomer(String username, String password, String firstName, String lastName) {

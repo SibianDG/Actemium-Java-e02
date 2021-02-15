@@ -9,11 +9,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import domain.Administrator;
 import domain.DomainController;
-import domain.User;
+import domain.UserModel;
 import repository.GenericDao;
-import repository.GenericDaoJpa;
 import repository.UserDao;
-import repository.UserDaoJpa;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,14 +19,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DomeinTest {
 
     final String USERNAME = "thoDirven123", PASSWORD = "Passwd123&";
-    User aUser = new Administrator(USERNAME, PASSWORD, "Thomas", "Dirven");
+    UserModel aUserModel = new Administrator(USERNAME, PASSWORD, "Thomas", "Dirven");
 
     //	@Mock
 //    private GenericDao<User> userRepo2;
     @Mock
     private UserDao userRepoDummy;
     @Mock
-    private GenericDao<User> genericRepoDummy;
+    private GenericDao<UserModel> genericRepoDummy;
     @InjectMocks
     private DomainController domain;
 
@@ -43,7 +41,7 @@ public class DomeinTest {
         //Mockito.mockStatic(GenericDao.class);
         //Mockito.doNothing().when(UserDaoJpa.startTransaction());
 
-        Mockito.when(userRepoDummy.findByUsername(USERNAME)).thenReturn(aUser);
+        Mockito.when(userRepoDummy.findByUsername(USERNAME)).thenReturn(aUserModel);
 //       domain.setUserRepo(userRepoDummy);
         assertThrows(NullPointerException.class, () -> domain.giveUsername());
 //       assertFalse(domain.giveUsername());
@@ -51,7 +49,7 @@ public class DomeinTest {
 //       assertTrue(eenWinkel.getBierSet().contains(eenBier));
         assertTrue(domain.giveUsername().equals(USERNAME));
 //       Mockito.verify(userRepo2).findAll();
-        assertEquals(0, aUser.getFailedLoginAttempts());
+        assertEquals(0, aUserModel.getFailedLoginAttempts());
         Mockito.verify(userRepoDummy).findByUsername(USERNAME);
     }
 

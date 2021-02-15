@@ -20,8 +20,8 @@ public class Contract implements Serializable {
 	private int contractNr;
 	//TODO
 	// correct?
-	@ManyToOne
-	private ContractType contractType;
+	//@ManyToOne
+	//private ContractType contractType;
 	@Enumerated(EnumType.STRING)
 	private ContractStatus status;
 	private LocalDate startDate;
@@ -35,19 +35,19 @@ public class Contract implements Serializable {
 			LocalDate endDate) {
 		super();
 		this.contractNr = contractNr;
-		this.contractType = contractType;
+		//this.contractType = contractType;
 		this.status = status;
 		this.startDate = startDate;
 		this.endDate = endDate;
 	}
 
-	public ContractType getContractType() {
+	/*public ContractType getContractType() {
 		return contractType;
 	}
 
 	public void setContractType(ContractType contractType) {
 		this.contractType = contractType;
-	}
+	}*/
 
 	public ContractStatus getStatus() {
 		return status;

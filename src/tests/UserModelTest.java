@@ -8,17 +8,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import domain.Administrator;
-import domain.User;
+import domain.UserModel;
 
 @ExtendWith(MockitoExtension.class)
-public class UserTest {
+public class UserModelTest {
 
-    private User user;
+    private UserModel userModel;
 
     private static Stream<Arguments> validUserAttributes() {
         return Stream.of(
@@ -83,18 +82,18 @@ public class UserTest {
 
     @Test
     public void increaseLoginAttempt_returns1_valid(){
-        user = Mockito.mock(User.class, Mockito.CALLS_REAL_METHODS);
-        user.increaseFailedLoginAttempts();
-        Assertions.assertEquals(1, user.getFailedLoginAttempts());
+        userModel = Mockito.mock(UserModel.class, Mockito.CALLS_REAL_METHODS);
+        userModel.increaseFailedLoginAttempts();
+        Assertions.assertEquals(1, userModel.getFailedLoginAttempts());
     }
 
     @Test
     public void resetLoginAttempt_returns0_valid(){
-        user = Mockito.mock(User.class, Mockito.CALLS_REAL_METHODS);
-        user.increaseFailedLoginAttempts();
-        user.increaseFailedLoginAttempts();
-        user.resetLoginAttempts();
-        Assertions.assertEquals(0, user.getFailedLoginAttempts());
+        userModel = Mockito.mock(UserModel.class, Mockito.CALLS_REAL_METHODS);
+        userModel.increaseFailedLoginAttempts();
+        userModel.increaseFailedLoginAttempts();
+        userModel.resetLoginAttempts();
+        Assertions.assertEquals(0, userModel.getFailedLoginAttempts());
     }
 
 }

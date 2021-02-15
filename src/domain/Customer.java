@@ -13,18 +13,18 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Customer extends User implements Seniority {
+public class Customer extends UserModel implements Seniority {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int customerNr;
-	@OneToMany(mappedBy = "customer")
-	private List<Contract> contracts;
-	@OneToOne(mappedBy = "customer")
-	private Company company;
-	@ManyToMany(mappedBy = "customer")
-	private List<ContactPerson> contactPersons;
+	//@OneToMany(mappedBy = "customer")
+	//private List<Contract> contracts;
+	//@OneToOne(mappedBy = "customer")
+	//private Company company;
+	//@ManyToMany(mappedBy = "customer")
+	//private List<ContactPerson> contactPersons;
 	private LocalDate registrationDate;
 
 	public Customer() {
@@ -32,8 +32,8 @@ public class Customer extends User implements Seniority {
 	
 	public Customer(String username, String password, String firstName, String lastName) {
 		super(username, password, firstName, lastName);
-		this.contracts = new ArrayList<>();
-		this.contactPersons = new ArrayList<>();		
+		//this.contracts = new ArrayList<>();
+		//this.contactPersons = new ArrayList<>();
 	}
 
 
@@ -45,6 +45,7 @@ public class Customer extends User implements Seniority {
 		this.customerNr = customerNr;
 	}
 
+	/*
 	public List<Contract> getContracts() {
 		return contracts;
 	}
@@ -67,7 +68,7 @@ public class Customer extends User implements Seniority {
 
 	private void setContactPersons(List<ContactPerson> contactPersons) {
 		this.contactPersons = contactPersons;
-	}
+	}*/
 
 	public LocalDate getRegistrationDate() {
 		return registrationDate;

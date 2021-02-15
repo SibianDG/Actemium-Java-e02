@@ -7,7 +7,7 @@ import javax.persistence.Persistence;
 
 public class GenericDaoJpa<T> implements GenericDao<T> {
 	// TODO
-    private static final String PU_NAME = "TicketSystemE02";
+    private static final String PU_NAME = "ticketlocal1";
     
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory(PU_NAME);
     protected static final EntityManager em = emf.createEntityManager();

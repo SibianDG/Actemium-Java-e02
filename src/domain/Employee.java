@@ -1,9 +1,8 @@
 package domain;
 
 import java.time.LocalDate;
-import java.time.*;
 
-public class Employee extends User implements Seniority {
+public class Employee extends UserModel implements Seniority {
 
 	private int employeeNr;
 	private String address;
