@@ -25,6 +25,8 @@ public class EmployeeTest {
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0470099874", "student@student.hogent.be", "role"),
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0000000000", "student@student.hogent.be", "role"),
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "9999999999", "student@student.hogent.be", "role"),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "9999999-99", "student@student.hogent.be", "role"),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "9/99999-99", "student@student.hogent.be", "role"),
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress 94521 bus 10", "9999999999", "student@student.hogent.be", "role"),
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress 94521 bus 10", "9999999999", "stu_dent@student.hogent.be", "role"),
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress 94521 bus 10", "9999999999", "stu.dent@student.hogent.be", "role")
@@ -46,7 +48,8 @@ public class EmployeeTest {
 
                 //phone
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "999999999d", "student@student.hogent.be", "role"),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "999999999-", "student@student.hogent.be", "role"),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "99999999|", "student@student.hogent.be", "role"),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "99999999@", "student@student.hogent.be", "role"),
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "999999999A", "student@student.hogent.be", "role"),
 
                 //email
