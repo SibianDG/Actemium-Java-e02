@@ -25,11 +25,8 @@ public class LoginAttempt implements Serializable {
 	private String username;
 	@Enumerated(EnumType.STRING)
 	private LoginStatus loginStatus;
-	//TODO
-	// Do we need this or is this unnecessary?
-	// A loginAttempt doesn't know who his user is? so no?
-	//@ManyToOne
-	//private UserModel userModel;
+	@ManyToOne
+	private UserModel userModel;
 	
 	public LoginAttempt() {
 	}

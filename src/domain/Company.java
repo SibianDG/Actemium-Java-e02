@@ -2,11 +2,10 @@ package domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Company implements Serializable {
@@ -20,6 +19,9 @@ public class Company implements Serializable {
 	private String address;
 	private String phoneNumber;
 	private LocalDate registrationDate;
+
+	@OneToMany(mappedBy = "company")
+	private List<Customer> customerList = new ArrayList<>();
 	
 	public Company() {		
 	}

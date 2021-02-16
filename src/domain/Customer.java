@@ -4,27 +4,21 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 public class Customer extends UserModel implements Seniority {
 	private static final long serialVersionUID = 1L;
 
-	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int customerNr;
-	//@OneToMany(mappedBy = "customer")
-	//private List<Contract> contracts;
-	//@OneToOne(mappedBy = "customer")
-	//private Company company;
-	//@ManyToMany(mappedBy = "customer")
-	//private List<ContactPerson> contactPersons;
+	@OneToMany
+	private List<Contract> contracts;
+	@ManyToOne
+	private Company company;
+	@ManyToMany(mappedBy = "customerList")
+	private List<ContactPerson> contactPersons;
+
 	private LocalDate registrationDate;
 
 	public Customer() {

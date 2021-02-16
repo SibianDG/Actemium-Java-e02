@@ -30,8 +30,11 @@ public abstract class UserModel implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	//@OneToMany(mappedBy = "usermodel", cascade = CascadeType.REMOVE)
-	//private List<LoginAttempt> loginAttempts;
+	@OneToMany(
+			mappedBy = "userModel",
+			cascade = CascadeType.REMOVE
+	)
+	private List<LoginAttempt> loginAttempts = new ArrayList<>();;
 
 //	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
 	
@@ -56,7 +59,6 @@ public abstract class UserModel implements Serializable {
 		setLastName(lastName);
 		setFailedLoginAttempts(0);
 		setStatus(UserStatus.ACTIVE);
-		//loginAttempts = new ArrayList<>();
 	}
 
 	public void resetLoginAttempts() {
@@ -70,9 +72,9 @@ public abstract class UserModel implements Serializable {
 //		}
 	}
 
-	/*public List<LoginAttempt> getLoginAttempts() {
+	public List<LoginAttempt> getLoginAttempts() {
 		return Collections.unmodifiableList(loginAttempts);
-	}*/
+	}
 
 
 	public int getUserId() {
@@ -151,8 +153,8 @@ public abstract class UserModel implements Serializable {
 		setStatus(UserStatus.BLOCKED);
 	}
 	
-	/*public void addLoginAttempt(LoginAttempt loginAttempt) {
+	public void addLoginAttempt(LoginAttempt loginAttempt) {
 		loginAttempts.add(loginAttempt);
-	}*/
+	}
 	
 }

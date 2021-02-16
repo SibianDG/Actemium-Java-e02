@@ -18,8 +18,8 @@ public class ContactPerson implements Serializable {
 	@Id
 	private String emailAddress;
 
-	//@ManyToMany
-	//private List<Customer> customerList;
+	@ManyToMany
+	private List<Customer> customerList;
 
 	public ContactPerson() {
 		super();

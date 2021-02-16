@@ -23,6 +23,7 @@ public class ContractType implements Serializable {
 	private int maxHandlingTime;
 	private int minThroughputTime;
 	private double price;
+
 	
 	public ContractType() {
 		super();

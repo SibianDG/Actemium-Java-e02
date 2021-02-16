@@ -1,9 +1,12 @@
 package domain;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import java.time.LocalDate;
 
 public class Employee extends UserModel implements Seniority {
 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int employeeNr;
 	private String address;
 	private String phoneNumber;
