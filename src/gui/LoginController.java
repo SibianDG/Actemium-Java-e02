@@ -1,5 +1,7 @@
 package gui;
 
+import java.io.IOException;
+
 import domain.DomainController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,9 +14,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-
-import java.io.IOException;
+import languages.LanguageResource;
 
 public class LoginController extends GridPane {
 
@@ -70,7 +70,7 @@ public class LoginController extends GridPane {
                 DashboardController dashboardController = new DashboardController(domainController);
                 Scene scene = new Scene(dashboardController);
                 Stage stage = (Stage) this.getScene().getWindow();
-                stage.setTitle("Dashboard"); //TODO replace with resource
+                stage.setTitle(LanguageResource.getString("dashboard")); //TODO review LanguageResource
                 stage.setResizable(false);
                 stage.setScene(scene);
                 stage.show();
