@@ -1,62 +1,50 @@
 package gui;
 
-import domein.DomeinController;
-import exceptions.FouteAanmeldOfRegistreerGegevensException;
-import javafx.application.Platform;
+import domain.DomainController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import ui.Vertaler;
+
 
 import java.io.IOException;
-import java.util.ResourceBundle;
 
 public class LoginController extends GridPane {
 
-    private DomeinController domeinController;
-    private Vertaler vertaler;
-    private KeuzeStartController vorigScherm;
+    private DomainController domainController;
 
     @FXML
-    private GridPane gridLanguages;
+    private GridPane gridLogin;
 
     @FXML
-    private Text titelTaal;
+    private Text titleLogin;
 
     @FXML
-    private TextField txfGebruikersnaam;
+    private TextField txfUsername;
 
     @FXML
-    private PasswordField psfWachtwoord;
+    private PasswordField pwfPassword;
 
     @FXML
-    private Button btnNextLogin;
+    private Button btnLogin;
 
     @FXML
     private HBox hbInvalidPassword;
 
     @FXML
-    private Text txtFoutLogin;
-    
-    @FXML 
-    private Button btnTerug;
+    private Text txtErrorLogin;
 
-    public LoginController(DomeinController domeinController, Vertaler vertaler, KeuzeStartController vorigScherm){
+    public LoginController(DomainController domainController){
         super();
-        this.domeinController = domeinController;
-        this.vertaler = vertaler;
-        this.vorigScherm = vorigScherm;
+        this.domainController = domainController;
+
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
@@ -66,52 +54,36 @@ public class LoginController extends GridPane {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        stelStringInVolgensTaal();
-    }
 
-    private void stelStringInVolgensTaal() {
-        ResourceBundle bundle = vertaler.getBundle();
-        titelTaal.setText(bundle.getString("aanmelden").toUpperCase());
-        txfGebruikersnaam.setPromptText("| " + bundle.getString("gebruikersnaam"));
-        psfWachtwoord.setPromptText("| " + bundle.getString("wachtwoord"));
-        btnNextLogin.setText(bundle.getString("volgende"));
-        btnTerug.setText("< " + bundle.getString("terug"));
     }
 
     @FXML
-    void btnNextLoginOnAction(ActionEvent event) {
+    void btnLoginOnAction(ActionEvent event) {
 
         try {
-            if (txfGebruikersnaam.getText().isEmpty() || psfWachtwoord.getText().isEmpty()){
-                txtFoutLogin.setText(vertaler.getBundle().getString("LoginEmpty"));
-                txtFoutLogin.setVisible(true);
+            if (txfUsername.getText().isEmpty() || pwfPassword.getText().isEmpty()){ //TODO adding resource to setText method
+                txtErrorLogin.setText("Username & password are mandatory");
+                txtErrorLogin.setVisible(true);
                 hbInvalidPassword.setVisible(true);
             } else {
-                domeinController.meldAan(txfGebruikersnaam.getText(), psfWachtwoord.getText());
-                HoofdschermController hoofdschermController = new HoofdschermController(domeinController, vertaler);
-                Scene scene = new Scene(hoofdschermController);
+                domainController.signIn(txfUsername.getText(), pwfPassword.getText());
+                DashboardController dashboardController = new DashboardController(domainController);
+                Scene scene = new Scene(dashboardController);
                 Stage stage = (Stage) this.getScene().getWindow();
-                stage.setTitle("Sokoban");
+                stage.setTitle("Dashboard"); //TODO replace with resource
                 stage.setResizable(false);
                 stage.setScene(scene);
                 stage.show();
             }
-        } catch (FouteAanmeldOfRegistreerGegevensException e) {
-            txtFoutLogin.setText(vertaler.getBundle().getString("foutAanmelden"));
-            txtFoutLogin.setVisible(true);
+        } catch (IllegalArgumentException e) {//FouteAanmeldOfRegistreerGegevensException e) { //TODO adding resources to setText methods
+            txtErrorLogin.setText("");
+            txtErrorLogin.setVisible(true);
             hbInvalidPassword.setVisible(true);
         } catch (Exception e){
-            txtFoutLogin.setText(vertaler.getBundle().getString("foutAanmelden"));
-            txtFoutLogin.setVisible(true);
+            txtErrorLogin.setText("");
+            txtErrorLogin.setVisible(true);
             hbInvalidPassword.setVisible(true);
         }
-    }
-    
-    @FXML
-    public void btnTerugOnAction(ActionEvent event) {
-    	Stage stage = (Stage) this.getScene().getWindow();
-    	stage.setScene(vorigScherm.getScene());
-    	stage.show();
     }
 
 }

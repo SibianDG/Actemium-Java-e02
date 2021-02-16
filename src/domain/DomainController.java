@@ -73,6 +73,10 @@ public class DomainController {
 		return signedInUserModel.getUsername();
 	}
 
+	public String giveUserFirstName() {return signedInUserModel.getFirstName();}
+
+	public String giveUserLastName() {return signedInUserModel.getLastName();}
+
 	public void registerCustomer(String username, String password, String firstName, String lastName) {
 		throw new UnsupportedOperationException();
 	}
