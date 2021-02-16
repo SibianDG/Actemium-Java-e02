@@ -1,4 +1,4 @@
-package start;
+package main;
 
 import domain.Administrator;
 import domain.DomainController;
@@ -23,7 +23,16 @@ public class MainTester {
         UserDaoJpa.commitTransaction();
 
         DomainController dc = new DomainController();
+
+        for (int i = 0; i < 7; i++) {
+            try {
+                dc.signIn("Admin123", "PassWd123");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         dc.signIn("Admin123", "PassWd123&");
+
 
         UserDaoJpa.closePersistency();
     }

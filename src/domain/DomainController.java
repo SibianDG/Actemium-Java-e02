@@ -47,11 +47,13 @@ public class DomainController {
 		if(userModel.getFailedLoginAttempts() > USER_LOGIN_MAX_ATTEMPTS) {
 			userRepo.registerLoginAttempt(userModel, LoginStatus.FAILED);
 			userModel.blockUser();
+			UserDaoJpa.commitTransaction();
 			throw new IllegalArgumentException(String.format("User has reached more than %d failed login attempts, account has been blocked.", USER_LOGIN_MAX_ATTEMPTS));
 		}
 
 		if(!userModel.getPassword().equals(password)) {
 			userRepo.registerLoginAttempt(userModel, LoginStatus.FAILED);
+			UserDaoJpa.commitTransaction();
 			throw new IllegalArgumentException("Wrong password");
 		}
 

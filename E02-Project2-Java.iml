@@ -21,23 +21,7 @@
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="inheritedJdk" />
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/usr/mylibrary2020/jpa/eclipselink-2.7.7.jar!/" />
-          <root url="jar://C:/usr/mylibrary2020/jpa/jakarta.persistence_2.2.3.jar!/" />
-          <root url="jar://C:/usr/mylibrary2020/jpa/org.eclipse.persistence.jpa.modelgen_2.7.5.v20191016-ea124dd158.jar!/" />
-          <root url="jar://C:/usr/mylibrary2020/jpa/org.eclipse.persistence.jpars_2.7.5.v20191016-ea124dd158.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://C:/usr/mylibrary2020/jpa/jakarta.persistence.source_2.2.3.jar!/" />
-          <root url="jar://C:/usr/mylibrary2020/jpa/org.eclipse.persistence.jpa.modelgen.source_2.7.5.v20191016-ea124dd158.jar!/" />
-          <root url="jar://C:/usr/mylibrary2020/jpa/org.eclipse.persistence.jpars.source_2.7.5.v20191016-ea124dd158.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://C:/usr/mylibrary2020/mockito/byte-buddy-1.10.14.jar!/" />
@@ -46,7 +30,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://C:/usr/mylibrary2020/mockito/mockito-core-3.5.10.jar!/" />
@@ -55,7 +39,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://C:/usr/mylibrary2020/mockito/mockito-junit-jupiter-3.5.10.jar!/" />
@@ -64,7 +48,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://C:/usr/mylibrary2020/mockito/objenesis-3.1.jar!/" />
@@ -73,7 +57,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" exported="" name="javafx" level="project" />
+    <orderEntry type="library" name="javafx" level="project" />
     <orderEntry type="module-library">
       <library name="JUnit5.4">
         <CLASSES>
@@ -94,6 +78,30 @@
       <library>
         <CLASSES>
           <root url="jar://C:/usr/mylibrary2020/mssql-jdbc-9.2.0.jre11.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/usr/mylibrary2020/jpa/jakarta.persistence_2.2.3.jar!/" />
+          <root url="jar://C:/usr/mylibrary2020/jpa/org.eclipse.persistence.jpa.modelgen_2.7.5.v20191016-ea124dd158.jar!/" />
+          <root url="jar://C:/usr/mylibrary2020/jpa/org.eclipse.persistence.jpars_2.7.5.v20191016-ea124dd158.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://C:/usr/mylibrary2020/jpa/jakarta.persistence.source_2.2.3.jar!/" />
+          <root url="jar://C:/usr/mylibrary2020/jpa/org.eclipse.persistence.jpa.modelgen.source_2.7.5.v20191016-ea124dd158.jar!/" />
+          <root url="jar://C:/usr/mylibrary2020/jpa/org.eclipse.persistence.jpars.source_2.7.5.v20191016-ea124dd158.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/usr/mylibrary2020/jpa/eclipselink-2.7.7.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
