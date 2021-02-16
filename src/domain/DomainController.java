@@ -40,7 +40,7 @@ public class DomainController {
 			throw new IllegalArgumentException("No password given");
 		}
 
-		//UserDaoJpa.startTransaction();
+		UserDaoJpa.startTransaction();
 
 		userModel.increaseFailedLoginAttempts();
 
@@ -59,9 +59,10 @@ public class DomainController {
 
 		userRepo.registerLoginAttempt(userModel, LoginStatus.SUCCESS);
 
-		//UserDaoJpa.commitTransaction();
+		UserDaoJpa.commitTransaction();
 
 		setSignedInUser(userModel);
+		System.out.println("Just signed in: "+signedInUserModel.getUsername());
 	}
 
 	public String giveUserType() {
