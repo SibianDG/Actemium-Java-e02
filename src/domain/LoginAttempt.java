@@ -31,11 +31,13 @@ public class LoginAttempt implements Serializable {
 	public LoginAttempt() {
 	}
 
-	public LoginAttempt(LocalDateTime dateAndTime, String username, LoginStatus loginStatus) {
+	public LoginAttempt(LocalDateTime dateAndTime, UserModel userModel, LoginStatus loginStatus) {
 		super();
 		this.dateAndTime = dateAndTime;
-		this.username = username;
+		this.username = userModel.getUsername();
 		this.loginStatus = loginStatus;
+		//TODO test, remove if possible, can stay if necessary
+		this.userModel = userModel;
 	}
 
 	public LocalDateTime getDateAndTime() {
@@ -60,6 +62,14 @@ public class LoginAttempt implements Serializable {
 
 	public void setLoginStatus(LoginStatus loginStatus) {
 		this.loginStatus = loginStatus;
+	}
+
+	public UserModel getUserModel() {
+		return userModel;
+	}
+
+	public void setUserModel(UserModel userModel) {
+		this.userModel = userModel;
 	}
 		
 }

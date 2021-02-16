@@ -19,7 +19,7 @@ public class UserDaoJpa extends GenericDaoJpa<UserModel> implements UserDao {
 	@Override
 	public void registerLoginAttempt(UserModel userModel, LoginStatus loginStatus) {
 		
-		LoginAttempt loginAttempt = new LoginAttempt(LocalDateTime.now(), userModel.getUsername(), loginStatus);
+		LoginAttempt loginAttempt = new LoginAttempt(LocalDateTime.now(), userModel, loginStatus);
 		
 		//userModel.addLoginAttempt(loginAttempt);
 		
