@@ -61,12 +61,13 @@ public class LoginController extends GridPane {
     void btnLoginOnAction(ActionEvent event) {
 
         try {
-            if (txfUsername.getText().isEmpty() || pwfPassword.getText().isEmpty()){ //TODO adding resource to setText method
-                txtErrorLogin.setText("Username & password are mandatory");
+            if (txfUsername.getText().isEmpty() || pwfPassword.getText().isEmpty()){
+                txtErrorLogin.setText(LanguageResource.getString("username_password_mandatory"));
                 txtErrorLogin.setVisible(true);
                 hbInvalidPassword.setVisible(true);
             } else {
                 domainController.signIn(txfUsername.getText(), pwfPassword.getText());
+
                 DashboardController dashboardController = new DashboardController(domainController);
                 Scene scene = new Scene(dashboardController);
                 Stage stage = (Stage) this.getScene().getWindow();
@@ -75,12 +76,12 @@ public class LoginController extends GridPane {
                 stage.setScene(scene);
                 stage.show();
             }
-        } catch (IllegalArgumentException e) {//FouteAanmeldOfRegistreerGegevensException e) { //TODO adding resources to setText methods
-            txtErrorLogin.setText("");
+        } catch (IllegalArgumentException e) {//FouteAanmeldOfRegistreerGegevensException e) {
+            txtErrorLogin.setText(e.getMessage());
             txtErrorLogin.setVisible(true);
             hbInvalidPassword.setVisible(true);
         } catch (Exception e){
-            txtErrorLogin.setText("");
+            txtErrorLogin.setText(e.getMessage());
             txtErrorLogin.setVisible(true);
             hbInvalidPassword.setVisible(true);
         }
