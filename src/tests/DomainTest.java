@@ -1,12 +1,15 @@
 package tests;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,9 +30,10 @@ import repository.GenericDao;
 import repository.UserDao;
 
 @ExtendWith(MockitoExtension.class)
-public class DomeinTest {
+public class DomainTest {
 
-    final String USERNAME = "thoDirven123", PASSWORD = "Passwd123&", WRONGPASSWORD = "foutPas12&";
+    final String USERNAME = "thoDirven123", PASSWORD = "Passwd123&", WRONGPASSWORD = "foutPas12&",
+    		WRONGUSERNAME = "usernameDoesNotExist"; //EntityNotFoundException()
     UserModel aUser = new Administrator(USERNAME, PASSWORD, "Thomas", "Dirven");
 
     @Mock
@@ -39,29 +43,100 @@ public class DomeinTest {
     @InjectMocks
     private DomainController domain;
 
+    private void trainDummy() {
+    	Mockito.when(userRepoDummy.findByUsername(USERNAME)).thenReturn(aUser);
+    }
+    
+    // does this method test too many things at once?
+    // or are we allowed to test multiple things as long
+    // as they relate to one another
     @Test
-    public void LoginAttempt_Valid_() {
-        Mockito.when(userRepoDummy.findByUsername(USERNAME)).thenReturn(aUser);
+    public void loginAttempt_Valid() {
+    	trainDummy();
         assertThrows(NullPointerException.class, () -> domain.giveUsername());
         domain.signIn(USERNAME, PASSWORD);
         assertTrue(domain.giveUsername().equals(USERNAME));
         assertEquals(0, aUser.getFailedLoginAttempts());
         Mockito.verify(userRepoDummy).findByUsername(USERNAME);
+    } // tried to split this test up in smaller tests
+    
+    @Test
+    public void loginAttempt_Valid_DoesNotThrowException() {
+    	trainDummy();
+    	assertDoesNotThrow(()->domain.signIn(USERNAME, PASSWORD));
+    	Mockito.verify(userRepoDummy).findByUsername(USERNAME);
     }
 
     @Test
-    public void LoginAttempt_InValid_ReturnsPasswordException() {
-        Mockito.when(userRepoDummy.findByUsername(USERNAME)).thenReturn(aUser);
-        assertThrows(NullPointerException.class, () -> domain.giveUsername());        
+    public void loginAttempt_Valid_ZeroFailedLoginAttempts() {
+    	trainDummy();
+        domain.signIn(USERNAME, PASSWORD);
+        assertEquals(0, aUser.getFailedLoginAttempts());
+    	Mockito.verify(userRepoDummy).findByUsername(USERNAME);
+    }
+    
+    @Test
+    public void giveUsername_After_LoginAttempt_Valid_ReturnsSignedInUserUsername() {
+    	trainDummy();
+        domain.signIn(USERNAME, PASSWORD);
+        assertTrue(domain.giveUsername().equals(USERNAME));
+    	Mockito.verify(userRepoDummy).findByUsername(USERNAME);
+    }
+    
+    @Test
+    public void giveUserType_After_LoginAttempt_Valid_ReturnsSignedInUserUserType() {
+    	trainDummy();
+        domain.signIn(USERNAME, PASSWORD);
+        assertTrue(domain.giveUserType().equals("Administrator"));
+    	Mockito.verify(userRepoDummy).findByUsername(USERNAME);
+    }
+    
+    @Test
+    public void giveFirstName_After_LoginAttempt_Valid_ReturnsSignedInUserFirstName() {
+    	trainDummy();
+        domain.signIn(USERNAME, PASSWORD);
+        assertTrue(domain.giveUserFirstName().equals("Thomas"));
+    	Mockito.verify(userRepoDummy).findByUsername(USERNAME);
+    }
+    
+    @Test
+    public void giveLastName_After_LoginAttempt_Valid_ReturnsSignedInUserLastName() {
+    	trainDummy();
+        domain.signIn(USERNAME, PASSWORD);
+        assertTrue(domain.giveUserLastName().equals("Dirven"));
+    	Mockito.verify(userRepoDummy).findByUsername(USERNAME);
+    }    
+    
+    @Test
+    public void giveUsername_After_LoginAttempt_InValidPassword_ReturnsNullPointerException() {
+    	trainDummy();
+    	assertThrows(PasswordException.class, () -> domain.signIn(USERNAME, WRONGPASSWORD));
+    	assertThrows(NullPointerException.class, () -> domain.giveUsername());
+    	Mockito.verify(userRepoDummy).findByUsername(USERNAME);
+    }
+    
+    // this tests results in a Stubbing argument mismatch
+    // seems pretty useless to test?
+    @Test
+    public void loginAttempt_InValidUsername_ReturnsEntityNotFoundException() {
+        Mockito.when(userRepoDummy.findByUsername(WRONGUSERNAME)).thenThrow(EntityNotFoundException.class);
+        assertThrows(EntityNotFoundException.class, () -> domain.signIn(WRONGUSERNAME, WRONGPASSWORD));
+        Mockito.verify(userRepoDummy).findByUsername(WRONGUSERNAME);
+    }  
+    
+    @Test
+    public void loginAttempt_InValidPassword_ReturnsPasswordException() {
+    	trainDummy();
+    	assertThrows(NullPointerException.class, () -> domain.giveUsername());        
         assertThrows(PasswordException.class, () -> domain.signIn(USERNAME, WRONGPASSWORD));
         assertEquals(1, aUser.getFailedLoginAttempts());
         Mockito.verify(userRepoDummy).findByUsername(USERNAME);
     }
     
     @Test
-    public void LoginAttempt_5InValid_BlocksUser() {    	
-        Mockito.when(userRepoDummy.findByUsername(USERNAME)).thenReturn(aUser);
-        assertThrows(NullPointerException.class, () -> domain.giveUsername());
+    public void loginAttempt_5InValid_BlocksUser() {    	
+    	trainDummy();
+    	assertThrows(NullPointerException.class, () -> domain.giveUsername());
         for (int i = 0; i < 4; i++) {
         	assertEquals(i, aUser.getFailedLoginAttempts());
 	        assertThrows(PasswordException.class, () -> domain.signIn(USERNAME, WRONGPASSWORD));
@@ -75,8 +150,8 @@ public class DomeinTest {
     }
     
     @Test
-    public void LoginAttempt_4InValid_1Valid_ResetLoginAttempts() {    	
-    	Mockito.when(userRepoDummy.findByUsername(USERNAME)).thenReturn(aUser);
+    public void loginAttempt_4InValid_1Valid_ResetLoginAttempts() {    	
+    	trainDummy();
     	assertThrows(NullPointerException.class, () -> domain.giveUsername());
     	for (int i = 0; i < 4; i++) {
     		assertEquals(i, aUser.getFailedLoginAttempts());
@@ -95,8 +170,8 @@ public class DomeinTest {
     // but this wil allow an admin for example to view all the login attempts by a user
     // conveniently from the dashboard
     @Test
-    public void LoginAttempt_3InValid_1Valid_FittingLoginAttemptStatus() {    	
-    	Mockito.when(userRepoDummy.findByUsername(USERNAME)).thenReturn(aUser);
+    public void loginAttempt_3InValid_1Valid_FittingLoginAttemptStatus() {    	
+    	trainDummy();
     	assertThrows(NullPointerException.class, () -> domain.giveUsername());
     	for (int i = 0; i < 3; i++) {
     		assertEquals(i, aUser.getFailedLoginAttempts());
