@@ -2,11 +2,17 @@ package domain;
 
 import languages.LanguageResource;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.ManyToOne;
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Employee extends UserModel implements Seniority {
+@Entity
+public class Employee extends UserModel implements Seniority, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int employeeNr;
@@ -16,6 +22,9 @@ public class Employee extends UserModel implements Seniority {
 	private String role;
 	private LocalDate registrationDate;
 
+	@ManyToOne
+	private Company company;
+
 	public Employee(String username, String password, String firstName, String lastName, String address,
 			String phoneNumber, String emailAddress, String role) {
 		super(username, password, firstName, lastName);
@@ -24,6 +33,10 @@ public class Employee extends UserModel implements Seniority {
 		setEmailAddress(emailAddress);
 		setRole(role);
 		setRegistrationDate(LocalDate.now());
+	}
+
+	public Employee() {
+
 	}
 
 	@Override
