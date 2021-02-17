@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,11 +33,13 @@ public abstract class UserModel implements Serializable {
 
 	@OneToMany(
 			mappedBy = "userModel",
-			cascade = CascadeType.REMOVE
+			cascade = CascadeType.PERSIST,
+			fetch = FetchType.EAGER
 	)
-	private List<LoginAttempt> loginAttempts = new ArrayList<>();;
+	private List<LoginAttempt> loginAttempts = new ArrayList<>();
 
 //	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
+	//test
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +53,7 @@ public abstract class UserModel implements Serializable {
 	private UserStatus status;
 
 	public UserModel() {
+		
 	}
 
 	public UserModel(String username, String password, String firstName, String lastName) {
@@ -102,7 +106,7 @@ public abstract class UserModel implements Serializable {
 	}
 
 	public void setPassword(String password) {
-		String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–{}:;',.?/*~$^+=<>]).{8,}$";
+		String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()â€“{}:;',.?/*~$^+=<>]).{8,}$";
 		if(password == null || password.isBlank() || !password.matches(passwordRegex)){
 			throw new IllegalArgumentException("Invalid Password");
 		}
