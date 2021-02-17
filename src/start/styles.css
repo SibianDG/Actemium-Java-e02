@@ -1,10 +1,11 @@
-.appelblauwzeegroen {
-    -fx-background-color: #78C0AB;
-}
-
 .button {
     -fx-background-radius: 30px;
-    -fx-font-size: 1.5em;
+    -fx-font-size: 18px;
+}
+
+.btn-blue {
+    -fx-background-color: #1D3D78;
+    -fx-text-fill: #ffffff;
 }
 
 .btn-white {
@@ -35,9 +36,8 @@
 }
 
 .text-field {
-    -fx-background-color:#F5FAF9;
-    -fx-background-radius: 0;
-    -fx-border-color: #BBDBB9;
+    -fx-background-color: 0;
+    -fx-border-color: #C0CC0F;
     -fx-border-width: 0 0 3 0;
 }
 

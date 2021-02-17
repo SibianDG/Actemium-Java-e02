@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -21,22 +22,22 @@ public class LoginController extends GridPane {
     private DomainController domainController;
 
     @FXML
-    private GridPane gridLogin;
+    private Text txtTitle;
 
     @FXML
-    private Text titleLogin;
+    private Label lblUsername;
 
     @FXML
     private TextField txfUsername;
+
+    @FXML
+    private Label lblPassword;
 
     @FXML
     private PasswordField pwfPassword;
 
     @FXML
     private Button btnLogin;
-
-    @FXML
-    private HBox hbInvalidPassword;
 
     @FXML
     private Text txtErrorLogin;
@@ -51,6 +52,8 @@ public class LoginController extends GridPane {
             loader.setController(this);
             loader.setRoot(this);
             loader.load();
+
+            txtErrorLogin.setOpacity(0);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -58,13 +61,12 @@ public class LoginController extends GridPane {
     }
 
     @FXML
-    void btnLoginOnAction(ActionEvent event) {
+    void login_button_onaction(ActionEvent event) {
 
         try {
             if (txfUsername.getText().isEmpty() || pwfPassword.getText().isEmpty()){
                 txtErrorLogin.setText(LanguageResource.getString("username_password_mandatory"));
-                txtErrorLogin.setVisible(true);
-                hbInvalidPassword.setVisible(true);
+                txtErrorLogin.setOpacity(1);
             } else {
                 domainController.signIn(txfUsername.getText(), pwfPassword.getText());
 
@@ -79,11 +81,9 @@ public class LoginController extends GridPane {
         } catch (IllegalArgumentException e) {//FouteAanmeldOfRegistreerGegevensException e) {
             txtErrorLogin.setText(e.getMessage());
             txtErrorLogin.setVisible(true);
-            hbInvalidPassword.setVisible(true);
         } catch (Exception e){
             txtErrorLogin.setText(e.getMessage());
             txtErrorLogin.setVisible(true);
-            hbInvalidPassword.setVisible(true);
         }
     }
 
