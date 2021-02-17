@@ -1,5 +1,7 @@
 package domain;
 
+import languages.LanguageResource;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -98,7 +100,7 @@ public abstract class UserModel implements Serializable {
 	public void setUsername(String username) {
 		String usernameRegex = "[A-Za-z0-9]+";
 		if(username == null || username.isBlank() || !username.matches(usernameRegex)) {
-			throw new IllegalArgumentException("Invalid Username");
+			throw new IllegalArgumentException(LanguageResource.getString("username_invalid"));
 		}
 		this.username = username;
 	}
@@ -110,7 +112,7 @@ public abstract class UserModel implements Serializable {
 	public void setPassword(String password) {
 		String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()â€“{}:;',.?/*~$^+=<>]).{8,}$";
 		if(password == null || password.isBlank() || !password.matches(passwordRegex)){
-			throw new IllegalArgumentException("Invalid Password");
+			throw new IllegalArgumentException(LanguageResource.getString("password_invalid"));
 		}
 		this.password = password;
 	}
@@ -122,7 +124,7 @@ public abstract class UserModel implements Serializable {
 	public void setFirstName(String firstName) {
 		String firstNameRegex = "[^0-9]+";
 		if(firstName == null || firstName.isBlank() || !firstName.matches(firstNameRegex)){
-			throw new IllegalArgumentException("Invalid FirstName");
+			throw new IllegalArgumentException(LanguageResource.getString("firstname_invalid"));
 		}
 		this.firstName = firstName;
 	}
@@ -134,7 +136,7 @@ public abstract class UserModel implements Serializable {
 	public void setLastName(String lastName) {
 		String lastNameRegex = "[^0-9]+";
 		if(lastName == null || lastName.isBlank() || !lastName.matches(lastNameRegex)){
-			throw new IllegalArgumentException("Invalid LastName");
+			throw new IllegalArgumentException(LanguageResource.getString("lastname_invalid"));
 		}
 		this.lastName = lastName;
 	}
