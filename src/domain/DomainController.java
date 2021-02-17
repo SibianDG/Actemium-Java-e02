@@ -15,7 +15,7 @@ public class DomainController {
 	}
 
 	//TODO constructor vs setter injection?
-	public DomainController2() {
+	public DomainController() {
 		this(new UserDaoJpa());
 //		setUserRepo(new UserDaoJpa());
 	}
