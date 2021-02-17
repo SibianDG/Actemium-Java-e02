@@ -31,6 +31,9 @@ public abstract class UserModel implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
+	// FetchType.EAGER will probably slow down our program by a lot
+	// This will only be usefull if an admin wants to see all login attempts by a
+	// user in his dashboard
 	@OneToMany(
 			mappedBy = "userModel",
 			cascade = CascadeType.PERSIST,
@@ -39,7 +42,6 @@ public abstract class UserModel implements Serializable {
 	private List<LoginAttempt> loginAttempts = new ArrayList<>();
 
 //	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
-	//test
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
