@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import exceptions.BlockedUserException;
 import exceptions.PasswordException;
+import languages.LanguageResource;
 import repository.UserDao;
 import repository.UserDaoJpa;
 
@@ -36,7 +37,7 @@ public class DomainController {
 		UserModel userModel = userRepo.findByUsername(username);
 
 		if (password.isBlank()) {
-			throw new PasswordException("No password given");
+			throw new PasswordException(LanguageResource.getString("password_blank"));
 		}
 
 		UserDaoJpa.startTransaction();

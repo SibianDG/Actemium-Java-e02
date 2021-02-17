@@ -1,5 +1,7 @@
 package domain;
 
+import languages.LanguageResource;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import java.time.LocalDate;
@@ -44,7 +46,7 @@ public class Employee extends UserModel implements Seniority {
 	public void setAddress(String address) {
 		String usernameRegex = "[A-Za-z0-9 _-]+";
 		if(address == null || address.isBlank() || !address.matches(usernameRegex)) {
-			throw new IllegalArgumentException("Invalid address");
+			throw new IllegalArgumentException(LanguageResource.getString("address_invalid"));
 		}
 		this.address = address;
 	}
@@ -56,7 +58,7 @@ public class Employee extends UserModel implements Seniority {
 	public void setEmailAddress(String emailAddress) {
 		String usernameRegex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
 		if(emailAddress == null || emailAddress.isBlank() || !emailAddress.matches(usernameRegex)) {
-			throw new IllegalArgumentException("Invalid email address");
+			throw new IllegalArgumentException(LanguageResource.getString("email_invalid"));
 		}
 		this.emailAddress = emailAddress;
 	}
@@ -72,7 +74,7 @@ public class Employee extends UserModel implements Seniority {
 	public void setPhoneNumber(String phoneNumber) {
 		String usernameRegex = "[0-9 /-]+";
 		if(phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches(usernameRegex)) {
-			throw new IllegalArgumentException("Invalid phone number");
+			throw new IllegalArgumentException(LanguageResource.getString("phonenumber_invalid"));
 		}
 		this.phoneNumber = phoneNumber;
 	}
@@ -80,7 +82,7 @@ public class Employee extends UserModel implements Seniority {
 	public void setRole(String role) {
 		String usernameRegex = "[A-Za-z0-9_/-]+";
 		if(role == null || role.isBlank() || !role.matches(usernameRegex)) {
-			throw new IllegalArgumentException("Invalid role");
+			throw new IllegalArgumentException(LanguageResource.getString("role_invalid"));
 		}
 		this.role = role;
 	}
