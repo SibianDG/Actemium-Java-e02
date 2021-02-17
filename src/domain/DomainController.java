@@ -10,53 +10,61 @@ public class DomainController {
 
 	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
 
-
-	public DomainController(UserDao userRepo) {
+	public DomainController2(UserDao userRepo) {
 		this.userRepo = userRepo;
 	}
-	
-	
-	public DomainController() {
+
+	//TODO constructor vs setter injection?
+	public DomainController2() {
 		this(new UserDaoJpa());
 //		setUserRepo(new UserDaoJpa());
 	}
 
-	public void setUserRepo(UserDao mock){
-        userRepo = mock;
-    }
-	
-	public void setSignedInUser(UserModel signedInUserModel) {
-		this.signedInUserModel = signedInUserModel;
+	public void setUserRepo(UserDao mock) {
+		userRepo = mock;
 	}
 
-	private void add1(UserModel userModel){
-		userModel.increaseFailedLoginAttempts();
+	public void setSignedInUser(UserModel signedInUserModel) {
+		this.signedInUserModel = signedInUserModel;
 	}
 
 	public void signIn(String username, String password) {
 		UserModel userModel = userRepo.findByUsername(username);
 
-		if(password.isBlank()) {
+		if (password.isBlank()) {
 			throw new IllegalArgumentException("No password given");
 		}
 
 		UserDaoJpa.startTransaction();
-
-		userModel.increaseFailedLoginAttempts();
-
-		if(userModel.getFailedLoginAttempts() > USER_LOGIN_MAX_ATTEMPTS) {
-			userRepo.registerLoginAttempt(userModel, LoginStatus.FAILED);
-			userModel.blockUser();
-			UserDaoJpa.commitTransaction();
-			throw new IllegalArgumentException(String.format("User has reached more than %d failed login attempts, account has been blocked.", USER_LOGIN_MAX_ATTEMPTS));
-		}
-
-		if(!userModel.getPassword().equals(password)) {
+		
+		// user account already blocked, only the failed login attempt needs to registered
+		if (userModel.getStatus().equals(UserStatus.BLOCKED)) {
+			userModel.increaseFailedLoginAttempts();
 			userRepo.registerLoginAttempt(userModel, LoginStatus.FAILED);
 			UserDaoJpa.commitTransaction();
-			throw new IllegalArgumentException("Wrong password");
+			throw new IllegalArgumentException(String.format(
+					"User account has been blocked because more than %d failed login attempts have been registered."
+					+ "\nPlease contact your system administrator.",
+					USER_LOGIN_MAX_ATTEMPTS));
+		}
+				
+		// check password
+		if (!userModel.getPassword().equals(password)) {
+			userModel.increaseFailedLoginAttempts();
+			userRepo.registerLoginAttempt(userModel, LoginStatus.FAILED);
+			// block user after 5 failed login attempts
+			if (userModel.getFailedLoginAttempts() >= USER_LOGIN_MAX_ATTEMPTS) {
+				userModel.blockUser();
+				UserDaoJpa.commitTransaction();
+				throw new IllegalArgumentException(
+						String.format("Wrong password\nUser has reached more than %d failed login attempts, account has been blocked.",
+								USER_LOGIN_MAX_ATTEMPTS));
+			}
+			UserDaoJpa.commitTransaction();
+			throw new IllegalArgumentException(String.format("Wrong password\nOnly %d attempts remaining", 5 - userModel.getFailedLoginAttempts()));
 		}
 
+		// correct password
 		userModel.resetLoginAttempts();
 
 		userRepo.registerLoginAttempt(userModel, LoginStatus.SUCCESS);
@@ -64,20 +72,25 @@ public class DomainController {
 		UserDaoJpa.commitTransaction();
 
 		setSignedInUser(userModel);
-		System.out.println("Just signed in: "+signedInUserModel.getUsername());
+		System.out.println("Just signed in: " + signedInUserModel.getUsername());
 	}
 
 	public String giveUserType() {
-		return signedInUserModel.getClass().getSimpleName();
+		return signedInUserModel.getClass()
+				.getSimpleName();
 	}
 
 	public String giveUsername() {
 		return signedInUserModel.getUsername();
 	}
 
-	public String giveUserFirstName() {return signedInUserModel.getFirstName();}
+	public String giveUserFirstName() {
+		return signedInUserModel.getFirstName();
+	}
 
-	public String giveUserLastName() {return signedInUserModel.getLastName();}
+	public String giveUserLastName() {
+		return signedInUserModel.getLastName();
+	}
 
 	public void registerCustomer(String username, String password, String firstName, String lastName) {
 		throw new UnsupportedOperationException();
