@@ -1,5 +1,7 @@
 package domain;
 
+import languages.LanguageResource;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,11 +33,15 @@ public abstract class UserModel implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
+	// FetchType.EAGER will probably slow down our program by a lot
+	// This will only be usefull if an admin wants to see all login attempts by a
+	// user in his dashboard
 	@OneToMany(
 			mappedBy = "userModel",
-			cascade = CascadeType.REMOVE
+			cascade = CascadeType.PERSIST,
+			fetch = FetchType.EAGER
 	)
-	private List<LoginAttempt> loginAttempts = new ArrayList<>();;
+	private List<LoginAttempt> loginAttempts = new ArrayList<>();
 
 //	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
 	
@@ -50,6 +57,7 @@ public abstract class UserModel implements Serializable {
 	private UserStatus status;
 
 	public UserModel() {
+		
 	}
 
 	public UserModel(String username, String password, String firstName, String lastName) {
@@ -92,7 +100,7 @@ public abstract class UserModel implements Serializable {
 	public void setUsername(String username) {
 		String usernameRegex = "[A-Za-z0-9]+";
 		if(username == null || username.isBlank() || !username.matches(usernameRegex)) {
-			throw new IllegalArgumentException("Invalid Username");
+			throw new IllegalArgumentException(LanguageResource.getString("username_invalid"));
 		}
 		this.username = username;
 	}
@@ -102,9 +110,9 @@ public abstract class UserModel implements Serializable {
 	}
 
 	public void setPassword(String password) {
-		String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–{}:;',.?/*~$^+=<>]).{8,}$";
+		String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()â€“{}:;',.?/*~$^+=<>]).{8,}$";
 		if(password == null || password.isBlank() || !password.matches(passwordRegex)){
-			throw new IllegalArgumentException("Invalid Password");
+			throw new IllegalArgumentException(LanguageResource.getString("password_invalid"));
 		}
 		this.password = password;
 	}
@@ -116,7 +124,7 @@ public abstract class UserModel implements Serializable {
 	public void setFirstName(String firstName) {
 		String firstNameRegex = "[^0-9]+";
 		if(firstName == null || firstName.isBlank() || !firstName.matches(firstNameRegex)){
-			throw new IllegalArgumentException("Invalid FirstName");
+			throw new IllegalArgumentException(LanguageResource.getString("firstname_invalid"));
 		}
 		this.firstName = firstName;
 	}
@@ -128,7 +136,7 @@ public abstract class UserModel implements Serializable {
 	public void setLastName(String lastName) {
 		String lastNameRegex = "[^0-9]+";
 		if(lastName == null || lastName.isBlank() || !lastName.matches(lastNameRegex)){
-			throw new IllegalArgumentException("Invalid LastName");
+			throw new IllegalArgumentException(LanguageResource.getString("lastname_invalid"));
 		}
 		this.lastName = lastName;
 	}

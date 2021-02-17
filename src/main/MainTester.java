@@ -12,7 +12,7 @@ import javax.persistence.EntityManager;
 
 public class MainTester {
     public static void main(String[] args) {
-        System.out.println("Main1 - aanmaak van 3 docent objecten en persisteren");
+        System.out.println("Main1 - creating and persisting 3 docent objects");
         UserModel a = new Administrator("Admin123", "PassWd123&","Jan", "A");
         UserModel t = new Technician("Tech123", "PassWd123&","Pol", "T");
 

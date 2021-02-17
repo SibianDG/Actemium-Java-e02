@@ -3,6 +3,7 @@ package gui;
 import java.io.IOException;
 
 import domain.DomainController;
+import exceptions.PasswordException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -64,7 +65,7 @@ public class LoginController extends GridPane {
     void login_button_onaction(ActionEvent event) {
 
         try {
-            if (txfUsername.getText().isEmpty() || pwfPassword.getText().isEmpty()){
+            if (txfUsername.getText().isEmpty() || pwfPassword.getText().isEmpty()){ //unnecessary check??? get already caught in domain
                 txtErrorLogin.setText(LanguageResource.getString("username_password_mandatory"));
                 txtErrorLogin.setOpacity(1);
             } else {
@@ -78,7 +79,11 @@ public class LoginController extends GridPane {
                 stage.setScene(scene);
                 stage.show();
             }
-        } catch (IllegalArgumentException e) {//FouteAanmeldOfRegistreerGegevensException e) {
+        } catch (IllegalArgumentException e) {
+            txtErrorLogin.setText(e.getMessage());
+            txtErrorLogin.setVisible(true);
+            hbInvalidPassword.setVisible(true);
+        }catch (PasswordException e) {
             txtErrorLogin.setText(e.getMessage());
             txtErrorLogin.setVisible(true);
         } catch (Exception e){
