@@ -10,7 +10,7 @@ public class DomainController {
 
 	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
 
-	public DomainController2(UserDao userRepo) {
+	public DomainController(UserDao userRepo) {
 		this.userRepo = userRepo;
 	}
 
