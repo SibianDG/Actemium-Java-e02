@@ -1,5 +1,7 @@
 package domain;
 
+import java.time.LocalDateTime;
+
 import repository.UserDao;
 import repository.UserDaoJpa;
 
@@ -40,7 +42,10 @@ public class DomainController {
 		// user account already blocked, only the failed login attempt needs to registered
 		if (userModel.getStatus().equals(UserStatus.BLOCKED)) {
 			userModel.increaseFailedLoginAttempts();
-			userRepo.registerLoginAttempt(userModel, LoginStatus.FAILED);
+			LoginAttempt loginAttempt = new LoginAttempt(LocalDateTime.now(), userModel, LoginStatus.FAILED);	
+			userModel.addLoginAttempt(loginAttempt);
+//			userRepo.registerLoginAttempt(userModel, LoginStatus.FAILED);
+//			userRepo.registerLoginAttempt(loginAttempt);
 			UserDaoJpa.commitTransaction();
 			throw new IllegalArgumentException(String.format(
 					"User account has been blocked because more than %d failed login attempts have been registered."
@@ -51,7 +56,10 @@ public class DomainController {
 		// check password
 		if (!userModel.getPassword().equals(password)) {
 			userModel.increaseFailedLoginAttempts();
-			userRepo.registerLoginAttempt(userModel, LoginStatus.FAILED);
+			LoginAttempt loginAttempt = new LoginAttempt(LocalDateTime.now(), userModel, LoginStatus.FAILED);	
+			userModel.addLoginAttempt(loginAttempt);
+//			userRepo.registerLoginAttempt(userModel, LoginStatus.FAILED);
+//			userRepo.registerLoginAttempt(loginAttempt);
 			// block user after 5 failed login attempts
 			if (userModel.getFailedLoginAttempts() >= USER_LOGIN_MAX_ATTEMPTS) {
 				userModel.blockUser();
@@ -67,7 +75,11 @@ public class DomainController {
 		// correct password
 		userModel.resetLoginAttempts();
 
-		userRepo.registerLoginAttempt(userModel, LoginStatus.SUCCESS);
+		LoginAttempt loginAttempt = new LoginAttempt(LocalDateTime.now(), userModel, LoginStatus.SUCCESS);	
+		userModel.addLoginAttempt(loginAttempt);
+		
+//		userRepo.registerLoginAttempt(userModel, LoginStatus.SUCCESS);
+//		userRepo.registerLoginAttempt(loginAttempt);
 
 		UserDaoJpa.commitTransaction();
 
