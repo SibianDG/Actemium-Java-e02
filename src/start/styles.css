@@ -31,8 +31,12 @@
     -fx-text-fill: #fff;
 }
 
-.gridpane {
+.gridpaneDashboardHeader {
     -fx-background-color: #fff;
+}
+
+.gridpaneDashboard {
+    -fx-background-color: #ebebea;
 }
 
 .text-field {

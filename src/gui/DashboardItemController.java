@@ -7,67 +7,44 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.List;
 
-public class DashboardController extends GridPane {
-    private DomainController domainController;
+public class DashboardItemController extends GridPane {
 
-    @FXML
-    private GridPane gridDashboard;
 
     @FXML
-    private GridPane gridDashboardButtons;
+    private GridPane gridDashboardItem;
 
     @FXML
-    private Text txtName;
-
-    @FXML
-    private Text txtRole;
-
-    @FXML
-    private Text txtLogOut;
+    private ImageView imvIcon;
 
     @FXML
     private Text txtTitle;
 
-    //private List<>
-
-    public DashboardController(DomainController domainController) {
+    public DashboardItemController(DomainController domainController) {
         super();
-        this.domainController = domainController;
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
-            loader.setController(this);
-            loader.setRoot(this);
-            loader.load();
-        } catch (IOException e) {
-        	throw new RuntimeException(e);
-        }
-
-        //TODO creating dashboard dynamically based on user role (dashboard buttons)???
 
         initializeText();
 
     }
 
-    @FXML
-    void bnLogoutOnActon(ActionEvent event) {
+    //TODO: OnAction Event
+
+
+    public void setData(String image, String text){
 
     }
+
 
     private void initializeText() {
         //txtName.setText(String.format("%s %s" , domainController.giveUserFirstName(), domainController.giveUserLastName()));
         //txtRole.setText(domainController.giveUserType());
     }
-
-
-
     
     private void loadScene(String title, Object controller) { // method for switching to the next screen
         Scene scene = new Scene((Parent) controller);

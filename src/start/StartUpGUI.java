@@ -21,7 +21,7 @@ public class StartUpGUI extends Application {
             primaryStage.setScene(scene);
             primaryStage.setTitle("Login"/*ResourceBundle.getBundle().getString()*/);
             primaryStage.setResizable(false);
-            //primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
+            primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();
