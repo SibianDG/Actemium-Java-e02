@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import languages.LanguageResource;
 
 import java.util.ResourceBundle;
 
@@ -19,7 +20,7 @@ public class StartUpGUI extends Application {
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("styles.css").toString());
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Login"/*ResourceBundle.getBundle().getString()*/);
+            primaryStage.setTitle(LanguageResource.getString("login"));
             primaryStage.setResizable(false);
             primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
             primaryStage.show();

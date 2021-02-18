@@ -62,7 +62,7 @@ public class LoginController extends GridPane {
     }
 
     @FXML
-    void login_button_onaction(ActionEvent event) {
+    void loginButtonOnAction(ActionEvent event) {
 
         try {
             if (txfUsername.getText().isEmpty() || pwfPassword.getText().isEmpty()){ //unnecessary check??? get already caught in domain
