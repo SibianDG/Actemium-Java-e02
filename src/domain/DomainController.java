@@ -18,7 +18,7 @@ public class DomainController {
 	public DomainController(UserDao userRepo) {
 		this.userRepo = userRepo;
 	}
-
+	
 	//TODO constructor vs setter injection?
 	public DomainController() {
 		this(new UserDaoJpa());
@@ -40,7 +40,7 @@ public class DomainController {
 			throw new PasswordException(LanguageResource.getString("password_blank"));
 		}
 
-		UserDaoJpa.startTransaction();
+		userRepo.startTransaction();
 		
 		// user account already blocked, only the failed login attempt needs to registered
 		if (userModel.getStatus().equals(UserStatus.BLOCKED)) {
@@ -49,7 +49,7 @@ public class DomainController {
 			userModel.addLoginAttempt(loginAttempt);
 //			userRepo.registerLoginAttempt(userModel, LoginStatus.FAILED);
 //			userRepo.registerLoginAttempt(loginAttempt);
-			UserDaoJpa.commitTransaction();
+			userRepo.commitTransaction();
 			throw new BlockedUserException(String.format(
 					"User account has been blocked because more than %d failed login attempts have been registered."
 					+ "\nPlease contact your system administrator.",
@@ -66,12 +66,12 @@ public class DomainController {
 			// block user after 5 failed login attempts
 			if (userModel.getFailedLoginAttempts() >= USER_LOGIN_MAX_ATTEMPTS) {
 				userModel.blockUser();
-				UserDaoJpa.commitTransaction();
+				userRepo.commitTransaction();
 				throw new BlockedUserException(
 						String.format("Wrong password\nUser has reached more than %d failed login attempts, account has been blocked.",
 								USER_LOGIN_MAX_ATTEMPTS));
 			}
-			UserDaoJpa.commitTransaction();
+			userRepo.commitTransaction();
 			throw new PasswordException(String.format("Wrong password\nOnly %d attempts remaining", 5 - userModel.getFailedLoginAttempts()));
 		}
 
@@ -84,7 +84,7 @@ public class DomainController {
 //		userRepo.registerLoginAttempt(userModel, LoginStatus.SUCCESS);
 //		userRepo.registerLoginAttempt(loginAttempt);
 
-		UserDaoJpa.commitTransaction();
+		userRepo.commitTransaction();
 
 		setSignedInUser(userModel);
 		System.out.println("Just signed in: " + signedInUserModel.getUsername());

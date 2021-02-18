@@ -6,7 +6,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class GenericDaoJpa<T> implements GenericDao<T> {
-	// TODO
+	
     private static final String PU_NAME = "ticketlocal1";
     
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory(PU_NAME);
@@ -16,18 +16,22 @@ public class GenericDaoJpa<T> implements GenericDao<T> {
     public GenericDaoJpa(Class<T> type) {
         this.type = type;
     }
-    public static void closePersistency() {
+    @Override
+    public void closePersistency() {
         em.close();
         emf.close();
     }
-    public static Class<? extends Throwable> startTransaction() {
+    @Override
+    public Class<? extends Throwable> startTransaction() {
         em.getTransaction().begin();
         return null;
     }
-    public static void commitTransaction() {
+    @Override
+    public void commitTransaction() {
         em.getTransaction().commit();
     }
-    public static void rollbackTransaction() {
+    @Override
+    public void rollbackTransaction() {
         em.getTransaction().rollback();
     }
 

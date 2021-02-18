@@ -4,11 +4,7 @@ import domain.Administrator;
 import domain.DomainController;
 import domain.Technician;
 import domain.UserModel;
-
-import repository.GenericDaoJpa;
 import repository.UserDaoJpa;
-
-import javax.persistence.EntityManager;
 
 public class MainTester {
     public static void main(String[] args) {
@@ -17,15 +13,17 @@ public class MainTester {
         UserModel t = new Technician("Tech123", "PassWd123&","Pol", "T");
 
         UserDaoJpa userDaoJpa = new UserDaoJpa();
+        //TODO or do we have to do something like this?
+//        GenericDao genericDao = new GenericDaoJpa(UserModel.class);
 
 
-        UserDaoJpa.startTransaction();
+        userDaoJpa.startTransaction();
         userDaoJpa.insert(a);
         userDaoJpa.insert(t);
 
-        UserDaoJpa.commitTransaction();
+        userDaoJpa.commitTransaction();
 
-        DomainController dc = new DomainController();
+        DomainController dc = new DomainController(userDaoJpa);
 
         for (int i = 0; i < 7; i++) {
             try {
@@ -52,7 +50,7 @@ public class MainTester {
         dc.signIn("Tech123", "PassWd123&");
 
 
-        UserDaoJpa.closePersistency();
+        userDaoJpa.closePersistency();
     }
 
 }
