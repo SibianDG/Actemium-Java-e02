@@ -5,13 +5,14 @@ import languages.LanguageResource;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.ManyToOne;
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
 public class Employee extends UserModel implements Seniority, Serializable {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
