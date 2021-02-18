@@ -22,9 +22,6 @@ public class Employee extends UserModel implements Seniority, Serializable {
 	private String role;
 	private LocalDate registrationDate;
 
-	@ManyToOne
-	private Company company;
-
 	public Employee(String username, String password, String firstName, String lastName, String address,
 			String phoneNumber, String emailAddress, String role) {
 		super(username, password, firstName, lastName);

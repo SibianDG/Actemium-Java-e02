@@ -82,7 +82,6 @@ public class LoginController extends GridPane {
         } catch (IllegalArgumentException e) {
             txtErrorLogin.setText(e.getMessage());
             txtErrorLogin.setVisible(true);
-            hbInvalidPassword.setVisible(true);
         }catch (PasswordException e) {
             txtErrorLogin.setText(e.getMessage());
             txtErrorLogin.setVisible(true);
@@ -93,4 +92,3 @@ public class LoginController extends GridPane {
     }
 
 }
-

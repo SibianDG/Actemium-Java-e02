@@ -22,9 +22,6 @@ public class Company implements Serializable {
 
 	@OneToMany(mappedBy = "company")
 	private List<Customer> customerList = new ArrayList<>();
-
-	@OneToMany(mappedBy = "company")
-	private List<Employee> employeeList = new ArrayList<>();
 	
 	public Company() {		
 	}
