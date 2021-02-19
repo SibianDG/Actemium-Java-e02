@@ -12,7 +12,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,8 +37,10 @@ public abstract class UserModel implements Serializable {
 	// user in his dashboard
 	@OneToMany(
 			mappedBy = "userModel",
-			cascade = CascadeType.PERSIST,
-			fetch = FetchType.EAGER
+			cascade = CascadeType.PERSIST
+			// We will not use EAGER loading for now
+			// mock test that used to be dependand on this still works
+//			fetch = FetchType.EAGER
 	)
 	private List<LoginAttempt> loginAttempts = new ArrayList<>();
 
