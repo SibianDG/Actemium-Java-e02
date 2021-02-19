@@ -15,8 +15,21 @@ module E02.Project2.Java {
 //    requires org.junit.jupiter;
     requires org.junit.jupiter.api;
     requires org.junit.jupiter.params;
-
+    
+    exports domain;
+    exports exceptions;
+    exports gui;
+    exports languages;
+    exports main;
+    exports repository;
+    exports start;
+    exports tests;
+    
     opens start to javafx.graphics, javafx.fxml;
     opens gui to javafx.graphics, javafx.fxml;
+    
+    opens domain;
+    
+    opens tests;
 
 }
