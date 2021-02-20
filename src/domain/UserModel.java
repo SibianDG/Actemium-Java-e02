@@ -48,7 +48,8 @@ public abstract class UserModel implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int userId;
+	private long userId;
+
 	private String username;
 	private String password;
 	private String firstName;
@@ -86,7 +87,7 @@ public abstract class UserModel implements Serializable {
 	}
 
 
-	public int getUserId() {
+	public long getUserId() {
 		return userId;
 	}
 

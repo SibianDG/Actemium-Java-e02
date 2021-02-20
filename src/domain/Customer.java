@@ -12,8 +12,8 @@ public class Customer extends UserModel implements Seniority {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int customerNr;
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long customerNr;
 	@OneToMany
 	private List<Contract> contracts;
 	@ManyToOne
@@ -33,7 +33,7 @@ public class Customer extends UserModel implements Seniority {
 	}
 
 
-	public int getCustomerNr() {
+	public long getCustomerNr() {
 		return customerNr;
 	}
 

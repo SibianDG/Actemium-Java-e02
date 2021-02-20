@@ -13,8 +13,9 @@ public class Employee extends UserModel implements Seniority, Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int employeeNr;
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long employeeNr;
+	
 	private String address;
 	private String phoneNumber;
 	private String emailAddress;
@@ -41,7 +42,7 @@ public class Employee extends UserModel implements Seniority, Serializable {
 		return LocalDate.now().getYear() - registrationDate.getYear();
 	}
 
-	public int getEmployeeNr() {
+	public long getEmployeeNr() {
 		return employeeNr;
 	}
 

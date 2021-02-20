@@ -20,9 +20,11 @@ public class MainTester {
         //populateDB.run();
         //GenericDao genericDao = new GenericDaoJpa(UserModel.class);
         Employee a = new Employee("thomas123", "Passwd123&", "Thomas", "Dirven","Kerstraat 18","PhoneNumber","emailadress@hogent.be", EmployeeRole.ADMINISTRATOR);
+        Employee b = new Employee("thomas123", "Passwd123&", "Thomas", "Dirven","Kerstraat 18","PhoneNumber","emailadress@hogent.be", EmployeeRole.ADMINISTRATOR);
         UserModel c = new Customer("customer01", "Passwd123&", "Emma", "Dupont");
         userDaoJpa.startTransaction();
         userDaoJpa.insert(a);
+        userDaoJpa.insert(b);
         userDaoJpa.commitTransaction();
         System.out.println("finished");
          /*
