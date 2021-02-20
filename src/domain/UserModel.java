@@ -24,8 +24,8 @@ import javax.persistence.OneToMany;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
-	@NamedQuery(name = "User.findByUsername",
-			query = "SELECT u FROM UserModel u WHERE u.username = :username")
+		@NamedQuery(name = "User.findByUsername",
+				query = "SELECT u FROM UserModel u WHERE u.username = :username")
 })
 public abstract class UserModel implements Serializable {
 
@@ -45,7 +45,7 @@ public abstract class UserModel implements Serializable {
 	private List<LoginAttempt> loginAttempts = new ArrayList<>();
 
 //	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int userId;
@@ -58,7 +58,7 @@ public abstract class UserModel implements Serializable {
 	private UserStatus status;
 
 	public UserModel() {
-		
+
 	}
 
 	public UserModel(String username, String password, String firstName, String lastName) {
@@ -161,9 +161,9 @@ public abstract class UserModel implements Serializable {
 	public void blockUser() {
 		setStatus(UserStatus.BLOCKED);
 	}
-	
+
 	public void addLoginAttempt(LoginAttempt loginAttempt) {
 		loginAttempts.add(loginAttempt);
 	}
-	
+
 }

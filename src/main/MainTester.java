@@ -1,9 +1,13 @@
 package main;
 
-import domain.Administrator;
+import domain.Customer;
 import domain.DomainController;
-import domain.Technician;
+import domain.Employee;
+import domain.EmployeeRole;
+import domain.PopulateDB;
 import domain.UserModel;
+import repository.GenericDao;
+import repository.GenericDaoJpa;
 import repository.UserDaoJpa;
 
 public class MainTester {
@@ -11,15 +15,23 @@ public class MainTester {
         System.out.println("This class tests the same as the follow test in DomainTest:");
         System.out.println("loginAttempt_4InValidAdmin_3InValidTech_1InValidAdmin_AdminUserBlocked_1ValidTech_TechUserLoginSuccess_1ValidAdmin_AdminUserStillBlocked()\n");
         System.out.println("MainTester - creating and persisting 2 user objects");
+        UserDaoJpa userDaoJpa = new UserDaoJpa();
+        PopulateDB populateDB = new PopulateDB();
+        //populateDB.run();
+        //GenericDao genericDao = new GenericDaoJpa(UserModel.class);
+        Employee a = new Employee("thomas123", "Passwd123&", "Thomas", "Dirven","Kerstraat 18","PhoneNumber","emailadress@hogent.be", EmployeeRole.ADMINISTRATOR);
+        UserModel c = new Customer("customer01", "Passwd123&", "Emma", "Dupont");
+        userDaoJpa.startTransaction();
+        userDaoJpa.insert(a);
+        userDaoJpa.commitTransaction();
+        System.out.println("finished");
+         /*
         UserModel a = new Administrator("Admin123", "PassWd123&","Jan", "A");
         UserModel t = new Technician("Tech123", "PassWd123&","Pol", "T");
 
-        UserDaoJpa userDaoJpa = new UserDaoJpa();
+        
         //TODO or do we have to do something like this?
-//        GenericDao genericDao = new GenericDaoJpa(UserModel.class);
 
-        userDaoJpa.startTransaction();
-        userDaoJpa.insert(a);
         userDaoJpa.insert(t);
 
         userDaoJpa.commitTransaction();
@@ -72,6 +84,7 @@ public class MainTester {
 //          e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
+		*/
 
         userDaoJpa.closePersistency();
     }

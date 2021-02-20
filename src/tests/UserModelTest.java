@@ -70,8 +70,9 @@ public class UserModelTest {
      */
     @ParameterizedTest
     @MethodSource("validUserAttributes")
-    public void createUser_Correct(String username, String password, String firstName, String lastName) {
-        Assertions.assertDoesNotThrow(() -> new Administrator(username, password, firstName, lastName));
+    public void createUser_Correct(String username, String password, String firstName, String lastName, String address,
+                                   String phoneNumber, String emailAddress, EmployeeRole role) {
+        Assertions.assertDoesNotThrow(() -> new Employee(username, password, firstName, lastName, address, phoneNumber, emailAddress, role));
     }
 
     @ParameterizedTest

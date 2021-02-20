@@ -71,5 +71,4 @@ public class LoginAttempt implements Serializable {
 	public void setUserModel(UserModel userModel) {
 		this.userModel = userModel;
 	}
-		
 }
