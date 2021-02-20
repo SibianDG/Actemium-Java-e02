@@ -2,9 +2,7 @@ package domain;
 
 import languages.LanguageResource;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -25,7 +23,7 @@ public class Employee extends UserModel implements Seniority, Serializable {
 	private LocalDate registrationDate;
 
 	public Employee(String username, String password, String firstName, String lastName, String address,
-			String phoneNumber, String emailAddress, String role) {
+			String phoneNumber, String emailAddress, EmployeeRole role) {
 		super(username, password, firstName, lastName);
 		setAddress(address);
 		setPhoneNumber(phoneNumber);

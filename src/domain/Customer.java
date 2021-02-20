@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serial;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import javax.persistence.*;
 
 @Entity
 public class Customer extends UserModel implements Seniority {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

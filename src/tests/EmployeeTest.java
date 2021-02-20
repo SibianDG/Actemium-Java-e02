@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.stream.Stream;
 
 import domain.Employee;
+import domain.EmployeeRole;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,42 +17,42 @@ public class EmployeeTest {
 
     private static Stream<Arguments> validUserAttributes() {
         return Stream.of(
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0470099874", "student@student.hogent.be", "role"),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0000000000", "student@student.hogent.be", "role"),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "9999999999", "student@student.hogent.be", "role"),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "9999999-99", "student@student.hogent.be", "role"),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "9/99999-99", "student@student.hogent.be", "role"),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress 94521 bus 10", "9999999999", "student@student.hogent.be", "role"),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress 94521 bus 10", "9999999999", "stu_dent@student.hogent.be", "role"),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress 94521 bus 10", "9999999999", "stu.dent@student.hogent.be", "role")
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0470099874", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0000000000", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "9999999999", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "9999999-99", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "9/99999-99", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress 94521 bus 10", "9999999999", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress 94521 bus 10", "9999999999", "stu_dent@student.hogent.be", EmployeeRole.ADMINISTRATOR),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress 94521 bus 10", "9999999999", "stu.dent@student.hogent.be", EmployeeRole.ADMINISTRATOR)
         );
     }
 
     private static Stream<Arguments> invalidUserAttributes() {
         return Stream.of(
                 //empty
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "   ", "0470099874", "student@student.hogent.be", "role"),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "   ", "   ", "role"),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "9999999999", "student@student.hogent.be", "   "),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "   ", "0470099874", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "   ", "   ", EmployeeRole.ADMINISTRATOR),
+                //Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "9999999999", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
 
                 //null
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", null, "9999999999", "student@student.hogent.be", "role"),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", null, "student@student.hogent.be", "role"),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "9999999999", null, "role"),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", null, "9999999999", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", null, "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "9999999999", null, EmployeeRole.ADMINISTRATOR),
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "9999999999", "student@student.hogent.be", null),
 
                 //phone
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "999999999d", "student@student.hogent.be", "role"),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "99999999|", "student@student.hogent.be", "role"),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "99999999@", "student@student.hogent.be", "role"),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "999999999A", "student@student.hogent.be", "role"),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "999999999d", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "99999999|", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "99999999@", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "999999999A", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
 
                 //email
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "999999999A", "student@studentbe", "role"),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "999999999A", "student@student be", "role"),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "999999999A", "studentstudent be", "role"),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "999999999A", "student@studen_be", "role"),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "999999999A", "student&studen_be", "role")
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "999999999A", "student@studentbe", EmployeeRole.ADMINISTRATOR),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "999999999A", "student@student be", EmployeeRole.ADMINISTRATOR),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "999999999A", "studentstudent be", EmployeeRole.ADMINISTRATOR),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "999999999A", "student@studen_be", EmployeeRole.ADMINISTRATOR),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "999999999A", "student&studen_be", EmployeeRole.ADMINISTRATOR)
 
 
                 );
@@ -60,20 +61,20 @@ public class EmployeeTest {
     @ParameterizedTest
     @MethodSource("validUserAttributes")
     public void createEmployee_Correct(String username, String password, String firstName, String lastName, String address,
-                                       String phoneNumber, String emailAddress, String role) {
+                                       String phoneNumber, String emailAddress, EmployeeRole role) {
         Assertions.assertDoesNotThrow(() -> new Employee(username, password, firstName, lastName, address, phoneNumber, emailAddress, role));
     }
 
     @ParameterizedTest
     @MethodSource("invalidUserAttributes")
     public void createEmployee_Failed(String username, String password, String firstName, String lastName, String address,
-                                       String phoneNumber, String emailAddress, String role) {
+                                       String phoneNumber, String emailAddress, EmployeeRole role) {
         Assertions.assertThrows(IllegalArgumentException.class,() -> new Employee(username, password, firstName, lastName, address, phoneNumber, emailAddress, role));
     }
 
     @Test
     public void giveEmployeeSeniroity_returns_valid() {
-        employee = new Employee("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0470099874", "student@student.hogent.be", "role");
+        employee = new Employee("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0470099874", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR);
         employee.setRegistrationDate(LocalDate.now().minusYears(10));
         Assertions.assertEquals(10, employee.giveSeniority());
     }

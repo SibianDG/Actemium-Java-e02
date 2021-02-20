@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
+import domain.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,13 +19,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import domain.Administrator;
-import domain.DomainController;
-import domain.LoginAttempt;
-import domain.LoginStatus;
-import domain.Technician;
-import domain.UserModel;
-import domain.UserStatus;
 import exceptions.BlockedUserException;
 import exceptions.PasswordException;
 import repository.GenericDao;
@@ -36,8 +30,8 @@ public class DomainTest {
     final String ADMIN = "thoDirven123", PASSWORD = "Passwd123&", WRONGPASSWORD = "foutPas12&",
     			 TECH = "jooKlein123",
     			 WRONGUSERNAME = "usernameDoesNotExist"; //EntityNotFoundException()
-    UserModel admin = new Administrator(ADMIN, PASSWORD, "Thomas", "Dirven");
-    UserModel tech = new Technician(TECH, PASSWORD, "Joost", "Klein");
+    UserModel admin = new Employee("Tester123", "Passwd123&", "Jan", "Jannsens", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR);
+    UserModel tech = new Employee("Tester123", "Passwd123&", "Jan", "Jannsens", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.TECHNICIAN);
 
     @Mock
     private UserDao userRepoDummy;

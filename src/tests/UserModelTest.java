@@ -2,6 +2,8 @@ package tests;
 
 import java.util.stream.Stream;
 
+import domain.Employee;
+import domain.EmployeeRole;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,7 +13,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import domain.Administrator;
 import domain.UserModel;
 
 @ExtendWith(MockitoExtension.class)
@@ -77,8 +78,9 @@ public class UserModelTest {
 
     @ParameterizedTest
     @MethodSource("invalidUserAttributes")
-    public void createUser_Failed(String username, String password, String firstName, String lastName) {
-        Assertions.assertThrows(IllegalArgumentException.class,() -> new Administrator(username, password, firstName, lastName));
+    public void createUser_Failed(String username, String password, String firstName, String lastName, String address,
+                                  String phoneNumber, String emailAddress, EmployeeRole role) {
+        Assertions.assertThrows(IllegalArgumentException.class,() -> new Employee(username, password, firstName, lastName, address, phoneNumber, emailAddress, role));
     }
 
     @Test
