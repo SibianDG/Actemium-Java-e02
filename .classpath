@@ -63,5 +63,6 @@
 	<classpathentry kind="lib" path="C:/usr/mylibrary2020/jpa/org.eclipse.persistence.jpars.source_2.7.8.v20201217-ecdf3c32c4.jar"/>
 	<classpathentry kind="lib" path="C:/usr/mylibrary2020/jpa/org.eclipse.persistence.jpars_2.7.8.v20201217-ecdf3c32c4.jar"/>
 	<classpathentry kind="lib" path="C:/usr/mylibrary2020/jpa/eclipselink.jar"/>
+	<classpathentry kind="lib" path="C:/usr/mylibrary2020/mysql-connector-java-8.0.22.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
