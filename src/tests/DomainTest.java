@@ -27,11 +27,11 @@ import repository.UserDao;
 @ExtendWith(MockitoExtension.class)
 public class DomainTest {
 
-    final String ADMIN = "thoDirven123", PASSWORD = "Passwd123&", WRONGPASSWORD = "foutPas12&",
+    final String ADMIN = "janJannsens123", PASSWORD = "PassWd123&", WRONGPASSWORD = "foutPas12&",
     			 TECH = "jooKlein123",
     			 WRONGUSERNAME = "usernameDoesNotExist"; //EntityNotFoundException()
-    UserModel admin = new Employee("Tester123", "Passwd123&", "Jan", "Jannsens", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR);
-    UserModel tech = new Employee("Tester123", "Passwd123&", "Jan", "Jannsens", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.TECHNICIAN);
+    UserModel admin = new Employee("janJannsens123", "PassWd123&", "Jan", "Jannsens", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR);
+    UserModel tech = new Employee("jooKlein123", "PassWd123&", "Joost", "Klein", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.TECHNICIAN);
 
     @Mock
     private UserDao userRepoDummy;
@@ -85,7 +85,7 @@ public class DomainTest {
     public void giveUserType_After_LoginAttempt_Valid_ReturnsSignedInUserUserType() {
     	trainDummy();
         domain.signIn(ADMIN, PASSWORD);
-        assertEquals("Administrator", domain.giveUserType());
+        assertEquals("ADMINISTRATOR", domain.giveUserType());
     	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
     }
     
@@ -93,7 +93,7 @@ public class DomainTest {
     public void giveFirstName_After_LoginAttempt_Valid_ReturnsSignedInUserFirstName() {
     	trainDummy();
         domain.signIn(ADMIN, PASSWORD);
-        assertEquals("Thomas", domain.giveUserFirstName());
+        assertEquals("Jan", domain.giveUserFirstName());
     	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
     }
     
@@ -101,7 +101,7 @@ public class DomainTest {
     public void giveLastName_After_LoginAttempt_Valid_ReturnsSignedInUserLastName() {
     	trainDummy();
         domain.signIn(ADMIN, PASSWORD);
-        assertEquals("Dirven", domain.giveUserLastName());
+        assertEquals("Jannsens", domain.giveUserLastName());
     	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
     }    
     

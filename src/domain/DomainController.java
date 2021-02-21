@@ -10,7 +10,7 @@ import repository.UserDaoJpa;
 
 public class DomainController {
 
-	private UserModel signedInUserModel;
+	private UserModel signedInEmployee;
 	private UserDao userRepo;
 
 	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
@@ -29,8 +29,8 @@ public class DomainController {
 		userRepo = mock;
 	}
 
-	public void setSignedInUser(UserModel signedInUserModel) {
-		this.signedInUserModel = signedInUserModel;
+	public void setSignedInUser(UserModel signedInEmployee) {
+		this.signedInEmployee = signedInEmployee;
 	}
 
 	public void signIn(String username, String password) {
@@ -87,24 +87,28 @@ public class DomainController {
 		userRepo.commitTransaction();
 
 		setSignedInUser(userModel);
-		System.out.println("Just signed in: " + signedInUserModel.getUsername());
+		System.out.println("Just signed in: " + signedInEmployee.getUsername());
 	}
 
 	public String giveUserType() {
-		return signedInUserModel.getClass()
-				.getSimpleName();
+//		return signedInEmployee.getClass().getSimpleName();
+		// this check shouldn't be necessary because only employees can sign in
+		if(signedInEmployee instanceof Employee) {
+			return ((Employee) signedInEmployee).getRole().toString();
+		}
+		return "Not an Employee";
 	}
 
 	public String giveUsername() {
-		return signedInUserModel.getUsername();
+		return signedInEmployee.getUsername();
 	}
 
 	public String giveUserFirstName() {
-		return signedInUserModel.getFirstName();
+		return signedInEmployee.getFirstName();
 	}
 
 	public String giveUserLastName() {
-		return signedInUserModel.getLastName();
+		return signedInEmployee.getLastName();
 	}
 
 	public void registerCustomer(String username, String password, String firstName, String lastName) {
