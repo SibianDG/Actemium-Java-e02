@@ -3,6 +3,7 @@ package gui;
 import java.io.IOException;
 
 import domain.DomainController;
+import exceptions.BlockedUserException;
 import exceptions.PasswordException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -65,7 +66,7 @@ public class LoginController extends GridPane {
     void loginButtonOnAction(ActionEvent event) {
 
         try {
-            if (txfUsername.getText().isEmpty() || pwfPassword.getText().isEmpty()){ //unnecessary check??? get already caught in domain
+            if (txfUsername.getText().isEmpty() || pwfPassword.getText().isEmpty()){ //unnecessary check??? is already checked in domain
                 txtErrorLogin.setText(LanguageResource.getString("username_password_mandatory"));
                 txtErrorLogin.setOpacity(1);
             } else {
@@ -81,13 +82,15 @@ public class LoginController extends GridPane {
             }
         } catch (IllegalArgumentException e) {
             txtErrorLogin.setText(e.getMessage());
-            txtErrorLogin.setVisible(true);
+            txtErrorLogin.setOpacity(1);
         }catch (PasswordException e) {
             txtErrorLogin.setText(e.getMessage());
-            txtErrorLogin.setVisible(true);
-        } catch (Exception e){
+            txtErrorLogin.setOpacity(1);
+        }catch(BlockedUserException e) {
             txtErrorLogin.setText(e.getMessage());
-            txtErrorLogin.setVisible(true);
+            txtErrorLogin.setOpacity(1);
+        }catch (Exception e){
+        	System.out.println(e.getMessage());
         }
     }
 
