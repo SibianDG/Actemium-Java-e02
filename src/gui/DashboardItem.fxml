@@ -19,7 +19,6 @@
     </columnConstraints>
    <styleClass>
       <String fx:value="gridpane" />
-      <String fx:value="bg2" />
    </styleClass>
    <children>
       <GridPane>
