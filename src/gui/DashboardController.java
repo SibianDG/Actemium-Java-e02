@@ -1,6 +1,8 @@
 package gui;
 
 import domain.DomainController;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,10 +27,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Observer;
+import java.util.Set;
 import java.util.stream.IntStream;
 
-public class DashboardController extends GridPane {
+public class DashboardController extends GridPane implements Observable {
     private DomainController domainController;
 
     @FXML
@@ -47,7 +52,7 @@ public class DashboardController extends GridPane {
     private Text txtName;
 
     @FXML
-    private Text txtRole;
+    private Text txtCompany;
 
     @FXML
     private ImageView imgLogout;
@@ -55,7 +60,7 @@ public class DashboardController extends GridPane {
     @FXML
     private Text txtTitle;
 
-    //private List<>
+    private Set<InvalidationListener> listeners = new HashSet<>();
 
     public DashboardController(DomainController domainController) throws FileNotFoundException {
         super();
@@ -72,7 +77,7 @@ public class DashboardController extends GridPane {
 
         //TODO creating dashboard dynamically based on user role (dashboard buttons)???
         initializegridPane();
-        //initializeText();
+        initializeText();
 
     }
 
@@ -99,8 +104,8 @@ public class DashboardController extends GridPane {
 
     }
 
-    private void addDashboardItem(String name, ImageView image, int x, int y) {
-        gridContent.add(image, x, y);
+    private void addDashboardItem(String name, ImageView imageView, int x, int y) {
+        gridContent.add(new DashboardTile(imageView, name, this), x, y);
     }
 
     private void initialize_gridPane(int x, int y) {
@@ -136,8 +141,12 @@ public class DashboardController extends GridPane {
     }
 
     private void initializeText() {
-        //txtName.setText(String.format("%s %s" , domainController.giveUserFirstName(), domainController.giveUserLastName()));
-        //txtRole.setText(domainController.giveUserType());
+        txtName.setText(String.format("%s %s" , domainController.giveUserFirstName(), domainController.giveUserLastName()));
+        txtCompany.setText("COMPANY???");
+    }
+
+    public void reactionFromTile(){
+        txtTitle.setText("Tile!");
     }
 
 
@@ -152,4 +161,21 @@ public class DashboardController extends GridPane {
         stage.show();
     }
 
+    protected void fireInvalidationEvent() {
+        for (InvalidationListener listener : listeners) {
+            listener.invalidated(this);
+        }
+    }
+
+    @Override
+    public void addListener(InvalidationListener invalidationListener) {
+        listeners.add(invalidationListener);
+    }
+
+    @Override
+    public void removeListener(InvalidationListener invalidationListener) {
+        listeners.remove(invalidationListener);
+
+
+    }
 }
