@@ -71,8 +71,8 @@ public class DashboardController extends GridPane {
         }
 
         //TODO creating dashboard dynamically based on user role (dashboard buttons)???
-
-        initializeText();
+        initializegridPane();
+        //initializeText();
 
     }
 
