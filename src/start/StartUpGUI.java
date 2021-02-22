@@ -1,21 +1,25 @@
 package start;
 
 import domain.DomainController;
+import domain.PopulateDB;
 import gui.LoginController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import languages.LanguageResource;
-
-import java.util.ResourceBundle;
+import repository.UserDaoJpa;
 
 public class StartUpGUI extends Application {
     @Override
     public void start(Stage primaryStage)
     {
         try {
-            DomainController domainController = new DomainController();
+            UserDaoJpa userDaoJpa = new UserDaoJpa();
+            PopulateDB populateDB = new PopulateDB();
+            populateDB.run(userDaoJpa);
+
+            DomainController domainController = new DomainController(userDaoJpa);
             LoginController root = new LoginController(domainController);
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("styles.css").toString());
