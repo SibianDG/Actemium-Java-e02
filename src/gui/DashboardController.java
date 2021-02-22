@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -24,13 +25,19 @@ public class DashboardController extends GridPane {
     private GridPane gridDashboardButtons;
 
     @FXML
+    private ImageView imgNotifications;
+
+    @FXML
+    private ImageView imgMyAccount;
+
+    @FXML
     private Text txtName;
 
     @FXML
     private Text txtRole;
 
     @FXML
-    private Text txtLogOut;
+    private ImageView imgLogout;
 
     @FXML
     private Text txtTitle;

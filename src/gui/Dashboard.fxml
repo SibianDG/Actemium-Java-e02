@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<fx:root fx:id="gridDashboard" prefHeight="800.0" prefWidth="1200.0" stylesheets="@../start/styles.css" type="GridPane" xmlns="http://javafx.com/javafx/14.0.2.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="gridDashboard" prefHeight="800.0" prefWidth="1200.0" stylesheets="@../start/styles.css" type="GridPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <rowConstraints>
       <RowConstraints minHeight="70.0" prefHeight="70.0" />
         <RowConstraints minHeight="70.0" prefHeight="30.0" />
@@ -49,7 +49,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <children>
-                  <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imgNotifications" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../pictures/dashboard/icon_bell.png" />
                      </image>
@@ -57,7 +57,7 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </ImageView>
-                  <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imgMyAccount" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../pictures/dashboard/icon_profile.png" />
                      </image>
@@ -75,7 +75,7 @@
                               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="txtRole" fill="#173d78" strokeType="OUTSIDE" strokeWidth="0.0" text="customer">
+                        <Text fx:id="txtRole" fill="#173d78" strokeType="OUTSIDE" strokeWidth="0.0" text="Company X">
                            <font>
                               <Font name="Arial" size="14.0" />
                            </font>
@@ -83,16 +83,13 @@
                               <Insets bottom="2.0" left="3.0" right="2.0" top="2.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="txtLogOut" fill="#c0cc0f" strokeType="OUTSIDE" strokeWidth="0.0" text="log out">
-                           <font>
-                              <Font name="Arial Italic" size="12.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets bottom="2.0" left="3.0" right="2.0" top="2.0" />
-                           </VBox.margin>
-                        </Text>
                      </children>
                   </VBox>
+                  <ImageView fx:id="imgLogout" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../pictures/dashboard/icon_logout.png" />
+                     </image>
+                  </ImageView>
                </children>
             </HBox>
             <Text fx:id="txtTitle" fill="#173d78" strokeType="OUTSIDE" strokeWidth="0.0" text="Dashboard" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">

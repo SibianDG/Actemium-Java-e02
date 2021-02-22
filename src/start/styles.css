@@ -15,24 +15,8 @@
     -fx-text-fill: #78C0AB;
 }
 
-.btn-terug {
-    -fx-background-color: #ffffff;
-    -fx-text-fill: #78C0AB;
-    -fx-font-weight: bold;
-    -fx-background-radius: 30px;
-}
-
-.languageButton {
-    -fx-background-color: #F5FAF9;
-}
-
-.activeButton {
-    -fx-background-color: #BBDBB9;
-    -fx-text-fill: #fff;
-}
-
 .gridpaneDashboardHeader {
-    -fx-background-color: #fff;
+    -fx-background-color: white;
 }
 
 .gridpaneDashboard {
@@ -44,6 +28,31 @@
     -fx-border-color: #C0CC0F;
     -fx-border-width: 0 0 3 0;
 }
+
+.bg-white {
+    -fx-background-color: white;
+}
+
+.btn-terug {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #78C0AB;
+    -fx-font-weight: bold;
+    -fx-background-radius: 30px;
+}
+
+
+/*
+
+.languageButton {
+    -fx-background-color: #F5FAF9;
+}
+
+.activeButton {
+    -fx-background-color: #BBDBB9;
+    -fx-text-fill: #fff;
+}
+
+
 
 .bg1 {
     -fx-background-image: url("../pictures/bg1.png");
@@ -70,3 +79,5 @@
     -fx-background-color:#BBDBB9;
     -fx-text-fill: #FFF;
 }
+
+ */
