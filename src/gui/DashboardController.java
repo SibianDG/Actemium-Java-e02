@@ -27,10 +27,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Observer;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class DashboardController extends GridPane implements Observable {
@@ -85,27 +82,34 @@ public class DashboardController extends GridPane implements Observable {
         initialize_gridPane(3, 2);
 
         String[] itemNames = {"manage Contract","consult Knowledge base", "create Ticket", "outstanding tickets", "resolved tickets", "statistics"};
-        String[] itemImages = {"icon_manage.png","icon_consult.png", "icon_create.png", "icon_outstanding.png", "icon_resolved.png", "icon_statistics.png"};
+        String[] itemImages = {"icon_manage","icon_consult", "icon_create", "icon_outstanding", "icon_resolved", "icon_statistics"};
 
         for (int i = 0; i < 6; i++) {
-            addDashboardItem(itemNames[i], createImageView(itemImages[i]), i%3, i/3);
+            addDashboardItem(itemNames[i], createImageView(itemImages[i], i%2), i%3, i/3, i);
         }
     }
 
-    public ImageView createImageView(String image) throws FileNotFoundException {
+    public ImageView createImageView(String image, int i) throws FileNotFoundException {
 
-        FileInputStream input = new FileInputStream("src/pictures/dashboard/" + image);
+        FileInputStream input = new FileInputStream("src/pictures/dashboard/dashboarditems/" + image + "_" + i + ".png");
 
         ImageView imageView = new ImageView(new Image(input));
-        imageView.setFitHeight(100);
-        imageView.setFitWidth(100);
+        imageView.setFitHeight(130);
+        imageView.setFitWidth(130);
         return imageView;
 
 
     }
 
-    private void addDashboardItem(String name, ImageView imageView, int x, int y) {
-        gridContent.add(new DashboardTile(imageView, name, this), x, y);
+    private void addDashboardItem(String name, ImageView imageView, int x, int y, int i) {
+        DashboardTile dashboardTile = new DashboardTile(imageView, name, this, i%2);
+
+        gridContent.add(dashboardTile, x, y);
+        setFillHeight(dashboardTile, true);
+        setFillWidth(dashboardTile, true);
+        gridContent.setHgap(35);
+        gridContent.setVgap(35);
+
     }
 
     private void initialize_gridPane(int x, int y) {
@@ -124,14 +128,14 @@ public class DashboardController extends GridPane implements Observable {
                     .add(new RowConstraints(width, height, -1, Priority.ALWAYS, VPos.CENTER, false));
         }
 
-        for (Node node : gridContent.getChildren()) {
+        /*for (Node node : gridContent.getChildren()) {
             node.minWidth(300);
             node.minHeight(300);
             node.maxHeight(300);
             node.maxHeight(300);
             node.prefWidth(300);
             node.prefHeight(300);
-        }
+        }*/
 
     }
 
