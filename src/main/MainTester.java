@@ -84,7 +84,13 @@ public class MainTester {
         
         dc.modifyCustomer(customer, "Cust123", "Passwd123&", "Thierry", "Kempens");  
         
-        System.out.printf("%nCustomer after modifyCustomer:%nFirst name: %s%nLast name: %s%n", customer.getFirstName(), customer.getLastName());
+        System.out.printf("%nCustomer after modifyCustomer:%nFirst name: %s%nLast name: %s%n%n", customer.getFirstName(), customer.getLastName());
+        
+        System.out.println(dc.giveCustomerList());
+        dc.giveCustomerList().stream().map(c->c.getUsername()).forEach(System.out::println);
+        System.out.println();
+        System.out.println(dc.giveEmployeeList());
+        dc.giveEmployeeList().stream().map(e->e.getUsername()).forEach(System.out::println);
 
         userDaoJpa.closePersistency();
     }

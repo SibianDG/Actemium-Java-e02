@@ -1,9 +1,13 @@
 package domain;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import exceptions.BlockedUserException;
 import exceptions.PasswordException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import languages.LanguageResource;
 import repository.UserDao;
 import repository.UserDaoJpa;
@@ -12,11 +16,31 @@ public class DomainController {
 
 	private UserModel signedInEmployee;
 	private UserDao userRepo;
-
+		
 	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
 
+	private ObservableList<Customer> customerList;
+	private ObservableList<Employee> employeeList;
+	
 	public DomainController(UserDao userRepo) {
 		this.userRepo = userRepo;
+		
+		List<UserModel> userList = userRepo.findAll();
+		List<Customer> customerList = userList.stream()
+											.filter(c -> c.getClass()
+													.getSimpleName()
+													.equals("Customer"))
+											.map(c -> (Customer) c)
+											.collect(Collectors.toList());
+		List<Employee> employeeList = userList.stream()
+											.filter(e -> e.getClass()
+													.getSimpleName()
+													.equals("Employee"))
+											.map(e -> (Employee) e)
+											.collect(Collectors.toList());
+		
+		this.customerList = FXCollections.observableArrayList(customerList);
+		this.employeeList = FXCollections.observableArrayList(employeeList);
 	}
 	
 	//TODO constructor vs setter injection?
@@ -165,6 +189,14 @@ public class DomainController {
 		userRepo.startTransaction();
 		userRepo.update(employee);
 		userRepo.commitTransaction();
+	}
+
+	public ObservableList<Customer> giveCustomerList() {
+		return FXCollections.unmodifiableObservableList(customerList);
+	}
+
+	public ObservableList<Employee> giveEmployeeList() {
+		return FXCollections.unmodifiableObservableList(employeeList);
 	}
 	
 }
