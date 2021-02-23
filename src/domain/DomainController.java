@@ -111,21 +111,60 @@ public class DomainController {
 		return signedInEmployee.getLastName();
 	}
 
+	public void existingUsername(String username) {
+		if(userRepo.findByUsername(username) != null) {
+			throw new IllegalArgumentException("Username is already taken.");
+		}
+	}
+
 	public void registerCustomer(String username, String password, String firstName, String lastName) {
-		throw new UnsupportedOperationException();
+		existingUsername(username);		
+		Customer customer = new Customer(username, password, firstName, lastName);
+		userRepo.startTransaction();
+		userRepo.insert(customer);
+		userRepo.commitTransaction();
 	}
 
 	public void registerEmployee(String username, String password, String firstName, String lastName, String address,
-			int phoneNumber, String emailAddress, String role) {
-		throw new UnsupportedOperationException();
+			String phoneNumber, String emailAddress, EmployeeRole role) {
+		existingUsername(username);
+		Employee employee = new Employee(username, password, firstName, lastName, address, phoneNumber, emailAddress, role);
+		userRepo.startTransaction();
+		userRepo.insert(employee);
+		userRepo.commitTransaction();
 	}
 
-	public void modifyCustomer(String username, String password, String firstName, String lastName) {
-		throw new UnsupportedOperationException();
+	public void modifyCustomer(Customer customer, String username, String password, String firstName, String lastName) {
+		// only needs to be checked if you changed the username 
+		if (customer.getUsername() != username) {
+			existingUsername(username);
+		}
+		customer.setUsername(username);
+		customer.setPassword(password);
+		customer.setFirstName(firstName);
+		customer.setLastName(lastName);
+		userRepo.startTransaction();
+		userRepo.update(customer);
+		userRepo.commitTransaction();
 	}
 
-	public void modifyEmployee(String username, String password, String firstName, String lastName, String address,
-			int phoneNumber, String emailAddress, String role) {
-		throw new UnsupportedOperationException();
+	public void modifyEmployee(Employee employee, String username, String password, String firstName, String lastName, String address,
+			String phoneNumber, String emailAddress, EmployeeRole role) {
+		// only needs to be checked if you changed the username 
+		if (employee.getUsername() != username) {
+			existingUsername(username);
+		}
+		employee.setUsername(username);
+		employee.setPassword(password);
+		employee.setFirstName(firstName);
+		employee.setLastName(lastName);
+		employee.setAddress(address);
+		employee.setPhoneNumber(phoneNumber);
+		employee.setEmailAddress(emailAddress);
+		employee.setRole(role);
+		userRepo.startTransaction();
+		userRepo.update(employee);
+		userRepo.commitTransaction();
 	}
+	
 }

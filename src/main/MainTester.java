@@ -1,5 +1,6 @@
 package main;
 
+import domain.Customer;
 import domain.DomainController;
 import domain.PopulateDB;
 import repository.UserDaoJpa;
@@ -66,7 +67,24 @@ public class MainTester {
 		} catch (Exception e) {
 //          e.printStackTrace();
 			System.out.println(e.getMessage());
+		}
+        
+        // Can't register if username is already taken
+        try {
+        	System.out.println("\ndc.registerCustomer(\"Admin123\", \"Passwd123&\", \"Thierry\", \"Kempens\")");
+        	dc.registerCustomer("Admin123", "Passwd123&", "Thierry", "Kempens");
+		} catch (Exception e) {
+//          e.printStackTrace();
+			System.out.println(e.getMessage());
 		}		
+        
+        Customer customer = (Customer) userDaoJpa.findByUsername("Cust123");
+        
+        System.out.printf("%nCustomer before modifyCustomer:%nFirst name: %s%nLast name: %s%n", customer.getFirstName(), customer.getLastName());
+        
+        dc.modifyCustomer(customer, "Cust123", "Passwd123&", "Thierry", "Kempens");  
+        
+        System.out.printf("%nCustomer after modifyCustomer:%nFirst name: %s%nLast name: %s%n", customer.getFirstName(), customer.getLastName());
 
         userDaoJpa.closePersistency();
     }

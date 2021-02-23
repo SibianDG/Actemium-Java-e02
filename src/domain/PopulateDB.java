@@ -17,6 +17,7 @@ public class PopulateDB {
         userDao.insert(new Employee("florian123", "Passwd123&", "Florian", "Goossens","Kerstraat 18","PhoneNumber","emailadress@hogent.be", EmployeeRole.ADMINISTRATOR));
         userDao.insert(new Employee("sibianDG", "Passwd123&", "Sibian", "De Gussem","Kerstraat 18","PhoneNumber","emailadress@hogent.be", EmployeeRole.ADMINISTRATOR));
         userDao.insert(new Customer("customer02", "Passwd123&", "Barak", "Obama"));
+        userDao.insert(new Customer("Cust123", "Passwd123&", "Yoooo", "Yoooo"));
         userDao.insert(new Employee("employee01", "Passwd123&", "Donald", "Trump", "Straat", "PhoneNumber", "email", EmployeeRole.TECHNICIAN));
         userDao.insert(new Employee("employee02", "Passwd123&", "John", "Smiths", "Straat", "PhoneNumber", "email", EmployeeRole.SUPPORT_MANAGER));
         
