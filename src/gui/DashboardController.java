@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,10 +17,18 @@ import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -77,29 +86,57 @@ public class DashboardController extends GridPane {
     }
 
     public void initializeDashboard() throws FileNotFoundException {
-        String[] itemNames = {"consult Knowledge base", "outstanding tickets", "resolved tickets", "statistics", "create Ticket", "manage Contract"};
-        String[] itemImages = {"icon_consult", "icon_outstanding", "icon_resolved", "icon_statistics", "icon_create", "icon_manage",};
+//        String[] itemNames = {"consult Knowledge base", "outstanding tickets", "resolved tickets", "statistics", "create Ticket", "manage Contract"};
+//        String[] itemImages = {"icon_consult", "icon_outstanding", "icon_resolved", "icon_statistics", "icon_create", "icon_manage",};
 
         resetGridpane();
         initializeGridPane(3, 2);
 
-        Map<String, IntStream> employeeRoleArrayListSet = Map.of(
-                EmployeeRole.ADMINISTRATOR.toString(), IntStream.range(0,6),
-                EmployeeRole.SUPPORT_MANAGER.toString(), IntStream.range(0,5),
-                EmployeeRole.TECHNICIAN.toString(), IntStream.range(0,4)
-        );
-
-
-        employeeRoleArrayListSet.get(domainController.giveUserType()).forEach(r -> {
-            try {
-                addDashboardItem(itemNames[r], createImageView(itemImages[r], r%2), r%3, r/3, r);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-
-        });
-
+//        Map<String, IntStream> employeeRoleArrayListSet = Map.of(
+//                EmployeeRole.ADMINISTRATOR.toString(), IntStream.range(0,6),
+//                EmployeeRole.SUPPORT_MANAGER.toString(), IntStream.range(0,5),
+//                EmployeeRole.TECHNICIAN.toString(), IntStream.range(0,4)
+//        );
+//
+//
+//        employeeRoleArrayListSet.get(domainController.giveUserType()).forEach(r -> {
+//            try {
+//                addDashboardItem(itemNames[r], createImageView(itemImages[r], r%2), r%3, r/3, r);
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//
+//        });
+        String[] itemNames = new String[] {};
+        String[] itemIcons = new String[] {};
+        
+        switch(domainController.giveUserType().toUpperCase()) {
+        	case "ADMINISTRATOR": {
+        		itemNames = new String[] {"manage employees", "manage customers"};
+        		itemIcons = new String[] {"icon_manage", "icon_manage"};
+        		break;
+        		}
+        	
+        	case "SUPPORT MANAGER": {
+        		itemNames = new String[] {"manage knowledge base", "create ticket", "oustanding tickets", "resolved tickets", "statistics"};
+        		itemIcons = new String[] {"icon_manage", "icon_create", "icon_outstanding", "icon_resolved", "icon_statistics"};
+        		break;
+        		}
+        	
+        	case "TECHNICIAN": {
+        		itemNames = new String[] {"consult knowledge base", "oustanding tickets", "resolved tickets", "statistics"};
+        		itemIcons = new String[] {"icon_consult", "icon_outstanding", "icon_resolved", "icon_statistics"};
+        		break;
+        		}
+        	}
+        	
+        for(int i = 0; i < itemNames.length; i++) {
+        	addDashboardItem(itemNames[i], createImageView(itemIcons[i], i%2), i%3, i/3, i);
+        }
+        
     }
+
+    
 
     public ImageView createImageView(String image, int i) throws FileNotFoundException {
 
@@ -113,7 +150,16 @@ public class DashboardController extends GridPane {
 
     private void addDashboardItem(String name, ImageView imageView, int x, int y, int i) {
         DashboardTile dashboardTile = new DashboardTile(imageView, name, i%2);
-        dashboardTile.setOnMouseClicked(e -> makePopUp(name));
+        dashboardTile.setOnMouseClicked(e -> {
+        	
+        	if(name.toLowerCase().contains("manage")) {
+        		switchToManageScreen(name);
+        	} else {
+        		makePopUp(name);
+        	}
+        	    	
+         
+        });
         dashboardTiles.add(dashboardTile);
         gridContent.add(dashboardTile, x, y);
         setFillHeight(dashboardTile, true);
@@ -123,8 +169,23 @@ public class DashboardController extends GridPane {
 
     }
 
+	private void switchToManageScreen(String name) {
+		txtTitle.setText(name);
+		resetGridpane();       
+		
+		TableViewPanelController tableViewPanelController = new TableViewPanelController(domainController);
+		DetailsPanelController detailsPanelController = new DetailsPanelController();
+
+		gridContent.add(tableViewPanelController, 0, 0);
+		gridContent.add(detailsPanelController, 1, 0);
+//		System.out.println(gridContent.getColumnCount());
+//		System.out.println(gridContent.getRowCount());
+	}
+
     private void resetGridpane(){
     	gridContent.getChildren().clear();
+    	gridContent.getColumnConstraints().clear();
+    	gridContent.getRowConstraints().clear();
     }
 
     private void initializeGridPane(int x, int y) {
