@@ -1,9 +1,16 @@
-package domain;
+package domain.controllers;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import domain.Customer;
+import domain.Employee;
+import domain.EmployeeRole;
+import domain.LoginAttempt;
+import domain.LoginStatus;
+import domain.UserModel;
+import domain.UserStatus;
 import exceptions.BlockedUserException;
 import exceptions.PasswordException;
 import javafx.collections.FXCollections;
@@ -16,6 +23,8 @@ public class DomainController {
 
 	private UserModel signedInEmployee;
 	private UserDao userRepo;
+	
+	private UserController currentUserController;
 		
 	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
 
@@ -27,15 +36,11 @@ public class DomainController {
 		
 		List<UserModel> userList = userRepo.findAll();
 		List<Customer> customerList = userList.stream()
-											.filter(c -> c.getClass()
-													.getSimpleName()
-													.equals("Customer"))
+											.filter(c -> c instanceof Customer)
 											.map(c -> (Customer) c)
 											.collect(Collectors.toList());
 		List<Employee> employeeList = userList.stream()
-											.filter(e -> e.getClass()
-													.getSimpleName()
-													.equals("Employee"))
+											.filter(e -> e instanceof Employee)
 											.map(e -> (Employee) e)
 											.collect(Collectors.toList());
 		
@@ -111,6 +116,7 @@ public class DomainController {
 		userRepo.commitTransaction();
 
 		setSignedInUser(userModel);
+		
 		System.out.println("Just signed in: " + signedInEmployee.getUsername());
 	}
 

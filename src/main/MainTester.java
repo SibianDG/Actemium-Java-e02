@@ -1,8 +1,8 @@
 package main;
 
 import domain.Customer;
-import domain.DomainController;
 import domain.PopulateDB;
+import domain.controllers.DomainController;
 import repository.UserDaoJpa;
 
 public class MainTester {

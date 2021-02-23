@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import javax.persistence.EntityNotFoundException;
 
-import domain.DomainController;
+import domain.controllers.DomainController;
 import exceptions.BlockedUserException;
 import exceptions.PasswordException;
 import javafx.event.ActionEvent;

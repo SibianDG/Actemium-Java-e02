@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 
 import domain.*;
+import domain.controllers.DomainController;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

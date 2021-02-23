@@ -1,7 +1,7 @@
 package start;
 
-import domain.DomainController;
 import domain.PopulateDB;
+import domain.controllers.DomainController;
 import gui.LoginController;
 import javafx.application.Application;
 import javafx.scene.Scene;
