@@ -113,7 +113,7 @@ public class DashboardController extends GridPane {
 
     private void addDashboardItem(String name, ImageView imageView, int x, int y, int i) {
         DashboardTile dashboardTile = new DashboardTile(imageView, name, this, i%2);
-        dashboardTile.setOnMouseClicked(e -> reactionFromTile());
+        dashboardTile.setOnMouseClicked(e -> makePopUp(name));
         dashboardTiles.add(dashboardTile);
         gridContent.add(dashboardTile, x, y);
         setFillHeight(dashboardTile, true);
