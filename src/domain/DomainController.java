@@ -51,8 +51,8 @@ public class DomainController {
 //			userRepo.registerLoginAttempt(loginAttempt);
 			userRepo.commitTransaction();
 			throw new BlockedUserException(String.format(
-					"User account has been blocked because more than %d failed login attempts have been registered."
-					+ "\nPlease contact your system administrator.",
+					"User account has been blocked because more than%n %d failed login attempts have been registered."
+					+ "%nPlease contact your system administrator.",
 					USER_LOGIN_MAX_ATTEMPTS));
 		}
 				
@@ -68,11 +68,11 @@ public class DomainController {
 				userModel.blockUser();
 				userRepo.commitTransaction();
 				throw new BlockedUserException(
-						String.format("Wrong password\nUser has reached more than %d failed login attempts, account has been blocked.",
+						String.format("Wrong password%nUser has reached more than %d failed login attempts,%n account has been blocked.",
 								USER_LOGIN_MAX_ATTEMPTS));
 			}
 			userRepo.commitTransaction();
-			throw new PasswordException(String.format("Wrong password\nOnly %d attempts remaining", 5 - userModel.getFailedLoginAttempts()));
+			throw new PasswordException(String.format("Wrong password%nOnly %d attempts remaining", 5 - userModel.getFailedLoginAttempts()));
 		}
 
 		// correct password

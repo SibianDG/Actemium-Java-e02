@@ -2,6 +2,8 @@ package gui;
 
 import java.io.IOException;
 
+import javax.persistence.EntityNotFoundException;
+
 import domain.DomainController;
 import exceptions.BlockedUserException;
 import exceptions.PasswordException;
@@ -83,16 +85,10 @@ public class LoginController extends GridPane {
                 stage.setScene(scene);
                 stage.show();
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | PasswordException | BlockedUserException | EntityNotFoundException e) {
             txtErrorLogin.setText(e.getMessage());
             txtErrorLogin.setOpacity(1);
-        }catch (PasswordException e) {
-            txtErrorLogin.setText(e.getMessage());
-            txtErrorLogin.setOpacity(1);
-        }catch(BlockedUserException e) {
-            txtErrorLogin.setText(e.getMessage());
-            txtErrorLogin.setOpacity(1);
-        }catch (Exception e){
+        } catch (Exception e){
             System.out.println(e.getMessage());
         }
     }
