@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -12,12 +11,10 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<fx:root fx:id="gridDashboard" prefHeight="800.0" prefWidth="1200.0" stylesheets="@../start/styles.css" type="GridPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="gridDashboard" prefHeight="800.0" prefWidth="1200.0" styleClass="bg-gray" stylesheets="@../start/styles.css" type="GridPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <rowConstraints>
       <RowConstraints minHeight="70.0" prefHeight="70.0" />
-        <RowConstraints minHeight="70.0" prefHeight="30.0" />
-      <RowConstraints prefHeight="600.0" />
-      <RowConstraints minHeight="70.0" prefHeight="70.0" />
+      <RowConstraints prefHeight="1000.0" />
     </rowConstraints>
     <columnConstraints>
       <ColumnConstraints maxWidth="0.0" minWidth="200.0" prefWidth="75.0" />
@@ -25,18 +22,6 @@
         <ColumnConstraints maxWidth="0.0" minWidth="200.0" prefWidth="75.0" />
     </columnConstraints>
    <children>
-      <GridPane fx:id="gridDashboardButtons" hgap="10.0" vgap="10.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="150.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-      </GridPane>
       <GridPane styleClass="gridpaneDashboardHeader" GridPane.columnSpan="3">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="10.0" prefWidth="100.0" />
@@ -49,7 +34,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <children>
-                  <ImageView fx:id="imgNotifications" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imgNotifications" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#btnNotificationAction" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../pictures/dashboard/icon_bell.png" />
                      </image>
@@ -57,7 +42,7 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </ImageView>
-                  <ImageView fx:id="imgMyAccount" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imgMyAccount" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#btnProfileAction" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../pictures/dashboard/icon_profile.png" />
                      </image>
@@ -75,7 +60,7 @@
                               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="txtRole" fill="#173d78" strokeType="OUTSIDE" strokeWidth="0.0" text="Company X">
+                        <Text fx:id="txtCompany" fill="#173d78" strokeType="OUTSIDE" strokeWidth="0.0" text="Company X">
                            <font>
                               <Font name="Arial" size="14.0" />
                            </font>
@@ -85,12 +70,15 @@
                         </Text>
                      </children>
                   </VBox>
-                  <ImageView fx:id="imgLogout" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imgLogout" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#btnLogOutAction" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../pictures/dashboard/icon_logout.png" />
                      </image>
                   </ImageView>
                </children>
+               <GridPane.margin>
+                  <Insets right="25.0" />
+               </GridPane.margin>
             </HBox>
             <Text fx:id="txtTitle" fill="#173d78" strokeType="OUTSIDE" strokeWidth="0.0" text="Dashboard" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
@@ -107,9 +95,10 @@
             </ImageView>
          </children>
       </GridPane>
+      <GridPane fx:id="gridContent" gridLinesVisible="true" prefHeight="800.0" prefWidth="800.0" GridPane.columnSpan="3" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+         </GridPane.margin>
+      </GridPane>
    </children>
-   <styleClass>
-      <String fx:value="gridpaneDashboard" />
-      <String fx:value="bg2" />
-   </styleClass>
 </fx:root>

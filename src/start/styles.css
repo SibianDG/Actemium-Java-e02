@@ -40,6 +40,10 @@
     -fx-background-radius: 30px;
 }
 
+.bg-gray {
+    -fx-background-color: #D4D4D4;
+}
+
 
 /*
 
