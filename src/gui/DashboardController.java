@@ -2,6 +2,7 @@ package gui;
 
 import domain.DomainController;
 import domain.EmployeeRole;
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.event.ActionEvent;
@@ -11,8 +12,10 @@ import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -54,8 +57,6 @@ public class DashboardController extends GridPane {
     private Text txtTitle;
 
     private Set<DashboardTile> dashboardTiles = new HashSet<>();
-
-
 
     public DashboardController(DomainController domainController) throws FileNotFoundException {
         super();
@@ -145,11 +146,6 @@ public class DashboardController extends GridPane {
         }
     }
 
-    @FXML
-    void bnLogoutOnActon(ActionEvent event) {
-
-    }
-
     private void initializeText() {
         txtName.setText(String.format("%s %s" , domainController.giveUserFirstName(), domainController.giveUserLastName()));
         txtCompany.setText("COMPANY???");
@@ -167,6 +163,31 @@ public class DashboardController extends GridPane {
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
+    }
+
+
+    @FXML
+    void btnLogOutAction(MouseEvent event) {
+        makePopUp("Logout and exit");
+        Platform.exit();
+        System.exit(0);
+    }
+
+    @FXML
+    void btnNotificationAction(MouseEvent event) {
+        makePopUp("Notifications");
+
+    }
+
+    @FXML
+    void btnProfileAction(MouseEvent event) {
+        makePopUp("Profile");
+
+    }
+
+    private void makePopUp(String text){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, text);
+        alert.showAndWait();
     }
 
     /*protected void fireInvalidationEvent() {

@@ -34,7 +34,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <children>
-                  <ImageView fx:id="imgNotifications" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imgNotifications" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#btnNotificationAction" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../pictures/dashboard/icon_bell.png" />
                      </image>
@@ -42,7 +42,7 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </ImageView>
-                  <ImageView fx:id="imgMyAccount" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imgMyAccount" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#btnProfileAction" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../pictures/dashboard/icon_profile.png" />
                      </image>
@@ -70,7 +70,7 @@
                         </Text>
                      </children>
                   </VBox>
-                  <ImageView fx:id="imgLogout" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imgLogout" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#btnLogOutAction" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../pictures/dashboard/icon_logout.png" />
                      </image>
