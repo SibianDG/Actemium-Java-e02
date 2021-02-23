@@ -1,14 +1,8 @@
 package gui;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -17,13 +11,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Popup;
 
 import java.util.Map;
-import java.util.Observer;
 
 
-public class DashboardTile extends VBox implements InvalidationListener, EventHandler<ActionEvent> {
+public class DashboardTile extends VBox {
 
     DashboardController dashboardController;
 
@@ -44,18 +36,6 @@ public class DashboardTile extends VBox implements InvalidationListener, EventHa
         this.backgroundColor = Map.of(0, Color.WHITE, 1, Color.rgb(192, 204, 15)).get(i);
 
         initialize();
-
-        dashboardController.addListener(this);
-
-        setOnMouseClicked(e -> {
-            //this.text.setText("clicked");
-            invalidated(dashboardController);
-        });
-    }
-
-    private void clicked(){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Jow");
-        alert.show();
     }
 
     public void initialize(){
@@ -82,14 +62,5 @@ public class DashboardTile extends VBox implements InvalidationListener, EventHa
         this.text = text;
     }
 
-    @Override
-    public void invalidated(Observable observable) {
-        dashboardController.reactionFromTile();
-    }
-
-    @Override
-    public void handle(ActionEvent actionEvent) {
-        dashboardController.reactionFromTile();
-    }
 }
 

@@ -1,6 +1,7 @@
 package gui;
 
 import domain.DomainController;
+import domain.EmployeeRole;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.event.ActionEvent;
@@ -8,12 +9,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.effect.Light;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
@@ -26,12 +23,11 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
 import java.util.*;
 import java.util.stream.IntStream;
 
-public class DashboardController extends GridPane implements Observable {
-    private DomainController domainController;
+public class DashboardController extends GridPane {
+    private final DomainController domainController;
 
     @FXML
     private GridPane gridDashboard;
@@ -57,7 +53,9 @@ public class DashboardController extends GridPane implements Observable {
     @FXML
     private Text txtTitle;
 
-    private Set<InvalidationListener> listeners = new HashSet<>();
+    private Set<DashboardTile> dashboardTiles = new HashSet<>();
+
+
 
     public DashboardController(DomainController domainController) throws FileNotFoundException {
         super();
@@ -72,21 +70,34 @@ public class DashboardController extends GridPane implements Observable {
         	throw new RuntimeException(e);
         }
 
-        //TODO creating dashboard dynamically based on user role (dashboard buttons)???
-        initializegridPane();
+        initializeDashboard();
         initializeText();
 
     }
 
-    public void initializegridPane() throws FileNotFoundException {
-        initialize_gridPane(3, 2);
+    public void initializeDashboard() throws FileNotFoundException {
+        String[] itemNames = {"consult Knowledge base", "outstanding tickets", "resolved tickets", "statistics", "create Ticket", "manage Contract"};
+        String[] itemImages = {"icon_consult", "icon_outstanding", "icon_resolved", "icon_statistics", "icon_create", "icon_manage",};
 
-        String[] itemNames = {"manage Contract","consult Knowledge base", "create Ticket", "outstanding tickets", "resolved tickets", "statistics"};
-        String[] itemImages = {"icon_manage","icon_consult", "icon_create", "icon_outstanding", "icon_resolved", "icon_statistics"};
+        resetGridpane();
+        initializeGridPane(3, 2);
 
-        for (int i = 0; i < 6; i++) {
-            addDashboardItem(itemNames[i], createImageView(itemImages[i], i%2), i%3, i/3, i);
-        }
+        Map<String, IntStream> employeeRoleArrayListSet = Map.of(
+                EmployeeRole.ADMINISTRATOR.toString(), IntStream.range(0,6),
+                EmployeeRole.SUPPORT_MANAGER.toString(), IntStream.range(0,5),
+                EmployeeRole.TECHNICIAN.toString(), IntStream.range(0,4)
+        );
+
+
+        employeeRoleArrayListSet.get(domainController.giveUserType()).forEach(r -> {
+            try {
+                addDashboardItem(itemNames[r], createImageView(itemImages[r], r%2), r%3, r/3, r);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+        });
+
     }
 
     public ImageView createImageView(String image, int i) throws FileNotFoundException {
@@ -97,13 +108,12 @@ public class DashboardController extends GridPane implements Observable {
         imageView.setFitHeight(130);
         imageView.setFitWidth(130);
         return imageView;
-
-
     }
 
     private void addDashboardItem(String name, ImageView imageView, int x, int y, int i) {
         DashboardTile dashboardTile = new DashboardTile(imageView, name, this, i%2);
-
+        dashboardTile.setOnMouseClicked(e -> reactionFromTile());
+        dashboardTiles.add(dashboardTile);
         gridContent.add(dashboardTile, x, y);
         setFillHeight(dashboardTile, true);
         setFillWidth(dashboardTile, true);
@@ -112,31 +122,27 @@ public class DashboardController extends GridPane implements Observable {
 
     }
 
-    private void initialize_gridPane(int x, int y) {
+    private void resetGridpane(){
+    	gridContent.getChildren().clear();
+    }
+
+    private void initializeGridPane(int x, int y) {
+
         // initalize central gridpane
-    	
-    	double height = gridContent.getHeight()/y;
-    	double width = gridContent.getWidth()/x;
+
+        double height = 300;
+        double width = 300;
 
         for (int i = 0; i < x; i++) {
             gridContent.addColumn(i);
             gridContent.getColumnConstraints().add(new ColumnConstraints(width, height, -1, Priority.ALWAYS, HPos.CENTER, false));
+
         }
         for (int i = 0; i < y; i++) {
+            System.out.println(i);
             gridContent.addRow(i);
-            gridContent.getRowConstraints()
-                    .add(new RowConstraints(width, height, -1, Priority.ALWAYS, VPos.CENTER, false));
+            gridContent.getRowConstraints().add(new RowConstraints(width, height, -1, Priority.ALWAYS, VPos.CENTER, false));
         }
-
-        /*for (Node node : gridContent.getChildren()) {
-            node.minWidth(300);
-            node.minHeight(300);
-            node.maxHeight(300);
-            node.maxHeight(300);
-            node.prefWidth(300);
-            node.prefHeight(300);
-        }*/
-
     }
 
     @FXML
@@ -154,8 +160,6 @@ public class DashboardController extends GridPane implements Observable {
     }
 
 
-
-    
     private void loadScene(String title, Object controller) { // method for switching to the next screen
         Scene scene = new Scene((Parent) controller);
         Stage stage = (Stage) this.getScene().getWindow();
@@ -165,7 +169,7 @@ public class DashboardController extends GridPane implements Observable {
         stage.show();
     }
 
-    protected void fireInvalidationEvent() {
+    /*protected void fireInvalidationEvent() {
         for (InvalidationListener listener : listeners) {
             listener.invalidated(this);
         }
@@ -179,7 +183,7 @@ public class DashboardController extends GridPane implements Observable {
     @Override
     public void removeListener(InvalidationListener invalidationListener) {
         listeners.remove(invalidationListener);
-
-
     }
+
+     */
 }
