@@ -17,8 +17,6 @@ import java.util.Map;
 
 public class DashboardTile extends VBox {
 
-    DashboardController dashboardController;
-
     private final Color textColor;
     private final Color backgroundColor;
 
@@ -28,10 +26,9 @@ public class DashboardTile extends VBox {
     @FXML
     private Text text;
 
-    public DashboardTile(ImageView imageView, String text, DashboardController dashboardController, int i) {
+    public DashboardTile(ImageView imageView, String text, int i) {
         this.imageView = imageView;
         this.text = new Text(text);
-        this.dashboardController = dashboardController;
         this.textColor = Map.of(0, Color.rgb(23, 61, 120), 1, Color.WHITE).get(i);
         this.backgroundColor = Map.of(0, Color.WHITE, 1, Color.rgb(192, 204, 15)).get(i);
 
