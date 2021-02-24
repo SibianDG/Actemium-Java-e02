@@ -28,6 +28,7 @@ public class Customer extends UserModel implements Seniority {
 	
 	public Customer(String username, String password, String firstName, String lastName) {
 		super(username, password, firstName, lastName);
+		setRegistrationDate(LocalDate.now());
 		//this.contracts = new ArrayList<>();
 		//this.contactPersons = new ArrayList<>();
 	}
@@ -70,12 +71,13 @@ public class Customer extends UserModel implements Seniority {
 		return registrationDate;
 	}
 
-	private void setRegistrationDate(LocalDate registrationDate) {
+	public void setRegistrationDate(LocalDate registrationDate) {
 		this.registrationDate = registrationDate;
 	}
 
 	@Override
 	public int giveSeniority() {
 		return LocalDate.now().getYear() - registrationDate.getYear();
-	}
+	}	
+	
 }

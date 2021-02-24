@@ -13,9 +13,9 @@ public class Employee extends UserModel implements Seniority, Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+	// @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long employeeNr;
-	
+
 	private String address;
 	private String phoneNumber;
 	private String emailAddress;
@@ -56,7 +56,7 @@ public class Employee extends UserModel implements Seniority, Serializable {
 
 	public void setAddress(String address) {
 		String usernameRegex = "[A-Za-z0-9 _-]+";
-		if(address == null || address.isBlank() || !address.matches(usernameRegex)) {
+		if (address == null || address.isBlank() || !address.matches(usernameRegex)) {
 			throw new IllegalArgumentException(LanguageResource.getString("address_invalid"));
 		}
 		this.address = address;
@@ -67,9 +67,10 @@ public class Employee extends UserModel implements Seniority, Serializable {
 	}
 
 	public void setEmailAddress(String emailAddress) {
-		//String usernameRegex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+		// String usernameRegex =
+		// "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
 		String emailregex = "^(.+)@(.+)$";
-		if(emailAddress == null || emailAddress.isBlank() || !emailAddress.matches(emailregex)) {
+		if (emailAddress == null || emailAddress.isBlank() || !emailAddress.matches(emailregex)) {
 			throw new IllegalArgumentException(LanguageResource.getString("email_invalid"));
 		}
 		this.emailAddress = emailAddress;
@@ -85,17 +86,16 @@ public class Employee extends UserModel implements Seniority, Serializable {
 
 	public void setPhoneNumber(String phoneNumber) {
 		String usernameRegex = "[0-9 /-]+";
-		if(phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches(usernameRegex)) {
+		if (phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches(usernameRegex)) {
 			throw new IllegalArgumentException(LanguageResource.getString("phonenumber_invalid"));
 		}
 		this.phoneNumber = phoneNumber;
 	}
 
 	public void setRole(EmployeeRole role) {
-		//String usernameRegex = "[A-Za-z0-9_/-]+";
-		//if(role == null || role.isBlank() || !role.matches(usernameRegex)) {
-		//	throw new IllegalArgumentException(LanguageResource.getString("role_invalid"));
-		//}
+		if (role == null) {
+			throw new IllegalArgumentException(LanguageResource.getString("role_invalid"));
+		}
 		this.role = role;
 	}
 
@@ -105,5 +105,6 @@ public class Employee extends UserModel implements Seniority, Serializable {
 
 	public void setRegistrationDate(LocalDate registrationDate) {
 		this.registrationDate = registrationDate;
-	}
+	}	
+	
 }

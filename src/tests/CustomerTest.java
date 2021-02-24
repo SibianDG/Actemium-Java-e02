@@ -1,24 +1,19 @@
 package tests;
 
+import java.time.LocalDate;
 import java.util.stream.Stream;
 
-import domain.Employee;
-import domain.EmployeeRole;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-import domain.UserModel;
+import domain.Customer;
 
-@ExtendWith(MockitoExtension.class)
-public class UserModelTest {
+public class CustomerTest {
 
-    private UserModel userModel;
+    private Customer customer;
 
     private static Stream<Arguments> validUserAttributes() {
         return Stream.of(
@@ -30,6 +25,13 @@ public class UserModelTest {
         );
     }
 
+    //invalid
+    /*
+    Username: not null or empty, not duplicate, no special chars but digits is ok
+    Password: min 8 chars, Upper- and lowercase, +1 digit, +1 special char, not null or empty
+    FirstName: not null or empty, no digits
+    Lastname: not null or empty, no digits
+     */
     private static Stream<Arguments> invalidUserAttributes() {
         return Stream.of(
                 //Spaces
@@ -62,41 +64,23 @@ public class UserModelTest {
         );
     }
 
-    //invalid
-    /*
-    Username: not null or empty, not duplicate, no special chars but digits is ok
-    Password: min 8 chars, Upper- and lowercase, +1 digit, +1 special char, not null or empty
-    FirstName: not null or empty, no digits
-    Lastname: not null or empty, no digits
-     */
     @ParameterizedTest
     @MethodSource("validUserAttributes")
-    public void createUser_Correct(String username, String password, String firstName, String lastName, String address,
-                                   String phoneNumber, String emailAddress, EmployeeRole role) {
-        Assertions.assertDoesNotThrow(() -> new Employee(username, password, firstName, lastName, address, phoneNumber, emailAddress, role));
+    public void createCustomer_Correct(String username, String password, String firstName, String lastName) {
+        Assertions.assertDoesNotThrow(() -> new Customer(username, password, firstName, lastName));
     }
 
     @ParameterizedTest
     @MethodSource("invalidUserAttributes")
-    public void createUser_Failed(String username, String password, String firstName, String lastName, String address,
-                                  String phoneNumber, String emailAddress, EmployeeRole role) {
-        Assertions.assertThrows(IllegalArgumentException.class,() -> new Employee(username, password, firstName, lastName, address, phoneNumber, emailAddress, role));
+    public void createCustomer_Failed(String username, String password, String firstName, String lastName) {
+        Assertions.assertThrows(IllegalArgumentException.class,() -> new Customer(username, password, firstName, lastName));
     }
-
+    
     @Test
-    public void increaseLoginAttempt_returns1_valid(){
-        userModel = Mockito.mock(UserModel.class, Mockito.CALLS_REAL_METHODS);
-        userModel.increaseFailedLoginAttempts();
-        Assertions.assertEquals(1, userModel.getFailedLoginAttempts());
+    public void giveEmployeeSeniroity_returns_valid() {
+    	customer = new Customer("Tester123", "Passwd123&", "Jan", "Jannsens");
+    	customer.setRegistrationDate(LocalDate.now().minusYears(10));
+        Assertions.assertEquals(10, customer.giveSeniority());
     }
-
-    @Test
-    public void resetLoginAttempt_returns0_valid(){
-        userModel = Mockito.mock(UserModel.class, Mockito.CALLS_REAL_METHODS);
-        userModel.increaseFailedLoginAttempts();
-        userModel.increaseFailedLoginAttempts();
-        userModel.resetLoginAttempts();
-        Assertions.assertEquals(0, userModel.getFailedLoginAttempts());
-    }
-
+    
 }

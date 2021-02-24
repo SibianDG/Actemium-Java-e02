@@ -15,6 +15,9 @@ public class EmployeeTest {
 
     private Employee employee;
 
+    // The first 4 attributes are tested by CustomerTest which uses the same:
+    // super(username, password, firstName, lastName)
+    
     private static Stream<Arguments> validUserAttributes() {
         return Stream.of(
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0470099874", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
@@ -32,8 +35,8 @@ public class EmployeeTest {
         return Stream.of(
                 //empty
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "   ", "0470099874", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0470099874", "   ", EmployeeRole.ADMINISTRATOR),
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "   ", "   ", EmployeeRole.ADMINISTRATOR),
-                //Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "9999999999", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
 
                 //null
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", null, "9999999999", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
@@ -53,8 +56,6 @@ public class EmployeeTest {
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "999999999A", "studentstudent be", EmployeeRole.ADMINISTRATOR),
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "999999999A", "student@studen_be", EmployeeRole.ADMINISTRATOR),
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "999999999A", "student&studen_be", EmployeeRole.ADMINISTRATOR)
-
-
                 );
     }
 
@@ -77,7 +78,6 @@ public class EmployeeTest {
         employee = new Employee("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0470099874", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR);
         employee.setRegistrationDate(LocalDate.now().minusYears(10));
         Assertions.assertEquals(10, employee.giveSeniority());
-    }
+    }    
+    
 }
-
-
