@@ -2,6 +2,7 @@ package main;
 
 import domain.Customer;
 import domain.PopulateDB;
+import domain.UserModel;
 import domain.controllers.DomainController;
 import repository.UserDaoJpa;
 
@@ -76,7 +77,7 @@ public class MainTester {
 		} catch (Exception e) {
 //          e.printStackTrace();
 			System.out.println(e.getMessage());
-		}		
+		}
         
         Customer customer = (Customer) userDaoJpa.findByUsername("Cust123");
         
@@ -87,10 +88,10 @@ public class MainTester {
         System.out.printf("%nCustomer after modifyCustomer:%nFirst name: %s%nLast name: %s%n%n", customer.getFirstName(), customer.getLastName());
         
         System.out.println(dc.giveCustomerList());
-        dc.giveCustomerList().stream().map(c->c.getUsername()).forEach(System.out::println);
+        dc.giveCustomerList().stream().map(UserModel::getUsername).forEach(System.out::println);
         System.out.println();
         System.out.println(dc.giveEmployeeList());
-        dc.giveEmployeeList().stream().map(e->e.getUsername()).forEach(System.out::println);
+        dc.giveEmployeeList().stream().map(UserModel::getUsername).forEach(System.out::println);
 
         userDaoJpa.closePersistency();
     }
