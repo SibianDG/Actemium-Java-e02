@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
+
 import domain.Customer;
 import domain.Employee;
 import domain.EmployeeRole;
@@ -30,6 +32,7 @@ public class DomainController {
 	// - ...	
 	
 	private UserModel signedInUser;
+	private UserModel selectedUser;
 	private UserDao userRepo;
 		
 	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
@@ -39,17 +42,21 @@ public class DomainController {
 	
 	public DomainController(UserDao userRepo) {
 		this.userRepo = userRepo;
-		
+		fillInUserLists();
+
+	}
+
+	private void fillInUserLists(){
 		List<UserModel> userList = userRepo.findAll();
 		List<UserModel> customerList = userList.stream()
-											.filter(c -> c instanceof Customer)
-											.map(c -> (Customer) c)
-											.collect(Collectors.toList());
+				.filter(c -> c instanceof Customer)
+				.map(c -> (Customer) c)
+				.collect(Collectors.toList());
 		List<UserModel> employeeList = userList.stream()
-											.filter(e -> e instanceof Employee)
-											.map(e -> (Employee) e)
-											.collect(Collectors.toList());
-		
+				.filter(e -> e instanceof Employee)
+				.map(e -> (Employee) e)
+				.collect(Collectors.toList());
+
 		this.customerList = FXCollections.observableArrayList(customerList);
 		this.employeeList = FXCollections.observableArrayList(employeeList);
 	}
@@ -66,6 +73,14 @@ public class DomainController {
 		
 	private void setSignedInUser(UserModel signedInEmployee) {
 		this.signedInUser = signedInEmployee;
+	}
+
+	public UserModel getSelectedUser() {
+		return selectedUser;
+	}
+
+	public void setSelectedUser(UserModel selectedUser) {
+		this.selectedUser = selectedUser;
 	}
 
 	public void signIn(String username, String password) {
@@ -146,9 +161,14 @@ public class DomainController {
 	}
 
 	public void existingUsername(String username) {
-		if(userRepo.findByUsername(username) != null) {
-			throw new IllegalArgumentException("Username is already taken.");
+		try {
+			if(userRepo.findByUsername(username) != null) {
+				throw new IllegalArgumentException("Username is already taken.");
+			}
+		} catch (EntityNotFoundException e){
+			//ignore
 		}
+
 	}
 
 	public void registerCustomer(String username, String password, String firstName, String lastName) {
@@ -157,6 +177,8 @@ public class DomainController {
 		userRepo.startTransaction();
 		userRepo.insert(customer);
 		userRepo.commitTransaction();
+		fillInUserLists();
+
 	}
 
 	public void registerEmployee(String username, String password, String firstName, String lastName, String address,
@@ -166,11 +188,13 @@ public class DomainController {
 		userRepo.startTransaction();
 		userRepo.insert(employee);
 		userRepo.commitTransaction();
+		fillInUserLists();
+
 	}
 
 	public void modifyCustomer(Customer customer, String username, String password, String firstName, String lastName) {
 		// only needs to be checked if you changed the username 
-		if (customer.getUsername() != username) {
+		if (!customer.getUsername().equals(username)) {
 			existingUsername(username);
 		}
 		customer.setUsername(username);
@@ -185,7 +209,7 @@ public class DomainController {
 	public void modifyEmployee(Employee employee, String username, String password, String firstName, String lastName, String address,
 			String phoneNumber, String emailAddress, EmployeeRole role) {
 		// only needs to be checked if you changed the username 
-		if (employee.getUsername() != username) {
+		if (!employee.getUsername().equals(username)) {
 			existingUsername(username);
 		}
 		employee.setUsername(username);

@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -60,6 +61,9 @@ public class DashboardController extends GridPane {
     private Text txtCompany;
 
     @FXML
+    private ImageView imgLogo;
+
+    @FXML
     private ImageView imgLogout;
 
     @FXML
@@ -83,14 +87,17 @@ public class DashboardController extends GridPane {
         initializeDashboard();
         initializeText();
 
+        imgLogo.setCursor(Cursor.HAND);
+
     }
 
     public void initializeDashboard() throws FileNotFoundException {
 //        String[] itemNames = {"consult Knowledge base", "outstanding tickets", "resolved tickets", "statistics", "create Ticket", "manage Contract"};
 //        String[] itemImages = {"icon_consult", "icon_outstanding", "icon_resolved", "icon_statistics", "icon_create", "icon_manage",};
 
+        txtTitle.setText("Dashboard");
         resetGridpane();
-        initializeGridPane(3, 2);
+        initializeGridPane(3, 2, 300, 300);
 
 //        Map<String, IntStream> employeeRoleArrayListSet = Map.of(
 //                EmployeeRole.ADMINISTRATOR.toString(), IntStream.range(0,6),
@@ -109,26 +116,21 @@ public class DashboardController extends GridPane {
 //        });
         String[] itemNames = new String[] {};
         String[] itemIcons = new String[] {};
-        
-        switch(domainController.giveUserType().toUpperCase()) {
-        	case "ADMINISTRATOR": {
-        		itemNames = new String[] {"manage employees", "manage customers"};
-        		itemIcons = new String[] {"icon_manage", "icon_manage"};
-        		break;
-        		}
-        	
-        	case "SUPPORT MANAGER": {
-        		itemNames = new String[] {"manage knowledge base", "create ticket", "oustanding tickets", "resolved tickets", "statistics"};
-        		itemIcons = new String[] {"icon_manage", "icon_create", "icon_outstanding", "icon_resolved", "icon_statistics"};
-        		break;
-        		}
-        	
-        	case "TECHNICIAN": {
-        		itemNames = new String[] {"consult knowledge base", "oustanding tickets", "resolved tickets", "statistics"};
-        		itemIcons = new String[] {"icon_consult", "icon_outstanding", "icon_resolved", "icon_statistics"};
-        		break;
-        		}
-        	}
+
+        switch (domainController.giveUserType().toUpperCase()) {
+            case "ADMINISTRATOR" -> {
+                itemNames = new String[]{"manage employees", "manage customers"};
+                itemIcons = new String[]{"icon_manage", "icon_manage"};
+            }
+            case "SUPPORT_MANAGER" -> {
+                itemNames = new String[]{"manage knowledge base", "create ticket", "oustanding tickets", "resolved tickets", "statistics"};
+                itemIcons = new String[]{"icon_manage", "icon_create", "icon_outstanding", "icon_resolved", "icon_statistics"};
+            }
+            case "TECHNICIAN" -> {
+                itemNames = new String[]{"consult knowledge base", "oustanding tickets", "resolved tickets", "statistics"};
+                itemIcons = new String[]{"icon_consult", "icon_outstanding", "icon_resolved", "icon_statistics"};
+            }
+        }
         	
         for(int i = 0; i < itemNames.length; i++) {
         	addDashboardItem(itemNames[i], createImageView(itemIcons[i], i%2), i%3, i/3, i);
@@ -173,7 +175,7 @@ public class DashboardController extends GridPane {
 		txtTitle.setText(name);
 		resetGridpane();       
 		
-		TableViewPanelController tableViewPanelController = new TableViewPanelController(domainController, name.split(" ")[1]);
+		TableViewPanelController tableViewPanelController = new TableViewPanelController(domainController, this, name.split(" ")[1]);
 		DetailsPanelController detailsPanelController = new DetailsPanelController(tableViewPanelController);
 
 		gridContent.add(tableViewPanelController, 0, 0);
@@ -188,12 +190,9 @@ public class DashboardController extends GridPane {
     	gridContent.getRowConstraints().clear();
     }
 
-    private void initializeGridPane(int x, int y) {
+    private void initializeGridPane(int x, int y, double height, double width) {
 
         // initalize central gridpane
-
-        double height = 300;
-        double width = 300;
 
         for (int i = 0; i < x; i++) {
             gridContent.addColumn(i);
@@ -201,10 +200,16 @@ public class DashboardController extends GridPane {
 
         }
         for (int i = 0; i < y; i++) {
-            System.out.println(i);
             gridContent.addRow(i);
             gridContent.getRowConstraints().add(new RowConstraints(width, height, -1, Priority.ALWAYS, VPos.CENTER, false));
         }
+    }
+
+    public void setModifyPane(){
+        txtTitle.setText("Add Employee");
+        resetGridpane();
+        initializeGridPane(1,1, 500, 500);
+        gridContent.add(new ModifyPanelController(domainController /*, name.split(" ")[1])*/, this), 0, 0);
     }
 
     private void initializeText() {
@@ -244,6 +249,11 @@ public class DashboardController extends GridPane {
     void btnProfileAction(MouseEvent event) {
         makePopUp("Profile");
 
+    }
+
+    @FXML
+    void navigateToHome(MouseEvent event) throws FileNotFoundException {
+        initializeDashboard();
     }
 
     private void makePopUp(String text){

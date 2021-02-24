@@ -1,6 +1,9 @@
 package gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import domain.Customer;
 import domain.Employee;
@@ -31,6 +34,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 	
 	public DetailsPanelController(TableViewPanelController tableViewPanelController) {
 
+
 	    this.tableViewPanelController = tableViewPanelController;
 	    tableViewPanelController.addListener(this);
 
@@ -42,7 +46,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         } catch (IOException e) {
         	throw new RuntimeException(e);
         }
-	}
+        this.setVisible(false);
+
+    }
 
 	public void btnModifyOnAction() {
         //Todo modify User
@@ -50,42 +56,62 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     @Override
     public void invalidated(Observable observable) {
+        this.setVisible(true);
+
+
         System.out.println(tableViewPanelController.getSelectedUser().getClass());
-	    if (tableViewPanelController.getSelectedUser() instanceof Employee ) {
+        gridDetails.getChildren().clear();
+
+        if (tableViewPanelController.getSelectedUser() instanceof Employee ) {
 	        fillGridPaneEmployee();
         } else {
 	        fillGridPaneCustomer();
         }
     }
 
-    //Todo
     public void fillGridPaneEmployee() {
 	    Employee user = (Employee) tableViewPanelController.getSelectedUser();
-        gridDetails.getChildren().clear();
-        gridDetails.add(new Text("Username"), 0, 0);
-        gridDetails.add(new Text(user.getUsername()), 1, 0);
-        gridDetails.add(new Text("Status"), 0, 1);
-        gridDetails.add(new Text(user.getStatus().toString()), 1, 1);
-        gridDetails.add(new Text("Lastname"), 0, 2);
-        gridDetails.add(new Text(user.getLastName()), 1, 2);
-        gridDetails.add(new Text("Firstname"), 0, 3);
-        gridDetails.add(new Text(user.getFirstName()), 1, 3);
-        gridDetails.add(new Text("Address"), 0, 4);
-        gridDetails.add(new Text(user.getAddress()), 1, 4);
-        gridDetails.add(new Text("E-mail"), 0, 5);
-        gridDetails.add(new Text(user.getEmailAddress()), 1, 5);
-        gridDetails.add(new Text("Phone number"), 0, 6);
-        gridDetails.add(new Text(user.getPhoneNumber()), 1, 6);
-        gridDetails.add(new Text("Seniority"), 0, 7);
-        gridDetails.add(new Text(String.valueOf(user.giveSeniority())), 1, 7);
-        gridDetails.add(new Text("Role"), 0, 8);
-        gridDetails.add(new Text(user.getRole().toString()), 1, 8);
+
+        Map<String, String> details = Map.of(
+                "Username", user.getUsername()
+                , "Status", user.getStatus().toString()
+                , "Lastname", user.getLastName()
+                , "Firstname", user.getFirstName()
+                , "Address", user.getAddress()
+                , "Email", user.getEmailAddress()
+                , "Phone number", user.getPhoneNumber()
+                , "Seniority", String.valueOf(user.giveSeniority())
+                , "Role", user.getRole().toString()
+        );
+
+        addDetailsToGridDetails(details);
     }
 
-    //Todo
     public void fillGridPaneCustomer() {
         Customer user = (Customer) tableViewPanelController.getSelectedUser();
-        gridDetails.getChildren().clear();
-        gridDetails.add(new Text(tableViewPanelController.getSelectedUser().getUsername()), 0, 0);
+        Map<String, String> details = Map.of(
+                "Username", user.getUsername()
+                , "Status", user.getStatus().toString()
+                , "Company", ""
+                , "Name", user.getCompanyName()
+                , "Address", user.getCompanyAddress()
+                , "Phone number", user.getCompanyPhone()
+                , "Contact person", ""
+                , "Lastname", user.getLastName()
+                , "Firstname", user.getFirstName()
+                , "Seniority", String.valueOf(user.giveSeniority())
+        );
+
+        addDetailsToGridDetails(details);
+    }
+
+    private void addDetailsToGridDetails(Map<String, String> details){
+	    int i = 0;
+	    for (String key : details.keySet()){
+            gridDetails.add(new Text(key), 0, i);
+            gridDetails.add(new Text(details.get(key)), 1, i);
+            i++;
+        }
+
     }
 }

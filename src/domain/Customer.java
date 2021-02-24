@@ -67,6 +67,27 @@ public class Customer extends UserModel implements Seniority {
 		this.contactPersons = contactPersons;
 	}*/
 
+	public String getCompanyName(){
+		if (company == null){
+			return "Company not implemented";
+		}
+		return company.getName();
+	}
+
+	public String getCompanyAddress(){
+		if (company == null){
+			return "Company not implemented";
+		}
+		return company.getAddress();
+	}
+
+	public String getCompanyPhone(){
+		if (company == null){
+			return "Company not implemented";
+		}
+		return company.getPhoneNumber();
+	}
+
 	public LocalDate getRegistrationDate() {
 		return registrationDate;
 	}

@@ -85,7 +85,7 @@
                   <Font name="Arial Bold" size="48.0" />
                </font>
             </Text>
-            <ImageView fitHeight="60.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+            <ImageView fx:id="imgLogo" fitHeight="60.0" fitWidth="150.0" onMouseClicked="#navigateToHome" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets left="25.0" />
                </GridPane.margin>

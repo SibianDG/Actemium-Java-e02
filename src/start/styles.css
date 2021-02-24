@@ -44,6 +44,11 @@
     -fx-background-color: #D4D4D4;
 }
 
+.bg-rounded {
+    -fx-background-radius: 50px;
+    -fx-border-radius: 50px;
+}
+
 
 /*
 

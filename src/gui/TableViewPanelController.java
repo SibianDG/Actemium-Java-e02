@@ -2,17 +2,22 @@ package gui;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import domain.UserModel;
 import domain.controllers.DomainController;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
@@ -21,8 +26,11 @@ import javafx.scene.text.Text;
 public class TableViewPanelController extends GridPane implements Observable {
 
 	private DomainController domainController;
+	private DashboardController dashboardController;
 	private UserModel selectedUser;
 	private String user;
+	private ObservableList<UserModel> users;
+
 	private ArrayList<InvalidationListener> listeners = new ArrayList<>();
 	
     @FXML
@@ -30,6 +38,9 @@ public class TableViewPanelController extends GridPane implements Observable {
 
     @FXML
     private Text txtFilter;
+
+	@FXML
+	private TextField txfFilterInput;
 	
 	@FXML
 	private TableView<UserModel> tvUsers;
@@ -46,8 +57,9 @@ public class TableViewPanelController extends GridPane implements Observable {
 	@FXML
 	private TableColumn<UserModel, String> statusCol;
 	
-	public TableViewPanelController(DomainController domainController, String user) {
+	public TableViewPanelController(DomainController domainController, DashboardController dashboardController ,String user) {
 		this.domainController = domainController;
+		this.dashboardController = dashboardController;
 		this.user = user;
 		System.out.println(user);
 		
@@ -80,7 +92,31 @@ public class TableViewPanelController extends GridPane implements Observable {
 		tvUsers.getColumns().add(statusColumn);
 		statusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
 
-		ObservableList<UserModel> users;
+		if (user.equals("employees")) {
+			users = domainController.giveEmployeeList();
+		} else {
+			users = domainController.giveCustomerList();
+		}
+
+		tvUsers.setItems(users);
+
+		tvUsers.setOnMouseClicked((MouseEvent m) -> {
+			UserModel user = tvUsers.getSelectionModel().selectedItemProperty().get();
+			//TODO change it
+			setSelectedUser(user);
+			domainController.setSelectedUser(user);
+			//System.out.println(selectedUser.getUsername());
+		});
+	}
+
+	@FXML
+	void addOnAction(ActionEvent event) {
+		dashboardController.setModifyPane();
+	}
+
+	@FXML
+	void filterOnKeyTyped(KeyEvent event) {
+		String input = txfFilterInput.getText().toLowerCase();
 
 		if (user.equals("employees")) {
 			users = domainController.giveEmployeeList();
@@ -88,19 +124,14 @@ public class TableViewPanelController extends GridPane implements Observable {
 			users = domainController.giveCustomerList();
 		}
 
-		System.out.println(users);
-
+		if (!input.isBlank()){
+			users = FXCollections.observableArrayList(
+					users.stream()
+							.filter(u -> u.getUsername().toLowerCase().contains(input) || u.getFirstName().toLowerCase().contains(input) || u.getLastName().toLowerCase().contains(input))
+							.collect(Collectors.toList())
+			);
+		}
 		tvUsers.setItems(users);
-
-		tvUsers.setOnMouseClicked((MouseEvent m) -> {
-			UserModel object = tvUsers.getSelectionModel().selectedItemProperty().get();
-			setSelectedUser(object);
-			//System.out.println(selectedUser.getUsername());
-		});
-	}
-
-	public void addUserOnAction() {
-		//Todo Add User
 	}
 
 	public UserModel getSelectedUser() {
