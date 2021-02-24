@@ -20,7 +20,7 @@
    <children>
       <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" stylesheets="@../start/styles.css">
          <children>
-            <Button fx:id="btnAdd" mnemonicParsing="false" styleClass="btn-blue" text="Add">
+            <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#addUserOnAction" styleClass="btn-blue" text="Add">
                <VBox.margin>
                   <Insets top="16.0" />
                </VBox.margin></Button>

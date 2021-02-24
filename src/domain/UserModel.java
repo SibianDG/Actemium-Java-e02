@@ -172,7 +172,7 @@ public abstract class UserModel implements Serializable {
 	}
 
 	public StringProperty usernameProperty() {
-		return  new SimpleStringProperty(username);
+		return new SimpleStringProperty(username);
 	}
 
 	public StringProperty statusProperty() {

@@ -37,7 +37,7 @@
             </GridPane>
             <HBox alignment="CENTER_RIGHT">
                <children>
-                  <Button fx:id="btnModify" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="btn-blue" text="Button" />
+                  <Button fx:id="btnModify" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnModifyOnAction" styleClass="btn-blue" text="Button" />
                </children>
             </HBox>
          </children>

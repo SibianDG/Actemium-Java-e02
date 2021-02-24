@@ -68,6 +68,14 @@ public class TableViewPanelController extends GridPane implements Observable {
 		tvUsers.getColumns().add(usernameColumn);
 		usernameColumn.setCellValueFactory(cellData -> cellData.getValue().usernameProperty());
 
+		TableColumn<UserModel, String> firstNameColumn = new TableColumn<>("firstname");
+		tvUsers.getColumns().add(firstNameColumn);
+		usernameColumn.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
+
+		TableColumn<UserModel, String> lastNameColumn = new TableColumn<>("lastname");
+		tvUsers.getColumns().add(lastNameColumn);
+		usernameColumn.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
+
 		TableColumn<UserModel, String> statusColumn = new TableColumn<>("status");
 		tvUsers.getColumns().add(statusColumn);
 		statusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
@@ -80,13 +88,19 @@ public class TableViewPanelController extends GridPane implements Observable {
 			users = domainController.giveCustomerList();
 		}
 
+		System.out.println(users);
+
 		tvUsers.setItems(users);
 
 		tvUsers.setOnMouseClicked((MouseEvent m) -> {
-			Object object = tvUsers.getSelectionModel().selectedItemProperty().get();
-			setSelectedUser((UserModel) object);
+			UserModel object = tvUsers.getSelectionModel().selectedItemProperty().get();
+			setSelectedUser(object);
 			//System.out.println(selectedUser.getUsername());
 		});
+	}
+
+	public void addUserOnAction() {
+		//Todo Add User
 	}
 
 	public UserModel getSelectedUser() {
