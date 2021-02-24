@@ -174,7 +174,7 @@ public class DashboardController extends GridPane {
 		resetGridpane();       
 		
 		TableViewPanelController tableViewPanelController = new TableViewPanelController(domainController, name.split(" ")[1]);
-		DetailsPanelController detailsPanelController = new DetailsPanelController();
+		DetailsPanelController detailsPanelController = new DetailsPanelController(tableViewPanelController);
 
 		gridContent.add(tableViewPanelController, 0, 0);
 		gridContent.add(detailsPanelController, 1, 0);

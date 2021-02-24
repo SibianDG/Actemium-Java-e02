@@ -1,30 +1,29 @@
 package gui;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
 
 import domain.UserModel;
 import domain.controllers.DomainController;
-import domain.Employee;
-import javafx.beans.property.StringProperty;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
-public class TableViewPanelController extends GridPane{
+
+public class TableViewPanelController extends GridPane implements Observable {
 
 	private DomainController domainController;
 	private UserModel selectedUser;
 	private String user;
+	private ArrayList<InvalidationListener> listeners = new ArrayList<>();
 	
     @FXML
     private Button btnAdd;
@@ -86,7 +85,7 @@ public class TableViewPanelController extends GridPane{
 		tvUsers.setOnMouseClicked((MouseEvent m) -> {
 			Object object = tvUsers.getSelectionModel().selectedItemProperty().get();
 			setSelectedUser((UserModel) object);
-			System.out.println(selectedUser.getUsername());
+			//System.out.println(selectedUser.getUsername());
 		});
 	}
 
@@ -96,5 +95,22 @@ public class TableViewPanelController extends GridPane{
 
 	public void setSelectedUser(UserModel selectedUser) {
 		this.selectedUser = selectedUser;
+		fireInvalidationEvent();
+	}
+
+	protected void fireInvalidationEvent() {
+		for (InvalidationListener listener : listeners) {
+			listener.invalidated(this);
+		}
+	}
+
+	@Override
+	public void addListener(InvalidationListener invalidationListener) {
+		listeners.add(invalidationListener);
+	}
+
+	@Override
+	public void removeListener(InvalidationListener invalidationListener) {
+		listeners.remove(invalidationListener);
 	}
 }
