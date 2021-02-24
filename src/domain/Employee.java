@@ -67,10 +67,11 @@ public class Employee extends UserModel implements Seniority, Serializable {
 	}
 
 	public void setEmailAddress(String emailAddress) {
-		/*String usernameRegex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
-		if(emailAddress == null || emailAddress.isBlank() || !emailAddress.matches(usernameRegex)) {
+		//String usernameRegex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+		String emailregex = "^(.+)@(.+)$";
+		if(emailAddress == null || emailAddress.isBlank() || !emailAddress.matches(emailregex)) {
 			throw new IllegalArgumentException(LanguageResource.getString("email_invalid"));
-		}*/
+		}
 		this.emailAddress = emailAddress;
 	}
 
@@ -83,10 +84,10 @@ public class Employee extends UserModel implements Seniority, Serializable {
 	}
 
 	public void setPhoneNumber(String phoneNumber) {
-		/*String usernameRegex = "[0-9 /-]+";
+		String usernameRegex = "[0-9 /-]+";
 		if(phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches(usernameRegex)) {
 			throw new IllegalArgumentException(LanguageResource.getString("phonenumber_invalid"));
-		}*/
+		}
 		this.phoneNumber = phoneNumber;
 	}
 

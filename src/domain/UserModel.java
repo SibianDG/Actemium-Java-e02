@@ -1,5 +1,9 @@
 package domain;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import languages.LanguageResource;
 
 import java.io.Serial;
@@ -165,6 +169,22 @@ public abstract class UserModel implements Serializable {
 
 	public void addLoginAttempt(LoginAttempt loginAttempt) {
 		loginAttempts.add(loginAttempt);
+	}
+
+	public StringProperty usernameProperty() {
+		return  new SimpleStringProperty(username);
+	}
+
+	public StringProperty statusProperty() {
+		return new SimpleStringProperty(status.toString());
+	}
+
+	public StringProperty firstNameProperty() {
+		return new SimpleStringProperty(firstName);
+	}
+
+	public StringProperty lastNameProperty() {
+		return new SimpleStringProperty(lastName);
 	}
 
 }

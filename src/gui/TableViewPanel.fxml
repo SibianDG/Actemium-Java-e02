@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -41,10 +40,6 @@
                </VBox.margin>
             </VBox>
             <TableView fx:id="tvUsers">
-               <columns>
-                  <TableColumn minWidth="-1.0" prefWidth="-1.0" text="C1" />
-                  <TableColumn minWidth="-1.0" prefWidth="-1.0" text="C2" />
-               </columns>
                <VBox.margin>
                   <Insets top="16.0" />
                </VBox.margin>
