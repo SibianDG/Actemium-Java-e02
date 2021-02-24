@@ -21,25 +21,31 @@ import repository.UserDaoJpa;
 
 public class DomainController {
 
-	private UserModel signedInEmployee;
-	private UserDao userRepo;
+	// For now we are still working with a single DomainController
+	// In the next sprint this will be replaced by:
+	// - Abstract GuiController with e.g. LoginController inheriting from it
+	// - Facade Interface in pacakge domain.facades
+	// - UserModelFacade implements Facade
+	// - SignedInUserManagaer in domain.facades
+	// - ...	
 	
-	private UserController currentUserController;
+	private UserModel signedInUser;
+	private UserDao userRepo;
 		
 	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
 
-	private ObservableList<UserModel> customerList;
-	private ObservableList<UserModel> employeeList;
+	private ObservableList<Customer> customerList;
+	private ObservableList<Employee> employeeList;
 	
 	public DomainController(UserDao userRepo) {
 		this.userRepo = userRepo;
 		
 		List<UserModel> userList = userRepo.findAll();
-		List<UserModel> customerList = userList.stream()
+		List<Customer> customerList = userList.stream()
 											.filter(c -> c instanceof Customer)
 											.map(c -> (Customer) c)
 											.collect(Collectors.toList());
-		List<UserModel> employeeList = userList.stream()
+		List<Employee> employeeList = userList.stream()
 											.filter(e -> e instanceof Employee)
 											.map(e -> (Employee) e)
 											.collect(Collectors.toList());
@@ -57,9 +63,9 @@ public class DomainController {
 	public void setUserRepo(UserDao mock) {
 		userRepo = mock;
 	}
-
-	public void setSignedInUser(UserModel signedInEmployee) {
-		this.signedInEmployee = signedInEmployee;
+		
+	private void setSignedInUser(UserModel signedInEmployee) {
+		this.signedInUser = signedInEmployee;
 	}
 
 	public void signIn(String username, String password) {
@@ -117,28 +123,26 @@ public class DomainController {
 
 		setSignedInUser(userModel);
 		
-		System.out.println("Just signed in: " + signedInEmployee.getUsername());
+		System.out.println("Just signed in: " + signedInUser.getUsername());
 	}
 
 	public String giveUserType() {
-//		return signedInEmployee.getClass().getSimpleName();
-		// this check shouldn't be necessary because only employees can sign in
-		if(signedInEmployee instanceof Employee) {
-			return ((Employee) signedInEmployee).getRole().toString();
+		if(signedInUser instanceof Employee) {
+			return ((Employee) signedInUser).getRole().toString();
 		}
-		return "Not an Employee";
+		return "Customer";
 	}
 
 	public String giveUsername() {
-		return signedInEmployee.getUsername();
+		return signedInUser.getUsername();
 	}
 
 	public String giveUserFirstName() {
-		return signedInEmployee.getFirstName();
+		return signedInUser.getFirstName();
 	}
 
 	public String giveUserLastName() {
-		return signedInEmployee.getLastName();
+		return signedInUser.getLastName();
 	}
 
 	public void existingUsername(String username) {
@@ -197,12 +201,13 @@ public class DomainController {
 		userRepo.commitTransaction();
 	}
 
-	public ObservableList<UserModel> giveCustomerList() {
+	public ObservableList<Customer> giveCustomerList() {
 		return FXCollections.unmodifiableObservableList(customerList);
 	}
 
-	public ObservableList<UserModel> giveEmployeeList() {
+	public ObservableList<Employee> giveEmployeeList() {
 		return FXCollections.unmodifiableObservableList(employeeList);
 	}
+	
 	
 }
