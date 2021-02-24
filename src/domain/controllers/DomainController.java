@@ -34,18 +34,18 @@ public class DomainController {
 		
 	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
 
-	private ObservableList<Customer> customerList;
-	private ObservableList<Employee> employeeList;
+	private ObservableList<UserModel> customerList;
+	private ObservableList<UserModel> employeeList;
 	
 	public DomainController(UserDao userRepo) {
 		this.userRepo = userRepo;
 		
 		List<UserModel> userList = userRepo.findAll();
-		List<Customer> customerList = userList.stream()
+		List<UserModel> customerList = userList.stream()
 											.filter(c -> c instanceof Customer)
 											.map(c -> (Customer) c)
 											.collect(Collectors.toList());
-		List<Employee> employeeList = userList.stream()
+		List<UserModel> employeeList = userList.stream()
 											.filter(e -> e instanceof Employee)
 											.map(e -> (Employee) e)
 											.collect(Collectors.toList());
@@ -201,11 +201,11 @@ public class DomainController {
 		userRepo.commitTransaction();
 	}
 
-	public ObservableList<Customer> giveCustomerList() {
+	public ObservableList<UserModel> giveCustomerList() {
 		return FXCollections.unmodifiableObservableList(customerList);
 	}
 
-	public ObservableList<Employee> giveEmployeeList() {
+	public ObservableList<UserModel> giveEmployeeList() {
 		return FXCollections.unmodifiableObservableList(employeeList);
 	}
 	
