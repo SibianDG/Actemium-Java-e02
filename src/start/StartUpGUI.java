@@ -1,11 +1,13 @@
 package start;
 
 import domain.PopulateDB;
-import domain.controllers.DomainController;
+import domain.facades.UserFacade;
 import gui.LoginController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import languages.LanguageResource;
 import repository.UserDaoJpa;
@@ -19,15 +21,20 @@ public class StartUpGUI extends Application {
             PopulateDB populateDB = new PopulateDB();
             populateDB.run(userDaoJpa);
 
-            DomainController domainController = new DomainController(userDaoJpa);
+            UserFacade domainController = new UserFacade(userDaoJpa);
             LoginController root = new LoginController(domainController);
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("styles.css").toString());
             primaryStage.setScene(scene);
             primaryStage.setTitle(LanguageResource.getString("login"));
-            primaryStage.setResizable(false);
+            primaryStage.setResizable(true);
             primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
             primaryStage.show();
+            
+            primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
+    			if (KeyCode.F11.equals(e.getCode()))
+    				primaryStage.setFullScreen(!primaryStage.isFullScreen());
+    		});
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -4,9 +4,10 @@ import java.io.IOException;
 
 import javax.persistence.EntityNotFoundException;
 
-import domain.controllers.DomainController;
+import domain.facades.UserFacade;
 import exceptions.BlockedUserException;
 import exceptions.PasswordException;
+import gui.controllers.GuiController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,15 +16,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import languages.LanguageResource;
 
-public class LoginController extends GridPane {
+public class LoginController extends GuiController {
 
-    private DomainController domainController;
+    private UserFacade domainController;
 
     @FXML
     private Text txtTitle;
@@ -46,7 +46,7 @@ public class LoginController extends GridPane {
     @FXML
     private Text txtErrorLogin;
 
-    public LoginController(DomainController domainController){
+    public LoginController(UserFacade domainController){
         super();
         this.domainController = domainController;
 
@@ -77,7 +77,7 @@ public class LoginController extends GridPane {
             } else {
                 domainController.signIn(txfUsername.getText(), pwfPassword.getText());
 
-                DashboardController dashboardController = new DashboardController(domainController);
+                DashboardFrameController dashboardController = new DashboardFrameController(domainController);
                 Scene scene = new Scene(dashboardController);
                 Stage stage = (Stage) this.getScene().getWindow();
                 stage.setTitle(LanguageResource.getString("dashboard")); //TODO review LanguageResource

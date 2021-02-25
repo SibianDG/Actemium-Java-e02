@@ -3,7 +3,7 @@ package main;
 import domain.Customer;
 import domain.PopulateDB;
 import domain.UserModel;
-import domain.controllers.DomainController;
+import domain.facades.UserFacade;
 import repository.UserDaoJpa;
 
 public class MainTester {
@@ -21,7 +21,7 @@ public class MainTester {
         //TODO or do we have to do something like this?
         //GenericDao genericDao = new GenericDaoJpa(UserModel.class);
 
-        DomainController dc = new DomainController(userDaoJpa);
+        UserFacade dc = new UserFacade(userDaoJpa);
 
         // 4 failed login attempts for Admin123
         for (int i = 0; i < 4; i++) {

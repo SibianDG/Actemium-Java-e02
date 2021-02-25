@@ -25,7 +25,7 @@ import domain.LoginAttempt;
 import domain.LoginStatus;
 import domain.UserModel;
 import domain.UserStatus;
-import domain.controllers.DomainController;
+import domain.facades.UserFacade;
 import exceptions.BlockedUserException;
 import exceptions.PasswordException;
 import repository.GenericDao;
@@ -46,7 +46,7 @@ public class DomainTest {
     @Mock
     private GenericDao<UserModel> genericRepoDummy;
     @InjectMocks
-    private DomainController dc;
+    private UserFacade dc;
 
     private void trainDummy() {
     	Mockito.lenient().when(userRepoDummy.findByUsername(ADMIN)).thenReturn(admin);

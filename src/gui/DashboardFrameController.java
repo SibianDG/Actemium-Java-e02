@@ -1,46 +1,35 @@
 package gui;
 
-import domain.EmployeeRole;
-import domain.controllers.DomainController;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+
+import domain.facades.Facade;
+import domain.facades.TicketFacade;
+import domain.facades.UserFacade;
+import gui.controllers.GuiController;
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.IntStream;
-
-public class DashboardController extends GridPane {
-    private final DomainController domainController;
+public class DashboardFrameController extends GuiController {
+    // Facades
+	private final UserFacade userFacade;
+	private final TicketFacade ticketFacade;
 
     @FXML
     private GridPane gridDashboard;
@@ -71,9 +60,10 @@ public class DashboardController extends GridPane {
 
     private Set<DashboardTile> dashboardTiles = new HashSet<>();
 
-    public DashboardController(DomainController domainController) throws FileNotFoundException {
+    public DashboardFrameController(Facade userFacade) throws FileNotFoundException {
         super();
-        this.domainController = domainController;
+        this.userFacade = (UserFacade) userFacade;
+		this.ticketFacade = null;
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
@@ -120,7 +110,7 @@ public class DashboardController extends GridPane {
         String[] itemNames = new String[] {};
         String[] itemIcons = new String[] {};
 
-        switch (domainController.giveUserType().toUpperCase()) {
+        switch (userFacade.giveUserType().toUpperCase()) {
             case "ADMINISTRATOR" -> {
                 itemNames = new String[]{"manage employees", "manage customers"};
                 itemIcons = new String[]{"icon_manage", "icon_manage"};
@@ -178,7 +168,7 @@ public class DashboardController extends GridPane {
 		txtTitle.setText(name);
 		resetGridpane();       
 		
-		TableViewPanelController tableViewPanelController = new TableViewPanelController(domainController, this, name.split(" ")[1]);
+		TableViewPanelController tableViewPanelController = new TableViewPanelController(userFacade, this, name.split(" ")[1]);
 		DetailsPanelController detailsPanelController = new DetailsPanelController(tableViewPanelController);
 
 		gridContent.add(tableViewPanelController, 0, 0);
@@ -212,11 +202,11 @@ public class DashboardController extends GridPane {
         txtTitle.setText("Add Employee");
         resetGridpane();
         initializeGridPane(1,1, 500, 500);
-        gridContent.add(new ModifyPanelController(domainController /*, name.split(" ")[1])*/, this), 0, 0);
+        gridContent.add(new ModifyPanelController(userFacade /*, name.split(" ")[1])*/, this), 0, 0);
     }
 
     private void initializeText() {
-        txtName.setText(String.format("%s %s" , domainController.giveUserFirstName(), domainController.giveUserLastName()));
+        txtName.setText(String.format("%s %s" , userFacade.giveUserFirstName(), userFacade.giveUserLastName()));
         txtCompany.setText("COMPANY???");
     }
 
@@ -225,14 +215,14 @@ public class DashboardController extends GridPane {
     }
 
 
-    private void loadScene(String title, Object controller) { // method for switching to the next screen
-        Scene scene = new Scene((Parent) controller);
-        Stage stage = (Stage) this.getScene().getWindow();
-        stage.setTitle(title);
-        stage.setResizable(false);
-        stage.setScene(scene);
-        stage.show();
-    }
+//    private void loadScene(String title, Object controller) { // method for switching to the next screen
+//        Scene scene = new Scene((Parent) controller);
+//        Stage stage = (Stage) this.getScene().getWindow();
+//        stage.setTitle(title);
+//        stage.setResizable(false);
+//        stage.setScene(scene);
+//        stage.show();
+//    }
 
 
     @FXML

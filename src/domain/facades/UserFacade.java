@@ -1,4 +1,4 @@
-package domain.controllers;
+package domain.facades;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,7 +21,7 @@ import languages.LanguageResource;
 import repository.UserDao;
 import repository.UserDaoJpa;
 
-public class DomainController {
+public class UserFacade implements Facade {
 
 	// For now we are still working with a single DomainController
 	// In the next sprint this will be replaced by:
@@ -40,7 +40,7 @@ public class DomainController {
 	private ObservableList<UserModel> customerList;
 	private ObservableList<UserModel> employeeList;
 	
-	public DomainController(UserDao userRepo) {
+	public UserFacade(UserDao userRepo) {
 		this.userRepo = userRepo;
 		fillInUserLists();
 
@@ -62,7 +62,7 @@ public class DomainController {
 	}
 	
 	//TODO constructor vs setter injection?
-	public DomainController() {
+	public UserFacade() {
 		this(new UserDaoJpa());
 //		setUserRepo(new UserDaoJpa());
 	}

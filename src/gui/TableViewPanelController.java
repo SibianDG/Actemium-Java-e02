@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import domain.UserModel;
-import domain.controllers.DomainController;
+import domain.facades.UserFacade;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -25,8 +25,8 @@ import javafx.scene.text.Text;
 
 public class TableViewPanelController extends GridPane implements Observable {
 
-	private DomainController domainController;
-	private DashboardController dashboardController;
+	private UserFacade domainController;
+	private DashboardFrameController dashboardController;
 	private UserModel selectedUser;
 	private String user;
 	private ObservableList<UserModel> users;
@@ -45,7 +45,7 @@ public class TableViewPanelController extends GridPane implements Observable {
 	@FXML
 	private TableView<UserModel> tvUsers;
 	
-	public TableViewPanelController(DomainController domainController, DashboardController dashboardController ,String user) {
+	public TableViewPanelController(UserFacade domainController, DashboardFrameController dashboardController ,String user) {
 		this.domainController = domainController;
 		this.dashboardController = dashboardController;
 		this.user = user;

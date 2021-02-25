@@ -2,7 +2,7 @@ package gui;
 
 import domain.Employee;
 import domain.EmployeeRole;
-import domain.controllers.DomainController;
+import domain.facades.UserFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,8 +22,8 @@ import java.util.Map;
 
 public class ModifyPanelController extends GridPane {
 
-	private final DomainController domainController;
-	private final DashboardController dashboardController;
+	private final UserFacade domainController;
+	private final DashboardFrameController dashboardController;
 	private String user;
 
 
@@ -76,7 +76,7 @@ public class ModifyPanelController extends GridPane {
 		return ((TextField) gridContent.getChildren().get(2*i+1)).getText();
 	}
 
-	public ModifyPanelController(DomainController domainController, DashboardController dashboardController) {
+	public ModifyPanelController(UserFacade domainController, DashboardFrameController dashboardController) {
 		this.domainController = domainController;
 		this.dashboardController = dashboardController;
 
