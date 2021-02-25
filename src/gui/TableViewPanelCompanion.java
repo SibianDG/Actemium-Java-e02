@@ -23,7 +23,7 @@ import javafx.scene.text.Text;
 
 public class TableViewPanelCompanion extends GridPane {
 
-	private UserFacade domainController;
+	private UserFacade userFacade;
 	private DashboardFrameController dashboardFrameController;
 	//private String user;
 	private UserViewModel userViewModel;
@@ -40,8 +40,8 @@ public class TableViewPanelCompanion extends GridPane {
 	@FXML
 	private TableView<UserModel> tvUsers;
 	
-	public TableViewPanelCompanion(UserFacade domainController, DashboardFrameController dashboardFrameController, UserViewModel userviewModel) {
-		this.domainController = domainController;
+	public TableViewPanelCompanion(UserFacade userFacade, DashboardFrameController dashboardFrameController, UserViewModel userviewModel) {
+		this.userFacade = userFacade;
 		this.dashboardFrameController = dashboardFrameController;
 		this.userViewModel = userviewModel;
 
@@ -56,11 +56,13 @@ public class TableViewPanelCompanion extends GridPane {
 		initializeTableView();
 	}
 
+	
+	// We could try 2 different TableView s
+	// 1 for customers
+		// should display companyName instead of username
+	// 1 for employees
+		// should display userRole instead of username
 	private void initializeTableView() {
-		
-		TableColumn<UserModel, String> usernameColumn = new TableColumn<>("Username");
-		tvUsers.getColumns().add(usernameColumn);
-		usernameColumn.setCellValueFactory(cellData -> cellData.getValue().usernameProperty());
 		
 		TableColumn<UserModel, String> firstNameColumn = new TableColumn<>("Firstname");
 		tvUsers.getColumns().add(firstNameColumn);
@@ -69,6 +71,10 @@ public class TableViewPanelCompanion extends GridPane {
 		TableColumn<UserModel, String> lastNameColumn = new TableColumn<>("Lastname");
 		tvUsers.getColumns().add(lastNameColumn);
 		lastNameColumn.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
+		
+		TableColumn<UserModel, String> usernameColumn = new TableColumn<>("Username");
+		tvUsers.getColumns().add(usernameColumn);
+		usernameColumn.setCellValueFactory(cellData -> cellData.getValue().usernameProperty());
 
 		TableColumn<UserModel, String> statusColumn = new TableColumn<>("Status");
 		tvUsers.getColumns().add(statusColumn);

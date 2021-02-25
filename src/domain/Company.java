@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 
 @Entity
 public class Company implements Serializable {
+	@Serial
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -20,10 +22,13 @@ public class Company implements Serializable {
 	private String phoneNumber;
 	private LocalDate registrationDate;
 
-	@OneToMany(mappedBy = "company")
+	@OneToMany(mappedBy = "company"
+//			   cascade = CascadeType.PERSIST
+			   )
 	private List<Customer> customerList = new ArrayList<>();
 	
 	public Company() {		
+		super();
 	}
 	
 	public Company(String name, String address, String phoneNumber) {

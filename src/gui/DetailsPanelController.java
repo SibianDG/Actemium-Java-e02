@@ -1,7 +1,9 @@
 package gui;
 
 import java.io.IOException;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 import gui.viewModels.UserViewModel;
 import javafx.beans.InvalidationListener;
@@ -116,7 +118,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     private void addDetailsToGridDetails(Map<String, String> details){
 	    int i = 0;
-	    for (String key : details.keySet()){
+	    // Using LinkedHashSet so the order of the map values doesn't change
+	    Set<String> keys = new LinkedHashSet<String>(details.keySet());
+	    for (String key : keys) {
 	        Text header = new Text(key);
 	        header.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	        header.setFill(Color.rgb(29, 61, 120));

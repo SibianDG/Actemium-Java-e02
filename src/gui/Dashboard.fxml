@@ -60,7 +60,7 @@
                               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                            </VBox.margin>
                         </Text>
-                        <Text fx:id="txtCompany" fill="#173d78" strokeType="OUTSIDE" strokeWidth="0.0" text="Company X">
+                        <Text fx:id="txtEmployeeRole" fill="#173d78" strokeType="OUTSIDE" strokeWidth="0.0" text="Company X">
                            <font>
                               <Font name="Arial" size="14.0" />
                            </font>

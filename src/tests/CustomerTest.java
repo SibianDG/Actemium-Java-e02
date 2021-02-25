@@ -9,11 +9,14 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import domain.Company;
 import domain.Customer;
 
 public class CustomerTest {
 
-    private Customer customer;
+    private Customer customer;    
+
+    Company theWhiteHouse = new Company("The White House", "America 420", "911");    
 
     private static Stream<Arguments> validUserAttributes() {
         return Stream.of(
@@ -67,18 +70,18 @@ public class CustomerTest {
     @ParameterizedTest
     @MethodSource("validUserAttributes")
     public void createCustomer_Correct(String username, String password, String firstName, String lastName) {
-        Assertions.assertDoesNotThrow(() -> new Customer(username, password, firstName, lastName));
+        Assertions.assertDoesNotThrow(() -> new Customer(username, password, firstName, lastName, theWhiteHouse));
     }
 
     @ParameterizedTest
     @MethodSource("invalidUserAttributes")
     public void createCustomer_Failed(String username, String password, String firstName, String lastName) {
-        Assertions.assertThrows(IllegalArgumentException.class,() -> new Customer(username, password, firstName, lastName));
+        Assertions.assertThrows(IllegalArgumentException.class,() -> new Customer(username, password, firstName, lastName, theWhiteHouse));
     }
     
     @Test
     public void giveEmployeeSeniroity_returns_valid() {
-    	customer = new Customer("Tester123", "Passwd123&", "Jan", "Jannsens");
+    	customer = new Customer("Tester123", "Passwd123&", "Jan", "Jannsens", theWhiteHouse);
     	customer.setRegistrationDate(LocalDate.now().minusYears(10));
         Assertions.assertEquals(10, customer.giveSeniority());
     }

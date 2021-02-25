@@ -5,7 +5,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Customer extends UserModel implements Seniority {
@@ -13,81 +17,63 @@ public class Customer extends UserModel implements Seniority {
 	private static final long serialVersionUID = 1L;
 
 	//@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long customerNr;
-	@OneToMany
-	private List<Contract> contracts;
-	@ManyToOne
+	private int customerNr;
+//	@OneToMany
+//	private List<Contract> contracts;
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	private Company company;
-	@ManyToMany(mappedBy = "customerList")
-	private List<ContactPerson> contactPersons;
+//	@ManyToMany(mappedBy = "customers",
+//				cascade = CascadeType.PERSIST)
+//	private List<Employee> contactPersons = new ArrayList<>();
 
 	private LocalDate registrationDate;
 
 	public Customer() {
+		super();
 	}
 	
-	public Customer(String username, String password, String firstName, String lastName) {
+	public Customer(String username, String password, String firstName, String lastName, Company company) {
 		super(username, password, firstName, lastName);
+		setCompany(company);
 		setRegistrationDate(LocalDate.now());
-		//this.contracts = new ArrayList<>();
-		//this.contactPersons = new ArrayList<>();
+//		this.contracts = new ArrayList<>();
+//		this.contactPersons = new ArrayList<>();
 	}
 
 
-	public long getCustomerNr() {
+	public int getCustomerNr() {
 		return customerNr;
 	}
 
-	private void setCustomerNr(int customerNr) {
+	public void setCustomerNr(int customerNr) {
 		this.customerNr = customerNr;
 	}
 
-	/*
-	public List<Contract> getContracts() {
-		return contracts;
-	}
-
-	private void setContracts(List<Contract> contracts) {
-		this.contracts = contracts;
-	}
+	
+//	public List<Contract> getContracts() {
+//		return contracts;
+//	}
+//
+//	public void setContracts(List<Contract> contracts) {
+//		this.contracts = contracts;
+//	}
 
 	public Company getCompany() {
 		return company;
 	}
 
-	private void setCompany(Company company) {
+	public void setCompany(Company company) {
 		this.company = company;
 	}
 
-	public List<ContactPerson> getContactPersons() {
-		return contactPersons;
-	}
-
-	private void setContactPersons(List<ContactPerson> contactPersons) {
-		this.contactPersons = contactPersons;
-	}*/
-
-	public String getCompanyName(){
-		if (company == null){
-			return "Company not implemented";
-		}
-		return company.getName();
-	}
-
-	public String getCompanyAddress(){
-		if (company == null){
-			return "Company not implemented";
-		}
-		return company.getAddress();
-	}
-
-	public String getCompanyPhone(){
-		if (company == null){
-			return "Company not implemented";
-		}
-		return company.getPhoneNumber();
-	}
-
+//	public List<Employee> getContactPersons() {
+//		return contactPersons;
+//	}
+//
+//	public void setContactPersons(List<Employee> contactPersons) {
+//		this.contactPersons = contactPersons;
+//	}
+	
 	public LocalDate getRegistrationDate() {
 		return registrationDate;
 	}
@@ -95,6 +81,10 @@ public class Customer extends UserModel implements Seniority {
 	public void setRegistrationDate(LocalDate registrationDate) {
 		this.registrationDate = registrationDate;
 	}
+	
+//	public void addContactPerson(Employee contactPerson) {
+//		contactPersons.add(contactPerson);
+//	}
 
 	@Override
 	public int giveSeniority() {

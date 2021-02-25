@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 
 @Entity
 public class ContractType implements Serializable {
+	@Serial
 	private static final long serialVersionUID = 1L;
 	
 	@Id

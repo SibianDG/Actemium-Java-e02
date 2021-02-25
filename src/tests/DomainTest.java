@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import domain.Company;
 import domain.Customer;
 import domain.Employee;
 import domain.EmployeeRole;
@@ -39,7 +40,8 @@ public class DomainTest {
     			 WRONGUSERNAME = "usernameDoesNotExist"; //EntityNotFoundException()
     UserModel admin = new Employee("janJannsens123", "PassWd123&", "Jan", "Jannsens", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR);
     UserModel tech = new Employee("jooKlein123", "PassWd123&", "Joost", "Klein", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.TECHNICIAN);
-    UserModel cust = new Customer("customer123", "PassWd123&", "John", "Smith");
+    Company theWhiteHouse = new Company("The White House", "America 420", "911");    
+    UserModel cust = new Customer("customer123", "PassWd123&", "John", "Smith", theWhiteHouse);
 
     @Mock
     private UserDao userRepoDummy;
@@ -94,7 +96,7 @@ public class DomainTest {
     public void giveUserType_After_LoginAttempt_Valid_ReturnsSignedInUserUserType() {
     	trainDummy();
         dc.signIn(ADMIN, PASSWORD);
-        assertEquals("ADMINISTRATOR", dc.giveUserType());
+        assertEquals("ADMINISTRATOR", dc.giveUserRole());
     	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
     }
     
@@ -247,14 +249,14 @@ public class DomainTest {
     @Test
     public void createCustomer_UsernameAlreadyExists_ThrowsIllegalArgumentException() {
     	trainDummy();
-    	assertThrows(IllegalArgumentException.class, () -> dc.registerCustomer(ADMIN, PASSWORD, "John", "Smith")); 
+    	assertThrows(IllegalArgumentException.class, () -> dc.registerCustomer(ADMIN, PASSWORD, "John", "Smith", theWhiteHouse)); 
     	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
     }
     
     @Test
     public void modifyCustomer_UsernameAlreadyExists_ThrowsIllegalArgumentException() {
     	trainDummy();
-    	assertThrows(IllegalArgumentException.class, () -> dc.modifyCustomer((Customer) cust, ADMIN, PASSWORD, "John", "Smith")); 
+    	assertThrows(IllegalArgumentException.class, () -> dc.modifyCustomer((Customer) cust, ADMIN, PASSWORD, "John", "Smith", theWhiteHouse)); 
     	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
     }
     

@@ -49,7 +49,7 @@ public class DashboardFrameController extends GuiController {
     private Text txtName;
 
     @FXML
-    private Text txtCompany;
+    private Text txtEmployeeRole;
 
     @FXML
     private ImageView imgLogo;
@@ -113,7 +113,7 @@ public class DashboardFrameController extends GuiController {
         String[] itemNames = new String[] {};
         String[] itemIcons = new String[] {};
 
-        switch (userFacade.giveUserType().toUpperCase()) {
+        switch (userFacade.giveUserRole().toUpperCase()) {
             case "ADMINISTRATOR" -> {
                 itemNames = new String[]{"manage employees", "manage customers"};
                 itemIcons = new String[]{"icon_manage", "icon_manage"};
@@ -214,7 +214,7 @@ public class DashboardFrameController extends GuiController {
 
     private void initializeText() {
         txtName.setText(String.format("%s %s" , userFacade.giveUserFirstName(), userFacade.giveUserLastName()));
-        txtCompany.setText("COMPANY???");
+        txtEmployeeRole.setText(userFacade.giveUserRole());
     }
 
     public void reactionFromTile(){

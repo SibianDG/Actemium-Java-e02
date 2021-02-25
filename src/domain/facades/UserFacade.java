@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
+import domain.Company;
 import domain.Customer;
 import domain.Employee;
 import domain.EmployeeRole;
@@ -101,7 +102,7 @@ public class UserFacade implements Facade {
 //			userRepo.registerLoginAttempt(loginAttempt);
 			userRepo.commitTransaction();
 			throw new BlockedUserException(String.format(
-					"User account has been blocked because more than%n %d failed login attempts have been registered."
+					"User account has been blocked because more than%n%d failed login attempts have been registered."
 					+ "%nPlease contact your system administrator.",
 					USER_LOGIN_MAX_ATTEMPTS));
 		}
@@ -118,11 +119,14 @@ public class UserFacade implements Facade {
 				userModel.blockUser();
 				userRepo.commitTransaction();
 				throw new BlockedUserException(
-						String.format("Wrong password%nUser has reached more than %d failed login attempts,%n account has been blocked.",
+						String.format("%s%nUser has reached more than %d failed login attempts,%n account has been blocked.",
+								LanguageResource.getString("wrongUsernamePasswordCombination"),
 								USER_LOGIN_MAX_ATTEMPTS));
 			}
 			userRepo.commitTransaction();
-			throw new PasswordException(String.format("Wrong password%nOnly %d attempts remaining", 5 - userModel.getFailedLoginAttempts()));
+			throw new PasswordException(String.format("%s%nOnly %d attempts remaining", 
+					LanguageResource.getString("wrongUsernamePasswordCombination"), 
+					USER_LOGIN_MAX_ATTEMPTS - userModel.getFailedLoginAttempts()));
 		}
 
 		// correct password
@@ -141,7 +145,7 @@ public class UserFacade implements Facade {
 		System.out.println("Just signed in: " + signedInUser.getUsername());
 	}
 
-	public String giveUserType() {
+	public String giveUserRole() {
 		if(signedInUser instanceof Employee) {
 			return ((Employee) signedInUser).getRole().toString();
 		}
@@ -171,9 +175,9 @@ public class UserFacade implements Facade {
 
 	}
 
-	public void registerCustomer(String username, String password, String firstName, String lastName) {
+	public void registerCustomer(String username, String password, String firstName, String lastName, Company company) {
 		existingUsername(username);		
-		Customer customer = new Customer(username, password, firstName, lastName);
+		Customer customer = new Customer(username, password, firstName, lastName, company);
 		userRepo.startTransaction();
 		userRepo.insert(customer);
 		userRepo.commitTransaction();
@@ -192,7 +196,7 @@ public class UserFacade implements Facade {
 
 	}
 
-	public void modifyCustomer(Customer customer, String username, String password, String firstName, String lastName) {
+	public void modifyCustomer(Customer customer, String username, String password, String firstName, String lastName, Company company) {
 		// only needs to be checked if you changed the username 
 		if (!customer.getUsername().equals(username)) {
 			existingUsername(username);
@@ -201,6 +205,7 @@ public class UserFacade implements Facade {
 		customer.setPassword(password);
 		customer.setFirstName(firstName);
 		customer.setLastName(lastName);
+		customer.setCompany(company);
 		userRepo.startTransaction();
 		userRepo.update(customer);
 		userRepo.commitTransaction();

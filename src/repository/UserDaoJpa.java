@@ -36,7 +36,7 @@ public class UserDaoJpa extends GenericDaoJpa<UserModel> implements UserDao {
 					.setParameter("username", username)
 					.getSingleResult();
 		} catch (NoResultException ex) {
-			throw new EntityNotFoundException(LanguageResource.getString("usernameNotFound"));
+			throw new EntityNotFoundException(LanguageResource.getString("wrongUsernamePasswordCombination"));
 		}
 	}
 }

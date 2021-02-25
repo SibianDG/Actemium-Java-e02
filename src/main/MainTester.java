@@ -1,5 +1,6 @@
 package main;
 
+import domain.Company;
 import domain.Customer;
 import domain.PopulateDB;
 import domain.UserModel;
@@ -69,21 +70,22 @@ public class MainTester {
 //          e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
-        
+
+        Company theWhiteHouse = new Company("The White House", "America 420", "911");
         // Can't register if username is already taken
         try {
         	System.out.println("\ndc.registerCustomer(\"Admin123\", \"Passwd123&\", \"Thierry\", \"Kempens\")");
-        	dc.registerCustomer("Admin123", "Passwd123&", "Thierry", "Kempens");
+        	dc.registerCustomer("Admin123", "Passwd123&", "Thierry", "Kempens", theWhiteHouse);
 		} catch (Exception e) {
 //          e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
         
-        Customer customer = (Customer) userDaoJpa.findByUsername("Cust123");
+        Customer customer = (Customer) userDaoJpa.findByUsername("cust01Barak");
         
         System.out.printf("%nCustomer before modifyCustomer:%nFirst name: %s%nLast name: %s%n", customer.getFirstName(), customer.getLastName());
         
-        dc.modifyCustomer(customer, "Cust123", "Passwd123&", "Thierry", "Kempens");  
+        dc.modifyCustomer(customer, "cust01Barak", "Passwd123&", "Thierry", "Kempens", theWhiteHouse);  
         
         System.out.printf("%nCustomer after modifyCustomer:%nFirst name: %s%nLast name: %s%n%n", customer.getFirstName(), customer.getLastName());
         

@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Employee extends UserModel implements Seniority, Serializable {
@@ -14,7 +15,7 @@ public class Employee extends UserModel implements Seniority, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	// @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long employeeNr;
+	private int employeeNr;
 
 	private String address;
 	private String phoneNumber;
@@ -22,6 +23,9 @@ public class Employee extends UserModel implements Seniority, Serializable {
 	@Enumerated(EnumType.STRING)
 	private EmployeeRole role;
 	private LocalDate registrationDate;
+	
+//	@ManyToMany
+//	private List<Customer> customers;
 
 	public Employee(String username, String password, String firstName, String lastName, String address,
 			String phoneNumber, String emailAddress, EmployeeRole role) {
@@ -34,7 +38,7 @@ public class Employee extends UserModel implements Seniority, Serializable {
 	}
 
 	public Employee() {
-
+		super();
 	}
 
 	@Override
@@ -42,7 +46,7 @@ public class Employee extends UserModel implements Seniority, Serializable {
 		return LocalDate.now().getYear() - registrationDate.getYear();
 	}
 
-	public long getEmployeeNr() {
+	public int getEmployeeNr() {
 		return employeeNr;
 	}
 
