@@ -10,6 +10,7 @@ import domain.facades.Facade;
 import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
 import gui.controllers.GuiController;
+import gui.viewModels.UserViewModel;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +30,8 @@ import javafx.scene.text.Text;
 public class DashboardFrameController extends GuiController {
     // Facades
 	private final UserFacade userFacade;
-	private final TicketFacade ticketFacade;
+	//private final TicketFacade ticketFacade;
+	private UserViewModel userViewModel;
 
     @FXML
     private GridPane gridDashboard;
@@ -62,9 +64,10 @@ public class DashboardFrameController extends GuiController {
 
     public DashboardFrameController(Facade userFacade) throws FileNotFoundException {
         super();
-        this.userFacade = (UserFacade) userFacade;
-		this.ticketFacade = null;
 
+        this.userFacade = (UserFacade) userFacade;
+		//this.ticketFacade = null;
+		this.userViewModel = new UserViewModel();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
             loader.setController(this);
@@ -146,10 +149,14 @@ public class DashboardFrameController extends GuiController {
     private void addDashboardItem(String name, ImageView imageView, int x, int y, int i) {
         DashboardTile dashboardTile = new DashboardTile(imageView, name, i%2);
         dashboardTile.setOnMouseClicked(e -> {
-        	
-        	if(name.toLowerCase().contains("manage")) {
-        		switchToManageScreen(name);
+        	if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("employee")) {
+                userViewModel.setUserList(userFacade.giveEmployeeList());
+                switchToManageScreen(name);
+            } else if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("customer")) {
+                userViewModel.setUserList(userFacade.giveCustomerList());
+                switchToManageScreen(name);
         	} else {
+
         		makePopUp(name);
         	}
         	    	
@@ -168,10 +175,10 @@ public class DashboardFrameController extends GuiController {
 		txtTitle.setText(name);
 		resetGridpane();       
 		
-		TableViewPanelController tableViewPanelController = new TableViewPanelController(userFacade, this, name.split(" ")[1]);
-		DetailsPanelController detailsPanelController = new DetailsPanelController(tableViewPanelController);
+		TableViewPanelCompanion tableViewPanelCompanion = new TableViewPanelCompanion(userFacade, this, userViewModel);
+		DetailsPanelController detailsPanelController = new DetailsPanelController(userViewModel);
 
-		gridContent.add(tableViewPanelController, 0, 0);
+		gridContent.add(tableViewPanelCompanion, 0, 0);
 		gridContent.add(detailsPanelController, 1, 0);
 //		System.out.println(gridContent.getColumnCount());
 //		System.out.println(gridContent.getRowCount());
@@ -223,6 +230,7 @@ public class DashboardFrameController extends GuiController {
 //        stage.setScene(scene);
 //        stage.show();
 //    }
+
 
 
     @FXML

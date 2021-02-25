@@ -76,7 +76,6 @@ public class LoginController extends GuiController {
                 txtErrorLogin.setOpacity(1);
             } else {
                 domainController.signIn(txfUsername.getText(), pwfPassword.getText());
-
                 DashboardFrameController dashboardController = new DashboardFrameController(domainController);
                 Scene scene = new Scene(dashboardController);
                 Stage stage = (Stage) this.getScene().getWindow();

@@ -1,13 +1,11 @@
 package gui;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import domain.UserModel;
 import domain.facades.UserFacade;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
+import gui.viewModels.UserViewModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,16 +21,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
 
-public class TableViewPanelController extends GridPane implements Observable {
+public class TableViewPanelCompanion extends GridPane {
 
 	private UserFacade domainController;
-	private DashboardFrameController dashboardController;
-	private UserModel selectedUser;
-	private String user;
-	private ObservableList<UserModel> users;
+	private DashboardFrameController dashboardFrameController;
+	//private String user;
+	private UserViewModel userViewModel;
 
-	private ArrayList<InvalidationListener> listeners = new ArrayList<>();
-	
     @FXML
     private Button btnAdd;
 
@@ -45,11 +40,11 @@ public class TableViewPanelController extends GridPane implements Observable {
 	@FXML
 	private TableView<UserModel> tvUsers;
 	
-	public TableViewPanelController(UserFacade domainController, DashboardFrameController dashboardController ,String user) {
+	public TableViewPanelCompanion(UserFacade domainController, DashboardFrameController dashboardFrameController, UserViewModel userviewModel) {
 		this.domainController = domainController;
-		this.dashboardController = dashboardController;
-		this.user = user;
-		
+		this.dashboardFrameController = dashboardFrameController;
+		this.userViewModel = userviewModel;
+
 		try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("TableViewPanel.fxml"));
             loader.setController(this);
@@ -79,41 +74,30 @@ public class TableViewPanelController extends GridPane implements Observable {
 		tvUsers.getColumns().add(statusColumn);
 		statusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
 
-		if (user.equals("employees")) {
-			btnAdd.setText("Add Employee");
-			users = domainController.giveEmployeeList();
-		} else {
-			btnAdd.setText("Add Customer");
-			users = domainController.giveCustomerList();
-		}
+		ObservableList<UserModel> users = userViewModel.getUserList();
+
+		btnAdd.setText("Add "+users.get(0).getClass().getSimpleName().toLowerCase());
 
 		tvUsers.setItems(users);
 
 		tvUsers.setOnMouseClicked((MouseEvent m) -> {
 			UserModel user = tvUsers.getSelectionModel().selectedItemProperty().get();
 			if (user != null){
-				//TODO change it
-				setSelectedUser(user);
-				domainController.setSelectedUser(user);
-				//System.out.println(selectedUser.getUsername());
+				userViewModel.setSelectedUser(user);
 			}
 		});
 	}
 
 	@FXML
 	void addOnAction(ActionEvent event) {
-		dashboardController.setModifyPane();
+		dashboardFrameController.setModifyPane();
 	}
 
 	@FXML
 	void filterOnKeyTyped(KeyEvent event) {
 		String input = txfFilterInput.getText().toLowerCase();
 
-		if (user.equals("employees")) {
-			users = domainController.giveEmployeeList();
-		} else {
-			users = domainController.giveCustomerList();
-		}
+		ObservableList<UserModel> users = userViewModel.getUserList();
 
 		if (!input.isBlank()){
 			users = FXCollections.observableArrayList(
@@ -123,30 +107,5 @@ public class TableViewPanelController extends GridPane implements Observable {
 			);
 		}
 		tvUsers.setItems(users);
-	}
-
-	public UserModel getSelectedUser() {
-		return selectedUser;
-	}
-
-	public void setSelectedUser(UserModel selectedUser) {
-		this.selectedUser = selectedUser;
-		fireInvalidationEvent();
-	}
-
-	protected void fireInvalidationEvent() {
-		for (InvalidationListener listener : listeners) {
-			listener.invalidated(this);
-		}
-	}
-
-	@Override
-	public void addListener(InvalidationListener invalidationListener) {
-		listeners.add(invalidationListener);
-	}
-
-	@Override
-	public void removeListener(InvalidationListener invalidationListener) {
-		listeners.remove(invalidationListener);
 	}
 }

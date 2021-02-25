@@ -1,13 +1,9 @@
 package gui;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
-import domain.Customer;
-import domain.Employee;
-import domain.UserModel;
+import gui.viewModels.UserViewModel;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.event.ActionEvent;
@@ -15,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -25,12 +20,10 @@ import javafx.scene.text.Text;
 
 public class DetailsPanelController extends GridPane implements InvalidationListener {
 
-
-    private TableViewPanelController tableViewPanelController;
-    private UserModel user;
+    private final UserViewModel userViewModel;
 
     @FXML
-    private Text txtDetails;
+    private Text txtDetailsTitle;
 
     @FXML
     private GridPane gridDetails;
@@ -38,10 +31,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     @FXML
     private Button btnModify;
 	
-	public DetailsPanelController(TableViewPanelController tableViewPanelController) {
-
-	    this.tableViewPanelController = tableViewPanelController;
-	    tableViewPanelController.addListener(this);
+	public DetailsPanelController(UserViewModel userviewModel) {
+        this.userViewModel = userviewModel;
+        userViewModel.addListener(this);
 
 		try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("DetailsPanel.fxml"));
@@ -72,17 +64,14 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
         gridDetails.getChildren().clear();
 
-        if (tableViewPanelController.getSelectedUser() instanceof Employee ) {
-	        user = fillGridPaneEmployee();
-        } else {
-	        user = fillGridPaneCustomer();
-        }
-        txtDetails.setText("Details of "+ user.getUsername());
+        addDetailsToGridDetails(userViewModel.getDetails());
+        
+        txtDetailsTitle.setText("Details of "+userViewModel.getNameOfSelectedUser());
 
     }
 
-    public UserModel fillGridPaneEmployee() {
-	    Employee user = (Employee) tableViewPanelController.getSelectedUser();
+    /*public void fillGridPaneEmployee() {
+	    Employee user = (Employee) userViewModel.getSelectedUser();
 
         Map<String, String> details = Map.of(
                 "Username", user.getUsername()
@@ -96,12 +85,14 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                 , "Role", user.getRole().toString()
         );
 
+
         addDetailsToGridDetails(details);
-        return user;
+        txtDetails.setText("Details of "+ user.getUsername());
+
     }
 
-    public UserModel fillGridPaneCustomer() {
-        Customer user = (Customer) tableViewPanelController.getSelectedUser();
+    public void fillGridPaneCustomer(Map<String, String> details) {
+        Customer user = (Customer) userViewModel.getSelectedUser();
         Map<String, String> details = Map.of(
                 "Username", user.getUsername()
                 , "Status", user.getStatus().toString()
@@ -116,8 +107,12 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         );
 
         addDetailsToGridDetails(details);
-        return user;
+
+        txtDetails.setText("Details of "+ user.getUsername());
+
     }
+
+     */
 
     private void addDetailsToGridDetails(Map<String, String> details){
 	    int i = 0;

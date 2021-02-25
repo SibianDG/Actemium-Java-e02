@@ -20,7 +20,7 @@
    <children>
       <VBox spacing="40.0" styleClass="bg-rounded" stylesheets="@../start/styles.css">
          <children>
-            <Text fx:id="txtDetails" fill="#173d78" strokeType="OUTSIDE" strokeWidth="0.0" text="Details of " underline="true">
+            <Text fx:id="txtDetailsTitle" fill="#173d78" strokeType="OUTSIDE" strokeWidth="0.0" text="Details of " underline="true">
                <font>
                   <Font name="Arial Bold" size="30.0" />
                </font>
