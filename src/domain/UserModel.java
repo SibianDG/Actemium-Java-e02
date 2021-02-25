@@ -20,6 +20,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -55,9 +56,12 @@ public abstract class UserModel implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long userId;
 
+	@Transient
 	private StringProperty username = new SimpleStringProperty();
-	private String password; //= new SimpleStringProperty();
+	private String password;
+	@Transient
 	private StringProperty firstName = new SimpleStringProperty();
+	@Transient
 	private StringProperty lastName = new SimpleStringProperty();
 	private int failedLoginAttempts;
 	@Enumerated(EnumType.STRING)
