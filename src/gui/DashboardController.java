@@ -88,6 +88,9 @@ public class DashboardController extends GridPane {
         initializeText();
 
         imgLogo.setCursor(Cursor.HAND);
+        imgMyAccount.setCursor(Cursor.HAND);
+        imgNotifications.setCursor(Cursor.HAND);
+        imgLogout.setCursor(Cursor.HAND);
 
     }
 

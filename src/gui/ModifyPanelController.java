@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
@@ -100,6 +101,11 @@ public class ModifyPanelController extends GridPane {
  */
 		fields = new ArrayList<>(Arrays.asList("Username", "Password", "Firstname", "Lastname", "Address", "Phone number","Email address", "Role"));
 		addFiledsToGrid(fields);
+		gridContent.minWidth(400);
+		gridContent.minHeight(400);
+		gridContent.setVgap(15);
+		gridContent.setHgap(15);
+		btnAdd.setText("Add");
 	}
 
 	private void addFiledsToGrid(ArrayList<String> fields){
@@ -120,15 +126,19 @@ public class ModifyPanelController extends GridPane {
 
 		for (int i = 0; i < fields.size(); i++) {
 			gridContent.addRow(i);
+
 			gridContent.add(makeNewLabel(fields.get(i)), 0, i);
+
 			TextField textField = new TextField(randomValues.get(fields.get(i)));
+			textField.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 			gridContent.add(textField, 1, i);
 		}
 	}
 
 	private Label makeNewLabel(String text){
 		Label label = new Label(text+":");
-		label.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		label.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+		label.setTextFill(Color.rgb(29, 61, 120));
 		return label;
 	}
 }

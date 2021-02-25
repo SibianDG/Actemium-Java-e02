@@ -63,25 +63,27 @@ public class TableViewPanelController extends GridPane implements Observable {
 
 	private void initializeTableView() {
 		
-		TableColumn<UserModel, String> usernameColumn = new TableColumn<>("username");
+		TableColumn<UserModel, String> usernameColumn = new TableColumn<>("Username");
 		tvUsers.getColumns().add(usernameColumn);
 		usernameColumn.setCellValueFactory(cellData -> cellData.getValue().usernameProperty());
 		
-		TableColumn<UserModel, String> firstNameColumn = new TableColumn<>("firstname");
+		TableColumn<UserModel, String> firstNameColumn = new TableColumn<>("Firstname");
 		tvUsers.getColumns().add(firstNameColumn);
 		firstNameColumn.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
 
-		TableColumn<UserModel, String> lastNameColumn = new TableColumn<>("lastname");
+		TableColumn<UserModel, String> lastNameColumn = new TableColumn<>("Lastname");
 		tvUsers.getColumns().add(lastNameColumn);
 		lastNameColumn.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
 
-		TableColumn<UserModel, String> statusColumn = new TableColumn<>("status");
+		TableColumn<UserModel, String> statusColumn = new TableColumn<>("Status");
 		tvUsers.getColumns().add(statusColumn);
 		statusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
 
 		if (user.equals("employees")) {
+			btnAdd.setText("Add Employee");
 			users = domainController.giveEmployeeList();
 		} else {
+			btnAdd.setText("Add Customer");
 			users = domainController.giveCustomerList();
 		}
 
@@ -89,10 +91,12 @@ public class TableViewPanelController extends GridPane implements Observable {
 
 		tvUsers.setOnMouseClicked((MouseEvent m) -> {
 			UserModel user = tvUsers.getSelectionModel().selectedItemProperty().get();
-			//TODO change it
-			setSelectedUser(user);
-			domainController.setSelectedUser(user);
-			//System.out.println(selectedUser.getUsername());
+			if (user != null){
+				//TODO change it
+				setSelectedUser(user);
+				domainController.setSelectedUser(user);
+				//System.out.println(selectedUser.getUsername());
+			}
 		});
 	}
 

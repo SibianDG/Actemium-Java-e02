@@ -18,30 +18,28 @@
       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="500.0" spacing="40.0" styleClass="bg-rounded" stylesheets="@../start/styles.css">
+      <VBox spacing="40.0" styleClass="bg-rounded" stylesheets="@../start/styles.css">
          <children>
-            <Text fx:id="txtDetails" strokeType="OUTSIDE" strokeWidth="0.0" text="Details">
+            <Text fx:id="txtDetails" fill="#173d78" strokeType="OUTSIDE" strokeWidth="0.0" text="Details of " underline="true">
                <font>
-                  <Font name="Arial Bold" size="24.0" />
+                  <Font name="Arial Bold" size="30.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  <Insets />
                </VBox.margin>
             </Text>
-            <GridPane fx:id="gridDetails">
+            <GridPane fx:id="gridDetails" styleClass="gridDetails">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+               </rowConstraints>
             </GridPane>
-            <HBox alignment="CENTER_RIGHT" prefHeight="39.0" prefWidth="289.0">
+            <HBox alignment="BOTTOM_RIGHT">
                <children>
-                  <Button fx:id="btnModify" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnModifyOnAction" styleClass="btn-blue" text="Button">
+                  <Button fx:id="btnModify" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnModifyOnAction" styleClass="btn-blue" text="Modify">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
