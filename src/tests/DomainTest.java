@@ -11,9 +11,6 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
-import domain.*;
-import domain.controllers.DomainController;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,6 +18,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import domain.Customer;
+import domain.Employee;
+import domain.EmployeeRole;
+import domain.LoginAttempt;
+import domain.LoginStatus;
+import domain.UserModel;
+import domain.UserStatus;
+import domain.controllers.DomainController;
 import exceptions.BlockedUserException;
 import exceptions.PasswordException;
 import repository.GenericDao;
@@ -30,21 +35,23 @@ import repository.UserDao;
 public class DomainTest {
 
     final String ADMIN = "janJannsens123", PASSWORD = "PassWd123&", WRONGPASSWORD = "foutPas12&",
-    			 TECH = "jooKlein123",
+    			 TECH = "jooKlein123", CUST = "customer123",
     			 WRONGUSERNAME = "usernameDoesNotExist"; //EntityNotFoundException()
     UserModel admin = new Employee("janJannsens123", "PassWd123&", "Jan", "Jannsens", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR);
     UserModel tech = new Employee("jooKlein123", "PassWd123&", "Joost", "Klein", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.TECHNICIAN);
+    UserModel cust = new Customer("customer123", "PassWd123&", "John", "Smith");
 
     @Mock
     private UserDao userRepoDummy;
     @Mock
     private GenericDao<UserModel> genericRepoDummy;
     @InjectMocks
-    private DomainController domain;
+    private DomainController dc;
 
     private void trainDummy() {
     	Mockito.lenient().when(userRepoDummy.findByUsername(ADMIN)).thenReturn(admin);
     	Mockito.lenient().when(userRepoDummy.findByUsername(TECH)).thenReturn(tech);
+    	Mockito.lenient().when(userRepoDummy.findByUsername(CUST)).thenReturn(cust);
     }
     
     // does this method test too many things at once?
@@ -53,9 +60,9 @@ public class DomainTest {
     @Test
     public void loginAttempt_Valid() {
     	trainDummy();
-        assertThrows(NullPointerException.class, () -> domain.giveUsername());
-        domain.signIn(ADMIN, PASSWORD);
-        assertEquals(ADMIN, domain.giveUsername());
+        assertThrows(NullPointerException.class, () -> dc.giveUsername());
+        dc.signIn(ADMIN, PASSWORD);
+        assertEquals(ADMIN, dc.giveUsername());
         assertEquals(0, admin.getFailedLoginAttempts());
         Mockito.verify(userRepoDummy).findByUsername(ADMIN);
     } // tried to split this test up in smaller tests
@@ -63,14 +70,14 @@ public class DomainTest {
     @Test
     public void loginAttempt_Valid_DoesNotThrowException() {
 		trainDummy();
-		assertDoesNotThrow(() -> domain.signIn(ADMIN, PASSWORD));
+		assertDoesNotThrow(() -> dc.signIn(ADMIN, PASSWORD));
     	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
     }
 
     @Test
     public void loginAttempt_Valid_ZeroFailedLoginAttempts() {
     	trainDummy();
-        domain.signIn(ADMIN, PASSWORD);
+        dc.signIn(ADMIN, PASSWORD);
         assertEquals(0, admin.getFailedLoginAttempts());
     	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
     }
@@ -78,40 +85,40 @@ public class DomainTest {
     @Test
     public void giveUsername_After_LoginAttempt_Valid_ReturnsSignedInUserUsername() {
     	trainDummy();
-        domain.signIn(ADMIN, PASSWORD);
-        assertEquals(ADMIN, domain.giveUsername());
+        dc.signIn(ADMIN, PASSWORD);
+        assertEquals(ADMIN, dc.giveUsername());
     	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
     }
     
     @Test
     public void giveUserType_After_LoginAttempt_Valid_ReturnsSignedInUserUserType() {
     	trainDummy();
-        domain.signIn(ADMIN, PASSWORD);
-        assertEquals("ADMINISTRATOR", domain.giveUserType());
+        dc.signIn(ADMIN, PASSWORD);
+        assertEquals("ADMINISTRATOR", dc.giveUserType());
     	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
     }
     
     @Test
     public void giveFirstName_After_LoginAttempt_Valid_ReturnsSignedInUserFirstName() {
     	trainDummy();
-        domain.signIn(ADMIN, PASSWORD);
-        assertEquals("Jan", domain.giveUserFirstName());
+        dc.signIn(ADMIN, PASSWORD);
+        assertEquals("Jan", dc.giveUserFirstName());
     	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
     }
     
     @Test
     public void giveLastName_After_LoginAttempt_Valid_ReturnsSignedInUserLastName() {
     	trainDummy();
-        domain.signIn(ADMIN, PASSWORD);
-        assertEquals("Jannsens", domain.giveUserLastName());
+        dc.signIn(ADMIN, PASSWORD);
+        assertEquals("Jannsens", dc.giveUserLastName());
     	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
     }    
     
     @Test
     public void giveUsername_After_LoginAttempt_InValidPassword_ReturnsNullPointerException() {
     	trainDummy();
-    	assertThrows(PasswordException.class, () -> domain.signIn(ADMIN, WRONGPASSWORD));
-    	assertThrows(NullPointerException.class, () -> domain.giveUsername());
+    	assertThrows(PasswordException.class, () -> dc.signIn(ADMIN, WRONGPASSWORD));
+    	assertThrows(NullPointerException.class, () -> dc.giveUsername());
     	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
     }
     
@@ -119,15 +126,15 @@ public class DomainTest {
     @Test
     public void loginAttempt_InValidUsername_ReturnsEntityNotFoundException() {
         Mockito.when(userRepoDummy.findByUsername(WRONGUSERNAME)).thenThrow(EntityNotFoundException.class);
-        assertThrows(EntityNotFoundException.class, () -> domain.signIn(WRONGUSERNAME, WRONGPASSWORD));
+        assertThrows(EntityNotFoundException.class, () -> dc.signIn(WRONGUSERNAME, WRONGPASSWORD));
         Mockito.verify(userRepoDummy).findByUsername(WRONGUSERNAME);
     }  
     
     @Test
     public void loginAttempt_InValidPassword_ReturnsPasswordException() {
     	trainDummy();
-    	assertThrows(NullPointerException.class, () -> domain.giveUsername());        
-        assertThrows(PasswordException.class, () -> domain.signIn(ADMIN, WRONGPASSWORD));
+    	assertThrows(NullPointerException.class, () -> dc.giveUsername());        
+        assertThrows(PasswordException.class, () -> dc.signIn(ADMIN, WRONGPASSWORD));
         assertEquals(1, admin.getFailedLoginAttempts());
         Mockito.verify(userRepoDummy).findByUsername(ADMIN);
     }
@@ -135,13 +142,13 @@ public class DomainTest {
     @Test
     public void loginAttempt_5InValid_BlocksUser() {    	
     	trainDummy();
-    	assertThrows(NullPointerException.class, () -> domain.giveUsername());
+    	assertThrows(NullPointerException.class, () -> dc.giveUsername());
         for (int i = 0; i < 4; i++) {
         	assertEquals(i, admin.getFailedLoginAttempts());
-	        assertThrows(PasswordException.class, () -> domain.signIn(ADMIN, WRONGPASSWORD));
+	        assertThrows(PasswordException.class, () -> dc.signIn(ADMIN, WRONGPASSWORD));
         }
     	assertEquals(4, admin.getFailedLoginAttempts());
-        assertThrows(BlockedUserException.class, () -> domain.signIn(ADMIN, WRONGPASSWORD));
+        assertThrows(BlockedUserException.class, () -> dc.signIn(ADMIN, WRONGPASSWORD));
         assertTrue(admin.getStatus().equals(UserStatus.BLOCKED));
         assertEquals(5, admin.getFailedLoginAttempts());
 
@@ -151,12 +158,12 @@ public class DomainTest {
     @Test
     public void loginAttempt_4InValid_1Valid_ResetLoginAttempts() {    	
     	trainDummy();
-    	assertThrows(NullPointerException.class, () -> domain.giveUsername());
+    	assertThrows(NullPointerException.class, () -> dc.giveUsername());
     	for (int i = 0; i < 4; i++) {
     		assertEquals(i, admin.getFailedLoginAttempts());
-    		assertThrows(PasswordException.class, () -> domain.signIn(ADMIN, WRONGPASSWORD));
+    		assertThrows(PasswordException.class, () -> dc.signIn(ADMIN, WRONGPASSWORD));
     	}
-    	domain.signIn(ADMIN, PASSWORD);
+    	dc.signIn(ADMIN, PASSWORD);
     	assertEquals(0, admin.getFailedLoginAttempts());
 
 		Mockito.verify(userRepoDummy, Mockito.times(5)).findByUsername(ADMIN);
@@ -166,31 +173,31 @@ public class DomainTest {
     public void loginAttempt_4InValidAdmin_3InValidTech_1InValidAdmin_AdminUserBlocked_1ValidTech_TechUserLoginSuccess_1ValidAdmin_AdminUserStillBlocked() {    	
     	trainDummy();
     	// There should be no user signed in when we start the test
-    	assertThrows(NullPointerException.class, () -> domain.giveUsername());
+    	assertThrows(NullPointerException.class, () -> dc.giveUsername());
     	// 4 InValid login attempts for Administrator admin
     	for (int i = 0; i < 4; i++) {
     		assertEquals(i, admin.getFailedLoginAttempts());
-    		assertThrows(PasswordException.class, () -> domain.signIn(ADMIN, WRONGPASSWORD));
+    		assertThrows(PasswordException.class, () -> dc.signIn(ADMIN, WRONGPASSWORD));
     	}
     	// 3 InValid login attempts for Technician tech
     	for (int i = 0; i < 3; i++) {
     		assertEquals(i, tech.getFailedLoginAttempts());
-    		assertThrows(PasswordException.class, () -> domain.signIn(TECH, WRONGPASSWORD));
+    		assertThrows(PasswordException.class, () -> dc.signIn(TECH, WRONGPASSWORD));
     	}
     	// 1 InValid login attempt for Administrator admin
     	// makes for a total of 5 InValid loginAttempts => admin blocked
     	assertEquals(4, admin.getFailedLoginAttempts());
         assertTrue(admin.getStatus().equals(UserStatus.ACTIVE));
-		assertThrows(BlockedUserException.class, () -> domain.signIn(ADMIN, WRONGPASSWORD));
+		assertThrows(BlockedUserException.class, () -> dc.signIn(ADMIN, WRONGPASSWORD));
         assertTrue(admin.getStatus().equals(UserStatus.BLOCKED));
 		// 1 Valid login attempt for Technician tech
-    	domain.signIn(TECH, PASSWORD);
+    	dc.signIn(TECH, PASSWORD);
         assertTrue(tech.getStatus().equals(UserStatus.ACTIVE));
     	// failedLoginAttempts for tech has been reset after successful login
     	assertEquals(0, tech.getFailedLoginAttempts());
     	// even when using the correct password on a blocked user account 
     	// it will still be an invalid loginAttempt
-		assertThrows(BlockedUserException.class, () -> domain.signIn(ADMIN, PASSWORD));
+		assertThrows(BlockedUserException.class, () -> dc.signIn(ADMIN, PASSWORD));
         assertTrue(admin.getStatus().equals(UserStatus.BLOCKED));
 		// failedLoginAttempts for admin keep counting up even after account has been blocked
     	assertEquals(6, admin.getFailedLoginAttempts());
@@ -206,12 +213,12 @@ public class DomainTest {
     @Test
     public void loginAttempt_3InValid_1Valid_FittingLoginAttemptStatus() {    	
     	trainDummy();
-    	assertThrows(NullPointerException.class, () -> domain.giveUsername());
+    	assertThrows(NullPointerException.class, () -> dc.giveUsername());
     	for (int i = 0; i < 3; i++) {
     		assertEquals(i, admin.getFailedLoginAttempts());
-    		assertThrows(PasswordException.class, () -> domain.signIn(ADMIN, WRONGPASSWORD));
+    		assertThrows(PasswordException.class, () -> dc.signIn(ADMIN, WRONGPASSWORD));
     	}
-    	domain.signIn(ADMIN, PASSWORD);
+    	dc.signIn(ADMIN, PASSWORD);
     	assertEquals(0, admin.getFailedLoginAttempts());
     	
     	List<LoginAttempt> loginAttempts = admin.getLoginAttempts();
@@ -229,5 +236,40 @@ public class DomainTest {
 		Mockito.verify(userRepoDummy, Mockito.times(4)).findByUsername(ADMIN);
     }
     
-
+    // tests for createEmployee, createCustomer, modifyEmployee, modifyCustomer
+    @Test
+    public void existingUsername_UsernameAlreadyExists_ThrowsIllegalArgumentException() {
+    	trainDummy();
+    	assertThrows(IllegalArgumentException.class, () -> dc.existingUsername(ADMIN));
+    	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
+    }
+    
+    @Test
+    public void createCustomer_UsernameAlreadyExists_ThrowsIllegalArgumentException() {
+    	trainDummy();
+    	assertThrows(IllegalArgumentException.class, () -> dc.registerCustomer(ADMIN, PASSWORD, "John", "Smith")); 
+    	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
+    }
+    
+    @Test
+    public void modifyCustomer_UsernameAlreadyExists_ThrowsIllegalArgumentException() {
+    	trainDummy();
+    	assertThrows(IllegalArgumentException.class, () -> dc.modifyCustomer((Customer) cust, ADMIN, PASSWORD, "John", "Smith")); 
+    	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
+    }
+    
+    @Test
+    public void createEmployee_UsernameAlreadyExists_ThrowsIllegalArgumentException() {
+    	trainDummy();
+    	assertThrows(IllegalArgumentException.class, () -> dc.registerEmployee(ADMIN, PASSWORD, "John", "Smith", "Address 78", "0458634795", "john.smith@student.hogent.be", EmployeeRole.ADMINISTRATOR)); 
+    	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
+    }
+    
+    @Test
+    public void modifyEmployee_UsernameAlreadyExists_ThrowsIllegalArgumentException() {
+    	trainDummy();
+    	assertThrows(IllegalArgumentException.class, () -> dc.modifyEmployee((Employee) tech, ADMIN, PASSWORD, "John", "Smith", "Address 78", "0458634795", "john.smith@student.hogent.be", EmployeeRole.ADMINISTRATOR)); 
+    	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
+    }    
+    
 }
