@@ -45,23 +45,10 @@ public class TableViewPanelController extends GridPane implements Observable {
 	@FXML
 	private TableView<UserModel> tvUsers;
 	
-	@FXML
-	private TableColumn<UserModel, String> usernameCol;
-	
-	@FXML
-	private TableColumn<UserModel, String> fistnameCol;
-	
-	@FXML
-	private TableColumn<UserModel, String> lastnameCol;
-	
-	@FXML
-	private TableColumn<UserModel, String> statusCol;
-	
 	public TableViewPanelController(DomainController domainController, DashboardController dashboardController ,String user) {
 		this.domainController = domainController;
 		this.dashboardController = dashboardController;
 		this.user = user;
-		System.out.println(user);
 		
 		try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("TableViewPanel.fxml"));
@@ -75,18 +62,18 @@ public class TableViewPanelController extends GridPane implements Observable {
 	}
 
 	private void initializeTableView() {
-
+		
 		TableColumn<UserModel, String> usernameColumn = new TableColumn<>("username");
 		tvUsers.getColumns().add(usernameColumn);
 		usernameColumn.setCellValueFactory(cellData -> cellData.getValue().usernameProperty());
-
+		
 		TableColumn<UserModel, String> firstNameColumn = new TableColumn<>("firstname");
 		tvUsers.getColumns().add(firstNameColumn);
-		usernameColumn.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
+		firstNameColumn.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
 
 		TableColumn<UserModel, String> lastNameColumn = new TableColumn<>("lastname");
 		tvUsers.getColumns().add(lastNameColumn);
-		usernameColumn.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
+		lastNameColumn.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
 
 		TableColumn<UserModel, String> statusColumn = new TableColumn<>("status");
 		tvUsers.getColumns().add(statusColumn);

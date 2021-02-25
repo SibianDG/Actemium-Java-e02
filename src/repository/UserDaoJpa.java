@@ -9,6 +9,7 @@ import javax.persistence.NoResultException;
 import domain.LoginAttempt;
 import domain.LoginStatus;
 import domain.UserModel;
+import languages.LanguageResource;
 
 public class UserDaoJpa extends GenericDaoJpa<UserModel> implements UserDao {
 
@@ -35,7 +36,7 @@ public class UserDaoJpa extends GenericDaoJpa<UserModel> implements UserDao {
 					.setParameter("username", username)
 					.getSingleResult();
 		} catch (NoResultException ex) {
-			throw new EntityNotFoundException();
+			throw new EntityNotFoundException(LanguageResource.getString("usernameNotFound"));
 		}
 	}
 }

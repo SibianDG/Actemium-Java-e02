@@ -1,17 +1,13 @@
 package domain;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import languages.LanguageResource;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -25,7 +21,12 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import languages.LanguageResource;
+
 @Entity
+@Access(AccessType.FIELD)
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
 		@NamedQuery(name = "User.findByUsername",
@@ -54,10 +55,10 @@ public abstract class UserModel implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long userId;
 
-	private String username;
-	private String password;
-	private String firstName;
-	private String lastName;
+	private StringProperty username = new SimpleStringProperty();
+	private String password; //= new SimpleStringProperty();
+	private StringProperty firstName = new SimpleStringProperty();
+	private StringProperty lastName = new SimpleStringProperty();
 	private int failedLoginAttempts;
 	@Enumerated(EnumType.STRING)
 	private UserStatus status;
@@ -90,7 +91,6 @@ public abstract class UserModel implements Serializable {
 		return Collections.unmodifiableList(loginAttempts);
 	}
 
-
 	public long getUserId() {
 		return userId;
 	}
@@ -99,8 +99,9 @@ public abstract class UserModel implements Serializable {
 		this.userId = userId;
 	}
 
+	@Access(AccessType.PROPERTY)
 	public String getUsername() {
-		return username;
+		return username.get();
 	}
 
 	public void setUsername(String username) {
@@ -108,7 +109,7 @@ public abstract class UserModel implements Serializable {
 		if(username == null || username.isBlank() || !username.matches(usernameRegex)) {
 			throw new IllegalArgumentException(LanguageResource.getString("username_invalid"));
 		}
-		this.username = username;
+		this.username.set(username);
 	}
 
 	public String getPassword() {
@@ -123,8 +124,9 @@ public abstract class UserModel implements Serializable {
 		this.password = password;
 	}
 
+	@Access(AccessType.PROPERTY)
 	public String getFirstName() {
-		return firstName;
+		return firstName.get();
 	}
 
 	public void setFirstName(String firstName) {
@@ -132,11 +134,12 @@ public abstract class UserModel implements Serializable {
 		if(firstName == null || firstName.isBlank() || !firstName.matches(firstNameRegex)){
 			throw new IllegalArgumentException(LanguageResource.getString("firstname_invalid"));
 		}
-		this.firstName = firstName;
+		this.firstName.set(firstName);
 	}
 
+	@Access(AccessType.PROPERTY)
 	public String getLastName() {
-		return lastName;
+		return lastName.get();
 	}
 
 	public void setLastName(String lastName) {
@@ -144,7 +147,7 @@ public abstract class UserModel implements Serializable {
 		if(lastName == null || lastName.isBlank() || !lastName.matches(lastNameRegex)){
 			throw new IllegalArgumentException(LanguageResource.getString("lastname_invalid"));
 		}
-		this.lastName = lastName;
+		this.lastName.set(lastName);
 	}
 
 	public int getFailedLoginAttempts() {
@@ -172,7 +175,7 @@ public abstract class UserModel implements Serializable {
 	}
 
 	public StringProperty usernameProperty() {
-		return new SimpleStringProperty(username);
+		return username;
 	}
 
 	public StringProperty statusProperty() {
@@ -180,11 +183,11 @@ public abstract class UserModel implements Serializable {
 	}
 
 	public StringProperty firstNameProperty() {
-		return new SimpleStringProperty(firstName);
+		return firstName;
 	}
 
 	public StringProperty lastNameProperty() {
-		return new SimpleStringProperty(lastName);
+		return lastName;
 	}
 
 }

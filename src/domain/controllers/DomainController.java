@@ -232,6 +232,6 @@ public class DomainController {
 	public ObservableList<UserModel> giveEmployeeList() {
 		return FXCollections.unmodifiableObservableList(employeeList);
 	}
-	
+	 
 	
 }
