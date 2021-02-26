@@ -54,7 +54,7 @@ public class TableViewPanelCompanion extends GridPane {
 		this.isManagingEmployees = isManagingEmployees;
 
 		try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("TableViewPanel2.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("TableViewPanel.fxml"));
             loader.setController(this);
             loader.setRoot(this);
             loader.load();
