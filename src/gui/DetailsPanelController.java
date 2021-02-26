@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -125,9 +126,10 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 	        header.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	        header.setFill(Color.rgb(29, 61, 120));
 
-	        Text detail = new Text(details.get(key));
-	        detail.setFont(Font.font("Arial", FontWeight.NORMAL, 20));
-	        detail.setFill(Color.gray(.3));
+	        Text detailText = new Text(details.get(key));
+	        detailText.setFont(Font.font("Arial", FontWeight.NORMAL, 20));
+	        detailText.setFill(Color.gray(.3));
+	        TextField detail = new TextField(detailText.getText());
 	        
             gridDetails.add(header, 0, i);
             gridDetails.add(detail, 1, i);

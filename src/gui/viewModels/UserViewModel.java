@@ -15,12 +15,15 @@ import javafx.collections.ObservableList;
 public class UserViewModel implements Observable {
 
     private UserModel selectedUser;
-    private ObservableList<UserModel> users;
+    private ObservableList<Employee> employees;
+    private ObservableList<Customer> customers;
 
     private final ArrayList<InvalidationListener> listeners = new ArrayList<>();
 
     public UserViewModel() {
     	super();
+    	this.employees = FXCollections.observableArrayList();
+    	this.customers = FXCollections.observableArrayList();
     }
 
     protected void fireInvalidationEvent() {
@@ -39,13 +42,22 @@ public class UserViewModel implements Observable {
         listeners.remove(invalidationListener);
     }
 
-    public ObservableList<UserModel> getUserList() {
-        return FXCollections.unmodifiableObservableList(users);
+    public ObservableList<Employee> getEmployees() {
+        return FXCollections.unmodifiableObservableList(employees);
     }
     
-    public void setUserList(ObservableList<UserModel> users) {
-        this.users = users;
+    public ObservableList<Customer> getCustomers() {
+        return FXCollections.unmodifiableObservableList(customers);
     }
+    
+    public void setEmployees(ObservableList<Employee> employees) {
+        this.employees = employees;
+    }
+    
+    public void setCustomers(ObservableList<Customer> customers) {
+        this.customers = customers;
+    }
+
 
     public void setSelectedUser(UserModel user) {
         this.selectedUser = user;

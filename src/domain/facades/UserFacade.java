@@ -38,8 +38,8 @@ public class UserFacade implements Facade {
 		
 	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
 
-	private ObservableList<UserModel> customerList;
-	private ObservableList<UserModel> employeeList;
+	private ObservableList<Customer> customerList;
+	private ObservableList<Employee> employeeList;
 	
 	public UserFacade(UserDao userRepo) {
 		this.userRepo = userRepo;
@@ -49,11 +49,11 @@ public class UserFacade implements Facade {
 
 	private void fillInUserLists(){
 		List<UserModel> userList = userRepo.findAll();
-		List<UserModel> customerList = userList.stream()
+		List<Customer> customerList = userList.stream()
 				.filter(c -> c instanceof Customer)
 				.map(c -> (Customer) c)
 				.collect(Collectors.toList());
-		List<UserModel> employeeList = userList.stream()
+		List<Employee> employeeList = userList.stream()
 				.filter(e -> e instanceof Employee)
 				.map(e -> (Employee) e)
 				.collect(Collectors.toList());
@@ -230,11 +230,11 @@ public class UserFacade implements Facade {
 		userRepo.commitTransaction();
 	}
 
-	public ObservableList<UserModel> giveCustomerList() {
+	public ObservableList<Customer> giveCustomerList() {
 		return FXCollections.unmodifiableObservableList(customerList);
 	}
 
-	public ObservableList<UserModel> giveEmployeeList() {
+	public ObservableList<Employee> giveEmployeeList() {
 		return FXCollections.unmodifiableObservableList(employeeList);
 	}
 	 
