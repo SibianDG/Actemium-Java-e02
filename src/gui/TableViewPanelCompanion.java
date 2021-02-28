@@ -25,12 +25,12 @@ import javafx.scene.text.Text;
 
 public class TableViewPanelCompanion extends GridPane {
 
-	private UserFacade userFacade;
-	private DashboardFrameController dashboardFrameController;
+	//private UserFacade userFacade;
+	private final DashboardFrameController dashboardFrameController;
 	//private String user;
-	private UserViewModel userViewModel;
+	private final UserViewModel userViewModel;
 	
-	private boolean isManagingEmployees;
+	private final boolean isManagingEmployees;
 
     @FXML
     private Button btnAdd;
@@ -47,8 +47,7 @@ public class TableViewPanelCompanion extends GridPane {
     @FXML
     private TableView<Customer> tvCustomers;
 	
-	public TableViewPanelCompanion(UserFacade userFacade, DashboardFrameController dashboardFrameController, UserViewModel userviewModel, boolean isManagingEmployees) {
-		this.userFacade = userFacade;
+	public TableViewPanelCompanion(DashboardFrameController dashboardFrameController, UserViewModel userviewModel, boolean isManagingEmployees) {
 		this.dashboardFrameController = dashboardFrameController;
 		this.userViewModel = userviewModel;
 		this.isManagingEmployees = isManagingEmployees;
@@ -72,8 +71,10 @@ public class TableViewPanelCompanion extends GridPane {
 	// 1 for employees
 		// should display userRole instead of username
 	private void initializeTableView() {
+
 		System.out.println(userViewModel.getEmployees());
 		System.out.println(userViewModel.getCustomers());
+
 
 		if(isManagingEmployees) {
 			System.out.println("TV EMPLOYEE");
@@ -154,13 +155,18 @@ public class TableViewPanelCompanion extends GridPane {
 				}
 			});
 		}
-		
-		
 	}
 
 	@FXML
 	void addOnAction(ActionEvent event) {
-		dashboardFrameController.setModifyPane();
+		TableView tableView;
+		if(isManagingEmployees) {
+			tableView = tvEmployees;
+		} else {
+			tableView = tvCustomers;
+		}
+		tableView.getSelectionModel().clearSelection();
+		userViewModel.setSelectedUser(null);
 	}
 
 	@FXML

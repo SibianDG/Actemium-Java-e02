@@ -62,12 +62,15 @@ public class DashboardFrameController extends GuiController {
 
     private Set<DashboardTile> dashboardTiles = new HashSet<>();
 
+    private TableViewPanelCompanion tableViewPanelCompanion;
+    private DetailsPanelController detailsPanelController;
+
     public DashboardFrameController(Facade userFacade) throws FileNotFoundException {
         super();
 
         this.userFacade = (UserFacade) userFacade;
 		//this.ticketFacade = null;
-		this.userViewModel = new UserViewModel();
+		this.userViewModel = new UserViewModel(userFacade);
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
             loader.setController(this);
@@ -175,8 +178,8 @@ public class DashboardFrameController extends GuiController {
 		txtTitle.setText(name);
 		resetGridpane();       
 		
-		TableViewPanelCompanion tableViewPanelCompanion = new TableViewPanelCompanion(userFacade, this, userViewModel, isManagingEmployees);
-		DetailsPanelController detailsPanelController = new DetailsPanelController(userViewModel);
+		tableViewPanelCompanion = new TableViewPanelCompanion(this, userViewModel, isManagingEmployees);
+		detailsPanelController = new DetailsPanelController(userViewModel);
 
 		gridContent.add(tableViewPanelCompanion, 0, 0);
 		gridContent.add(detailsPanelController, 1, 0);

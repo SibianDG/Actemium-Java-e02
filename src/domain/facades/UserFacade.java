@@ -181,7 +181,7 @@ public class UserFacade implements Facade {
 		userRepo.startTransaction();
 		userRepo.insert(customer);
 		userRepo.commitTransaction();
-		fillInUserLists();
+		customerList.add(customer);
 
 	}
 
@@ -192,7 +192,7 @@ public class UserFacade implements Facade {
 		userRepo.startTransaction();
 		userRepo.insert(employee);
 		userRepo.commitTransaction();
-		fillInUserLists();
+		employeeList.add(employee);
 
 	}
 
