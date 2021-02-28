@@ -1,12 +1,16 @@
 package gui.viewModels;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import domain.Customer;
 import domain.Employee;
+import domain.EmployeeRole;
 import domain.UserModel;
+import domain.facades.Facade;
+import domain.facades.UserFacade;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -14,13 +18,18 @@ import javafx.collections.ObservableList;
 
 public class UserViewModel implements Observable {
 
+    private final UserFacade userFacade;
     private UserModel selectedUser;
-    private ObservableList<UserModel> users;
+    private ObservableList<Employee> employees;
+    private ObservableList<Customer> customers;
 
     private final ArrayList<InvalidationListener> listeners = new ArrayList<>();
 
-    public UserViewModel() {
+    public UserViewModel(Facade userFacade) {
     	super();
+    	this.userFacade = (UserFacade) userFacade;
+    	this.employees = FXCollections.observableArrayList();
+    	this.customers = FXCollections.observableArrayList();
     }
 
     protected void fireInvalidationEvent() {
@@ -39,12 +48,20 @@ public class UserViewModel implements Observable {
         listeners.remove(invalidationListener);
     }
 
-    public ObservableList<UserModel> getUserList() {
-        return FXCollections.unmodifiableObservableList(users);
+    public ObservableList<Employee> getEmployees() {
+        return FXCollections.unmodifiableObservableList(employees);
     }
     
-    public void setUserList(ObservableList<UserModel> users) {
-        this.users = users;
+    public ObservableList<Customer> getCustomers() {
+        return FXCollections.unmodifiableObservableList(customers);
+    }
+    
+    public void setEmployees(ObservableList<Employee> employees) {
+        this.employees = employees;
+    }
+    
+    public void setCustomers(ObservableList<Customer> customers) {
+        this.customers = customers;
     }
 
     public void setSelectedUser(UserModel user) {
@@ -52,9 +69,12 @@ public class UserViewModel implements Observable {
         fireInvalidationEvent();
     }
 
-    /*public Object getSelectedUser() {
-        return selectedUser;
-    }*/
+    public ArrayList<String> getDetailsNewEmployee(){
+        return new ArrayList<String>(Arrays.asList("Username", "Lastname", "Firstname", "Address", "Email address", "Phone nr", "Role"));
+    }
+    public ArrayList<String> getDetailsNewCustomer(){
+        return new ArrayList<String>(Arrays.asList("Lastname", "Firstname", "Address", "Email address", "Phone nr", "Role"));
+    }
 
     public Map<String, String> getDetails(){
         switch (selectedUser.getClass().getSimpleName().toLowerCase()) {
@@ -140,5 +160,10 @@ public class UserViewModel implements Observable {
 
     public String getNameOfSelectedUser() {
         return selectedUser.getFirstName() + " " + selectedUser.getLastName();
+    }
+
+    public void registerEmployee(String username, String lastName, String firstName, String address,
+                                 String emailAddress, String phoneNumber, EmployeeRole role) {
+        userFacade.registerEmployee(username, "Passwd123&", firstName, lastName, address, phoneNumber, emailAddress, role);
     }
 }

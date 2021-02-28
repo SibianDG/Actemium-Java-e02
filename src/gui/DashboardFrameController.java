@@ -62,12 +62,15 @@ public class DashboardFrameController extends GuiController {
 
     private Set<DashboardTile> dashboardTiles = new HashSet<>();
 
+    private TableViewPanelCompanion tableViewPanelCompanion;
+    private DetailsPanelController detailsPanelController;
+
     public DashboardFrameController(Facade userFacade) throws FileNotFoundException {
         super();
 
         this.userFacade = (UserFacade) userFacade;
 		//this.ticketFacade = null;
-		this.userViewModel = new UserViewModel();
+		this.userViewModel = new UserViewModel(userFacade);
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
             loader.setController(this);
@@ -150,11 +153,11 @@ public class DashboardFrameController extends GuiController {
         DashboardTile dashboardTile = new DashboardTile(imageView, name, i%2);
         dashboardTile.setOnMouseClicked(e -> {
         	if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("employee")) {
-                userViewModel.setUserList(userFacade.giveEmployeeList());
-                switchToManageScreen(name);
+                userViewModel.setEmployees(userFacade.giveEmployeeList());
+                switchToManageScreen(name, true);
             } else if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("customer")) {
-                userViewModel.setUserList(userFacade.giveCustomerList());
-                switchToManageScreen(name);
+                userViewModel.setCustomers(userFacade.giveCustomerList());
+                switchToManageScreen(name, false);
         	} else {
 
         		makePopUp(name);
@@ -171,12 +174,12 @@ public class DashboardFrameController extends GuiController {
 
     }
 
-	private void switchToManageScreen(String name) {
+	private void switchToManageScreen(String name, boolean isManagingEmployees) {
 		txtTitle.setText(name);
 		resetGridpane();       
 		
-		TableViewPanelCompanion tableViewPanelCompanion = new TableViewPanelCompanion(userFacade, this, userViewModel);
-		DetailsPanelController detailsPanelController = new DetailsPanelController(userViewModel);
+		tableViewPanelCompanion = new TableViewPanelCompanion(this, userViewModel, isManagingEmployees);
+		detailsPanelController = new DetailsPanelController(userViewModel);
 
 		gridContent.add(tableViewPanelCompanion, 0, 0);
 		gridContent.add(detailsPanelController, 1, 0);

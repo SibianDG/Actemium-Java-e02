@@ -83,9 +83,10 @@
 .table-view .table-cell{
     -fx-font: Arial;
     -fx-alignment: center;
-    -fx-font-size: 13;
+    -fx-font-size: 15;
     -fx-border-color: transparent;
     -fx-padding: 2 0 2 10px;
+
 }
 
 .table-row-cell:odd{
