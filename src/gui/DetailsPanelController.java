@@ -65,11 +65,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
 	    try {
 
-            if (!modifying) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Modify Not yet implemented: modify button");
-                alert.setHeaderText("Nothing is changed");
-                alert.showAndWait();
-            } else {
+            if (modifying) {
                 userViewModel.modifyEmployee(
                         getTextFromGridItem(8)
                         , getTextFromGridItem(1)
@@ -79,6 +75,16 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                         , getTextFromGridItem(5)
                         , EmployeeRole.valueOf(getTextFromGridItem(7))
                         , UserStatus.valueOf(getTextFromGridItem(8))
+                );
+            } else {
+                userViewModel.registerEmployee(
+                        getTextFromGridItem(0)
+                        , getTextFromGridItem(1)
+                        , getTextFromGridItem(2)
+                        , getTextFromGridItem(3)
+                        , getTextFromGridItem(4)
+                        , getTextFromGridItem(5)
+                        , EmployeeRole.valueOf(getTextFromGridItem(6))
                 );
             }
 
