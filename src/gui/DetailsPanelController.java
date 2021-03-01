@@ -1,22 +1,21 @@
 package gui;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.lang.reflect.Array;
+import java.util.*;
 
 import domain.EmployeeRole;
+import domain.UserStatus;
 import gui.viewModels.UserViewModel;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -27,7 +26,7 @@ import javafx.scene.text.Text;
 public class DetailsPanelController extends GridPane implements InvalidationListener {
 
     private final UserViewModel userViewModel;
-    private boolean modifying;
+    private boolean modifying = false;
 
     @FXML
     private Text txtDetailsTitle;
@@ -66,19 +65,20 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
 	    try {
 
-            if (modifying) {
+            if (!modifying) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Modify Not yet implemented: modify button");
-                alert.setHeaderText("Modify Not yet implemented");
+                alert.setHeaderText("Nothing is changed");
                 alert.showAndWait();
             } else {
-                userViewModel.registerEmployee(
-                        getTextFromGridItem(0)
+                userViewModel.modifyEmployee(
+                        getTextFromGridItem(8)
                         , getTextFromGridItem(1)
                         , getTextFromGridItem(2)
                         , getTextFromGridItem(3)
                         , getTextFromGridItem(4)
                         , getTextFromGridItem(5)
-                        , EmployeeRole.valueOf(getTextFromGridItem(6))
+                        , EmployeeRole.valueOf(getTextFromGridItem(7))
+                        , UserStatus.valueOf(getTextFromGridItem(8))
                 );
             }
 
@@ -92,6 +92,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     }
 
     private String getTextFromGridItem(int i){
+        System.out.println( ((TextField) gridDetails.getChildren().get(2*i+1)).getText());
         return ((TextField) gridDetails.getChildren().get(2*i+1)).getText();
     }
 
@@ -106,7 +107,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     }
 
     private void setDetailOnModifying(){
-        modifying = true;
         gridDetails.getChildren().clear();
 
         addDetailsToGridDetails(userViewModel.getDetails());
@@ -204,21 +204,43 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
      */
 
-    private void addDetailsToGridDetails(Map<String, String> details){
+    private void addDetailsToGridDetails(Map<String, Object> details){
 	    int i = 0;
 	    // Using LinkedHashSet so the order of the map values doesn't change
 	    Set<String> keys = new LinkedHashSet<String>(details.keySet());
 	    for (String key : keys) {
 	        Label label = makeNewLabel(key);
 
-            TextField detail = new TextField(details.get(key));
-            //Text detailText = new Text(details.get(key));
-            detail.setFont(Font.font("Arial", FontWeight.NORMAL, 18));
-
+	        Node detail = createElementDetailGridpane(details.get(key));
             gridDetails.add(label, 0, i);
             gridDetails.add(detail, 1, i);
             i++;
         }
 
+    }
+
+    private Node createElementDetailGridpane(Object o) {
+
+        if (o instanceof String) {
+            TextField detail = new TextField((String) o);
+            detail.textProperty().addListener((observable, oldValue, newValue) -> {
+                modifying = true;
+                System.out.println("textfield changed from " + oldValue + " to " + newValue);
+            });
+            //Text detailText = new Text(details.get(key));
+            detail.setFont(Font.font("Arial", FontWeight.NORMAL, 18));
+            return detail;
+        } else if (o instanceof Enum) {
+            ObservableList list;
+            if (Arrays.stream(UserStatus.values()).anyMatch(e -> e == o)) {
+                list = FXCollections.observableList(Arrays.asList(UserStatus.values()));
+            } else {
+                list = FXCollections.observableList(Arrays.asList(EmployeeRole.values()));
+            }
+            ComboBox c = new ComboBox(list);
+            c.getSelectionModel().select(o);
+            return c;
+        }
+        return null;
     }
 }

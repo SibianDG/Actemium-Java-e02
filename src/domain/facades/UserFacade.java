@@ -215,14 +215,14 @@ public class UserFacade implements Facade {
 		userRepo.commitTransaction();
 	}
 
-	public void modifyEmployee(Employee employee, String username, String password, String firstName, String lastName, String address,
-			String phoneNumber, String emailAddress, EmployeeRole role) {
+	public void modifyEmployee(Employee employee, String username, String firstName, String lastName, String address,
+							   String phoneNumber, String emailAddress, EmployeeRole role, UserStatus status) {
 		// only needs to be checked if you changed the username 
 		if (!employee.getUsername().equals(username)) {
 			existingUsername(username);
 		}
 		employee.setUsername(username);
-		employee.setPassword(password);
+		//employee.setPassword(password);
 		employee.setFirstName(firstName);
 		employee.setLastName(lastName);
 		employee.setAddress(address);

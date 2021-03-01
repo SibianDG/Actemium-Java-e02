@@ -1,5 +1,7 @@
 package domain;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import languages.LanguageResource;
 
 import javax.persistence.*;
@@ -109,6 +111,10 @@ public class Employee extends UserModel implements Seniority, Serializable {
 
 	public void setRegistrationDate(LocalDate registrationDate) {
 		this.registrationDate = registrationDate;
-	}	
+	}
+
+	public StringProperty roleProperty() {
+		return new SimpleStringProperty(role.toString());
+	}
 	
 }

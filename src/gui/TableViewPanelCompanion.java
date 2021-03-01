@@ -100,7 +100,7 @@ public class TableViewPanelCompanion extends GridPane {
 			TableColumn<Employee, String> roleColumn = new TableColumn<>("Role");
 			tvEmployees.getColumns().add(roleColumn);
 			//TODO roleProperty for role in Employee
-			roleColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
+			roleColumn.setCellValueFactory(cellData -> cellData.getValue().roleProperty());
 			
 			ObservableList<Employee> employees = userViewModel.getEmployees();
 			System.out.println(employees.size());

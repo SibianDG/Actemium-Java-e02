@@ -5,10 +5,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import domain.Customer;
-import domain.Employee;
-import domain.EmployeeRole;
-import domain.UserModel;
+import domain.*;
 import domain.facades.Facade;
 import domain.facades.UserFacade;
 import javafx.beans.InvalidationListener;
@@ -76,7 +73,7 @@ public class UserViewModel implements Observable {
         return new ArrayList<String>(Arrays.asList("Lastname", "Firstname", "Address", "Email address", "Phone nr", "Role"));
     }
 
-    public Map<String, String> getDetails(){
+    public Map<String, Object> getDetails(){
         switch (selectedUser.getClass().getSimpleName().toLowerCase()) {
             case "employee" -> {
                 Employee employee = (Employee) selectedUser;
@@ -92,7 +89,7 @@ public class UserViewModel implements Observable {
 //                        , "Role", employee.getRole().toString()
 //                );
         	    // Using LinkedHashMap so the order of the map values doesn't change
-				Map<String, String> detailsMap = new LinkedHashMap<>();
+				Map<String, Object> detailsMap = new LinkedHashMap<>();
 				detailsMap.put("Employee Nr", String.valueOf(employee.getEmployeeNr()));
 				detailsMap.put("Lastname", employee.getLastName());
 				detailsMap.put("Firstname", employee.getFirstName());
@@ -100,9 +97,9 @@ public class UserViewModel implements Observable {
 				detailsMap.put("Phone number", employee.getPhoneNumber());
 				detailsMap.put("Email", employee.getEmailAddress());
 				detailsMap.put("Company Seniority", String.valueOf(employee.giveSeniority()));
-				detailsMap.put("Role", employee.getRole().toString());
+				detailsMap.put("Role", employee.getRole());
 				detailsMap.put("Username", employee.getUsername());
-				detailsMap.put("Status", employee.getStatus().toString());
+				detailsMap.put("Status", employee.getStatus());
 				return detailsMap;
             }
             case "customer" -> {
@@ -129,7 +126,7 @@ public class UserViewModel implements Observable {
 //                        , new AbstractMap.SimpleEntry<>("Status", customer.getStatus().toString())
 //                );
         	    // Using LinkedHashMap so the order of the map values doesn't change
-                Map<String, String> detailsMap = new LinkedHashMap<>(); 
+                Map<String, Object> detailsMap = new LinkedHashMap<>();
                 detailsMap.put("Customer Nr", String.valueOf(customer.getCustomerNr()));
                 // here it's the name and firstname of the customer
                 detailsMap.put("Customer Name", String.format("%s %s", customer.getLastName(), customer.getFirstName()));
@@ -150,7 +147,7 @@ public class UserViewModel implements Observable {
 //                detailsMap.put("Contract Status", "");
 //                detailsMap.put("Contract Start- and End date", "");
                 detailsMap.put("Username", customer.getUsername());
-                detailsMap.put("Status", customer.getStatus().toString());                
+                detailsMap.put("Status", customer.getStatus());
                 return detailsMap;
             } 
             //TODO: later then Ticket
@@ -166,5 +163,11 @@ public class UserViewModel implements Observable {
                                  String emailAddress, String phoneNumber, EmployeeRole role) {
         userFacade.registerEmployee(username, "Passwd123&", firstName, lastName, address, phoneNumber, emailAddress, role);
         selectedUser = userFacade.findByUsername(username);
+    }
+
+    public void modifyEmployee(String username, String firstName, String lastName, String address,
+                               String phoneNumber, String emailAddress, EmployeeRole role, UserStatus status) {
+        userFacade.modifyEmployee( (Employee) selectedUser,  username,  firstName,  lastName,  address,
+                 phoneNumber,  emailAddress,  role, status);
     }
 }

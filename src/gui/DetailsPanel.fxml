@@ -18,7 +18,7 @@
       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <VBox alignment="CENTER_LEFT" spacing="40.0" styleClass="bg-rounded" stylesheets="@../start/styles.css">
+      <VBox alignment="CENTER_LEFT" spacing="20.0" styleClass="bg-rounded" stylesheets="@../start/styles.css">
          <children>
             <Text fx:id="txtDetailsTitle" fill="#173d78" strokeType="OUTSIDE" strokeWidth="0.0" text="Details of " underline="true">
                <font>
@@ -53,7 +53,7 @@
                <children>
                   <Button fx:id="btnModify" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnModifyOnAction" styleClass="btn-blue" text="Modify">
                      <HBox.margin>
-                        <Insets top="50.0" />
+                        <Insets />
                      </HBox.margin>
                      <font>
                         <Font name="Arial" size="16.0" />
