@@ -37,6 +37,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     @FXML
     private Button btnModify;
+
+    @FXML
+    private Text txtErrorMessage;
 	
 	public DetailsPanelController(UserViewModel userviewModel) {
         this.userViewModel = userviewModel;
@@ -55,33 +58,37 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         gridDetails.setVgap(10);
         txtDetailsTitle.setText("No user is selected");
         btnModify.setVisible(false);
-
+        txtErrorMessage.setVisible(false);
     }
 
     @FXML
     void btnModifyOnAction(ActionEvent event) {
 
-        if (modifying){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Modify Not yet implemented: modify button");
-            alert.setHeaderText("Modify Not yet implemented");
-            alert.showAndWait();
-        } else {
-            userViewModel.registerEmployee(
-                    getTextFromGridItem(0)
-                    , getTextFromGridItem(1)
-                    , getTextFromGridItem(2)
-                    , getTextFromGridItem(3)
-                    , getTextFromGridItem(4)
-                    , getTextFromGridItem(5)
-                    , EmployeeRole.valueOf(getTextFromGridItem(6))
-            );
+	    try {
+
+            if (modifying) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Modify Not yet implemented: modify button");
+                alert.setHeaderText("Modify Not yet implemented");
+                alert.showAndWait();
+            } else {
+                userViewModel.registerEmployee(
+                        getTextFromGridItem(0)
+                        , getTextFromGridItem(1)
+                        , getTextFromGridItem(2)
+                        , getTextFromGridItem(3)
+                        , getTextFromGridItem(4)
+                        , getTextFromGridItem(5)
+                        , EmployeeRole.valueOf(getTextFromGridItem(6))
+                );
+            }
+
+            setDetailOnModifying();
+
+        //TODO: handle the correct error messages, not just all
+        } catch (Exception e){
+            txtErrorMessage.setText(e.getMessage());
+            txtErrorMessage.setVisible(true);
         }
-
-        gridDetails.getChildren().clear();
-        txtDetailsTitle.setText("No user is selected");
-        btnModify.setVisible(false);
-
-
     }
 
     private String getTextFromGridItem(int i){
@@ -91,17 +98,22 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     @Override
     public void invalidated(Observable observable) {
 	    try {
-            modifying = true;
-            gridDetails.getChildren().clear();
-
-            addDetailsToGridDetails(userViewModel.getDetails());
-            btnModify.setVisible(true);
-
-            txtDetailsTitle.setText("Details of "+userViewModel.getNameOfSelectedUser());
+            setDetailOnModifying();
         } catch (NullPointerException e){
+	        modifying = false;
 	        setupPaneNewUser();
         }
+    }
 
+    private void setDetailOnModifying(){
+        modifying = true;
+        gridDetails.getChildren().clear();
+
+        addDetailsToGridDetails(userViewModel.getDetails());
+        btnModify.setVisible(true);
+        txtErrorMessage.setVisible(false);
+
+        txtDetailsTitle.setText("Details of "+userViewModel.getNameOfSelectedUser());
     }
 
     private void setupPaneNewUser(){
@@ -133,7 +145,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         for (int i = 0; i < fields.size(); i++) {
             gridDetails.addRow(i);
 
-            gridDetails.add(makeNewLabel(fields.get(i)+i), 0, i);
+            gridDetails.add(makeNewLabel(fields.get(i)), 0, i);
 
             TextField textField = new TextField(randomValues.get(i));
             textField.setFont(Font.font("Arial", FontWeight.BOLD, 20));

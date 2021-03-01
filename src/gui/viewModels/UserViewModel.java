@@ -165,5 +165,6 @@ public class UserViewModel implements Observable {
     public void registerEmployee(String username, String lastName, String firstName, String address,
                                  String emailAddress, String phoneNumber, EmployeeRole role) {
         userFacade.registerEmployee(username, "Passwd123&", firstName, lastName, address, phoneNumber, emailAddress, role);
+        selectedUser = userFacade.findByUsername(username);
     }
 }

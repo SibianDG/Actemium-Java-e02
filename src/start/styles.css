@@ -105,6 +105,19 @@
     -fx-text-background-color: white;
 }
 
+.menuButton {
+    -fx-background-color: #1D3D78;
+    -fx-text-background-color: white!important;
+    -fx-font: Arial, bold;
+    -fx-alignment: center;
+    -fx-font-size: 24;
+    -fx-border-radius: 20 20 0 0;
+    -fx-background-radius: 20 20 0 0;
+}
+
+.menuButton:hover {
+    -fx-background-color: #5070b5;
+}
 
 /*
 

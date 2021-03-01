@@ -14,7 +14,8 @@
 <fx:root fx:id="gridDashboard" prefHeight="1000.0" prefWidth="1900.0" styleClass="bg-gray" stylesheets="@../start/styles.css" type="GridPane" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <rowConstraints>
         <RowConstraints minHeight="-Infinity" prefHeight="100.0" />
-        <RowConstraints prefHeight="1000.0" />
+        <RowConstraints minHeight="-Infinity" prefHeight="835.0" />
+      <RowConstraints minHeight="-Infinity" prefHeight="65.0" />
     </rowConstraints>
     <columnConstraints>
         <ColumnConstraints />
@@ -104,5 +105,10 @@
                 <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
             </GridPane.margin>
         </GridPane>
+      <GridPane fx:id="gridMenu" alignment="BOTTOM_CENTER" GridPane.rowIndex="2">
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
     </children>
 </fx:root>

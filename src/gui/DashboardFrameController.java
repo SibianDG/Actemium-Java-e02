@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import domain.facades.Facade;
-import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
 import gui.controllers.GuiController;
 import gui.viewModels.UserViewModel;
@@ -15,9 +14,12 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -25,6 +27,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class DashboardFrameController extends GuiController {
@@ -59,6 +62,9 @@ public class DashboardFrameController extends GuiController {
 
     @FXML
     private Text txtTitle;
+
+    @FXML
+    private GridPane gridMenu;
 
     private Set<DashboardTile> dashboardTiles = new HashSet<>();
 
@@ -134,10 +140,37 @@ public class DashboardFrameController extends GuiController {
         for(int i = 0; i < itemNames.length; i++) {
         	addDashboardItem(itemNames[i], createImageView(itemIcons[i], i%2), i%3, i/3, i);
         }
+
+        createGridMenu(itemNames);
+
         
     }
 
+    private void createGridMenu(String[] itemNames){
+        int width = 1000/itemNames.length;
+        for (int i = 0; i < itemNames.length; i++) {
+            String text = itemNames[i];
+            gridMenu.addColumn(i);
+            gridMenu.getColumnConstraints().add(new ColumnConstraints(width, 100, -1, Priority.ALWAYS, HPos.CENTER, false));
+            Button button = createMenuItemButton(text, width);
+            setValignment(button, VPos.BOTTOM);
+            setHalignment(button, HPos.CENTER);
+            button.setOnMouseClicked(e -> buttonMenusClicked(text));
+            gridMenu.add(button, i, 0);
+        }
+        gridMenu.setVgap(50);
+    }
     
+    private Button createMenuItemButton(String s, int width){
+        Button button = new Button(s);
+        button.getStyleClass().add("menuButton");
+        button.setTextFill(Color.WHITE);
+        button.minWidth(width);
+        button.prefWidth(width);
+        button.setPadding(new Insets(15, ((double)width/1.5), 15, ((double)width/1.5)));
+        button.setAlignment(Pos.BOTTOM_CENTER);
+        return button;
+    }
 
     public ImageView createImageView(String image, int i) throws FileNotFoundException {
 
@@ -151,20 +184,7 @@ public class DashboardFrameController extends GuiController {
 
     private void addDashboardItem(String name, ImageView imageView, int x, int y, int i) {
         DashboardTile dashboardTile = new DashboardTile(imageView, name, i%2);
-        dashboardTile.setOnMouseClicked(e -> {
-        	if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("employee")) {
-                userViewModel.setEmployees(userFacade.giveEmployeeList());
-                switchToManageScreen(name, true);
-            } else if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("customer")) {
-                userViewModel.setCustomers(userFacade.giveCustomerList());
-                switchToManageScreen(name, false);
-        	} else {
-
-        		makePopUp(name);
-        	}
-        	    	
-         
-        });
+        dashboardTile.setOnMouseClicked(e -> buttonMenusClicked(name) );
         dashboardTiles.add(dashboardTile);
         gridContent.add(dashboardTile, x, y);
         setFillHeight(dashboardTile, true);
@@ -172,6 +192,18 @@ public class DashboardFrameController extends GuiController {
         gridContent.setHgap(35);
         gridContent.setVgap(35);
 
+    }
+
+    private void buttonMenusClicked(String name){
+        if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("employee")) {
+            userViewModel.setEmployees(userFacade.giveEmployeeList());
+            switchToManageScreen(name, true);
+        } else if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("customer")) {
+            userViewModel.setCustomers(userFacade.giveCustomerList());
+            switchToManageScreen(name, false);
+        } else {
+            makePopUp(name);
+        }
     }
 
 	private void switchToManageScreen(String name, boolean isManagingEmployees) {
@@ -183,8 +215,6 @@ public class DashboardFrameController extends GuiController {
 
 		gridContent.add(tableViewPanelCompanion, 0, 0);
 		gridContent.add(detailsPanelController, 1, 0);
-//		System.out.println(gridContent.getColumnCount());
-//		System.out.println(gridContent.getRowCount());
 	}
 
     private void resetGridpane(){
@@ -224,18 +254,6 @@ public class DashboardFrameController extends GuiController {
         txtTitle.setText("Tile!");
     }
 
-
-//    private void loadScene(String title, Object controller) { // method for switching to the next screen
-//        Scene scene = new Scene((Parent) controller);
-//        Stage stage = (Stage) this.getScene().getWindow();
-//        stage.setTitle(title);
-//        stage.setResizable(false);
-//        stage.setScene(scene);
-//        stage.show();
-//    }
-
-
-
     @FXML
     void btnLogOutAction(MouseEvent event) {
         makePopUp("Logout and exit");
@@ -246,7 +264,6 @@ public class DashboardFrameController extends GuiController {
     @FXML
     void btnNotificationAction(MouseEvent event) {
         makePopUp("Notifications");
-
     }
 
     @FXML

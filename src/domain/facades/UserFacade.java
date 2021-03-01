@@ -84,8 +84,12 @@ public class UserFacade implements Facade {
 		this.selectedUser = selectedUser;
 	}
 
+	public UserModel findByUsername(String username){
+		return userRepo.findByUsername(username);
+	}
+
 	public void signIn(String username, String password) {
-		UserModel userModel = userRepo.findByUsername(username);
+		UserModel userModel = findByUsername(username);
 
 		if (password.isBlank()) {
 			throw new PasswordException(LanguageResource.getString("password_blank"));
