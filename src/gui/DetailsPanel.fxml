@@ -22,7 +22,7 @@
          <children>
             <Text fx:id="txtDetailsTitle" fill="#173d78" strokeType="OUTSIDE" strokeWidth="0.0" text="Details of " underline="true">
                <font>
-                  <Font name="Arial Bold" size="30.0" />
+                  <Font name="Arial Bold" size="24.0" />
                </font>
                <VBox.margin>
                   <Insets />

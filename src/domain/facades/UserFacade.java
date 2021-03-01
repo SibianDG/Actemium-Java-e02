@@ -19,6 +19,7 @@ import exceptions.PasswordException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import languages.LanguageResource;
+import repository.GenericDaoJpa;
 import repository.UserDao;
 import repository.UserDaoJpa;
 

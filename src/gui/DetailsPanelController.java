@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -21,6 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 
 public class DetailsPanelController extends GridPane implements InvalidationListener {
@@ -66,17 +68,27 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 	    try {
             if (editing) {
                 if(modified){
-                    userViewModel.modifyEmployee(
+                    if (userViewModel.getCurrentState().equals(GUIEnum.EMPLOYEE)){
+                        userViewModel.modifyEmployee(
 
-                            getTextFromGridItem(1)
-                            , getTextFromGridItem(3)
-                            , getTextFromGridItem(2)
-                            , getTextFromGridItem(4)
-                            , getTextFromGridItem(5)
-                            , getTextFromGridItem(6)
-                            , EmployeeRole.valueOf(getTextFromGridItem(8))
-                            , UserStatus.valueOf(getTextFromGridItem(9))
-                    );
+                                getTextFromGridItem(1)
+                                , getTextFromGridItem(2)
+                                , getTextFromGridItem(3)
+                                , getTextFromGridItem(4)
+                                , getTextFromGridItem(5)
+                                , getTextFromGridItem(6)
+                                , EmployeeRole.valueOf(getTextFromGridItem(8))
+                                , UserStatus.valueOf(getTextFromGridItem(9))
+                        );
+                    } else if (userViewModel.getCurrentState().equals(GUIEnum.CUSTOMER)){
+                        userViewModel.modifyCustomer(
+                                getTextFromGridItem(1)
+                                , getTextFromGridItem(2)
+                                , getTextFromGridItem(3)
+                                , getTextFromGridItem(11)
+                        );
+                    }
+
                     makePopUp("User edited", "You have successfully edited the user.");
 
                 } else {
@@ -86,15 +98,28 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
 
             } else {
-                userViewModel.registerEmployee(
-                        getTextFromGridItem(0)
-                        , getTextFromGridItem(1)
-                        , getTextFromGridItem(2)
-                        , getTextFromGridItem(3)
-                        , getTextFromGridItem(4)
-                        , getTextFromGridItem(5)
-                        , EmployeeRole.valueOf(getTextFromGridItem(6))
-                );
+                if (userViewModel.getCurrentState().equals(GUIEnum.EMPLOYEE)){
+
+                    userViewModel.registerEmployee(
+                            getTextFromGridItem(0)
+                            , getTextFromGridItem(1)
+                            , getTextFromGridItem(2)
+                            , getTextFromGridItem(3)
+                            , getTextFromGridItem(4)
+                            , getTextFromGridItem(5)
+                            , EmployeeRole.valueOf(getTextFromGridItem(6))
+                    );
+                } else if (userViewModel.getCurrentState().equals(GUIEnum.CUSTOMER)){
+
+                    userViewModel.registerCustomer(
+                            getTextFromGridItem(0)
+                            , getTextFromGridItem(1)
+                            , getTextFromGridItem(2)
+                            , getTextFromGridItem(3)
+                            , getTextFromGridItem(4)
+                            , getTextFromGridItem(5)
+                    );
+                }
             }
 
             setDetailOnModifying();
@@ -128,7 +153,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 	    try {
             setDetailOnModifying();
         } catch (NullPointerException e){
-	        editing = false;
 	        setupPaneNewUser();
         }
     }
@@ -138,6 +162,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
         addDetailsToGridDetails(userViewModel.getDetails());
         txtDetailsTitle.setText("Details of "+userViewModel.getNameOfSelectedUser());
+        btnModify.setText("Modify " + userViewModel.getCurrentState().toString().toLowerCase());
         btnModify.setVisible(true);
         txtErrorMessage.setVisible(false);
         editing = true;
@@ -145,7 +170,16 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     private void setupPaneNewUser(){
 	    editing = false;
-        ArrayList<String> fields = userViewModel.getDetailsNewEmployee();
+        ArrayList<String> fields;
+
+        if (userViewModel.getCurrentState().equals(GUIEnum.EMPLOYEE)){
+            fields = userViewModel.getDetailsNewEmployee();
+        } else if (userViewModel.getCurrentState().equals(GUIEnum.CUSTOMER)){
+            fields = userViewModel.getDetailsNewCustomer();
+        } else {
+            fields = null;
+        }
+
         txtDetailsTitle.setText("Add new user");
         btnModify.setText("Add new user");
         btnModify.setVisible(true);
@@ -166,7 +200,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                 , 4, "test@gmail.com"
                 , 5, "094812384"
                 , 6, EmployeeRole.SUPPORT_MANAGER.toString()
-
         );
 
         for (int i = 0; i < fields.size(); i++) {
@@ -174,15 +207,29 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
             gridDetails.add(makeNewLabel(fields.get(i)), 0, i);
 
-            TextField textField = new TextField(randomValues.get(i));
-            textField.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-            gridDetails.add(textField, 1, i);
+            Node node;
+            if (fields.get(i).toLowerCase().contains("role")){
+                node = makeComboBox(EmployeeRole.ADMINISTRATOR);
+            } else {
+                TextField textField;
+                if(fields.size() <= 7){
+                    textField = new TextField(randomValues.get(i));
+                } else {
+                    textField = new TextField();
+                }
+                textField.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+                node = textField;
+            }
+
+            gridDetails.add(node, 1, i);
         }
     }
 
     private Label makeNewLabel(String text){
         Label label = new Label(text+":");
-        label.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        label.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        label.setAlignment(Pos.CENTER_RIGHT);
+        label.setTextAlignment(TextAlignment.RIGHT);
         label.setTextFill(Color.rgb(29, 61, 120));
         return label;
     }
@@ -213,7 +260,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                 modified = true;
                 System.out.println("textfield changed from " + oldValue + " to " + newValue);
             });
-            detail.setFont(Font.font("Arial", FontWeight.NORMAL, 18));
+            detail.setFont(Font.font("Arial", FontWeight.NORMAL, 16));
 
             if (string.trim().equals("")){
                 detail.setVisible(false);
@@ -223,18 +270,22 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             }
             return detail;
         } else if (o instanceof Enum) {
-            ObservableList list;
-            if (Arrays.stream(UserStatus.values()).anyMatch(e -> e == o)) {
-                list = FXCollections.observableList(Arrays.asList(UserStatus.values()));
-            } else {
-                list = FXCollections.observableList(Arrays.asList(EmployeeRole.values()));
-            }
-            ComboBox c = new ComboBox(list);
-            c.getSelectionModel().select(o);
-            c.valueProperty().addListener(e -> modified = true );
-            return c;
+            return makeComboBox(o);
         }
         return null;
+    }
+
+    private ComboBox makeComboBox(Object o){
+        ObservableList list;
+        if (Arrays.stream(UserStatus.values()).anyMatch(e -> e == o)) {
+            list = FXCollections.observableList(Arrays.asList(UserStatus.values()));
+        } else {
+            list = FXCollections.observableList(Arrays.asList(EmployeeRole.values()));
+        }
+        ComboBox c = new ComboBox(list);
+        c.getSelectionModel().select(o);
+        c.valueProperty().addListener(e -> modified = true );
+        return c;
     }
 
     private void makePopUp(String headerText, String text){

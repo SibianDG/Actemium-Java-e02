@@ -1,10 +1,15 @@
 package domain;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 import java.io.Serial;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -12,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
+@Access(AccessType.FIELD)
 public class Customer extends UserModel implements Seniority {
 	@Serial
 	private static final long serialVersionUID = 1L;
@@ -90,5 +96,6 @@ public class Customer extends UserModel implements Seniority {
 	public int giveSeniority() {
 		return LocalDate.now().getYear() - registrationDate.getYear();
 	}	
-	
+
+
 }

@@ -141,7 +141,7 @@ public class TableViewPanelCompanion extends GridPane {
 			TableColumn<Customer, String> roleColumn = new TableColumn<>("Company");
 			tvCustomers.getColumns().add(roleColumn);
 			//TODO nameProperty for name in Company
-			roleColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
+			roleColumn.setCellValueFactory(cellData -> cellData.getValue().getCompany().nameProperty());
 
 			ObservableList<Customer> customers = userViewModel.getCustomers();
 			System.out.println(customers.size());
@@ -162,9 +162,11 @@ public class TableViewPanelCompanion extends GridPane {
 	void addOnAction(ActionEvent event) {
 		TableView tableView;
 		if(isManagingEmployees) {
+			userViewModel.setCurrentState(GUIEnum.EMPLOYEE);
 			tableView = tvEmployees;
 		} else {
 			tableView = tvCustomers;
+			userViewModel.setCurrentState(GUIEnum.CUSTOMER);
 		}
 		tableView.getSelectionModel().clearSelection();
 		userViewModel.setSelectedUser(null);

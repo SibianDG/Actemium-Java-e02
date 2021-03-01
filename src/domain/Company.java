@@ -1,5 +1,8 @@
 package domain;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -9,6 +12,7 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
+@Access(AccessType.FIELD)
 public class Company implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
@@ -16,8 +20,9 @@ public class Company implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int companyId;
-	
-	private String name;
+
+	@Transient
+	private StringProperty name = new SimpleStringProperty();
 	private String address;
 	private String phoneNumber;
 	private LocalDate registrationDate;
@@ -32,18 +37,22 @@ public class Company implements Serializable {
 	}
 	
 	public Company(String name, String address, String phoneNumber) {
-		this.name = name;
-		this.address = address;
-		this.phoneNumber = phoneNumber;
-		this.registrationDate = LocalDate.now();
+		setName(name);
+		setAddress(address);
+		setPhoneNumber(phoneNumber);
+		setRegistrationDate(LocalDate.now());
 	}
 
 	public String getName() {
+		return name.get();
+	}
+
+	public StringProperty nameProperty() {
 		return name;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.name.set(name);
 	}
 
 	public String getAddress() {
