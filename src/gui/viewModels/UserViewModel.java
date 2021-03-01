@@ -90,16 +90,16 @@ public class UserViewModel implements Observable {
 //                );
         	    // Using LinkedHashMap so the order of the map values doesn't change
 				Map<String, Object> detailsMap = new LinkedHashMap<>();
-				detailsMap.put("Employee Nr", String.valueOf(employee.getEmployeeNr()));
-				detailsMap.put("Lastname", employee.getLastName());
+				detailsMap.put("Employee ID", String.valueOf(employee.getEmployeeNr()));
+                detailsMap.put("Username", employee.getUsername());
+                detailsMap.put("Lastname", employee.getLastName());
 				detailsMap.put("Firstname", employee.getFirstName());
 				detailsMap.put("Address", employee.getAddress());
 				detailsMap.put("Phone number", employee.getPhoneNumber());
 				detailsMap.put("Email", employee.getEmailAddress());
 				detailsMap.put("Company Seniority", String.valueOf(employee.giveSeniority()));
-				detailsMap.put("Role", employee.getRole());
-				detailsMap.put("Username", employee.getUsername());
-				detailsMap.put("Status", employee.getStatus());
+				detailsMap.put("Role", employee.getRoleAsEnum());
+				detailsMap.put("Status", employee.getStatusAsEnum());
 				return detailsMap;
             }
             case "customer" -> {
@@ -127,7 +127,7 @@ public class UserViewModel implements Observable {
 //                );
         	    // Using LinkedHashMap so the order of the map values doesn't change
                 Map<String, Object> detailsMap = new LinkedHashMap<>();
-                detailsMap.put("Customer Nr", String.valueOf(customer.getCustomerNr()));
+                detailsMap.put("Customer ID", String.valueOf(customer.getCustomerNr()));
                 // here it's the name and firstname of the customer
                 detailsMap.put("Customer Name", String.format("%s %s", customer.getLastName(), customer.getFirstName()));
                 detailsMap.put("Company", "");
@@ -137,7 +137,6 @@ public class UserViewModel implements Observable {
                 // Here it's the name and email of the contactperson
                 detailsMap.put("Contact person", "");
                 detailsMap.put("Name and Firstname", String.format("%s %s", customer.getLastName(), customer.getFirstName()));
-                detailsMap.put("Email address", "");
                 detailsMap.put("Seniority", String.valueOf(customer.giveSeniority()));
                 // how are we going to show all the contracts in the details pannel?
                 // they request it in the use case "Manage Users"
@@ -147,7 +146,7 @@ public class UserViewModel implements Observable {
 //                detailsMap.put("Contract Status", "");
 //                detailsMap.put("Contract Start- and End date", "");
                 detailsMap.put("Username", customer.getUsername());
-                detailsMap.put("Status", customer.getStatus());
+                detailsMap.put("Status", customer.getStatusAsEnum());
                 return detailsMap;
             } 
             //TODO: later then Ticket

@@ -11,19 +11,22 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@Access(AccessType.FIELD)
 public class Employee extends UserModel implements Seniority, Serializable {
 
 	@Serial
 	private static final long serialVersionUID = 1L;
 
+	//ToDo: when on SQL SERVER Turn on
 	// @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int employeeNr;
 
 	private String address;
 	private String phoneNumber;
 	private String emailAddress;
-	@Enumerated(EnumType.STRING)
-	private EmployeeRole role;
+	@Transient
+	private StringProperty role = new SimpleStringProperty();
+
 	private LocalDate registrationDate;
 	
 //	@ManyToMany
@@ -82,10 +85,6 @@ public class Employee extends UserModel implements Seniority, Serializable {
 		this.emailAddress = emailAddress;
 	}
 
-	public EmployeeRole getRole() {
-		return role;
-	}
-
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -98,13 +97,6 @@ public class Employee extends UserModel implements Seniority, Serializable {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public void setRole(EmployeeRole role) {
-		if (role == null) {
-			throw new IllegalArgumentException(LanguageResource.getString("role_invalid"));
-		}
-		this.role = role;
-	}
-
 	public LocalDate getRegistrationDate() {
 		return registrationDate;
 	}
@@ -113,8 +105,24 @@ public class Employee extends UserModel implements Seniority, Serializable {
 		this.registrationDate = registrationDate;
 	}
 
+	public String getRole() {
+		return role.get();
+	}
+
+	public EmployeeRole getRoleAsEnum() {
+		return EmployeeRole.valueOf(role.get());
+	}
+
+	public void setRole(EmployeeRole role) {
+		System.out.println(role);
+		if (role == null) {
+			throw new IllegalArgumentException(LanguageResource.getString("role_invalid"));
+		}
+		this.roleProperty().set(role.toString());
+	}
+
 	public StringProperty roleProperty() {
-		return new SimpleStringProperty(role.toString());
+		return role;
 	}
 	
 }

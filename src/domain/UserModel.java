@@ -64,8 +64,8 @@ public abstract class UserModel implements Serializable {
 	@Transient
 	private StringProperty lastName = new SimpleStringProperty();
 	private int failedLoginAttempts;
-	@Enumerated(EnumType.STRING)
-	private UserStatus status;
+	@Transient
+	private StringProperty status = new SimpleStringProperty();
 
 	public UserModel() {
 
@@ -162,12 +162,16 @@ public abstract class UserModel implements Serializable {
 		this.failedLoginAttempts = failedLoginAttempts;
 	}
 
-	public UserStatus getStatus() {
-		return status;
+	public String getStatus() {
+		return status.get();
+	}
+
+	public UserStatus getStatusAsEnum() {
+		return UserStatus.valueOf(status.get());
 	}
 
 	public void setStatus(UserStatus status) {
-		this.status = status;
+		this.status.set(String.valueOf(status));
 	}
 
 	public void blockUser() {
@@ -183,7 +187,7 @@ public abstract class UserModel implements Serializable {
 	}
 
 	public StringProperty statusProperty() {
-		return new SimpleStringProperty(status.toString());
+		return status;
 	}
 
 	public StringProperty firstNameProperty() {

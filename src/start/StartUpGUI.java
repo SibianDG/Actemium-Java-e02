@@ -15,11 +15,15 @@ import languages.LanguageResource;
 import repository.UserDaoJpa;
 
 public class StartUpGUI extends Application {
+
+
     @Override
     public void start(Stage primaryStage)
     {
+
         try {
-            UserDaoJpa userDaoJpa = new UserDaoJpa();
+            UserDaoJpa userDaoJpa;
+            userDaoJpa = new UserDaoJpa();
             PopulateDB populateDB = new PopulateDB();
             populateDB.run(userDaoJpa);
 

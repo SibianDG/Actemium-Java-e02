@@ -1,9 +1,6 @@
 package main;
 
-import domain.Company;
-import domain.Customer;
-import domain.PopulateDB;
-import domain.UserModel;
+import domain.*;
 import domain.facades.UserFacade;
 import repository.UserDaoJpa;
 
@@ -85,7 +82,7 @@ public class MainTester {
         
         System.out.printf("%nCustomer before modifyCustomer:%nFirst name: %s%nLast name: %s%n", customer.getFirstName(), customer.getLastName());
         
-        dc.modifyCustomer(customer, "cust01Barak", "Passwd123&", "Thierry", "Kempens", theWhiteHouse);  
+        dc.modifyCustomer(customer, "cust01Barak", "Passwd123&", "Thierry", "Kempens", theWhiteHouse, UserStatus.ACTIVE);
         
         System.out.printf("%nCustomer after modifyCustomer:%nFirst name: %s%nLast name: %s%n%n", customer.getFirstName(), customer.getLastName());
         

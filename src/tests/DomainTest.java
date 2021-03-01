@@ -256,7 +256,7 @@ public class DomainTest {
     @Test
     public void modifyCustomer_UsernameAlreadyExists_ThrowsIllegalArgumentException() {
     	trainDummy();
-    	assertThrows(IllegalArgumentException.class, () -> dc.modifyCustomer((Customer) cust, ADMIN, PASSWORD, "John", "Smith", theWhiteHouse)); 
+    	assertThrows(IllegalArgumentException.class, () -> dc.modifyCustomer((Customer) cust, ADMIN, PASSWORD, "John", "Smith", theWhiteHouse, UserStatus.ACTIVE));
     	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
     }
     

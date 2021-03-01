@@ -1,7 +1,6 @@
 package gui;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
 
 import domain.EmployeeRole;
@@ -14,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -26,7 +26,7 @@ import javafx.scene.text.Text;
 public class DetailsPanelController extends GridPane implements InvalidationListener {
 
     private final UserViewModel userViewModel;
-    private boolean modifying = false;
+    private boolean editing = false, modified = false;
 
     @FXML
     private Text txtDetailsTitle;
@@ -64,18 +64,27 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     void btnModifyOnAction(ActionEvent event) {
 
 	    try {
+            if (editing) {
+                if(modified){
+                    userViewModel.modifyEmployee(
 
-            if (modifying) {
-                userViewModel.modifyEmployee(
-                        getTextFromGridItem(8)
-                        , getTextFromGridItem(1)
-                        , getTextFromGridItem(2)
-                        , getTextFromGridItem(3)
-                        , getTextFromGridItem(4)
-                        , getTextFromGridItem(5)
-                        , EmployeeRole.valueOf(getTextFromGridItem(7))
-                        , UserStatus.valueOf(getTextFromGridItem(8))
-                );
+                            getTextFromGridItem(1)
+                            , getTextFromGridItem(3)
+                            , getTextFromGridItem(2)
+                            , getTextFromGridItem(4)
+                            , getTextFromGridItem(5)
+                            , getTextFromGridItem(6)
+                            , EmployeeRole.valueOf(getTextFromGridItem(8))
+                            , UserStatus.valueOf(getTextFromGridItem(9))
+                    );
+                    makePopUp("User edited", "You have successfully edited the user.");
+
+                } else {
+                    makePopUp("User not edited", "You haven't changed anything.");
+
+                }
+
+
             } else {
                 userViewModel.registerEmployee(
                         getTextFromGridItem(0)
@@ -92,14 +101,26 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
         //TODO: handle the correct error messages, not just all
         } catch (Exception e){
+            System.out.println(Arrays.toString(e.getStackTrace()));
             txtErrorMessage.setText(e.getMessage());
             txtErrorMessage.setVisible(true);
         }
     }
 
     private String getTextFromGridItem(int i){
-        System.out.println( ((TextField) gridDetails.getChildren().get(2*i+1)).getText());
-        return ((TextField) gridDetails.getChildren().get(2*i+1)).getText();
+	    String text;
+        Node node = gridDetails.getChildren().get(2*i+1);
+
+        if (node instanceof ComboBox){
+            text = ((ComboBox)node).getSelectionModel().getSelectedItem().toString();
+        } else if(node instanceof TextField){
+            text = ((TextField)node).getText();
+        } else {
+            text = "";
+            System.out.println(node);
+        }
+
+        return text;
     }
 
     @Override
@@ -107,7 +128,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 	    try {
             setDetailOnModifying();
         } catch (NullPointerException e){
-	        modifying = false;
+	        editing = false;
 	        setupPaneNewUser();
         }
     }
@@ -116,14 +137,14 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         gridDetails.getChildren().clear();
 
         addDetailsToGridDetails(userViewModel.getDetails());
+        txtDetailsTitle.setText("Details of "+userViewModel.getNameOfSelectedUser());
         btnModify.setVisible(true);
         txtErrorMessage.setVisible(false);
-
-        txtDetailsTitle.setText("Details of "+userViewModel.getNameOfSelectedUser());
+        editing = true;
     }
 
     private void setupPaneNewUser(){
-	    modifying = false;
+	    editing = false;
         ArrayList<String> fields = userViewModel.getDetailsNewEmployee();
         txtDetailsTitle.setText("Add new user");
         btnModify.setText("Add new user");
@@ -166,58 +187,15 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         return label;
     }
 
-    /*public void fillGridPaneEmployee() {
-	    Employee user = (Employee) userViewModel.getSelectedUser();
-
-        Map<String, String> details = Map.of(
-                "Username", user.getUsername()
-                , "Status", user.getStatus().toString()
-                , "Lastname", user.getLastName()
-                , "Firstname", user.getFirstName()
-                , "Address", user.getAddress()
-                , "Email", user.getEmailAddress()
-                , "Phone number", user.getPhoneNumber()
-                , "Seniority", String.valueOf(user.giveSeniority())
-                , "Role", user.getRole().toString()
-        );
-
-
-        addDetailsToGridDetails(details);
-        txtDetails.setText("Details of "+ user.getUsername());
-
-    }
-
-    public void fillGridPaneCustomer(Map<String, String> details) {
-        Customer user = (Customer) userViewModel.getSelectedUser();
-        Map<String, String> details = Map.of(
-                "Username", user.getUsername()
-                , "Status", user.getStatus().toString()
-                , "Company", ""
-                , "Name", user.getCompanyName()
-                , "Address", user.getCompanyAddress()
-                , "Phone number", user.getCompanyPhone()
-                , "Contact person", ""
-                , "Lastname", user.getLastName()
-                , "Firstname", user.getFirstName()
-                , "Seniority", String.valueOf(user.giveSeniority())
-        );
-
-        addDetailsToGridDetails(details);
-
-        txtDetails.setText("Details of "+ user.getUsername());
-
-    }
-
-     */
-
     private void addDetailsToGridDetails(Map<String, Object> details){
 	    int i = 0;
 	    // Using LinkedHashSet so the order of the map values doesn't change
 	    Set<String> keys = new LinkedHashSet<String>(details.keySet());
 	    for (String key : keys) {
+
 	        Label label = makeNewLabel(key);
 
-	        Node detail = createElementDetailGridpane(details.get(key));
+	        Node detail = createElementDetailGridpane(details.get(key), key);
             gridDetails.add(label, 0, i);
             gridDetails.add(detail, 1, i);
             i++;
@@ -225,16 +203,24 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     }
 
-    private Node createElementDetailGridpane(Object o) {
+    private Node createElementDetailGridpane(Object o, String key) {
 
         if (o instanceof String) {
-            TextField detail = new TextField((String) o);
+            String string = (String) o;
+
+            TextField detail = new TextField(string);
             detail.textProperty().addListener((observable, oldValue, newValue) -> {
-                modifying = true;
+                modified = true;
                 System.out.println("textfield changed from " + oldValue + " to " + newValue);
             });
-            //Text detailText = new Text(details.get(key));
             detail.setFont(Font.font("Arial", FontWeight.NORMAL, 18));
+
+            if (string.trim().equals("")){
+                detail.setVisible(false);
+                detail.setPadding(new Insets(15, 0, 0, 0));
+            } else if (key.toLowerCase().contains("id")){
+                detail.setDisable(true);
+            }
             return detail;
         } else if (o instanceof Enum) {
             ObservableList list;
@@ -245,8 +231,15 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             }
             ComboBox c = new ComboBox(list);
             c.getSelectionModel().select(o);
+            c.valueProperty().addListener(e -> modified = true );
             return c;
         }
         return null;
+    }
+
+    private void makePopUp(String headerText, String text){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, text);
+        alert.setHeaderText(headerText);
+        alert.showAndWait();
     }
 }

@@ -200,19 +200,27 @@ public class UserFacade implements Facade {
 
 	}
 
-	public void modifyCustomer(Customer customer, String username, String password, String firstName, String lastName, Company company) {
+	public void modifyCustomer(Customer customer, String username, String password, String firstName, String lastName, Company company, UserStatus status) {
 		// only needs to be checked if you changed the username 
 		if (!customer.getUsername().equals(username)) {
 			existingUsername(username);
 		}
+		int index = customerList.indexOf(customer);
+
 		customer.setUsername(username);
 		customer.setPassword(password);
 		customer.setFirstName(firstName);
 		customer.setLastName(lastName);
 		customer.setCompany(company);
+		customer.setStatus(status);
 		userRepo.startTransaction();
 		userRepo.update(customer);
 		userRepo.commitTransaction();
+
+		customerList.add(index, customer);
+		customerList.remove(index+1);
+
+
 	}
 
 	public void modifyEmployee(Employee employee, String username, String firstName, String lastName, String address,
@@ -221,6 +229,8 @@ public class UserFacade implements Facade {
 		if (!employee.getUsername().equals(username)) {
 			existingUsername(username);
 		}
+		int index = employeeList.indexOf(employee);
+
 		employee.setUsername(username);
 		//employee.setPassword(password);
 		employee.setFirstName(firstName);
@@ -228,10 +238,18 @@ public class UserFacade implements Facade {
 		employee.setAddress(address);
 		employee.setPhoneNumber(phoneNumber);
 		employee.setEmailAddress(emailAddress);
+		System.out.println("ROLEEEEEE "+role);
 		employee.setRole(role);
+		employee.setStatus(status);
 		userRepo.startTransaction();
 		userRepo.update(employee);
 		userRepo.commitTransaction();
+
+		System.out.println("CHANGED: "+employee.getRole());
+
+		employeeList.add(index, employee);
+		employeeList.remove(index+1);
+
 	}
 
 	public ObservableList<Customer> giveCustomerList() {

@@ -259,6 +259,7 @@ public class DashboardFrameController extends GuiController {
         makePopUp("Logout and exit");
         Platform.exit();
         System.exit(0);
+
     }
 
     @FXML

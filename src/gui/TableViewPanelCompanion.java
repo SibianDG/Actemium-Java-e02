@@ -72,6 +72,8 @@ public class TableViewPanelCompanion extends GridPane {
 		// should display userRole instead of username
 	private void initializeTableView() {
 
+
+
 		System.out.println(userViewModel.getEmployees());
 		System.out.println(userViewModel.getCustomers());
 
@@ -99,7 +101,6 @@ public class TableViewPanelCompanion extends GridPane {
 			
 			TableColumn<Employee, String> roleColumn = new TableColumn<>("Role");
 			tvEmployees.getColumns().add(roleColumn);
-			//TODO roleProperty for role in Employee
 			roleColumn.setCellValueFactory(cellData -> cellData.getValue().roleProperty());
 			
 			ObservableList<Employee> employees = userViewModel.getEmployees();
