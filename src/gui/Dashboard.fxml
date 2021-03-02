@@ -11,14 +11,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<fx:root fx:id="gridDashboard" prefHeight="1000.0" prefWidth="1900.0" styleClass="bg-gray" stylesheets="@../start/styles.css" type="GridPane" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="gridDashboard" gridLinesVisible="true" styleClass="bg-gray" stylesheets="@../start/styles.css" type="GridPane" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <rowConstraints>
-        <RowConstraints minHeight="-Infinity" prefHeight="100.0" />
-        <RowConstraints minHeight="-Infinity" prefHeight="835.0" />
-      <RowConstraints minHeight="-Infinity" prefHeight="65.0" />
+        <RowConstraints minHeight="-Infinity" percentHeight="10" />
+        <RowConstraints minHeight="-Infinity" prefHeight="850.0" />
+      <RowConstraints minHeight="-Infinity" percentHeight="6.5" />
     </rowConstraints>
     <columnConstraints>
-        <ColumnConstraints />
+        <ColumnConstraints percentWidth="100" />
     </columnConstraints>
     <children>
         <GridPane styleClass="gridpaneDashboardHeader">
