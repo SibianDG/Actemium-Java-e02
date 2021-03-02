@@ -55,8 +55,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         	throw new RuntimeException(e);
         }
 
-        gridDetails.setHgap(10);
-        gridDetails.setVgap(10);
+        gridDetails.setHgap(5);
+        gridDetails.setVgap(5);
         txtDetailsTitle.setText("No user is selected");
         btnModify.setVisible(false);
         txtErrorMessage.setVisible(false);
@@ -217,7 +217,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                 } else {
                     textField = new TextField();
                 }
-                textField.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+                textField.setFont(Font.font("Arial", FontWeight.BOLD, 14));
                 node = textField;
             }
 
@@ -227,7 +227,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     private Label makeNewLabel(String text){
         Label label = new Label(text+":");
-        label.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        label.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         label.setAlignment(Pos.CENTER_RIGHT);
         label.setTextAlignment(TextAlignment.RIGHT);
         label.setTextFill(Color.rgb(29, 61, 120));
@@ -260,7 +260,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                 modified = true;
                 System.out.println("textfield changed from " + oldValue + " to " + newValue);
             });
-            detail.setFont(Font.font("Arial", FontWeight.NORMAL, 16));
+            detail.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
 
             if (string.trim().equals("")){
                 detail.setVisible(false);

@@ -197,20 +197,20 @@ public class DashboardFrameController extends GuiController {
     private void buttonMenusClicked(String name){
         if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("employee")) {
             userViewModel.setEmployees(userFacade.giveEmployeeList());
-            switchToManageScreen(name, true);
+            switchToManageScreen(name, GUIEnum.EMPLOYEE);
         } else if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("customer")) {
             userViewModel.setCustomers(userFacade.giveCustomerList());
-            switchToManageScreen(name, false);
+            switchToManageScreen(name, GUIEnum.CUSTOMER);
         } else {
             makePopUp(name);
         }
     }
 
-	private void switchToManageScreen(String name, boolean isManagingEmployees) {
+	private void switchToManageScreen(String name, GUIEnum currentState) {
 		txtTitle.setText(name);
 		resetGridpane();       
 		
-		tableViewPanelCompanion = new TableViewPanelCompanion(this, userViewModel, isManagingEmployees);
+		tableViewPanelCompanion = new TableViewPanelCompanion(this, userViewModel, currentState);
 		detailsPanelController = new DetailsPanelController(userViewModel);
 
 		gridContent.add(tableViewPanelCompanion, 0, 0);

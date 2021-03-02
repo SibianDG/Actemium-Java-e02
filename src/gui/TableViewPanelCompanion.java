@@ -1,11 +1,11 @@
 package gui;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import domain.Customer;
-import domain.Employee;
-import domain.UserModel;
+import domain.*;
 import domain.facades.UserFacade;
 import gui.viewModels.UserViewModel;
 import javafx.collections.FXCollections;
@@ -13,13 +13,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 
@@ -29,8 +31,8 @@ public class TableViewPanelCompanion extends GridPane {
 	private final DashboardFrameController dashboardFrameController;
 	//private String user;
 	private final UserViewModel userViewModel;
-	
-	private final boolean isManagingEmployees;
+	private GUIEnum currentState;
+
 
     @FXML
     private Button btnAdd;
@@ -39,7 +41,7 @@ public class TableViewPanelCompanion extends GridPane {
     private Text txtFilter;
 
 	@FXML
-	private TextField txfFilterInput;
+	private HBox hboxFilterSection;
 	
 	@FXML
 	private TableView<Employee> tvEmployees;
@@ -47,10 +49,10 @@ public class TableViewPanelCompanion extends GridPane {
     @FXML
     private TableView<Customer> tvCustomers;
 	
-	public TableViewPanelCompanion(DashboardFrameController dashboardFrameController, UserViewModel userviewModel, boolean isManagingEmployees) {
+	public TableViewPanelCompanion(DashboardFrameController dashboardFrameController, UserViewModel userviewModel, GUIEnum currentState) {
 		this.dashboardFrameController = dashboardFrameController;
 		this.userViewModel = userviewModel;
-		this.isManagingEmployees = isManagingEmployees;
+		this.currentState = currentState;
 
 		try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("TableViewPanel.fxml"));
@@ -60,11 +62,55 @@ public class TableViewPanelCompanion extends GridPane {
         } catch (IOException e) {
         	throw new RuntimeException(e);
         }
-		
+		initializeFilters();
 		initializeTableView();
 	}
 
-	
+	private void initializeFilters() {
+		Map<GUIEnum, ArrayList<Object>> filterMap = new HashMap<>();
+		filterMap.put(GUIEnum.EMPLOYEE, new ArrayList<>(Arrays.asList("Name", "Username", UserStatus.ACTIVE, EmployeeRole.ADMINISTRATOR)));
+		filterMap.put(GUIEnum.CUSTOMER, new ArrayList<>(Arrays.asList("Name", "Username", UserStatus.ACTIVE, "Company")));
+
+		System.out.println("CST: " + currentState);
+		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createElementDetailGridpane(o)));
+	}
+
+	private Node createElementDetailGridpane(Object o) {
+
+		if (o instanceof String) {
+			String string = (String) o;
+			TextField filter = new TextField();
+			filter.setPromptText(string);
+			filter.setPrefWidth(150);
+			filter.setFont(Font.font("Arial", 14));
+			filter.setOnKeyTyped(event -> {
+				filter(string, filter.getText().trim().toLowerCase());
+			});
+			return filter;
+		} else if (o instanceof Enum) {
+			return makeComboBox(o);
+		}
+		return null;
+	}
+
+	private ComboBox makeComboBox(Object o){
+		String itemText;
+		ArrayList<String> stringArrayListist = new ArrayList<>(Collections.singleton("SELECT ITEM"));
+
+		ObservableList list;
+		if (Arrays.stream(UserStatus.values()).anyMatch(e -> e == o)) {
+			Arrays.asList(UserStatus.values()).forEach(string -> stringArrayListist.add(string.toString()));
+			itemText = "UserStatus";
+		} else {
+			Arrays.asList(EmployeeRole.values()).forEach(string -> stringArrayListist.add(string.toString()));
+			itemText = "Role";
+		}
+		list = FXCollections.observableList(stringArrayListist);
+		ComboBox c = new ComboBox(list);
+		c.valueProperty().addListener(e -> filter(itemText, c.getSelectionModel().getSelectedItem().toString().toLowerCase()));
+		return c;
+	}
+
 	//TODO We could try 2 different TableView s
 	// 1 for customers
 		// should display companyName instead of username
@@ -78,7 +124,7 @@ public class TableViewPanelCompanion extends GridPane {
 		System.out.println(userViewModel.getCustomers());
 
 
-		if(isManagingEmployees) {
+		if(currentState.equals(GUIEnum.EMPLOYEE)) {
 			System.out.println("TV EMPLOYEE");
 			tvEmployees.setVisible(true);
 			tvCustomers.setVisible(false);
@@ -140,11 +186,9 @@ public class TableViewPanelCompanion extends GridPane {
 			
 			TableColumn<Customer, String> roleColumn = new TableColumn<>("Company");
 			tvCustomers.getColumns().add(roleColumn);
-			//TODO nameProperty for name in Company
 			roleColumn.setCellValueFactory(cellData -> cellData.getValue().getCompany().nameProperty());
 
 			ObservableList<Customer> customers = userViewModel.getCustomers();
-			System.out.println(customers.size());
 			tvCustomers.setItems(customers);
 
 			btnAdd.setText("Add Customer");
@@ -161,7 +205,7 @@ public class TableViewPanelCompanion extends GridPane {
 	@FXML
 	void addOnAction(ActionEvent event) {
 		TableView tableView;
-		if(isManagingEmployees) {
+		if(currentState.equals(GUIEnum.EMPLOYEE)) {
 			userViewModel.setCurrentState(GUIEnum.EMPLOYEE);
 			tableView = tvEmployees;
 		} else {
@@ -172,7 +216,59 @@ public class TableViewPanelCompanion extends GridPane {
 		userViewModel.setSelectedUser(null);
 	}
 
-	@FXML
+	private void filter(String fieldName, String filterText){
+		System.out.println(filterText);
+
+		if(currentState.equals(GUIEnum.EMPLOYEE)) {
+			ObservableList<Employee> employees = userViewModel.getEmployees();
+			if (fieldName.length() > 0 && !filterText.equals("select item")){
+				employees = switch (fieldName) {
+					case "Name" -> FXCollections.observableArrayList(
+							employees.stream()
+									.filter(u -> u.getFirstName().toLowerCase().contains(filterText) || u.getLastName().toLowerCase().contains(filterText))
+									.collect(Collectors.toList()));
+					case "Username" -> FXCollections.observableArrayList(
+							employees.stream()
+									.filter(u -> u.getUsername().toLowerCase().contains(filterText))
+									.collect(Collectors.toList()));
+					case "Role" -> FXCollections.observableArrayList(
+							employees.stream()
+									.filter(u -> u.getRole().toLowerCase().contains(filterText))
+									.collect(Collectors.toList()));
+					default -> FXCollections.observableArrayList(
+							employees.stream()
+									.filter(u -> u.getStatus().toLowerCase().contains(filterText))
+									.collect(Collectors.toList()));
+				};
+			}
+			tvEmployees.setItems(employees);
+		} else {
+			ObservableList<Customer> customers = userViewModel.getCustomers();
+			if (fieldName.length() > 0 && !filterText.equals("select item")){
+				customers = switch (fieldName) {
+					case "Name" -> FXCollections.observableArrayList(
+							customers.stream()
+									.filter(u -> u.getFirstName().toLowerCase().contains(filterText) || u.getLastName().toLowerCase().contains(filterText))
+									.collect(Collectors.toList()));
+					case "Username" -> FXCollections.observableArrayList(
+							customers.stream()
+									.filter(u -> u.getUsername().toLowerCase().contains(filterText))
+									.collect(Collectors.toList()));
+					case "Company" -> FXCollections.observableArrayList(
+							customers.stream()
+									.filter(u -> u.getCompany().getName().toLowerCase().contains(filterText))
+									.collect(Collectors.toList()));
+					default -> FXCollections.observableArrayList(
+							customers.stream()
+									.filter(u -> u.getStatus().toLowerCase().contains(filterText))
+									.collect(Collectors.toList()));
+				};
+			}
+			tvCustomers.setItems(customers);
+		}
+	}
+
+	/*@FXML
 	void filterOnKeyTyped(KeyEvent event) {
 		String input = txfFilterInput.getText().toLowerCase();
 		
@@ -199,9 +295,11 @@ public class TableViewPanelCompanion extends GridPane {
 			}
 			tvCustomers.setItems(customers);
 		}
-		
+
+
 		
 
 		
-	}
+	}	 */
+
 }

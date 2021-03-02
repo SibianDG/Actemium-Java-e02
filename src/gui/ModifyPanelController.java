@@ -130,7 +130,7 @@ public class ModifyPanelController extends GridPane {
 			gridContent.add(makeNewLabel(fields.get(i)), 0, i);
 
 			TextField textField = new TextField(randomValues.get(fields.get(i)));
-			textField.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+			textField.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 			gridContent.add(textField, 1, i);
 		}
 	}
