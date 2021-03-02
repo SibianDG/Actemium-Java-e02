@@ -7,6 +7,7 @@
         <class>domain.Employee</class>
         <class>domain.LoginAttempt</class>
         <!--<class>domain.ContactPerson</class>-->
+        <class>domain.ActemiumTicket</class>
         <class>domain.Contract</class>
         <class>domain.Company</class>
         <class>domain.ContractType</class>

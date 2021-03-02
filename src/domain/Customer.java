@@ -31,6 +31,10 @@ public class Customer extends UserModel implements Seniority {
 //	@ManyToMany(mappedBy = "customers",
 //				cascade = CascadeType.PERSIST)
 //	private List<Employee> contactPersons = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "customer",
+			   cascade = CascadeType.PERSIST)
+	private List<ActemiumTicket> tickets = new ArrayList<>();
 
 	private LocalDate registrationDate;
 
@@ -91,6 +95,10 @@ public class Customer extends UserModel implements Seniority {
 //	public void addContactPerson(Employee contactPerson) {
 //		contactPersons.add(contactPerson);
 //	}
+	
+	public void addTicket(ActemiumTicket ticket) {
+		tickets.add(ticket);
+	}
 
 	@Override
 	public int giveSeniority() {

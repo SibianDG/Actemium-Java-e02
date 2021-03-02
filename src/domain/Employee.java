@@ -1,14 +1,21 @@
 package domain;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import languages.LanguageResource;
-
-import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
+
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import languages.LanguageResource;
 
 @Entity
 @Access(AccessType.FIELD)
@@ -28,6 +35,9 @@ public class Employee extends UserModel implements Seniority, Serializable {
 	private StringProperty role = new SimpleStringProperty();
 
 	private LocalDate registrationDate;
+	
+//	@ManyToMany(cascade = CascadeType.PERSIST)
+	private List<ActemiumTicket> tickets = new ArrayList<>();
 	
 //	@ManyToMany
 //	private List<Customer> customers;
@@ -119,6 +129,14 @@ public class Employee extends UserModel implements Seniority, Serializable {
 			throw new IllegalArgumentException(LanguageResource.getString("role_invalid"));
 		}
 		this.roleProperty().set(role.toString());
+	}
+
+	public List<ActemiumTicket> getTickets() {
+		return tickets;
+	}
+
+	public void setTickets(List<ActemiumTicket> tickets) {
+		this.tickets = tickets;
 	}
 
 	public StringProperty roleProperty() {
