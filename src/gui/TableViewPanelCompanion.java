@@ -16,6 +16,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -65,7 +66,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
     
 	private Map<String, Function<T, Property<String>>> propertyMap = new LinkedHashMap<>();
 	
-	private ObservableList<T> tableViewData;
+	private FilteredList<T> tableViewData;
 	
 	public TableViewPanelCompanion(DashboardFrameController dashboardFrameController, UserViewModel userviewModel, GUIEnum currentState) {
 		this.dashboardFrameController = dashboardFrameController;
@@ -85,7 +86,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		
 		switch(currentState) {
 		case EMPLOYEE -> {
-					this.tableViewData = (ObservableList<T>) userViewModel.getEmployees();
+					this.tableViewData = new FilteredList<>((ObservableList<T>) userViewModel.getEmployees(), p -> true);
 
 					propertyMap.put("Firstname", item -> ((Employee)item).firstNameProperty());
 					propertyMap.put("Lastname", item -> ((Employee)item).lastNameProperty());
@@ -94,7 +95,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 					propertyMap.put("Role", item -> ((Employee)item).roleProperty());
 				}
 		case CUSTOMER -> {
-					this.tableViewData = (ObservableList<T>) userViewModel.getCustomers();
+					this.tableViewData = new FilteredList<>((ObservableList<T>) userViewModel.getCustomers(), p -> true);
 					propertyMap.put("Firstname", item -> ((Customer)item).firstNameProperty());
 					propertyMap.put("Lastname", item -> ((Customer)item).lastNameProperty());
 					propertyMap.put("Username", item -> ((Customer)item).usernameProperty());
@@ -133,7 +134,10 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			filter.setPromptText(string);
 			filter.setPrefWidth(150);
 			filter.setFont(Font.font("Arial", 14));
-			filter.setOnKeyTyped(event -> checkFilters());
+			filter.setOnKeyTyped(event -> {
+				checkFilters();
+				System.out.println(((TextField) event.getSource()).getText().trim().length());
+			});
 			return filter;
 		} else if (o instanceof Enum) {
 			return makeComboBox(o);
@@ -179,6 +183,8 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				TextField textField = (TextField) object;
 				if (textField.getText().trim().length() > 0)
 					filter(textField.getPromptText(), textField.getText().trim().toLowerCase());
+				else
+					tableViewData.setPredicate(p -> true);
 			} else if (object instanceof ComboBox) {
 				ComboBox comboBox = (ComboBox) object;
 
@@ -193,15 +199,15 @@ public class TableViewPanelCompanion<T> extends GridPane {
 						filter("Role", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase());
 					} else if (userStatusRoleStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
 						filter("Status", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase());
+					} else {
+						tableViewData.setPredicate(p -> true);
 					}
 				}
-
 			}
 
 			//TODO: shouldn't it automatically update with the ObserverableList?
 			/*tvEmployees.setItems(employees);
 			tvCustomers.setItems(customers);*/
-
 		});
 	}
 
@@ -317,55 +323,58 @@ public class TableViewPanelCompanion<T> extends GridPane {
 
 	private void filter(String fieldName, String filterText){
 
-		ObservableList<T> list = tableViewData;
-
 		if(currentState.equals(GUIEnum.EMPLOYEE)) {
 			if (fieldName.length() > 0 && !filterText.contains("select")){
-				 list =  switch (fieldName) {
-					case "Name" -> FXCollections.observableArrayList(
+				 switch (fieldName) {
+					case "Name" -> /*FXCollections.observableArrayList(
 							 list.stream()
 									.filter(u -> ((Employee) u).getFirstName().toLowerCase().contains(filterText) || ((Employee) u).getLastName().toLowerCase().contains(filterText))
-									.collect(Collectors.toList()));
-					case "Username" -> FXCollections.observableArrayList(
+									.collect(Collectors.toList()));*/
+							tableViewData.setPredicate(u -> ((Employee) u).getFirstName().toLowerCase().contains(filterText) || ((Employee) u).getLastName().toLowerCase().contains(filterText));
+
+					case "Username" -> /*FXCollections.observableArrayList(
 							list.stream()
 									.filter(u -> ((Employee) u).getUsername().toLowerCase().contains(filterText))
-									.collect(Collectors.toList()));
-					case "Role" -> FXCollections.observableArrayList(
+									.collect(Collectors.toList()));*/
+							tableViewData.setPredicate(u-> ((Employee) u).getUsername().toLowerCase().contains(filterText));
+
+					case "Role" -> /*FXCollections.observableArrayList(
 							list.stream().filter(u -> ((Employee) u).getRole().toLowerCase().contains(filterText))
-									.collect(Collectors.toList()));
-					default -> FXCollections.observableArrayList(
+									.collect(Collectors.toList()));*/
+							tableViewData.setPredicate(u -> ((Employee) u).getRole().toLowerCase().contains(filterText));
+					default -> /*FXCollections.observableArrayList(
 							list.stream()
 									.filter(u -> ((Employee) u).getStatus().toLowerCase().contains(filterText))
-									.collect(Collectors.toList()));
-				};
-			} else {
-				//tableViewData = (ObservableList<T>) userViewModel.getEmployees();
+									.collect(Collectors.toList()));*/
+							tableViewData.setPredicate(u-> ((Employee) u).getStatus().toLowerCase().contains(filterText));
+
+				 }
 			}
-			tableView.setItems(list);
 		} else {
 			if (fieldName.length() > 0 && !filterText.contains("select")){
-				list = switch (fieldName) {
-					case "Name" -> FXCollections.observableArrayList(
+				switch (fieldName) {
+					case "Name" -> /*FXCollections.observableArrayList(
 							list.stream()
 									.filter(u -> ((Customer) u).getFirstName().toLowerCase().contains(filterText) || ((Customer) u).getLastName().toLowerCase().contains(filterText))
-									.collect(Collectors.toList()));
-					case "Username" -> FXCollections.observableArrayList(
+									.collect(Collectors.toList()));*/
+							tableViewData.setPredicate(u-> ((Customer) u).getFirstName().toLowerCase().contains(filterText) || ((Customer) u).getLastName().toLowerCase().contains(filterText));
+					case "Username" -> /*FXCollections.observableArrayList(
 							list.stream()
 									.filter(u -> ((Customer) u).getUsername().toLowerCase().contains(filterText))
-									.collect(Collectors.toList()));
-					case "Company" -> FXCollections.observableArrayList(
+									.collect(Collectors.toList()));*/
+							tableViewData.setPredicate(u-> ((Customer) u).getUsername().toLowerCase().contains(filterText));
+					case "Company" -> /*FXCollections.observableArrayList(
 							list.stream()
 									.filter(u -> ((Customer) u).getCompany().getName().toLowerCase().contains(filterText))
-									.collect(Collectors.toList()));
-					default -> FXCollections.observableArrayList(
+									.collect(Collectors.toList()));*/
+							tableViewData.setPredicate(u-> ((Customer) u).getCompany().getName().toLowerCase().contains(filterText));
+					default -> /*FXCollections.observableArrayList(
 							list.stream()
 									.filter(u -> ((Customer) u).getStatus().toLowerCase().contains(filterText))
-									.collect(Collectors.toList()));
-				};
-			} else {
-				//tableViewData = (ObservableList<T>) userViewModel.getCustomers();
+									.collect(Collectors.toList()));*/
+							tableViewData.setPredicate(u-> ((Customer) u).getStatus().toLowerCase().contains(filterText));
+				}
 			}
-			tableView.setItems(list);
 		}
 	}
 
