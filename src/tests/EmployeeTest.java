@@ -21,14 +21,14 @@ public class EmployeeTest {
     private static Stream<Arguments> validUserAttributes() {
         return Stream.of(
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0470099874", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0000000000", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "9999999999", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0000000000", "student@student.hogent.be", EmployeeRole.TECHNICIAN),
+                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "9999999999", "student@student.hogent.be", EmployeeRole.SUPPORT_MANAGER),
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "9999999-99", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "9/99999-99", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress 94521 bus 10", "9999999999", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress 94521 bus 10", "9999999999", "stu_dent@student.hogent.be", EmployeeRole.ADMINISTRATOR),
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress 94521 bus 10", "9999999999", "stu.dent@student.hogent.be", EmployeeRole.ADMINISTRATOR)
-        );
+        		);
     }
 
     private static Stream<Arguments> invalidUserAttributes() {
@@ -59,25 +59,29 @@ public class EmployeeTest {
                 );
     }
 
-    @ParameterizedTest
-    @MethodSource("validUserAttributes")
-    public void createEmployee_Correct(String username, String password, String firstName, String lastName, String address,
-                                       String phoneNumber, String emailAddress, EmployeeRole role) {
-        Assertions.assertDoesNotThrow(() -> new Employee(username, password, firstName, lastName, address, phoneNumber, emailAddress, role));
-    }
+	@ParameterizedTest
+	@MethodSource("validUserAttributes")
+	public void createEmployee_ValidAttributes_DoesNotThrowException(String username, String password, String firstName,
+			String lastName, String address, String phoneNumber, String emailAddress, EmployeeRole role) {
+		Assertions.assertDoesNotThrow(
+				() -> new Employee(username, password, firstName, lastName, address, phoneNumber, emailAddress, role));
+	}
 
-    @ParameterizedTest
-    @MethodSource("invalidUserAttributes")
-    public void createEmployee_Failed(String username, String password, String firstName, String lastName, String address,
-                                       String phoneNumber, String emailAddress, EmployeeRole role) {
-        Assertions.assertThrows(IllegalArgumentException.class,() -> new Employee(username, password, firstName, lastName, address, phoneNumber, emailAddress, role));
-    }
+	@ParameterizedTest
+	@MethodSource("invalidUserAttributes")
+	public void createEmployee_InValidAttributes_ThrowsIllegalArgumentException(String username, String password,
+			String firstName, String lastName, String address, String phoneNumber, String emailAddress,
+			EmployeeRole role) {
+		Assertions.assertThrows(IllegalArgumentException.class,
+				() -> new Employee(username, password, firstName, lastName, address, phoneNumber, emailAddress, role));
+	}
 
-    @Test
-    public void giveEmployeeSeniroity_returns_valid() {
-        employee = new Employee("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0470099874", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR);
-        employee.setRegistrationDate(LocalDate.now().minusYears(10));
-        Assertions.assertEquals(10, employee.giveSeniority());
-    }    
+	@Test
+	public void giveEmployeeSeniroity_returns_valid() {
+		employee = new Employee("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0470099874",
+				"student@student.hogent.be", EmployeeRole.ADMINISTRATOR);
+		employee.setRegistrationDate(LocalDate.now().minusYears(10));
+		Assertions.assertEquals(10, employee.giveSeniority());
+	}
     
 }

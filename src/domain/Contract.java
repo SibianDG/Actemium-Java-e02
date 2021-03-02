@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 public class Contract implements Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int contractNr;
@@ -26,17 +26,34 @@ public class Contract implements Serializable {
 	private ContractStatus status;
 	private LocalDate startDate;
 	private LocalDate endDate;
-	
-	public Contract() {	
+
+	public Contract() {
+		super();
 	}
 	
-	public Contract(int contractNr, ContractType contractType, ContractStatus status, LocalDate startDate,
-			LocalDate endDate) {
-		this.contractNr = contractNr;
-		this.contractType = contractType;
-		this.status = status;
-		this.startDate = startDate;
-		this.endDate = endDate;
+	//TODO
+	// Customer should be able to request a contract in the future
+	// For example:
+	// Current contract will expire next week
+	// Customer can already request a contract that will start next week
+	// This is added to the UC Sign New Contract - More Info Needed
+	public Contract(ContractType contractType, LocalDate startDate, LocalDate endDate) {
+		setContractType(contractType);
+		setStartDate(startDate);
+		if (startDate.isEqual(LocalDate.now())) {
+			setStatus(ContractStatus.CURRENT);
+		} else {
+			setStatus(ContractStatus.IN_REQUEST);
+		}
+		setEndDate(endDate);
+	}
+
+	//TODO
+	// Does anyone need to approve the contract after it has been signed by the customer?
+	// In other words, can the contract be initialized with status CURRENT
+	// or can it only be initialized with status IN_REQUEST ?
+	public Contract(ContractType contractType, LocalDate endDate) {
+		this(contractType, LocalDate.now(), endDate);		
 	}
 
 	public ContractType getContractType() {
@@ -60,6 +77,9 @@ public class Contract implements Serializable {
 	}
 
 	public void setStartDate(LocalDate startDate) {
+		if(startDate.isBefore(LocalDate.now())) {
+			throw new IllegalArgumentException("StartDate must be today or in the future.");
+		}
 		this.startDate = startDate;
 	}
 
@@ -68,7 +88,15 @@ public class Contract implements Serializable {
 	}
 
 	public void setEndDate(LocalDate endDate) {
+		if(endDate.isBefore(startDate)) {
+			throw new IllegalArgumentException("EndDate needs to be at least 1 year after startDate.");
+		}
+		if(!(endDate.minusYears(1).equals(startDate) 
+				|| endDate.minusYears(2).equals(startDate) 
+				|| endDate.minusYears(3).equals(startDate))) {
+			throw new IllegalArgumentException("EndDate needs to be exactly 1, 2 or 3 years after startDate.");
+		}
 		this.endDate = endDate;
 	}
-			
+
 }

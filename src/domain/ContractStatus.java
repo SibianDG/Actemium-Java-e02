@@ -1,5 +1,10 @@
 package domain;
 
 public enum ContractStatus {
-	ACTIVE, INACTIVE
+	// Original UC - by HoGent lectors
+//	CREATED, ACTIVE, COMPLETED, CANCELLED
+	
+	// Most recent update by Product Owner (Actemium)
+	IN_REQUEST, CURRENT, EXPIRED, CANCELLED
+	
 }
