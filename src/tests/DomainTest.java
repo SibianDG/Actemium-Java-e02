@@ -151,7 +151,7 @@ public class DomainTest {
         }
     	assertEquals(4, admin.getFailedLoginAttempts());
         assertThrows(BlockedUserException.class, () -> dc.signIn(ADMIN, WRONGPASSWORD));
-        assertTrue(admin.getStatus().equals(UserStatus.BLOCKED));
+        assertTrue(admin.getStatusAsEnum().equals(UserStatus.BLOCKED));
         assertEquals(5, admin.getFailedLoginAttempts());
 
 		Mockito.verify(userRepoDummy, Mockito.times(5)).findByUsername(ADMIN);
@@ -189,18 +189,18 @@ public class DomainTest {
     	// 1 InValid login attempt for Administrator admin
     	// makes for a total of 5 InValid loginAttempts => admin blocked
     	assertEquals(4, admin.getFailedLoginAttempts());
-        assertTrue(admin.getStatus().equals(UserStatus.ACTIVE));
+        assertTrue(admin.getStatusAsEnum().equals(UserStatus.ACTIVE));
 		assertThrows(BlockedUserException.class, () -> dc.signIn(ADMIN, WRONGPASSWORD));
-        assertTrue(admin.getStatus().equals(UserStatus.BLOCKED));
+        assertTrue(admin.getStatusAsEnum().equals(UserStatus.BLOCKED));
 		// 1 Valid login attempt for Technician tech
     	dc.signIn(TECH, PASSWORD);
-        assertTrue(tech.getStatus().equals(UserStatus.ACTIVE));
+        assertTrue(tech.getStatusAsEnum().equals(UserStatus.ACTIVE));
     	// failedLoginAttempts for tech has been reset after successful login
     	assertEquals(0, tech.getFailedLoginAttempts());
     	// even when using the correct password on a blocked user account 
     	// it will still be an invalid loginAttempt
 		assertThrows(BlockedUserException.class, () -> dc.signIn(ADMIN, PASSWORD));
-        assertTrue(admin.getStatus().equals(UserStatus.BLOCKED));
+        assertTrue(admin.getStatusAsEnum().equals(UserStatus.BLOCKED));
 		// failedLoginAttempts for admin keep counting up even after account has been blocked
     	assertEquals(6, admin.getFailedLoginAttempts());
 
@@ -268,13 +268,12 @@ public class DomainTest {
     }
 
     //Todo
-
-    //@Test
-    //public void modifyEmployee_UsernameAlreadyExists_ThrowsIllegalArgumentException() {
-    //	trainDummy();
-    //	assertThrows(IllegalArgumentException.class, () -> dc.modifyEmployee((Employee) tech, ADMIN , PASSWORD, "John", "Smith", "Address 78", "0458634795", "john.smith@student.hogent.be", EmployeeRole.ADMINISTRATOR, status));
-    //	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
-    // }
+    @Test
+    public void modifyEmployee_UsernameAlreadyExists_ThrowsIllegalArgumentException() {
+    	trainDummy();
+    	assertThrows(IllegalArgumentException.class, () -> dc.modifyEmployee((Employee) tech, ADMIN , PASSWORD, "John", "Smith", "Address 78", "0458634795", "john.smith@student.hogent.be", EmployeeRole.ADMINISTRATOR, UserStatus.ACTIVE));
+    	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
+     }
 
     
 }

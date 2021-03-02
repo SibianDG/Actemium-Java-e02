@@ -162,7 +162,7 @@ public class UserViewModel implements Observable {
 
     public void modifyEmployee(String username, String firstName, String lastName, String address,
                                String phoneNumber, String emailAddress, EmployeeRole role, UserStatus status) {
-        userFacade.modifyEmployee( (Employee) selectedUser,  username,  firstName,  lastName,  address,
+        userFacade.modifyEmployee( (Employee) selectedUser,  username, "Passwd123&", firstName,  lastName,  address,
                  phoneNumber,  emailAddress,  role, status);
     }
 

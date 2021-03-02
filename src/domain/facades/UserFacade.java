@@ -99,7 +99,7 @@ public class UserFacade implements Facade {
 		userRepo.startTransaction();
 		
 		// user account already blocked, only the failed login attempt needs to registered
-		if (userModel.getStatus().equals(UserStatus.BLOCKED)) {
+		if (userModel.getStatusAsEnum().equals(UserStatus.BLOCKED)) {
 			userModel.increaseFailedLoginAttempts();
 			LoginAttempt loginAttempt = new LoginAttempt(LocalDateTime.now(), userModel, LoginStatus.FAILED);	
 			userModel.addLoginAttempt(loginAttempt);
@@ -224,7 +224,7 @@ public class UserFacade implements Facade {
 
 	}
 
-	public void modifyEmployee(Employee employee, String username, String firstName, String lastName, String address,
+	public void modifyEmployee(Employee employee, String username, String password, String firstName, String lastName, String address,
 							   String phoneNumber, String emailAddress, EmployeeRole role, UserStatus status) {
 		// only needs to be checked if you changed the username 
 		if (!employee.getUsername().equals(username)) {
@@ -233,7 +233,7 @@ public class UserFacade implements Facade {
 		int index = employeeList.indexOf(employee);
 
 		employee.setUsername(username);
-		//employee.setPassword(password);
+		employee.setPassword(password);
 		employee.setFirstName(firstName);
 		employee.setLastName(lastName);
 		employee.setAddress(address);
