@@ -11,6 +11,7 @@ import gui.controllers.GuiController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,6 +19,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import languages.LanguageResource;
 
@@ -80,8 +82,9 @@ public class LoginController extends GuiController {
                 Scene scene = new Scene(dashboardController);
                 Stage stage = (Stage) this.getScene().getWindow();
                 stage.setTitle(LanguageResource.getString("dashboard")); //TODO review LanguageResource
-                stage.setResizable(false);
                 stage.setScene(scene);
+                stage.setMaximized(true);
+                stage.setResizable(false);
                 stage.show();
             }
         } catch (IllegalArgumentException | PasswordException | BlockedUserException | EntityNotFoundException e) {
