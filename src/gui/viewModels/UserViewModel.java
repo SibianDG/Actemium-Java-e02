@@ -79,13 +79,13 @@ public class UserViewModel implements Observable {
     }
 
     public Map<String, Object> getDetails(){
-        System.out.println(selectedUser.getClass().getSimpleName().toLowerCase());
         switch (selectedUser.getClass().getSimpleName().toLowerCase()) {
             case "employee" -> {
                 Employee employee = (Employee) selectedUser;
 				Map<String, Object> detailsMap = new LinkedHashMap<>();
 				detailsMap.put("Employee ID", String.valueOf(employee.getEmployeeNr()));
                 detailsMap.put("Username", employee.getUsername());
+                detailsMap.put("Password", employee.getPassword());
                 detailsMap.put("Firstname", employee.getFirstName());
                 detailsMap.put("Lastname", employee.getLastName());
 				detailsMap.put("Address", employee.getAddress());
@@ -94,7 +94,6 @@ public class UserViewModel implements Observable {
 				detailsMap.put("Company Seniority", String.valueOf(employee.giveSeniority()));
 				detailsMap.put("Role", employee.getRoleAsEnum());
 				detailsMap.put("Status", employee.getStatusAsEnum());
-                System.out.println("Filled");
 				return detailsMap;
             }
             case "customer" -> {
@@ -124,6 +123,8 @@ public class UserViewModel implements Observable {
                 Map<String, Object> detailsMap = new LinkedHashMap<>();
                 detailsMap.put("Customer ID", String.valueOf(customer.getCustomerNr()));
                 detailsMap.put("Username", customer.getUsername());
+                detailsMap.put("Password", customer.getPassword());
+
                 // here it's the name and firstname of the customer
                 detailsMap.put("Firstname", customer.getFirstName());
                 detailsMap.put("Lastname", customer.getLastName());
@@ -160,14 +161,14 @@ public class UserViewModel implements Observable {
         setSelectedUser(userFacade.findByUsername(username));
     }
 
-    public void modifyEmployee(String username, String firstName, String lastName, String address,
+    public void modifyEmployee(String username, String password, String firstName, String lastName, String address,
                                String phoneNumber, String emailAddress, EmployeeRole role, UserStatus status) {
-        userFacade.modifyEmployee( (Employee) selectedUser,  username, "Passwd123&", firstName,  lastName,  address,
+        userFacade.modifyEmployee( (Employee) selectedUser,  username, password, firstName,  lastName,  address,
                  phoneNumber,  emailAddress,  role, status);
     }
 
-    public void modifyCustomer(String username, String firstName, String lastName, String status) {
-        userFacade.modifyCustomer((Customer) this.selectedUser, username, "Passwd123&", firstName, lastName, ((Customer)selectedUser).getCompany(), UserStatus.valueOf(status));
+    public void modifyCustomer(String username, String password, String firstName, String lastName, String status) {
+        userFacade.modifyCustomer((Customer) this.selectedUser, username, password, firstName, lastName, ((Customer)selectedUser).getCompany(), UserStatus.valueOf(status));
     }
 
     public void registerCustomer(String username, String firstName, String lastName, String companyName, String companyAddress, String companyPhone) {

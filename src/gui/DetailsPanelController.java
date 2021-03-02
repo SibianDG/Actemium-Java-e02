@@ -77,15 +77,17 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 , getTextFromGridItem(4)
                                 , getTextFromGridItem(5)
                                 , getTextFromGridItem(6)
-                                , EmployeeRole.valueOf(getTextFromGridItem(8))
-                                , UserStatus.valueOf(getTextFromGridItem(9))
+                                , getTextFromGridItem(7)
+                                , EmployeeRole.valueOf(getTextFromGridItem(9))
+                                , UserStatus.valueOf(getTextFromGridItem(10))
                         );
                     } else if (userViewModel.getCurrentState().equals(GUIEnum.CUSTOMER)){
                         userViewModel.modifyCustomer(
                                 getTextFromGridItem(1)
                                 , getTextFromGridItem(2)
                                 , getTextFromGridItem(3)
-                                , getTextFromGridItem(11)
+                                , getTextFromGridItem(4)
+                                , getTextFromGridItem(12)
                         );
                     }
 
@@ -142,7 +144,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             text = ((TextField)node).getText();
         } else {
             text = "";
-            System.out.println(node);
         }
 
         return text;
@@ -254,7 +255,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
         if (o instanceof String) {
             String string = (String) o;
-
+            if (key.equals("Password")){
+                string = "********";
+            }
             TextField detail = new TextField(string);
             detail.textProperty().addListener((observable, oldValue, newValue) -> {
                 modified = true;

@@ -124,7 +124,6 @@ public class Employee extends UserModel implements Seniority, Serializable {
 	}
 
 	public void setRole(EmployeeRole role) {
-		System.out.println(role);
 		if (role == null) {
 			throw new IllegalArgumentException(LanguageResource.getString("role_invalid"));
 		}

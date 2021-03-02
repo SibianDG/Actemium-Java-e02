@@ -84,7 +84,7 @@ public class LoginController extends GuiController {
                 stage.setTitle(LanguageResource.getString("dashboard")); //TODO review LanguageResource
                 stage.setScene(scene);
                 stage.setMaximized(true);
-                stage.setResizable(false);
+                stage.setResizable(true);
                 stage.show();
             }
         } catch (IllegalArgumentException | PasswordException | BlockedUserException | EntityNotFoundException e) {

@@ -208,7 +208,8 @@ public class UserFacade implements Facade {
 		}
 		int index = customerList.indexOf(customer);
 
-		if (!password.isBlank()) {
+
+		if (!password.equals("********")) {
 			customer.setPassword(password);
 		}
 		
@@ -235,7 +236,7 @@ public class UserFacade implements Facade {
 		}
 		int index = employeeList.indexOf(employee);
 
-		if (!password.isBlank()) {
+		if (!password.equals("********")) {
 			employee.setPassword(password);
 		}
 		
@@ -245,14 +246,11 @@ public class UserFacade implements Facade {
 		employee.setAddress(address);
 		employee.setPhoneNumber(phoneNumber);
 		employee.setEmailAddress(emailAddress);
-		System.out.println("ROLEEEEEE "+role);
 		employee.setRole(role);
 		employee.setStatus(status);
 		userRepo.startTransaction();
 		userRepo.update(employee);
 		userRepo.commitTransaction();
-
-		System.out.println("CHANGED: "+employee.getRole());
 
 		employeeList.add(index, employee);
 		employeeList.remove(index+1);

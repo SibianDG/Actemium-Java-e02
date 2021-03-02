@@ -94,19 +94,28 @@ public class TableViewPanelCompanion extends GridPane {
 
 	private ComboBox makeComboBox(Object o){
 		String itemText;
-		ArrayList<String> stringArrayListist = new ArrayList<>(Collections.singleton("SELECT ITEM"));
+		ArrayList<String> stringArrayListist;
 
 		ObservableList list;
 		if (Arrays.stream(UserStatus.values()).anyMatch(e -> e == o)) {
+			stringArrayListist = new ArrayList<>(Collections.singleton("SELECT STATUS"));
 			Arrays.asList(UserStatus.values()).forEach(string -> stringArrayListist.add(string.toString()));
 			itemText = "UserStatus";
 		} else {
+			stringArrayListist = new ArrayList<>(Collections.singleton("SELECT ROLE"));
 			Arrays.asList(EmployeeRole.values()).forEach(string -> stringArrayListist.add(string.toString()));
 			itemText = "Role";
 		}
 		list = FXCollections.observableList(stringArrayListist);
 		ComboBox c = new ComboBox(list);
-		c.valueProperty().addListener(e -> checkFilters());
+		if (itemText.equals("UserStatus")){
+			c.getSelectionModel().select("SELECT STATUS");
+		} else if (itemText.equals("Role")){
+			c.getSelectionModel().select("SELECT ROLE");
+		}
+		c.valueProperty().addListener(e -> {
+			checkFilters();
+		});
 		return c;
 	}
 
@@ -123,27 +132,27 @@ public class TableViewPanelCompanion extends GridPane {
 					filter(textField.getPromptText(), textField.getText().trim().toLowerCase());
 			} else if (object instanceof ComboBox) {
 				ComboBox comboBox = (ComboBox) object;
-				if (comboBox.getSelectionModel().getSelectedItem() != null) {
-					if (!comboBox.getSelectionModel().getSelectedItem().equals("SELECT ITEM")){
-						System.out.println(1);
-						System.out.println(Arrays.asList(UserStatus.values()));
-						ArrayList<EmployeeRole> employeeRoleArrayList = new ArrayList<>(Arrays.asList(EmployeeRole.values()));
-						List<String> employeeRoleStringArray = employeeRoleArrayList.stream().map(EmployeeRole::toString).collect(Collectors.toList());
 
-						ArrayList<UserStatus> userStatusArrayList = new ArrayList<>(Arrays.asList(UserStatus.values()));
-						List<String> userStatusRoleStringArray = userStatusArrayList.stream().map(UserStatus::toString).collect(Collectors.toList());
+				if (comboBox.getSelectionModel().getSelectedItem() != null &&  !comboBox.getSelectionModel().getSelectedItem().toString().contains("SELECT")) {
+					ArrayList<EmployeeRole> employeeRoleArrayList = new ArrayList<>(Arrays.asList(EmployeeRole.values()));
+					List<String> employeeRoleStringArray = employeeRoleArrayList.stream().map(EmployeeRole::toString).collect(Collectors.toList());
 
-						if (employeeRoleStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
-							System.out.println("ROLLEE");
-							filter("Role", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase());
-						} else if (userStatusRoleStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
-							System.out.println("STATUUSSS");
-							filter("Status", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase());
-						}
+					ArrayList<UserStatus> userStatusArrayList = new ArrayList<>(Arrays.asList(UserStatus.values()));
+					List<String> userStatusRoleStringArray = userStatusArrayList.stream().map(UserStatus::toString).collect(Collectors.toList());
+
+					if (employeeRoleStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
+						filter("Role", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase());
+					} else if (userStatusRoleStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
+						filter("Status", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase());
 					}
 				}
 
 			}
+
+			//TODO: shouldn't it automatically update with the ObserverableList?
+			tvEmployees.setItems(employees);
+			tvCustomers.setItems(customers);
+
 		});
 	}
 
@@ -154,7 +163,6 @@ public class TableViewPanelCompanion extends GridPane {
 		// should display userRole instead of username
 	private void initializeTableView() {
 		if(currentState.equals(GUIEnum.EMPLOYEE)) {
-			System.out.println("TV EMPLOYEE");
 			tvEmployees.setVisible(true);
 			tvCustomers.setVisible(false);
 			
@@ -179,8 +187,7 @@ public class TableViewPanelCompanion extends GridPane {
 			roleColumn.setCellValueFactory(cellData -> cellData.getValue().roleProperty());
 			
 			ObservableList<Employee> employees = userViewModel.getEmployees();
-			System.out.println(employees.size());
-			
+
 			tvEmployees.setItems(employees);
 			
 			btnAdd.setText("Add Employee");
@@ -193,7 +200,6 @@ public class TableViewPanelCompanion extends GridPane {
 			});
 			
 		} else {
-			System.out.println("TV CUSTOMER");
 			tvCustomers.setVisible(true);
 			tvEmployees.setVisible(false);
 		
@@ -246,10 +252,9 @@ public class TableViewPanelCompanion extends GridPane {
 	}
 
 	private void filter(String fieldName, String filterText){
-		System.out.println(filterText);
 
 		if(currentState.equals(GUIEnum.EMPLOYEE)) {
-			if (fieldName.length() > 0 && !filterText.equals("select item")){
+			if (fieldName.length() > 0 && !filterText.contains("select")){
 				employees = switch (fieldName) {
 					case "Name" -> FXCollections.observableArrayList(
 							employees.stream()
@@ -274,7 +279,7 @@ public class TableViewPanelCompanion extends GridPane {
 			tvEmployees.setItems(employees);
 		} else {
 			ObservableList<Customer> customers = userViewModel.getCustomers();
-			if (fieldName.length() > 0 && !filterText.equals("select item")){
+			if (fieldName.length() > 0 && !filterText.contains("select")){
 				customers = switch (fieldName) {
 					case "Name" -> FXCollections.observableArrayList(
 							customers.stream()

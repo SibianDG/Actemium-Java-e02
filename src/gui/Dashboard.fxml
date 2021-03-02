@@ -14,7 +14,7 @@
 <fx:root fx:id="gridDashboard" gridLinesVisible="true" styleClass="bg-gray" stylesheets="@../start/styles.css" type="GridPane" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <rowConstraints>
         <RowConstraints minHeight="-Infinity" percentHeight="10" />
-        <RowConstraints minHeight="-Infinity" prefHeight="850.0" />
+        <RowConstraints minHeight="-Infinity" percentHeight="83.5" />
       <RowConstraints minHeight="-Infinity" percentHeight="6.5" />
     </rowConstraints>
     <columnConstraints>

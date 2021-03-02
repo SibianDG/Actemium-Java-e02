@@ -38,7 +38,6 @@ public class ModifyPanelController extends GridPane {
 
 	@FXML
 	void btnAddOnAction(ActionEvent event) throws FileNotFoundException {
-		System.out.println();
 		//FIXME
 
 		domainController.registerEmployee(
