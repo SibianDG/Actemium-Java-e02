@@ -37,7 +37,7 @@ public class ActemiumTicket implements Serializable {
 	private String description;
 	@ManyToOne
 	private Customer customer;
-//	@ManyToMany(mappedBy = "employee")
+	@ManyToMany
 	private List<Employee> technicians = new ArrayList<>();
 	private String remarks;
 	private String attachments;

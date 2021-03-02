@@ -36,7 +36,7 @@ public class Employee extends UserModel implements Seniority, Serializable {
 
 	private LocalDate registrationDate;
 	
-//	@ManyToMany(cascade = CascadeType.PERSIST)
+	@ManyToMany(mappedBy = "technicians", cascade = CascadeType.PERSIST)
 	private List<ActemiumTicket> tickets = new ArrayList<>();
 	
 //	@ManyToMany

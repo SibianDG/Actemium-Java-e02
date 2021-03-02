@@ -9,9 +9,12 @@ public class PopulateDB {
         
         Company theWhiteHouse = new Company("The White House", "America 420", "911");
         Customer barak = new Customer("cust01Barak", "Passwd123&", "Barak", "Obama", theWhiteHouse);
+        Employee tech = new Employee("Technician", "Passwd123&", "Johan", "Van Schoor","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.TECHNICIAN);
+
+        userDao.insert(tech);
         ActemiumTicket ticket01 = new ActemiumTicket(TicketPriority.P1, "Remove Trump From White House", "I forgot my diary in the white house, Trump doesn't let me in to retriev it", barak);
         barak.addTicket(ticket01);
-        
+        ticket01.addTechnician(tech);
         userDao.insert(new Employee("Admin123", "Passwd123&", "Johan", "Van Schoor","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.ADMINISTRATOR));
         userDao.insert(new Employee("Tech123", "Passwd123&", "Johan", "Van Schoor","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.TECHNICIAN));
         userDao.insert(new Employee("thomas123", "Passwd123&", "Thomas", "Dirven","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.ADMINISTRATOR));
@@ -23,7 +26,9 @@ public class PopulateDB {
         userDao.insert(new Customer("cust03Emma", "Passwd123&", "Emma", "Dupont", theWhiteHouse));
         userDao.insert(new Employee("tech01Donald", "Passwd123&", "Donald", "Trump", "Stationstraat 56", "092548736", "donald.trump@hogent.be", EmployeeRole.TECHNICIAN));
         userDao.insert(new Employee("supman01John", "Passwd123&", "John", "Smiths", "Stationstraat 34", "093504816", "john.smiths@hogent.be", EmployeeRole.SUPPORT_MANAGER));
-        
+
+
+
         userDao.commitTransaction();
     }
 }
