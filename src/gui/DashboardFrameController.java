@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import domain.Customer;
+import domain.Employee;
 import domain.facades.Facade;
 import domain.facades.UserFacade;
 import gui.controllers.GuiController;
@@ -35,6 +37,10 @@ public class DashboardFrameController extends GuiController {
 	private final UserFacade userFacade;
 	//private final TicketFacade ticketFacade;
 	private UserViewModel userViewModel;
+	
+	//TODO attributes for different tableview panels
+	private TableViewPanelCompanion<Employee> employeeTableView;
+	private TableViewPanelCompanion<Customer> customerTableView;
 
     @FXML
     private GridPane gridDashboard;
@@ -85,6 +91,8 @@ public class DashboardFrameController extends GuiController {
         } catch (IOException e) {
         	throw new RuntimeException(e);
         }
+        //initialize tableviews
+        
 
         initializeDashboard();
         initializeText();
@@ -211,9 +219,11 @@ public class DashboardFrameController extends GuiController {
 		txtTitle.setText(name);
 		resetGridpane(gridContent);
 		
-		tableViewPanelCompanion = new TableViewPanelCompanion(this, userViewModel, currentState);
+		//tableViewPanelCompanion = new TableViewPanelCompanion(this, userViewModel, currentState);
 		detailsPanelController = new DetailsPanelController(userViewModel);
 
+		
+		
 		gridContent.add(tableViewPanelCompanion, 0, 0);
 		gridContent.add(detailsPanelController, 1, 0);
 	}
