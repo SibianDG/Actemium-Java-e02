@@ -101,7 +101,7 @@ public class DashboardFrameController extends GuiController {
 //        String[] itemImages = {"icon_consult", "icon_outstanding", "icon_resolved", "icon_statistics", "icon_create", "icon_manage",};
 
         txtTitle.setText("Dashboard");
-        resetGridpane();
+        resetGridpane(gridContent);
         initializeGridPane(3, 2, 300, 300);
 
 //        Map<String, IntStream> employeeRoleArrayListSet = Map.of(
@@ -147,6 +147,7 @@ public class DashboardFrameController extends GuiController {
     }
 
     private void createGridMenu(String[] itemNames){
+        resetGridpane(gridMenu);
         int width = 1000/itemNames.length;
         for (int i = 0; i < itemNames.length; i++) {
             String text = itemNames[i];
@@ -208,7 +209,7 @@ public class DashboardFrameController extends GuiController {
 
 	private void switchToManageScreen(String name, GUIEnum currentState) {
 		txtTitle.setText(name);
-		resetGridpane();       
+		resetGridpane(gridContent);
 		
 		tableViewPanelCompanion = new TableViewPanelCompanion(this, userViewModel, currentState);
 		detailsPanelController = new DetailsPanelController(userViewModel);
@@ -217,10 +218,10 @@ public class DashboardFrameController extends GuiController {
 		gridContent.add(detailsPanelController, 1, 0);
 	}
 
-    private void resetGridpane(){
-    	gridContent.getChildren().clear();
-    	gridContent.getColumnConstraints().clear();
-    	gridContent.getRowConstraints().clear();
+    private void resetGridpane(GridPane gridPane){
+        gridPane.getChildren().clear();
+        gridPane.getColumnConstraints().clear();
+        gridPane.getRowConstraints().clear();
     }
 
     private void initializeGridPane(int x, int y, double height, double width) {
@@ -240,7 +241,7 @@ public class DashboardFrameController extends GuiController {
 
     public void setModifyPane(){
         txtTitle.setText("Add Employee");
-        resetGridpane();
+        resetGridpane(gridContent);
         initializeGridPane(1,1, 500, 500);
         gridContent.add(new ModifyPanelController(userFacade /*, name.split(" ")[1])*/, this), 0, 0);
     }
