@@ -29,15 +29,16 @@ public class LoginAttempt implements Serializable {
 	private UserModel userModel;
 	
 	public LoginAttempt() {
+		super();
 	}
 
-	public LoginAttempt(LocalDateTime dateAndTime, UserModel userModel, LoginStatus loginStatus) {
+	// LoginAttempts for nonExisting usernames are not logged in the database
+	public LoginAttempt(UserModel userModel, LoginStatus loginStatus) {
 		super();
-		this.dateAndTime = dateAndTime;
+		this.dateAndTime = LocalDateTime.now();
+		this.userModel = userModel;
 		this.username = userModel.getUsername();
 		this.loginStatus = loginStatus;
-		//TODO test, remove if possible, can stay if necessary
-		this.userModel = userModel;
 	}
 
 	public LocalDateTime getDateAndTime() {
@@ -71,4 +72,5 @@ public class LoginAttempt implements Serializable {
 	public void setUserModel(UserModel userModel) {
 		this.userModel = userModel;
 	}
+	
 }

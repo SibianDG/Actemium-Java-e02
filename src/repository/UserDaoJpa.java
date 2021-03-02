@@ -1,8 +1,5 @@
 package repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 
@@ -21,7 +18,7 @@ public class UserDaoJpa extends GenericDaoJpa<UserModel> implements UserDao {
 	@Override
 	public void registerLoginAttempt(UserModel userModel, LoginStatus loginStatus) {
 		
-		LoginAttempt loginAttempt = new LoginAttempt(LocalDateTime.now(), userModel, loginStatus);
+		LoginAttempt loginAttempt = new LoginAttempt(userModel, loginStatus);
 		
 		//userModel.addLoginAttempt(loginAttempt);
 		

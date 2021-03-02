@@ -1,6 +1,5 @@
 package domain.facades;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +18,6 @@ import exceptions.PasswordException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import languages.LanguageResource;
-import repository.GenericDaoJpa;
 import repository.UserDao;
 import repository.UserDaoJpa;
 
@@ -101,7 +99,7 @@ public class UserFacade implements Facade {
 		// user account already blocked, only the failed login attempt needs to registered
 		if (userModel.getStatusAsEnum().equals(UserStatus.BLOCKED)) {
 			userModel.increaseFailedLoginAttempts();
-			LoginAttempt loginAttempt = new LoginAttempt(LocalDateTime.now(), userModel, LoginStatus.FAILED);	
+			LoginAttempt loginAttempt = new LoginAttempt(userModel, LoginStatus.FAILED);	
 			userModel.addLoginAttempt(loginAttempt);
 //			userRepo.registerLoginAttempt(userModel, LoginStatus.FAILED);
 //			userRepo.registerLoginAttempt(loginAttempt);
@@ -115,7 +113,7 @@ public class UserFacade implements Facade {
 		// check password
 		if (!userModel.getPassword().equals(password)) {
 			userModel.increaseFailedLoginAttempts();
-			LoginAttempt loginAttempt = new LoginAttempt(LocalDateTime.now(), userModel, LoginStatus.FAILED);	
+			LoginAttempt loginAttempt = new LoginAttempt(userModel, LoginStatus.FAILED);	
 			userModel.addLoginAttempt(loginAttempt);
 //			userRepo.registerLoginAttempt(userModel, LoginStatus.FAILED);
 //			userRepo.registerLoginAttempt(loginAttempt);
@@ -137,7 +135,7 @@ public class UserFacade implements Facade {
 		// correct password
 		userModel.resetLoginAttempts();
 
-		LoginAttempt loginAttempt = new LoginAttempt(LocalDateTime.now(), userModel, LoginStatus.SUCCESS);	
+		LoginAttempt loginAttempt = new LoginAttempt(userModel, LoginStatus.SUCCESS);	
 		userModel.addLoginAttempt(loginAttempt);
 		
 //		userRepo.registerLoginAttempt(userModel, LoginStatus.SUCCESS);
@@ -208,8 +206,7 @@ public class UserFacade implements Facade {
 		}
 		int index = customerList.indexOf(customer);
 
-
-		if (!password.equals("********")) {
+		if (!(password.equals("********") || password.isBlank())) {
 			customer.setPassword(password);
 		}
 		
@@ -236,7 +233,7 @@ public class UserFacade implements Facade {
 		}
 		int index = employeeList.indexOf(employee);
 
-		if (!password.equals("********")) {
+		if (!(password.equals("********") || password.isBlank())) {
 			employee.setPassword(password);
 		}
 		

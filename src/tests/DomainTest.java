@@ -172,8 +172,8 @@ public class DomainTest {
     }
     
     @Test
-    public void loginAttempt_4InValidAdmin_3InValidTech_1InValidAdmin_AdminUserBlocked_1ValidTech_TechUserLoginSuccess_1ValidAdmin_AdminUserStillBlocked() {    	
-    	trainDummy();
+	public void loginAttempt_4InValidAdmin_3InValidTech_1InValidAdmin_AdminUserBlocked_1ValidTech_TechUserLoginSuccess_1ValidAdmin_AdminUserStillBlocked() {
+		trainDummy();
     	// There should be no user signed in when we start the test
     	assertThrows(NullPointerException.class, () -> dc.giveUsername());
     	// 4 InValid login attempts for Administrator admin
@@ -256,24 +256,27 @@ public class DomainTest {
     @Test
     public void modifyCustomer_UsernameAlreadyExists_ThrowsIllegalArgumentException() {
     	trainDummy();
-    	assertThrows(IllegalArgumentException.class, () -> dc.modifyCustomer((Customer) cust, ADMIN, PASSWORD, "John", "Smith", theWhiteHouse, UserStatus.ACTIVE));
-    	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
+		assertThrows(IllegalArgumentException.class, () -> dc.modifyCustomer((Customer) cust, ADMIN, PASSWORD, "John",
+				"Smith", theWhiteHouse, UserStatus.ACTIVE));
+		Mockito.verify(userRepoDummy).findByUsername(ADMIN);
     }
     
     @Test
     public void createEmployee_UsernameAlreadyExists_ThrowsIllegalArgumentException() {
     	trainDummy();
-    	assertThrows(IllegalArgumentException.class, () -> dc.registerEmployee(ADMIN, PASSWORD, "John", "Smith", "Address 78", "0458634795", "john.smith@student.hogent.be", EmployeeRole.ADMINISTRATOR)); 
-    	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
+		assertThrows(IllegalArgumentException.class, () -> dc.registerEmployee(ADMIN, PASSWORD, "John", "Smith",
+				"Address 78", "0458634795", "john.smith@student.hogent.be", EmployeeRole.ADMINISTRATOR));
+		Mockito.verify(userRepoDummy).findByUsername(ADMIN);
     }
 
-    //Todo
     @Test
     public void modifyEmployee_UsernameAlreadyExists_ThrowsIllegalArgumentException() {
     	trainDummy();
-    	assertThrows(IllegalArgumentException.class, () -> dc.modifyEmployee((Employee) tech, ADMIN , PASSWORD, "John", "Smith", "Address 78", "0458634795", "john.smith@student.hogent.be", EmployeeRole.ADMINISTRATOR, UserStatus.ACTIVE));
-    	Mockito.verify(userRepoDummy).findByUsername(ADMIN);
+		assertThrows(IllegalArgumentException.class,
+				() -> dc.modifyEmployee((Employee) tech, ADMIN, PASSWORD, "John", "Smith", "Address 78", "0458634795",
+						"john.smith@student.hogent.be", EmployeeRole.ADMINISTRATOR, UserStatus.ACTIVE));
+		Mockito.verify(userRepoDummy).findByUsername(ADMIN);
      }
-
+    
     
 }
