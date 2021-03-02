@@ -208,8 +208,11 @@ public class UserFacade implements Facade {
 		}
 		int index = customerList.indexOf(customer);
 
+		if (!password.isBlank()) {
+			customer.setPassword(password);
+		}
+		
 		customer.setUsername(username);
-		customer.setPassword(password);
 		customer.setFirstName(firstName);
 		customer.setLastName(lastName);
 		customer.setCompany(company);
@@ -232,8 +235,11 @@ public class UserFacade implements Facade {
 		}
 		int index = employeeList.indexOf(employee);
 
+		if (!password.isBlank()) {
+			employee.setPassword(password);
+		}
+		
 		employee.setUsername(username);
-		employee.setPassword(password);
 		employee.setFirstName(firstName);
 		employee.setLastName(lastName);
 		employee.setAddress(address);
