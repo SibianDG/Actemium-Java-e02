@@ -46,7 +46,7 @@
                   <Insets top="16.0" />
                </VBox.margin>
                <children>
-                  <TableView fx:id="tvEmployees">
+                  <TableView fx:id="tableView">
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>

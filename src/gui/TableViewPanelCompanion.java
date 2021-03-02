@@ -1,12 +1,7 @@
 package gui;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -17,6 +12,7 @@ import domain.UserModel;
 import domain.UserStatus;
 import gui.viewModels.UserViewModel;
 import javafx.beans.property.Property;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -67,9 +63,9 @@ public class TableViewPanelCompanion<T> extends GridPane {
     @FXML
     private TableView<T> tableView;
     
-	private Map<String, Function<T, Property<String>>> propertyMap;
+	private Map<String, Function<T, Property<String>>> propertyMap = new LinkedHashMap<>();
 	
-	ObservableList<T> tableViewData;
+	private ObservableList<T> tableViewData;
 	
 	public TableViewPanelCompanion(DashboardFrameController dashboardFrameController, UserViewModel userviewModel, GUIEnum currentState) {
 		this.dashboardFrameController = dashboardFrameController;
@@ -89,20 +85,21 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		
 		switch(currentState) {
 		case EMPLOYEE -> {
-					tableViewData = (ObservableList<T>) userViewModel.getEmployees();
-					propertyMap.put("Firstname", cellData -> ((ObservableValue<Employee>) cellData).getValue().firstNameProperty());
-					propertyMap.put("Lastname", cellData -> ((ObservableValue<Employee>) cellData).getValue().lastNameProperty());
-					propertyMap.put("Username", cellData -> ((ObservableValue<Employee>) cellData).getValue().usernameProperty());
-					propertyMap.put("Status", cellData -> ((ObservableValue<Employee>) cellData).getValue().statusProperty());
-					propertyMap.put("Role", cellData -> ((ObservableValue<Employee>) cellData).getValue().roleProperty());
+					this.tableViewData = (ObservableList<T>) userViewModel.getEmployees();
+
+					propertyMap.put("Firstname", item -> ((Employee)item).firstNameProperty());
+					propertyMap.put("Lastname", item -> ((Employee)item).lastNameProperty());
+					propertyMap.put("Username", item -> ((Employee)item).usernameProperty());
+					propertyMap.put("Status", item -> ((Employee)item).statusProperty());
+					propertyMap.put("Role", item -> ((Employee)item).roleProperty());
 				}
 		case CUSTOMER -> {
-					tableViewData = (ObservableList<T>) userViewModel.getCustomers();
-					propertyMap.put("Firstname", cellData -> ((ObservableValue<Customer>) cellData).getValue().firstNameProperty());
-					propertyMap.put("Lastname", cellData -> ((ObservableValue<Customer>) cellData).getValue().lastNameProperty());
-					propertyMap.put("Username", cellData -> ((ObservableValue<Customer>) cellData).getValue().usernameProperty());
-					propertyMap.put("Status", cellData -> ((ObservableValue<Customer>) cellData).getValue().statusProperty());
-					propertyMap.put("Company", cellData -> ((ObservableValue<Customer>) cellData).getValue().getCompany().nameProperty());
+					this.tableViewData = (ObservableList<T>) userViewModel.getCustomers();
+					propertyMap.put("Firstname", item -> ((Customer)item).firstNameProperty());
+					propertyMap.put("Lastname", item -> ((Customer)item).lastNameProperty());
+					propertyMap.put("Username", item -> ((Customer)item).usernameProperty());
+					propertyMap.put("Status", item -> ((Customer)item).statusProperty());
+					propertyMap.put("Company", item -> ((Customer)item).getCompany().nameProperty());
 		}
 		//case TICKET ->
 		}
@@ -292,7 +289,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			TableColumn<T, String> c = createColumn(key, prop);
 			tableView.getColumns().add(c);
 		});
-		
+
 		tableView.setItems(tableViewData);
 		
 		tableView.setOnMouseClicked((MouseEvent m) -> {
@@ -319,57 +316,56 @@ public class TableViewPanelCompanion<T> extends GridPane {
 	}
 
 	private void filter(String fieldName, String filterText){
-		
+
+		ObservableList<T> list = tableViewData;
+
 		if(currentState.equals(GUIEnum.EMPLOYEE)) {
 			if (fieldName.length() > 0 && !filterText.contains("select")){
-				 switch (fieldName) {
-					case "Name" -> {
-						this.tableViewData = FXCollections.observableArrayList(
-							 tableViewData.stream()
-									.filter(u -> u.getFirstName().toLowerCase().contains(filterText) || u.getLastName().toLowerCase().contains(filterText))
-									.collect(Collectors.toList()));}
+				 list =  switch (fieldName) {
+					case "Name" -> FXCollections.observableArrayList(
+							 list.stream()
+									.filter(u -> ((Employee) u).getFirstName().toLowerCase().contains(filterText) || ((Employee) u).getLastName().toLowerCase().contains(filterText))
+									.collect(Collectors.toList()));
 					case "Username" -> FXCollections.observableArrayList(
-							tableViewData.stream()
-									.filter(u -> u.getUsername().toLowerCase().contains(filterText))
+							list.stream()
+									.filter(u -> ((Employee) u).getUsername().toLowerCase().contains(filterText))
 									.collect(Collectors.toList()));
 					case "Role" -> FXCollections.observableArrayList(
-							employees.stream()
-							tableViewData	.filter(u -> u.getRole().toLowerCase().contains(filterText))
+							list.stream().filter(u -> ((Employee) u).getRole().toLowerCase().contains(filterText))
 									.collect(Collectors.toList()));
 					default -> FXCollections.observableArrayList(
-							tableViewData.stream()
-									.filter(u -> u.getStatus().toLowerCase().contains(filterText))
+							list.stream()
+									.filter(u -> ((Employee) u).getStatus().toLowerCase().contains(filterText))
 									.collect(Collectors.toList()));
 				};
 			} else {
-				employees = userViewModel.getEmployees();
+				//tableViewData = (ObservableList<T>) userViewModel.getEmployees();
 			}
-			tableView.setItems(employees);
+			tableView.setItems(list);
 		} else {
-			ObservableList<Customer> customers = userViewModel.getCustomers();
 			if (fieldName.length() > 0 && !filterText.contains("select")){
-				customers = switch (fieldName) {
+				list = switch (fieldName) {
 					case "Name" -> FXCollections.observableArrayList(
-							customers.stream()
-									.filter(u -> u.getFirstName().toLowerCase().contains(filterText) || u.getLastName().toLowerCase().contains(filterText))
+							list.stream()
+									.filter(u -> ((Customer) u).getFirstName().toLowerCase().contains(filterText) || ((Customer) u).getLastName().toLowerCase().contains(filterText))
 									.collect(Collectors.toList()));
 					case "Username" -> FXCollections.observableArrayList(
-							customers.stream()
-									.filter(u -> u.getUsername().toLowerCase().contains(filterText))
+							list.stream()
+									.filter(u -> ((Customer) u).getUsername().toLowerCase().contains(filterText))
 									.collect(Collectors.toList()));
 					case "Company" -> FXCollections.observableArrayList(
-							customers.stream()
-									.filter(u -> u.getCompany().getName().toLowerCase().contains(filterText))
+							list.stream()
+									.filter(u -> ((Customer) u).getCompany().getName().toLowerCase().contains(filterText))
 									.collect(Collectors.toList()));
 					default -> FXCollections.observableArrayList(
-							customers.stream()
-									.filter(u -> u.getStatus().toLowerCase().contains(filterText))
+							list.stream()
+									.filter(u -> ((Customer) u).getStatus().toLowerCase().contains(filterText))
 									.collect(Collectors.toList()));
 				};
 			} else {
-				employees = userViewModel.getEmployees();
+				//tableViewData = (ObservableList<T>) userViewModel.getCustomers();
 			}
-			tableView.setItems(customers);
+			tableView.setItems(list);
 		}
 	}
 

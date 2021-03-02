@@ -72,6 +72,10 @@ public class UserViewModel implements Observable {
         fireInvalidationEvent();
     }
 
+    public UserModel getSelectedUser() {
+        return selectedUser;
+    }
+
     public ArrayList<String> getDetailsNewEmployee(){
         return new ArrayList<String>(Arrays.asList("Username", "Lastname", "Firstname", "Address", "Email address", "Phone nr", "Employee role"));
     }
