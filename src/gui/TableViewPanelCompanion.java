@@ -41,9 +41,6 @@ public class TableViewPanelCompanion<T> extends GridPane {
 	private final UserViewModel userViewModel;
 	private GUIEnum currentState;
 
-	/*ObservableList<Employee> employees;
-	ObservableList<Customer> customers;*/
-
 	@FXML
     private Button btnAdd;
 
@@ -53,14 +50,6 @@ public class TableViewPanelCompanion<T> extends GridPane {
 	@FXML
 	private HBox hboxFilterSection;
 	
-	@FXML
-	private TableView<Employee> tvEmployees;
-	
-    @FXML
-    private TableView<Customer> tvCustomers;
-    
-    
-    
     @FXML
     private TableView<T> tableView;
     
@@ -81,8 +70,6 @@ public class TableViewPanelCompanion<T> extends GridPane {
         } catch (IOException e) {
         	throw new RuntimeException(e);
         }
-		
-		tvCustomers.setVisible(false);
 		
 		switch(currentState) {
 		case EMPLOYEE -> {
@@ -173,11 +160,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 	}
 
 	private void checkFilters(){
-		/*if(currentState.equals(GUIEnum.EMPLOYEE)) {
-			employees = userViewModel.getEmployees();
-		} else {
-			customers = userViewModel.getCustomers();
-		}*/
+
 		hboxFilterSection.getChildren().forEach(object -> {
 			if (object instanceof TextField) {
 				TextField textField = (TextField) object;
@@ -211,86 +194,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		});
 	}
 
-	//TODO We could try 2 different TableView s
-	// 1 for customers
-		// should display companyName instead of username
-	// 1 for employees
-		// should display userRole instead of username
-	private void initializeTableView() {
-		/*if(currentState.equals(GUIEnum.EMPLOYEE)) {
-			tvEmployees.setVisible(true);
-			tvCustomers.setVisible(false);
-			
-			TableColumn<Employee, String> firstNameColumn = new TableColumn<>("Firstname");
-			tvEmployees.getColumns().add(firstNameColumn);
-			firstNameColumn.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
-
-			TableColumn<Employee, String> lastNameColumn = new TableColumn<>("Lastname");
-			tvEmployees.getColumns().add(lastNameColumn);
-			lastNameColumn.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
-			
-			TableColumn<Employee, String> usernameColumn = new TableColumn<>("Username");
-			tvEmployees.getColumns().add(usernameColumn);
-			usernameColumn.setCellValueFactory(cellData -> cellData.getValue().usernameProperty());
-			
-			TableColumn<Employee, String> statusColumn = new TableColumn<>("Status");
-			tvEmployees.getColumns().add(statusColumn);
-			statusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
-			
-			TableColumn<Employee, String> roleColumn = new TableColumn<>("Role");
-			tvEmployees.getColumns().add(roleColumn);
-			roleColumn.setCellValueFactory(cellData -> cellData.getValue().roleProperty());
-			
-			ObservableList<Employee> employees = userViewModel.getEmployees();
-
-			tvEmployees.setItems(employees);
-			
-			btnAdd.setText("Add Employee");
-			
-			tvEmployees.setOnMouseClicked((MouseEvent m) -> {
-				UserModel user = tvEmployees.getSelectionModel().selectedItemProperty().get();
-				if (user != null){
-					userViewModel.setSelectedUser(user);
-				}
-			});
-			
-		} else {
-			tvCustomers.setVisible(true);
-			tvEmployees.setVisible(false);
-		
-			TableColumn<Customer, String> firstNameColumn = new TableColumn<>("Firstname");
-			tvCustomers.getColumns().add(firstNameColumn);
-			firstNameColumn.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
-
-			TableColumn<Customer, String> lastNameColumn = new TableColumn<>("Lastname");
-			tvCustomers.getColumns().add(lastNameColumn);
-			lastNameColumn.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
-
-			TableColumn<Customer, String> usernameColumn = new TableColumn<>("Username");
-			tvCustomers.getColumns().add(usernameColumn);
-			usernameColumn.setCellValueFactory(cellData -> cellData.getValue().usernameProperty());
-			
-			TableColumn<Customer, String> statusColumn = new TableColumn<>("Status");
-			tvCustomers.getColumns().add(statusColumn);
-			statusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
-			
-			TableColumn<Customer, String> roleColumn = new TableColumn<>("Company");
-			tvCustomers.getColumns().add(roleColumn);
-			roleColumn.setCellValueFactory(cellData -> cellData.getValue().getCompany().nameProperty());
-
-			ObservableList<Customer> customers = userViewModel.getCustomers();
-			tvCustomers.setItems(customers);
-
-			btnAdd.setText("Add Customer");
-			
-			tvCustomers.setOnMouseClicked((MouseEvent m) -> {
-				UserModel user = tvCustomers.getSelectionModel().selectedItemProperty().get();
-				if (user != null){
-					userViewModel.setSelectedUser(user);
-				}
-			});
-		}*/
-		
+	private void initializeTableView() {		
 		propertyMap.forEach((key, prop) -> {
 			TableColumn<T, String> c = createColumn(key, prop);
 			tableView.getColumns().add(c);
