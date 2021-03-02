@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -37,11 +36,27 @@ public class ActemiumTicket implements Serializable {
 	private String description;
 	@ManyToOne
 	private Customer customer;
+	private String remarks;
+	private String attachments;	
+	// List of technicians contain all the technicians assigned to the ticket
 	@ManyToMany
 	private List<Employee> technicians = new ArrayList<>();
-	private String remarks;
-	private String attachments;
-
+	
+	// Following list of additional data would prove usefull 
+	// for further follow up on tickets and reporting:
+	// - How was the solution acquired: through the KB or not. 
+	//   This allows us to check if the KB must be 
+	//   modified and expanded or not
+	private String solution;
+	// - Quality: the information was sufficient or not. 
+	//   This would allow us to decided wether or not additional
+	//   (mandatorry) fields are required when creating a ticket
+	private String quality;
+	// - Support needed: was the ticket created correctly? 
+	//   E.g. a ticket was created but the wrong  
+	//   department was assigned
+	private String supportNeeded;
+	
 	public ActemiumTicket() {
 		super();
 	}
@@ -50,14 +65,14 @@ public class ActemiumTicket implements Serializable {
 			String remarks, String attachments) {
 		super();
 		// new ticket always gets TicketStatus CREATED
-		this.ticketStatus = TicketStatus.CREATED;
-		this.ticketPriority = ticketPriority;
-		this.dateOfCreation = LocalDate.now();
-		this.title = title;
-		this.description = description;
-		this.customer = customer;
-		this.remarks = remarks;
-		this.attachments = attachments;
+		setTicketStatus(TicketStatus.CREATED);
+		setTicketPriority(ticketPriority);
+		setDateOfCreation(LocalDate.now());
+		setTitle(title);
+		setDescription(description);
+		setCustomer(customer);
+		setRemarks(remarks);
+		setAttachments(attachments);
 	}
 
 	// remarks and attachments are optional
@@ -94,6 +109,9 @@ public class ActemiumTicket implements Serializable {
 	}
 
 	public void setTitle(String title) {
+		if (title == null || title.isBlank()) {
+			throw new IllegalArgumentException("You must provide a title for the ticket.");
+		}
 		this.title = title;
 	}
 
@@ -102,6 +120,9 @@ public class ActemiumTicket implements Serializable {
 	}
 
 	public void setDescription(String description) {
+		if (description == null || description.isBlank()) {
+			throw new IllegalArgumentException("You must provide a description for the ticket.");
+		}
 		this.description = description;
 	}
 
@@ -110,15 +131,10 @@ public class ActemiumTicket implements Serializable {
 	}
 
 	public void setCustomer(Customer customer) {
+		if (customer == null) {
+			throw new IllegalArgumentException("Ticket must belong to a customer.");
+		}
 		this.customer = customer;
-	}
-
-	public List<Employee> getTechnicians() {
-		return technicians;
-	}
-
-	public void setTechnicians(List<Employee> technicians) {
-		this.technicians = technicians;
 	}
 
 	public String getRemarks() {
@@ -126,6 +142,7 @@ public class ActemiumTicket implements Serializable {
 	}
 
 	public void setRemarks(String remarks) {
+		// Optional, can be null or blank
 		this.remarks = remarks;
 	}
 
@@ -134,11 +151,44 @@ public class ActemiumTicket implements Serializable {
 	}
 
 	public void setAttachments(String attachments) {
+		// Optional, can be null or blank
 		this.attachments = attachments;
 	}
+	
+	public List<Employee> getTechnicians() {
+		return technicians;
+	}
 
+	public void setTechnicians(List<Employee> technicians) {
+		this.technicians = technicians;
+	}
+	
 	public void addTechnician(Employee technician) {
 		technicians.add(technician);
 	}
 
+	public String getSolution() {
+		return solution;
+	}
+
+	public void setSolution(String solution) {
+		this.solution = solution;
+	}
+
+	public String getQuality() {
+		return quality;
+	}
+
+	public void setQuality(String quality) {
+		this.quality = quality;
+	}
+
+	public String getSupportNeeded() {
+		return supportNeeded;
+	}
+
+	public void setSupportNeeded(String supportNeeded) {
+		this.supportNeeded = supportNeeded;
+	}
+	
 }
