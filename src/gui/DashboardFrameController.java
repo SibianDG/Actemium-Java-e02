@@ -35,18 +35,13 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-public class DashboardFrameController extends GuiController {
+public class DashboardFrameController <T> extends GuiController {
     // Facades
     private final UserFacade userFacade;
 	//private final TicketFacade ticketFacade;
 
     private UserViewModel userViewModel;
 	//private TicketViewModel ticketViewModel;
-	
-	//TODO attributes for different tableview panels
-	private TableViewPanelCompanion<Employee> employeeTableView;
-	private TableViewPanelCompanion<Customer> customerTableView;
-	private TableViewPanelCompanion<ActemiumTicket> ticketTableView;
 
     @FXML
     private GridPane gridDashboard;
@@ -80,7 +75,7 @@ public class DashboardFrameController extends GuiController {
 
     private Set<DashboardTile> dashboardTiles = new HashSet<>();
 
-    private TableViewPanelCompanion tableViewPanelCompanion;
+    private TableViewPanelCompanion<T> tableViewPanelCompanion;
     private DetailsPanelController detailsPanelController;
 
     public DashboardFrameController(UserFacade userFacade) throws FileNotFoundException {
@@ -90,7 +85,6 @@ public class DashboardFrameController extends GuiController {
 
         this.userViewModel = new UserViewModel(userFacade);
 
-		//this.ticketFacade = null;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
             loader.setController(this);
@@ -99,10 +93,6 @@ public class DashboardFrameController extends GuiController {
         } catch (IOException e) {
         	throw new RuntimeException(e);
         }
-        //initialize tableviews
-
-        //employeeTableView = new TableViewPanelCompanion<Employee>(this, userViewModel, GUIEnum.EMPLOYEE);
-        //customerTableView = new TableViewPanelCompanion<Customer>(this, userViewModel, GUIEnum.CUSTOMER);
 
         initializeDashboard();
         initializeText();
@@ -115,28 +105,11 @@ public class DashboardFrameController extends GuiController {
     }
 
     public void initializeDashboard() throws FileNotFoundException {
-//        String[] itemNames = {"consult Knowledge base", "outstanding tickets", "resolved tickets", "statistics", "create Ticket", "manage Contract"};
-//        String[] itemImages = {"icon_consult", "icon_outstanding", "icon_resolved", "icon_statistics", "icon_create", "icon_manage",};
 
         txtTitle.setText("Dashboard");
         resetGridpane(gridContent);
         initializeGridPane(3, 2, 300, 300);
 
-//        Map<String, IntStream> employeeRoleArrayListSet = Map.of(
-//                EmployeeRole.ADMINISTRATOR.toString(), IntStream.range(0,6),
-//                EmployeeRole.SUPPORT_MANAGER.toString(), IntStream.range(0,5),
-//                EmployeeRole.TECHNICIAN.toString(), IntStream.range(0,4)
-//        );
-//
-//
-//        employeeRoleArrayListSet.get(domainController.giveUserType()).forEach(r -> {
-//            try {
-//                addDashboardItem(itemNames[r], createImageView(itemImages[r], r%2), r%3, r/3, r);
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//
-//        });
         String[] itemNames = new String[] {};
         String[] itemIcons = new String[] {};
 
@@ -160,8 +133,6 @@ public class DashboardFrameController extends GuiController {
         }
 
         createGridMenu(itemNames);
-
-        
     }
 
     private void createGridMenu(String[] itemNames){
@@ -215,25 +186,26 @@ public class DashboardFrameController extends GuiController {
 
     private void buttonMenusClicked(String name){
         if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("employee")) {
-            userViewModel.setEmployees(((UserFacade) userFacade).giveEmployeeList());
-            employeeTableView = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.EMPLOYEE);
-            switchToManageScreen(name, employeeTableView, userViewModel);
+            //Todo weird
+            userViewModel.setEmployees((userFacade).giveEmployeeList());
+            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.EMPLOYEE);
+            switchToManageScreen(name, tableViewPanelCompanion, userViewModel);
         } else if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("customer")) {
-            userViewModel.setCustomers(((UserFacade) userFacade).giveCustomerList());
-            customerTableView = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.CUSTOMER);
-            switchToManageScreen(name, customerTableView, userViewModel);
+            userViewModel.setCustomers((userFacade).giveCustomerList());
+            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.CUSTOMER);
+            switchToManageScreen(name, tableViewPanelCompanion, userViewModel);
         } else if (name.toLowerCase().contains("ticket") && name.toLowerCase().contains("outstanding")) {
             TicketFacade ticketFacade = new TicketFacade();
             TicketViewModel viewModel = new TicketViewModel(ticketFacade);
             viewModel.setActemiumTickets(ticketFacade.getTickets());
-            ticketTableView = new TableViewPanelCompanion<>(this, viewModel, GUIEnum.TICKET);
-            switchToManageScreen(name, ticketTableView, viewModel);
+            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, viewModel, GUIEnum.TICKET);
+            switchToManageScreen(name, tableViewPanelCompanion, viewModel);
         } else {
             makePopUp(name);
         }
     }
 
-	private void switchToManageScreen(String name, TableViewPanelCompanion tableViewPanelCompanion, ViewModel viewModel) {
+	private void switchToManageScreen(String name, TableViewPanelCompanion<T> tableViewPanelCompanion, ViewModel viewModel) {
 		txtTitle.setText(name);
 		resetGridpane(gridContent);
 		
@@ -264,20 +236,9 @@ public class DashboardFrameController extends GuiController {
         }
     }
 
-    public void setModifyPane(){
-        txtTitle.setText("Add Employee");
-        resetGridpane(gridContent);
-        initializeGridPane(1,1, 500, 500);
-        gridContent.add(new ModifyPanelController(userFacade /*, name.split(" ")[1])*/, this), 0, 0);
-    }
-
     private void initializeText() {
         txtName.setText(String.format("%s %s" , ((UserFacade) userFacade).giveUserFirstName(), ((UserFacade) userFacade).giveUserLastName()));
         txtEmployeeRole.setText(((UserFacade) userFacade).giveUserRole());
-    }
-
-    public void reactionFromTile(){
-        txtTitle.setText("Tile!");
     }
 
     @FXML
@@ -285,7 +246,6 @@ public class DashboardFrameController extends GuiController {
         makePopUp("Logout and exit");
         Platform.exit();
         System.exit(0);
-
     }
 
     @FXML
@@ -296,7 +256,6 @@ public class DashboardFrameController extends GuiController {
     @FXML
     void btnProfileAction(MouseEvent event) {
         makePopUp("Profile");
-
     }
 
     @FXML
@@ -308,22 +267,4 @@ public class DashboardFrameController extends GuiController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, text);
         alert.showAndWait();
     }
-
-    /*protected void fireInvalidationEvent() {
-        for (InvalidationListener listener : listeners) {
-            listener.invalidated(this);
-        }
-    }
-
-    @Override
-    public void addListener(InvalidationListener invalidationListener) {
-        listeners.add(invalidationListener);
-    }
-
-    @Override
-    public void removeListener(InvalidationListener invalidationListener) {
-        listeners.remove(invalidationListener);
-    }
-
-     */
 }

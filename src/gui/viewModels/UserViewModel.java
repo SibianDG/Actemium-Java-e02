@@ -54,10 +54,6 @@ public class UserViewModel extends ViewModel {
         fireInvalidationEvent();
     }
 
-    public UserModel getSelectedUser() {
-        return selectedUser;
-    }
-
     public ArrayList<String> getDetailsNewEmployee(){
         return new ArrayList<String>(Arrays.asList("Username", "Lastname", "Firstname", "Address", "Email address", "Phone nr", "Employee role"));
     }
@@ -85,27 +81,6 @@ public class UserViewModel extends ViewModel {
             }
             case "customer" -> {
                 Customer customer = (Customer) selectedUser;
-                // Map.of can only contain up to 10 key value pairs
-                // ofEntries can contain unlimited key value pairs
-                // Entries are in the right order
-//                return Map.ofEntries(
-//                		new AbstractMap.SimpleEntry<>("Customer Nr", String.valueOf(customer.getCustomerNr()))
-//                        , new AbstractMap.SimpleEntry<>("Company", "")
-//                        , new AbstractMap.SimpleEntry<>("Name", customer.getCompany().getName())
-//                        , new AbstractMap.SimpleEntry<>("Address", customer.getCompanyAddress())
-//                        , new AbstractMap.SimpleEntry<>("Phone number", customer.getCompanyPhone())
-//                        , new AbstractMap.SimpleEntry<>("Contact person", "")
-//                		  , new AbstractMap.SimpleEntry<>("Name and Firstname", String.format("%s %s", customer.getLastName(), customer.getFirstName()))
-//                        , new AbstractMap.SimpleEntry<>("Email address", "")
-//                        , new AbstractMap.SimpleEntry<>("Seniority", String.valueOf(customer.giveSeniority()))
-//                        , new AbstractMap.SimpleEntry<>("Contracts", "")
-//                        , new AbstractMap.SimpleEntry<>("Contract Nr", "")
-//                        , new AbstractMap.SimpleEntry<>("Contract Type", "")
-//                        , new AbstractMap.SimpleEntry<>("Contract Status", "")
-//                        , new AbstractMap.SimpleEntry<>("Contract Start- and End date", "")
-//                        , new AbstractMap.SimpleEntry<>("Username", customer.getUsername())
-//                        , new AbstractMap.SimpleEntry<>("Status", customer.getStatus().toString())
-//                );
         	    // Using LinkedHashMap so the order of the map values doesn't change
                 Map<String, Object> detailsMap = new LinkedHashMap<>();
                 detailsMap.put("Customer ID", String.valueOf(customer.getCustomerNr()));
@@ -123,13 +98,9 @@ public class UserViewModel extends ViewModel {
                 detailsMap.put("Contact person", "");
                 detailsMap.put("Name and Firstname", String.format("%s %s", "none", "none"));
                 detailsMap.put("Seniority", String.valueOf(customer.giveSeniority()));
+                //TODO
                 // how are we going to show all the contracts in the details pannel?
                 // they request it in the use case "Manage Users"
-//                detailsMap.put("Contracts", "");
-//                detailsMap.put("Contract Nr", "");
-//                detailsMap.put("Contract Type", "");
-//                detailsMap.put("Contract Status", "");
-//                detailsMap.put("Contract Start- and End date", "");
                 detailsMap.put("Status", customer.getStatusAsEnum());
                 return detailsMap;
             } 

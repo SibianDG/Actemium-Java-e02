@@ -36,7 +36,6 @@ public class TableViewPanelCompanion<T> extends GridPane {
 
 	//private UserFacade userFacade;
 	private final DashboardFrameController dashboardFrameController;
-	//private String user;
 	private final ViewModel viewModel;
 	private GUIEnum currentState;
 
@@ -194,10 +193,6 @@ public class TableViewPanelCompanion<T> extends GridPane {
 					}
 				}
 			}
-
-			//TODO: shouldn't it automatically update with the ObserverableList?
-			/*tvEmployees.setItems(employees);
-			tvCustomers.setItems(customers);*/
 		});
 	}
 
@@ -222,12 +217,9 @@ public class TableViewPanelCompanion<T> extends GridPane {
 
 	@FXML
 	void addOnAction(ActionEvent event) {
-		//TableView tableView;
 		if(currentState.equals(GUIEnum.EMPLOYEE)) {
 			((UserViewModel) viewModel).setCurrentState(GUIEnum.EMPLOYEE);
-			//tableView = tvEmployees;
 		} else {
-			//tableView = tvCustomers;
 			((UserViewModel) viewModel).setCurrentState(GUIEnum.CUSTOMER);
 		}
 		//tableView.getSelectionModel().clearSelection();

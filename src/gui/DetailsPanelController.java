@@ -191,6 +191,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         txtDetailsTitle.setText("Add new user");
         btnModify.setText("Add new user");
         btnModify.setVisible(true);
+        assert fields != null;
         addItemsToGridNewUser(fields);
     }
 

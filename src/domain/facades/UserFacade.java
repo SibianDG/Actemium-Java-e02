@@ -32,7 +32,7 @@ public class UserFacade implements Facade {
 	// - ...	
 	
 	private UserModel signedInUser;
-	private UserModel selectedUser;
+	//private UserModel selectedUser;
 	private UserDao userRepo;
 		
 	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
@@ -75,13 +75,15 @@ public class UserFacade implements Facade {
 		this.signedInUser = signedInEmployee;
 	}
 
-	public UserModel getSelectedUser() {
+	/*public UserModel getSelectedUser() {
 		return selectedUser;
 	}
 
 	public void setSelectedUser(UserModel selectedUser) {
 		this.selectedUser = selectedUser;
 	}
+
+	 */
 
 	public UserModel findByUsername(String username){
 		return userRepo.findByUsername(username);
