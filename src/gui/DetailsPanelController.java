@@ -6,6 +6,7 @@ import java.util.*;
 import domain.EmployeeRole;
 import domain.UserStatus;
 import gui.viewModels.UserViewModel;
+import gui.viewModels.ViewModel;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -27,7 +28,7 @@ import javafx.scene.text.TextAlignment;
 
 public class DetailsPanelController extends GridPane implements InvalidationListener {
 
-    private final UserViewModel userViewModel;
+    private final ViewModel viewModel;
     private boolean editing = false, modified = false;
 
     @FXML
@@ -42,9 +43,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     @FXML
     private Text txtErrorMessage;
 	
-	public DetailsPanelController(UserViewModel userviewModel) {
-        this.userViewModel = userviewModel;
-        userViewModel.addListener(this);
+	public DetailsPanelController(ViewModel viewModel) {
+        this.viewModel = viewModel;
+        viewModel.addListener(this);
 
 		try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("DetailsPanel.fxml"));
@@ -68,8 +69,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 	    try {
             if (editing) {
                 if(modified){
-                    if (userViewModel.getCurrentState().equals(GUIEnum.EMPLOYEE)){
-                        userViewModel.modifyEmployee(
+                    if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)){
+                        ((UserViewModel) viewModel).modifyEmployee(
 
                                 getTextFromGridItem(1)
                                 , getTextFromGridItem(2)
@@ -81,8 +82,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 , EmployeeRole.valueOf(getTextFromGridItem(9))
                                 , UserStatus.valueOf(getTextFromGridItem(10))
                         );
-                    } else if (userViewModel.getCurrentState().equals(GUIEnum.CUSTOMER)){
-                        userViewModel.modifyCustomer(
+                    } else if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.CUSTOMER)){
+                        ((UserViewModel) viewModel).modifyCustomer(
                                 getTextFromGridItem(1)
                                 , getTextFromGridItem(2)
                                 , getTextFromGridItem(3)
@@ -100,9 +101,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
 
             } else {
-                if (userViewModel.getCurrentState().equals(GUIEnum.EMPLOYEE)){
+                if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)){
 
-                    userViewModel.registerEmployee(
+                    ((UserViewModel) viewModel).registerEmployee(
                             getTextFromGridItem(0)
                             , getTextFromGridItem(1)
                             , getTextFromGridItem(2)
@@ -111,9 +112,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                             , getTextFromGridItem(5)
                             , EmployeeRole.valueOf(getTextFromGridItem(6))
                     );
-                } else if (userViewModel.getCurrentState().equals(GUIEnum.CUSTOMER)){
+                } else if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.CUSTOMER)){
 
-                    userViewModel.registerCustomer(
+                    ((UserViewModel) viewModel).registerCustomer(
                             getTextFromGridItem(0)
                             , getTextFromGridItem(1)
                             , getTextFromGridItem(2)
@@ -160,9 +161,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     private void setDetailOnModifying(){
         gridDetails.getChildren().clear();
-        addDetailsToGridDetails(userViewModel.getDetails());
-        txtDetailsTitle.setText("Details of "+userViewModel.getNameOfSelectedUser());
-        btnModify.setText("Modify " + userViewModel.getCurrentState().toString().toLowerCase());
+        addDetailsToGridDetails(((UserViewModel) viewModel).getDetails());
+        txtDetailsTitle.setText("Details of "+((UserViewModel) viewModel).getNameOfSelectedUser());
+        btnModify.setText("Modify " + ((UserViewModel) viewModel).getCurrentState().toString().toLowerCase());
         btnModify.setVisible(true);
         txtErrorMessage.setVisible(false);
         editing = true;
@@ -172,10 +173,10 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 	    editing = false;
         ArrayList<String> fields;
 
-        if (userViewModel.getCurrentState().equals(GUIEnum.EMPLOYEE)){
-            fields = userViewModel.getDetailsNewEmployee();
-        } else if (userViewModel.getCurrentState().equals(GUIEnum.CUSTOMER)){
-            fields = userViewModel.getDetailsNewCustomer();
+        if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)){
+            fields = ((UserViewModel) viewModel).getDetailsNewEmployee();
+        } else if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.CUSTOMER)){
+            fields = ((UserViewModel) viewModel).getDetailsNewCustomer();
         } else {
             fields = null;
         }

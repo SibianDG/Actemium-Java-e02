@@ -2,6 +2,7 @@ package gui;
 
 import domain.Employee;
 import domain.EmployeeRole;
+import domain.facades.Facade;
 import domain.facades.UserFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,7 +23,7 @@ import java.util.Map;
 
 public class ModifyPanelController extends GridPane {
 
-	private final UserFacade domainController;
+	private final Facade domainController;
 	private final DashboardFrameController dashboardController;
 	private String user;
 
@@ -40,7 +41,7 @@ public class ModifyPanelController extends GridPane {
 	void btnAddOnAction(ActionEvent event) throws FileNotFoundException {
 		//FIXME
 
-		domainController.registerEmployee(
+		((UserFacade) domainController).registerEmployee(
 			getTextFromGridItem(0)
 			, getTextFromGridItem(1)
 			, getTextFromGridItem(2)
@@ -75,7 +76,7 @@ public class ModifyPanelController extends GridPane {
 		return ((TextField) gridContent.getChildren().get(2*i+1)).getText();
 	}
 
-	public ModifyPanelController(UserFacade domainController, DashboardFrameController dashboardController) {
+	public ModifyPanelController(Facade domainController, DashboardFrameController dashboardController) {
 		this.domainController = domainController;
 		this.dashboardController = dashboardController;
 

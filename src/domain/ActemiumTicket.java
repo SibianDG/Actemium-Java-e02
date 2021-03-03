@@ -1,21 +1,15 @@
 package domain;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 @Access(AccessType.FIELD)
@@ -32,7 +26,9 @@ public class ActemiumTicket implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private TicketPriority ticketPriority;
 	private LocalDate dateOfCreation;
-	private String title;
+
+	@Transient
+	private StringProperty title = new SimpleStringProperty();
 	private String description;
 	@ManyToOne
 	private Customer customer;
@@ -104,15 +100,16 @@ public class ActemiumTicket implements Serializable {
 		this.dateOfCreation = dateOfCreation;
 	}
 
+	@Access(AccessType.PROPERTY)
 	public String getTitle() {
-		return title;
+		return title.get();
 	}
 
 	public void setTitle(String title) {
 		if (title == null || title.isBlank()) {
 			throw new IllegalArgumentException("You must provide a title for the ticket.");
 		}
-		this.title = title;
+		this.title.set(title);
 	}
 
 	public String getDescription() {
@@ -189,6 +186,10 @@ public class ActemiumTicket implements Serializable {
 
 	public void setSupportNeeded(String supportNeeded) {
 		this.supportNeeded = supportNeeded;
+	}
+
+	public StringProperty titleProperty() {
+		return title;
 	}
 	
 }

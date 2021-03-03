@@ -14,7 +14,7 @@ import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class UserViewModel implements Observable {
+public class UserViewModel extends ViewModel {
 
     private GUIEnum currentState;
     private final UserFacade userFacade;
@@ -24,27 +24,11 @@ public class UserViewModel implements Observable {
 
     private final ArrayList<InvalidationListener> listeners = new ArrayList<>();
 
-    public UserViewModel(Facade userFacade) {
+    public UserViewModel(UserFacade userFacade) {
     	super();
-    	this.userFacade = (UserFacade) userFacade;
+    	this.userFacade = userFacade;
     	this.employees = FXCollections.observableArrayList();
     	this.customers = FXCollections.observableArrayList();
-    }
-
-    protected void fireInvalidationEvent() {
-        for (InvalidationListener listener : listeners) {
-            listener.invalidated(this);
-        }
-    }
-
-    @Override
-    public void addListener(InvalidationListener invalidationListener) {
-        listeners.add(invalidationListener);
-    }
-
-    @Override
-    public void removeListener(InvalidationListener invalidationListener) {
-        listeners.remove(invalidationListener);
     }
 
     public ObservableList<Employee> getEmployees() {

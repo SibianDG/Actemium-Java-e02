@@ -5,12 +5,10 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import domain.Customer;
-import domain.Employee;
-import domain.EmployeeRole;
-import domain.UserModel;
-import domain.UserStatus;
+import domain.*;
+import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
+import gui.viewModels.ViewModel;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -38,7 +36,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 	//private UserFacade userFacade;
 	private final DashboardFrameController dashboardFrameController;
 	//private String user;
-	private final UserViewModel userViewModel;
+	private final ViewModel viewModel;
 	private GUIEnum currentState;
 
 	@FXML
@@ -57,9 +55,9 @@ public class TableViewPanelCompanion<T> extends GridPane {
 	
 	private FilteredList<T> tableViewData;
 	
-	public TableViewPanelCompanion(DashboardFrameController dashboardFrameController, UserViewModel userviewModel, GUIEnum currentState) {
+	public TableViewPanelCompanion(DashboardFrameController dashboardFrameController, ViewModel viewModel, GUIEnum currentState) {
 		this.dashboardFrameController = dashboardFrameController;
-		this.userViewModel = userviewModel;
+		this.viewModel = viewModel;
 		this.currentState = currentState;
 
 		try {
@@ -73,7 +71,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		
 		switch(currentState) {
 		case EMPLOYEE -> {
-					this.tableViewData = new FilteredList<>((ObservableList<T>) userViewModel.getEmployees(), p -> true);
+					this.tableViewData = new FilteredList<>((ObservableList<T>) ((UserViewModel) viewModel).getEmployees(), p -> true);
 
 					propertyMap.put("Firstname", item -> ((Employee)item).firstNameProperty());
 					propertyMap.put("Lastname", item -> ((Employee)item).lastNameProperty());
@@ -82,14 +80,17 @@ public class TableViewPanelCompanion<T> extends GridPane {
 					propertyMap.put("Role", item -> ((Employee)item).roleProperty());
 				}
 		case CUSTOMER -> {
-					this.tableViewData = new FilteredList<>((ObservableList<T>) userViewModel.getCustomers(), p -> true);
+					this.tableViewData = new FilteredList<>((ObservableList<T>) ((UserViewModel) viewModel).getCustomers(), p -> true);
 					propertyMap.put("Firstname", item -> ((Customer)item).firstNameProperty());
 					propertyMap.put("Lastname", item -> ((Customer)item).lastNameProperty());
 					propertyMap.put("Username", item -> ((Customer)item).usernameProperty());
 					propertyMap.put("Status", item -> ((Customer)item).statusProperty());
 					propertyMap.put("Company", item -> ((Customer)item).getCompany().nameProperty());
 		}
-		//case TICKET ->
+		case TICKET -> {
+			this.tableViewData = new FilteredList<>((ObservableList<T>) ((TicketViewModel) viewModel).getActemiumTickets(), p -> true);
+			propertyMap.put("Title", item -> ((ActemiumTicket) item).titleProperty());
+		}
 		}
 		
 		initializeFilters();
@@ -109,6 +110,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		Map<GUIEnum, ArrayList<Object>> filterMap = new HashMap<>();
 		filterMap.put(GUIEnum.EMPLOYEE, new ArrayList<>(Arrays.asList("Name", "Username", UserStatus.ACTIVE, EmployeeRole.ADMINISTRATOR)));
 		filterMap.put(GUIEnum.CUSTOMER, new ArrayList<>(Arrays.asList("Name", "Username", UserStatus.ACTIVE, "Company")));
+		filterMap.put(GUIEnum.TICKET, new ArrayList<>(Arrays.asList("Title")));
 
 		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createElementDetailGridpane(o)));
 	}
@@ -205,7 +207,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		tableView.setOnMouseClicked((MouseEvent m) -> {
 			T data = tableView.getSelectionModel().selectedItemProperty().get();
 			if (data != null & (data instanceof Employee || data instanceof Customer)){
-				userViewModel.setSelectedUser((UserModel) data);
+				((UserViewModel) viewModel).setSelectedUser((UserModel) data);
 			}
 		});
 		
@@ -215,14 +217,14 @@ public class TableViewPanelCompanion<T> extends GridPane {
 	void addOnAction(ActionEvent event) {
 		//TableView tableView;
 		if(currentState.equals(GUIEnum.EMPLOYEE)) {
-			userViewModel.setCurrentState(GUIEnum.EMPLOYEE);
+			((UserViewModel) viewModel).setCurrentState(GUIEnum.EMPLOYEE);
 			//tableView = tvEmployees;
 		} else {
 			//tableView = tvCustomers;
-			userViewModel.setCurrentState(GUIEnum.CUSTOMER);
+			((UserViewModel) viewModel).setCurrentState(GUIEnum.CUSTOMER);
 		}
 		//tableView.getSelectionModel().clearSelection();
-		userViewModel.setSelectedUser(null);
+		((UserViewModel) viewModel).setSelectedUser(null);
 	}
 
 	private void filter(String fieldName, String filterText){
