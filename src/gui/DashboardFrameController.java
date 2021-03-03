@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import domain.Customer;
+import domain.Employee;
 import domain.facades.Facade;
 import domain.facades.UserFacade;
 import gui.controllers.GuiController;
@@ -35,6 +37,10 @@ public class DashboardFrameController extends GuiController {
 	private final UserFacade userFacade;
 	//private final TicketFacade ticketFacade;
 	private UserViewModel userViewModel;
+	
+	//TODO attributes for different tableview panels
+	private TableViewPanelCompanion<Employee> employeeTableView;
+	private TableViewPanelCompanion<Customer> customerTableView;
 
     @FXML
     private GridPane gridDashboard;
@@ -85,6 +91,10 @@ public class DashboardFrameController extends GuiController {
         } catch (IOException e) {
         	throw new RuntimeException(e);
         }
+        //initialize tableviews
+
+        //employeeTableView = new TableViewPanelCompanion<Employee>(this, userViewModel, GUIEnum.EMPLOYEE);
+        //customerTableView = new TableViewPanelCompanion<Customer>(this, userViewModel, GUIEnum.CUSTOMER);
 
         initializeDashboard();
         initializeText();
@@ -198,22 +208,23 @@ public class DashboardFrameController extends GuiController {
     private void buttonMenusClicked(String name){
         if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("employee")) {
             userViewModel.setEmployees(userFacade.giveEmployeeList());
-            switchToManageScreen(name, GUIEnum.EMPLOYEE);
+            employeeTableView = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.EMPLOYEE);
+            switchToManageScreen(name, employeeTableView);
         } else if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("customer")) {
             userViewModel.setCustomers(userFacade.giveCustomerList());
-            switchToManageScreen(name, GUIEnum.CUSTOMER);
+            customerTableView = new TableViewPanelCompanion<Customer>(this, userViewModel, GUIEnum.CUSTOMER);
+            switchToManageScreen(name, customerTableView);
         } else {
             makePopUp(name);
         }
     }
 
-	private void switchToManageScreen(String name, GUIEnum currentState) {
+	private void switchToManageScreen(String name, TableViewPanelCompanion tableViewPanelCompanion) {
 		txtTitle.setText(name);
 		resetGridpane(gridContent);
 		
-		tableViewPanelCompanion = new TableViewPanelCompanion(this, userViewModel, currentState);
+		//tableViewPanelCompanion = new TableViewPanelCompanion(this, userViewModel, currentState);
 		detailsPanelController = new DetailsPanelController(userViewModel);
-
 		gridContent.add(tableViewPanelCompanion, 0, 0);
 		gridContent.add(detailsPanelController, 1, 0);
 	}

@@ -55,6 +55,7 @@ public class UserViewModel implements Observable {
         return FXCollections.unmodifiableObservableList(customers);
     }
     
+    
     public void setEmployees(ObservableList<Employee> employees) {
         this.employees = employees;
     }
@@ -69,6 +70,10 @@ public class UserViewModel implements Observable {
             setCurrentState(GUIEnum.valueOf(user.getClass().getSimpleName().toUpperCase()));
         }
         fireInvalidationEvent();
+    }
+
+    public UserModel getSelectedUser() {
+        return selectedUser;
     }
 
     public ArrayList<String> getDetailsNewEmployee(){
