@@ -113,8 +113,8 @@ public class TableViewPanelCompanion<T> extends GridPane {
 
 	private void initializeFilters() {
 		Map<GUIEnum, ArrayList<Object>> filterMap = new HashMap<>();
-		filterMap.put(GUIEnum.EMPLOYEE, new ArrayList<>(Arrays.asList("Name", "Username", UserStatus.ACTIVE, EmployeeRole.ADMINISTRATOR)));
-		filterMap.put(GUIEnum.CUSTOMER, new ArrayList<>(Arrays.asList("Name", "Username", UserStatus.ACTIVE, "Company")));
+		filterMap.put(GUIEnum.EMPLOYEE, new ArrayList<>(Arrays.asList("Name and username", UserStatus.ACTIVE, EmployeeRole.ADMINISTRATOR)));
+		filterMap.put(GUIEnum.CUSTOMER, new ArrayList<>(Arrays.asList("Name and username", "Company",  UserStatus.ACTIVE)));
 		filterMap.put(GUIEnum.TICKET, new ArrayList<>(Arrays.asList("Title")));
 
 		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createElementDetailGridpane(o)));
@@ -130,8 +130,6 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			filter.setFont(Font.font("Arial", 14));
 			filter.setOnKeyTyped(event -> {
 				checkFilters();
-				System.out.println("HIERZOOOOO: "+filter.getText());
-				System.out.println(((TextField) event.getSource()).getText().trim().length());
 			});
 			return filter;
 		} else if (o instanceof Enum) {
@@ -242,96 +240,59 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		if(currentState.equals(GUIEnum.EMPLOYEE)) {
 			if (fieldName.length() > 0 && !filterText.contains("select")){
 				Predicate<Employee> currentPredicate = (Predicate<Employee>) tableViewData.getPredicate();
-				System.out.println("CURRENT: "+currentPredicate);
 				Predicate<Employee> newPredicate;
-				Predicate<Employee> resultPredicate;
 
 				switch (fieldName) {
-					case "Username" -> newPredicate = e -> e.getUsername().toLowerCase().contains(filterText);
+					case "Name and username" -> {
+						Predicate<Employee> newPredicateFirstName = e -> e.getFirstName().toLowerCase().contains(filterText);
+						Predicate<Employee> newPredicateLastName = e -> e.getLastName().toLowerCase().contains(filterText);
+						Predicate<Employee> newPredicateUserName = e -> e.getUsername().toLowerCase().contains(filterText);
+						newPredicate = newPredicateFirstName.or(newPredicateLastName);
+						newPredicate = newPredicate.or(newPredicateUserName);
+
+					}
 					case "Role" -> newPredicate = e -> e.getRole().toLowerCase().contains(filterText);
 					case "Status" -> newPredicate = e -> e.getStatus().toLowerCase().contains(filterText);
-					case "Name" -> {
-						//Predicate<Employee> newPredicateFirstName = e -> e.getFirstName().toLowerCase().contains(filterText);
-						//Predicate<Employee> newPredicateLastName = e -> e.getLastName().toLowerCase().contains(filterText);
-						//newPredicate= newPredicateFirstName.or(newPredicateLastName);
-						newPredicate = e -> e.getUsername().toLowerCase().contains(filterText);
-						System.out.println(2);
-					}
 					default -> throw new IllegalStateException("Unexpected value: " + fieldName);
 				}
-				if(currentPredicate != null){
-					resultPredicate = currentPredicate.and(newPredicate);
-				} else {
-					resultPredicate = newPredicate;
-				}
-				tableViewData.setPredicate((Predicate<? super T>) resultPredicate);
-				tableViewData.forEach(System.out::println);
-				//tableView.setItems(tableViewData);
-				System.out.println("Setted");
-
-
+				setPredicateForFilteredList(currentPredicate, newPredicate);
 
 			}
-		} else {
+		} else if (currentState.equals(GUIEnum.CUSTOMER)){
 			if (fieldName.length() > 0 && !filterText.contains("select")){
+
+				Predicate<Customer> currentPredicate = (Predicate<Customer>) tableViewData.getPredicate();
+				Predicate<Customer> newPredicate;
+
 				switch (fieldName) {
-					case "Name" -> /*FXCollections.observableArrayList(
-							list.stream()
-									.filter(u -> ((Customer) u).getFirstName().toLowerCase().contains(filterText) || ((Customer) u).getLastName().toLowerCase().contains(filterText))
-									.collect(Collectors.toList()));*/
-							tableViewData.setPredicate(u-> ((Customer) u).getFirstName().toLowerCase().contains(filterText) || ((Customer) u).getLastName().toLowerCase().contains(filterText));
-					case "Username" -> /*FXCollections.observableArrayList(
-							list.stream()
-									.filter(u -> ((Customer) u).getUsername().toLowerCase().contains(filterText))
-									.collect(Collectors.toList()));*/
-							tableViewData.setPredicate(u-> ((Customer) u).getUsername().toLowerCase().contains(filterText));
-					case "Company" -> /*FXCollections.observableArrayList(
-							list.stream()
-									.filter(u -> ((Customer) u).getCompany().getName().toLowerCase().contains(filterText))
-									.collect(Collectors.toList()));*/
-							tableViewData.setPredicate(u-> ((Customer) u).getCompany().getName().toLowerCase().contains(filterText));
-					default -> /*FXCollections.observableArrayList(
-							list.stream()
-									.filter(u -> ((Customer) u).getStatus().toLowerCase().contains(filterText))
-									.collect(Collectors.toList()));*/
-							tableViewData.setPredicate(u-> ((Customer) u).getStatus().toLowerCase().contains(filterText));
+					case "Name and username" -> {
+						Predicate<Customer> newPredicateFirstName = e -> e.getFirstName().toLowerCase().contains(filterText);
+						Predicate<Customer> newPredicateLastName = e -> e.getLastName().toLowerCase().contains(filterText);
+						Predicate<Customer> newPredicateUserName = e -> e.getUsername().toLowerCase().contains(filterText);
+						newPredicate = newPredicateFirstName.or(newPredicateLastName);
+						newPredicate = newPredicate.or(newPredicateUserName);
+
+					}
+					case "Company" -> newPredicate = e -> e.getCompany().getName().toLowerCase().contains(filterText);
+					case "Status" -> newPredicate = e -> e.getStatus().toLowerCase().contains(filterText);
+					default -> throw new IllegalStateException("Unexpected value: " + fieldName);
 				}
+				setPredicateForFilteredList(currentPredicate, newPredicate);
+
 			}
+		} else if (currentState.equals(GUIEnum.TICKET)){
+			//todo
 		}
 	}
 
-	/*@FXML
-	void filterOnKeyTyped(KeyEvent event) {
-		String input = txfFilterInput.getText().toLowerCase();
-		
-		if(userViewModel.getEmployees() != null) {
-			ObservableList<Employee> employees = userViewModel.getEmployees();
-			
-			if (!input.isBlank()){
-				employees = FXCollections.observableArrayList(
-						employees.stream()
-								.filter(u -> u.getUsername().toLowerCase().contains(input) || u.getFirstName().toLowerCase().contains(input) || u.getLastName().toLowerCase().contains(input))
-								.collect(Collectors.toList())
-				);
-			}
-			tvEmployees.setItems(employees);
+	private void setPredicateForFilteredList(Predicate currentPredicate, Predicate newPredicate){
+		Predicate<Customer> resultPredicate;
+		if(currentPredicate != null){
+			resultPredicate = currentPredicate.and(newPredicate);
 		} else {
-			ObservableList<Customer> customers = userViewModel.getCustomers();
-			
-			if (!input.isBlank()){
-				customers = FXCollections.observableArrayList(
-						customers.stream()
-								.filter(u -> u.getUsername().toLowerCase().contains(input) || u.getFirstName().toLowerCase().contains(input) || u.getLastName().toLowerCase().contains(input))
-								.collect(Collectors.toList())
-				);
-			}
-			tvCustomers.setItems(customers);
+			resultPredicate = newPredicate;
 		}
-
-
-		
-
-		
-	}	 */
+		tableViewData.setPredicate((Predicate<? super T>) resultPredicate);
+	}
 	
 }

@@ -125,7 +125,7 @@
 }
 
 .combo-box-base {
-    -fx-background-color: white, white, #1D3D78, white;
+    -fx-background-color: white, white, #c0cc0f, white;
     -fx-background-radius: 5, 5, 4, 3;
     -fx-background-insets: 0 0 -1 0, 0, 1, 2;
     -fx-padding: 0;
