@@ -2,7 +2,7 @@ package repository;
 
 import javax.persistence.EntityNotFoundException;
 
-import domain.LoginStatus;
+import domain.enums.LoginStatus;
 import domain.UserModel;
 
 public interface UserDao extends GenericDao<UserModel> {

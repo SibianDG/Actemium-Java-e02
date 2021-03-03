@@ -1,4 +1,4 @@
-package domain;
+package domain.enums;
 
 public enum LoginStatus {
 	// Correct username and password combination for an ACTIVE userAccount

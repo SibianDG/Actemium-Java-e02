@@ -1,6 +1,7 @@
 package main;
 
 import domain.*;
+import domain.enums.UserStatus;
 import domain.facades.UserFacade;
 import repository.UserDaoJpa;
 

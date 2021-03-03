@@ -6,11 +6,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import domain.*;
-import domain.facades.Facade;
+import domain.enums.EmployeeRole;
+import domain.enums.UserStatus;
 import domain.facades.UserFacade;
 import gui.GUIEnum;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

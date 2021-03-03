@@ -1,4 +1,4 @@
-package domain;
+package domain.enums;
 
 public enum ContractTypeStatus {
 	// Original UC - by HoGent lectors

@@ -1,5 +1,7 @@
 package domain;
 
+import domain.enums.LoginStatus;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;

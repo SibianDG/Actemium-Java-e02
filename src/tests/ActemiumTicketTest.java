@@ -12,8 +12,8 @@ import domain.ActemiumTicket;
 import domain.Company;
 import domain.Customer;
 import domain.Employee;
-import domain.EmployeeRole;
-import domain.TicketPriority;
+import domain.enums.EmployeeRole;
+import domain.enums.TicketPriority;
 
 public class ActemiumTicketTest {
 	

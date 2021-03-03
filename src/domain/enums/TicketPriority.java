@@ -1,4 +1,4 @@
-package domain;
+package domain.enums;
 
 public enum TicketPriority {
 	// Standard notation for all companies

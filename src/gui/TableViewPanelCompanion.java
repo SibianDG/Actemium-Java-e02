@@ -7,12 +7,12 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import domain.*;
+import domain.enums.EmployeeRole;
+import domain.enums.UserStatus;
 import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
 import javafx.beans.property.Property;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;

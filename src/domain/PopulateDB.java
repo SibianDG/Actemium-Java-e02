@@ -1,5 +1,7 @@
 package domain;
 
+import domain.enums.EmployeeRole;
+import domain.enums.TicketPriority;
 import repository.UserDaoJpa;
 
 public class PopulateDB {

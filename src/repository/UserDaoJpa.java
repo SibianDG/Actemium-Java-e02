@@ -4,7 +4,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 
 import domain.LoginAttempt;
-import domain.LoginStatus;
+import domain.enums.LoginStatus;
 import domain.UserModel;
 import languages.LanguageResource;
 

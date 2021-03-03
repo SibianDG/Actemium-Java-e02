@@ -1,5 +1,8 @@
 package domain;
 
+import domain.enums.ContractTypeStatus;
+import domain.enums.Timestamp;
+
 import java.io.Serial;
 import java.io.Serializable;
 

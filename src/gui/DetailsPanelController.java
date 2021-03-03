@@ -3,8 +3,8 @@ package gui;
 import java.io.IOException;
 import java.util.*;
 
-import domain.EmployeeRole;
-import domain.UserStatus;
+import domain.enums.EmployeeRole;
+import domain.enums.UserStatus;
 import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;

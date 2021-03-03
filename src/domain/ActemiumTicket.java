@@ -1,5 +1,7 @@
 package domain;
 
+import domain.enums.TicketPriority;
+import domain.enums.TicketStatus;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 

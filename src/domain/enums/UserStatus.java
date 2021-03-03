@@ -1,4 +1,4 @@
-package domain;
+package domain.enums;
 
 public enum UserStatus {
 	// User is able to login

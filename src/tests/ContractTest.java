@@ -10,10 +10,10 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import domain.Contract;
-import domain.ContractStatus;
+import domain.enums.ContractStatus;
 import domain.ContractType;
-import domain.ContractTypeStatus;
-import domain.Timestamp;
+import domain.enums.ContractTypeStatus;
+import domain.enums.Timestamp;
 
 public class ContractTest {
 	
