@@ -1,6 +1,9 @@
 package domain.facades;
 
-import domain.ActemiumTicket;
+import domain.*;
+import domain.enums.EmployeeRole;
+import domain.enums.TicketPriority;
+import domain.enums.UserStatus;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import repository.GenericDao;
@@ -23,6 +26,33 @@ public class TicketFacade implements Facade {
 		List<ActemiumTicket> ticketList = ticketRepo.findAll();
 		this.tickets = FXCollections.observableArrayList(ticketList);
 	}
+
+	public void registerTicket(TicketPriority ticketPriority, String title, String description,
+							   String remarks, String attachments, Customer customer) {
+		ActemiumTicket ticket = new ActemiumTicket(ticketPriority, title, description, customer, remarks, attachments);
+		customer.addTicket(ticket);
+		tickets.add(ticket);
+	}
+
+	public void modifyTicket(ActemiumTicket ticket, TicketPriority ticketPriority, String title, String description,
+							 String remarks, String attachments, Customer customer) {
+		int index = tickets.indexOf(ticket);
+
+		ticket.setTicketPriority(ticketPriority);
+		ticket.setTitle(title);
+		ticket.setDescription(description);
+		ticket.setRemarks(remarks);
+		ticket.setAttachments(attachments);
+		ticket.setCustomer(customer);
+
+		ticketRepo.startTransaction();
+		ticketRepo.update(ticket);
+		ticketRepo.commitTransaction();
+
+		tickets.add(index, ticket);
+		tickets.remove(index+1);
+	}
+
 
 	public ObservableList<ActemiumTicket> getTickets() {
 		return FXCollections.unmodifiableObservableList(tickets);

@@ -1,6 +1,8 @@
 package gui.viewModels;
 
 import domain.ActemiumTicket;
+import domain.Customer;
+import domain.enums.TicketPriority;
 import domain.facades.Facade;
 import domain.facades.TicketFacade;
 import gui.GUIEnum;
@@ -53,12 +55,15 @@ public class TicketViewModel extends ViewModel {
     }
 
     //Todo
-    public void registerTicket() {
-
+    public void registerTicket(TicketPriority ticketPriority, String title, String description,
+                               String remarks, String attachments, Customer customer) {
+        ticketFacade.registerTicket(ticketPriority, title, description, remarks, attachments, customer);
     }
 
     //Todo
-    public void modifyTicket() {
+    public void modifyTicket(TicketPriority ticketPriority, String title, String description,
+                             String remarks, String attachments, Customer customer) {
+        ticketFacade.modifyTicket(selectedActemiumTicket, ticketPriority, title, description, remarks, attachments, customer);
 
     }
 

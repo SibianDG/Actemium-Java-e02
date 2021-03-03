@@ -2,7 +2,11 @@ package domain;
 
 import domain.enums.EmployeeRole;
 import domain.enums.TicketPriority;
+import domain.enums.UserStatus;
 import repository.UserDaoJpa;
+
+import java.security.SecureRandom;
+import java.util.ArrayList;
 
 public class PopulateDB {
     public void run(UserDaoJpa userDao) {
@@ -15,6 +19,8 @@ public class PopulateDB {
         Customer barak3 = new Customer("cust03Barak", "Passwd123&", "Barak", "Obama", theWhiteHouse);
         Customer barak4 = new Customer("cust04Barak", "Passwd123&", "Barak", "Obama", theWhiteHouse);
         Customer barak5 = new Customer("cust05Barak", "Passwd123&", "Barak", "Obama", theWhiteHouse);
+        barak4.setStatus(UserStatus.BLOCKED);
+        barak5.setStatus(UserStatus.INACTIVE);
         Employee tech = new Employee("Technician", "Passwd123&", "Johan", "Van Schoor","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.TECHNICIAN);
         Employee tech2 = new Employee("Technician", "Passwd123&", "Donald", "Trump","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.TECHNICIAN);
 
@@ -41,6 +47,12 @@ public class PopulateDB {
         userDao.insert(new Employee("isaac123", "Passwd123&", "Isaac", "Bauters","Kerstraat 71","094812384","isaac.bauters@hogent.be", EmployeeRole.ADMINISTRATOR));
         userDao.insert(new Employee("florian123", "Passwd123&", "Florian", "Goossens","Groensstraat 103","096248753","florian.goossens@hogent.be", EmployeeRole.ADMINISTRATOR));
         userDao.insert(new Employee("sibianDG", "Passwd123&", "Sibian", "De Gussem","Hoogstraat 89","092564812","sibian.degussem@hogent.be", EmployeeRole.ADMINISTRATOR));
+        Employee badguy = new Employee("badGuy", "Passwd123&", "bad", "guy","Hoogstraat 89","092564812","bad.guy@hogent.be", EmployeeRole.SUPPORT_MANAGER);
+        Employee inactive = new Employee("fired", "Passwd123&", "bad", "guy","Hoogstraat 89","092564812","bad.guy@hogent.be", EmployeeRole.SUPPORT_MANAGER);
+        badguy.setStatus(UserStatus.BLOCKED);
+        inactive.setStatus(UserStatus.INACTIVE);
+        userDao.insert(badguy);
+        userDao.insert(inactive);
         userDao.insert(barak);
         userDao.insert(barak2);
         userDao.insert(barak3);
@@ -50,6 +62,19 @@ public class PopulateDB {
         userDao.insert(new Customer("cust03Emma", "Passwd123&", "Emma", "Dupont", theWhiteHouse));
         userDao.insert(new Employee("tech01Donald", "Passwd123&", "Donald", "Trump", "Stationstraat 56", "092548736", "donald.trump@hogent.be", EmployeeRole.TECHNICIAN));
         userDao.insert(new Employee("supman01John", "Passwd123&", "John", "Smiths", "Stationstraat 34", "093504816", "john.smiths@hogent.be", EmployeeRole.SUPPORT_MANAGER));
+
+        Company vatican = new Company("Vatican", "00120 Vatican City", "666");
+        Customer pope = new Customer("PopeFrancis", "Passwd123&", "Jorge Mario", "Bergoglio", vatican);
+        SecureRandom randomGen = new SecureRandom();
+        TicketPriority[] prios = TicketPriority.values();
+
+        for (int i = 0; i < 10; i++) {
+            ActemiumTicket t = new ActemiumTicket(prios[randomGen.nextInt(3)], "Title"+i, "Description"+i, pope, "Remark"+i, "screenshot"+i+".png");
+            pope.addTicket(t);
+        }
+        userDao.insert(pope);
+
+
         userDao.commitTransaction();
     }
 }

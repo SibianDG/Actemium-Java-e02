@@ -96,9 +96,9 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				propertyMap.put("Title", item -> ((ActemiumTicket) item).titleProperty());
 			}
 		}
-		
+
+		btnAdd.setText("Add "+currentState.toString().toLowerCase());
 		initializeFilters();
-		
 		initializeTableView();
 	}
 	
@@ -196,7 +196,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		});
 	}
 
-	private void initializeTableView() {		
+	private void initializeTableView() {
 		propertyMap.forEach((key, prop) -> {
 			TableColumn<T, String> c = createColumn(key, prop);
 			tableView.getColumns().add(c);
