@@ -21,9 +21,7 @@ public class UserViewModel extends ViewModel {
     private UserModel selectedUser;
     private ObservableList<Employee> employees;
     private ObservableList<Customer> customers;
-
-    private final ArrayList<InvalidationListener> listeners = new ArrayList<>();
-
+    
     public UserViewModel(UserFacade userFacade) {
     	super();
     	this.userFacade = userFacade;

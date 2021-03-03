@@ -217,28 +217,28 @@ public class DashboardFrameController extends GuiController {
         if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("employee")) {
             userViewModel.setEmployees(((UserFacade) userFacade).giveEmployeeList());
             employeeTableView = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.EMPLOYEE);
-            switchToManageScreen(name, employeeTableView);
+            switchToManageScreen(name, employeeTableView, userViewModel);
         } else if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("customer")) {
             userViewModel.setCustomers(((UserFacade) userFacade).giveCustomerList());
             customerTableView = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.CUSTOMER);
-            switchToManageScreen(name, customerTableView);
+            switchToManageScreen(name, customerTableView, userViewModel);
         } else if (name.toLowerCase().contains("ticket") && name.toLowerCase().contains("outstanding")) {
             TicketFacade ticketFacade = new TicketFacade();
             TicketViewModel viewModel = new TicketViewModel(ticketFacade);
             viewModel.setActemiumTickets(ticketFacade.getTickets());
             ticketTableView = new TableViewPanelCompanion<>(this, viewModel, GUIEnum.TICKET);
-            switchToManageScreen(name, ticketTableView);
+            switchToManageScreen(name, ticketTableView, viewModel);
         } else {
             makePopUp(name);
         }
     }
 
-	private void switchToManageScreen(String name, TableViewPanelCompanion tableViewPanelCompanion) {
+	private void switchToManageScreen(String name, TableViewPanelCompanion tableViewPanelCompanion, ViewModel viewModel) {
 		txtTitle.setText(name);
 		resetGridpane(gridContent);
 		
 		//tableViewPanelCompanion = new TableViewPanelCompanion(this, userViewModel, currentState);
-		detailsPanelController = new DetailsPanelController(userViewModel);
+		detailsPanelController = new DetailsPanelController(viewModel);
 		gridContent.add(tableViewPanelCompanion, 0, 0);
 		gridContent.add(detailsPanelController, 1, 0);
 	}

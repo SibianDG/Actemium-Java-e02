@@ -206,8 +206,11 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		
 		tableView.setOnMouseClicked((MouseEvent m) -> {
 			T data = tableView.getSelectionModel().selectedItemProperty().get();
-			if (data != null & (data instanceof Employee || data instanceof Customer)){
+			System.out.println(data.getClass().getSimpleName());
+			if (data instanceof Employee || data instanceof Customer){
 				((UserViewModel) viewModel).setSelectedUser((UserModel) data);
+			} else if (data instanceof ActemiumTicket) {
+				((TicketViewModel) viewModel).setSelectedActemiumTicket((ActemiumTicket) data);
 			}
 		});
 		

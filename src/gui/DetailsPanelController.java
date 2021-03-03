@@ -5,6 +5,7 @@ import java.util.*;
 
 import domain.EmployeeRole;
 import domain.UserStatus;
+import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
 import javafx.beans.InvalidationListener;
@@ -161,9 +162,15 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     private void setDetailOnModifying(){
         gridDetails.getChildren().clear();
-        addDetailsToGridDetails(((UserViewModel) viewModel).getDetails());
-        txtDetailsTitle.setText("Details of "+((UserViewModel) viewModel).getNameOfSelectedUser());
-        btnModify.setText("Modify " + ((UserViewModel) viewModel).getCurrentState().toString().toLowerCase());
+        System.out.println(viewModel instanceof TicketViewModel);
+        if (viewModel instanceof UserViewModel) {
+            addDetailsToGridDetails(((UserViewModel) viewModel).getDetails());
+            txtDetailsTitle.setText("Details of " + ((UserViewModel) viewModel).getNameOfSelectedUser());
+            btnModify.setText("Modify " + ((UserViewModel) viewModel).getCurrentState().toString().toLowerCase());
+        } else if (viewModel instanceof TicketViewModel) {
+            addDetailsToGridDetails(((TicketViewModel) viewModel).getDetails());
+            btnModify.setText("Modify Ticket");
+        }
         btnModify.setVisible(true);
         txtErrorMessage.setVisible(false);
         editing = true;
