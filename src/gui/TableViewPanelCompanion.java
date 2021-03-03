@@ -3,6 +3,7 @@ package gui;
 import java.io.IOException;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import domain.*;
@@ -52,7 +53,8 @@ public class TableViewPanelCompanion<T> extends GridPane {
     private TableView<T> tableView;
     
 	private Map<String, Function<T, Property<String>>> propertyMap = new LinkedHashMap<>();
-	
+
+	private ObservableList<T> mainData;
 	private FilteredList<T> tableViewData;
 	
 	public TableViewPanelCompanion(DashboardFrameController dashboardFrameController, ViewModel viewModel, GUIEnum currentState) {
@@ -70,27 +72,30 @@ public class TableViewPanelCompanion<T> extends GridPane {
         }
 		
 		switch(currentState) {
-		case EMPLOYEE -> {
-					this.tableViewData = new FilteredList<>((ObservableList<T>) ((UserViewModel) viewModel).getEmployees(), p -> true);
+			case EMPLOYEE -> {
+				this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).getEmployees();
+				this.tableViewData = new FilteredList<>(mainData);
 
-					propertyMap.put("Firstname", item -> ((Employee)item).firstNameProperty());
-					propertyMap.put("Lastname", item -> ((Employee)item).lastNameProperty());
-					propertyMap.put("Username", item -> ((Employee)item).usernameProperty());
-					propertyMap.put("Status", item -> ((Employee)item).statusProperty());
-					propertyMap.put("Role", item -> ((Employee)item).roleProperty());
-				}
-		case CUSTOMER -> {
-					this.tableViewData = new FilteredList<>((ObservableList<T>) ((UserViewModel) viewModel).getCustomers(), p -> true);
-					propertyMap.put("Firstname", item -> ((Customer)item).firstNameProperty());
-					propertyMap.put("Lastname", item -> ((Customer)item).lastNameProperty());
-					propertyMap.put("Username", item -> ((Customer)item).usernameProperty());
-					propertyMap.put("Status", item -> ((Customer)item).statusProperty());
-					propertyMap.put("Company", item -> ((Customer)item).getCompany().nameProperty());
-		}
-		case TICKET -> {
-			this.tableViewData = new FilteredList<>((ObservableList<T>) ((TicketViewModel) viewModel).getActemiumTickets(), p -> true);
-			propertyMap.put("Title", item -> ((ActemiumTicket) item).titleProperty());
-		}
+				propertyMap.put("Firstname", item -> ((Employee)item).firstNameProperty());
+				propertyMap.put("Lastname", item -> ((Employee)item).lastNameProperty());
+				propertyMap.put("Username", item -> ((Employee)item).usernameProperty());
+				propertyMap.put("Status", item -> ((Employee)item).statusProperty());
+				propertyMap.put("Role", item -> ((Employee)item).roleProperty());
+			}
+			case CUSTOMER -> {
+				this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).getCustomers();
+				this.tableViewData = new FilteredList<>(mainData);
+				propertyMap.put("Firstname", item -> ((Customer)item).firstNameProperty());
+				propertyMap.put("Lastname", item -> ((Customer)item).lastNameProperty());
+				propertyMap.put("Username", item -> ((Customer)item).usernameProperty());
+				propertyMap.put("Status", item -> ((Customer)item).statusProperty());
+				propertyMap.put("Company", item -> ((Customer)item).getCompany().nameProperty());
+			}
+			case TICKET -> {
+				this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).getActemiumTickets();
+				this.tableViewData = new FilteredList<>(mainData);
+				propertyMap.put("Title", item -> ((ActemiumTicket) item).titleProperty());
+			}
 		}
 		
 		initializeFilters();
@@ -125,6 +130,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			filter.setFont(Font.font("Arial", 14));
 			filter.setOnKeyTyped(event -> {
 				checkFilters();
+				System.out.println("HIERZOOOOO: "+filter.getText());
 				System.out.println(((TextField) event.getSource()).getText().trim().length());
 			});
 			return filter;
@@ -166,10 +172,11 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		hboxFilterSection.getChildren().forEach(object -> {
 			if (object instanceof TextField) {
 				TextField textField = (TextField) object;
-				if (textField.getText().trim().length() > 0)
+				if (textField.getText().trim().length() > 0){
 					filter(textField.getPromptText(), textField.getText().trim().toLowerCase());
-				else
+				} else {
 					tableViewData.setPredicate(p -> true);
+				}
 			} else if (object instanceof ComboBox) {
 				ComboBox comboBox = (ComboBox) object;
 
@@ -206,7 +213,6 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		
 		tableView.setOnMouseClicked((MouseEvent m) -> {
 			T data = tableView.getSelectionModel().selectedItemProperty().get();
-			System.out.println(data.getClass().getSimpleName());
 			if (data instanceof Employee || data instanceof Customer){
 				((UserViewModel) viewModel).setSelectedUser((UserModel) data);
 			} else if (data instanceof ActemiumTicket) {
@@ -232,32 +238,39 @@ public class TableViewPanelCompanion<T> extends GridPane {
 
 	private void filter(String fieldName, String filterText){
 
+
 		if(currentState.equals(GUIEnum.EMPLOYEE)) {
 			if (fieldName.length() > 0 && !filterText.contains("select")){
-				 switch (fieldName) {
-					case "Name" -> /*FXCollections.observableArrayList(
-							 list.stream()
-									.filter(u -> ((Employee) u).getFirstName().toLowerCase().contains(filterText) || ((Employee) u).getLastName().toLowerCase().contains(filterText))
-									.collect(Collectors.toList()));*/
-							tableViewData.setPredicate(u -> ((Employee) u).getFirstName().toLowerCase().contains(filterText) || ((Employee) u).getLastName().toLowerCase().contains(filterText));
+				Predicate<Employee> currentPredicate = (Predicate<Employee>) tableViewData.getPredicate();
+				System.out.println("CURRENT: "+currentPredicate);
+				Predicate<Employee> newPredicate;
+				Predicate<Employee> resultPredicate;
 
-					case "Username" -> /*FXCollections.observableArrayList(
-							list.stream()
-									.filter(u -> ((Employee) u).getUsername().toLowerCase().contains(filterText))
-									.collect(Collectors.toList()));*/
-							tableViewData.setPredicate(u-> ((Employee) u).getUsername().toLowerCase().contains(filterText));
+				switch (fieldName) {
+					case "Username" -> newPredicate = e -> e.getUsername().toLowerCase().contains(filterText);
+					case "Role" -> newPredicate = e -> e.getRole().toLowerCase().contains(filterText);
+					case "Status" -> newPredicate = e -> e.getStatus().toLowerCase().contains(filterText);
+					case "Name" -> {
+						//Predicate<Employee> newPredicateFirstName = e -> e.getFirstName().toLowerCase().contains(filterText);
+						//Predicate<Employee> newPredicateLastName = e -> e.getLastName().toLowerCase().contains(filterText);
+						//newPredicate= newPredicateFirstName.or(newPredicateLastName);
+						newPredicate = e -> e.getUsername().toLowerCase().contains(filterText);
+						System.out.println(2);
+					}
+					default -> throw new IllegalStateException("Unexpected value: " + fieldName);
+				}
+				if(currentPredicate != null){
+					resultPredicate = currentPredicate.and(newPredicate);
+				} else {
+					resultPredicate = newPredicate;
+				}
+				tableViewData.setPredicate((Predicate<? super T>) resultPredicate);
+				tableViewData.forEach(System.out::println);
+				//tableView.setItems(tableViewData);
+				System.out.println("Setted");
 
-					case "Role" -> /*FXCollections.observableArrayList(
-							list.stream().filter(u -> ((Employee) u).getRole().toLowerCase().contains(filterText))
-									.collect(Collectors.toList()));*/
-							tableViewData.setPredicate(u -> ((Employee) u).getRole().toLowerCase().contains(filterText));
-					default -> /*FXCollections.observableArrayList(
-							list.stream()
-									.filter(u -> ((Employee) u).getStatus().toLowerCase().contains(filterText))
-									.collect(Collectors.toList()));*/
-							tableViewData.setPredicate(u-> ((Employee) u).getStatus().toLowerCase().contains(filterText));
 
-				 }
+
 			}
 		} else {
 			if (fieldName.length() > 0 && !filterText.contains("select")){
