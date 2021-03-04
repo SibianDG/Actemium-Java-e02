@@ -18,6 +18,7 @@ import javax.persistence.Transient;
 
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
+import domain.enums.TicketType;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -50,6 +51,9 @@ public class ActemiumTicket implements Serializable {
 	// List of technicians contain all the technicians assigned to the ticket
 	@ManyToMany
 	private List<Employee> technicians = new ArrayList<>();
+
+	@Transient
+	private StringProperty ticketType = new SimpleStringProperty();
 	
 	// Following list of additional data would prove usefull 
 	// for further follow up on tickets and reporting:
@@ -120,6 +124,19 @@ public class ActemiumTicket implements Serializable {
 
 	public void setPriority(TicketPriority priority) {
 		this.priority.set(String.valueOf(priority));
+	}
+
+	public String getTicketType() {
+		return ticketType.get();
+	}
+
+	public TicketType getTicketTypeAsEnum() {
+		return TicketType.valueOf(ticketType.get());
+	}
+
+
+	public void setTicketType(TicketType ticketType) {
+		this.ticketType.set(String.valueOf(ticketType));
 	}
 
 	public LocalDate getDateOfCreation() {
@@ -234,5 +251,9 @@ public class ActemiumTicket implements Serializable {
 		setTicketIdString();
 		return ticketIdString;
 	}
-	
+
+	public StringProperty ticketTypeProperty() {
+		return ticketType;
+	}
+
 }
