@@ -96,7 +96,7 @@ public class ActemiumTicket implements Serializable {
 	}
 
 	public void setStatus(TicketStatus ticketStatus) {
-		this.status.set(String.valueOf(status));
+		this.status.set(ticketStatus.toString());
 	}
 
 	public String getPriority() {
