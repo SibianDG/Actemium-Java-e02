@@ -34,46 +34,46 @@ public class ActemiumTicketTest {
     private static Stream<Arguments> invalidActemiumTicketAttributes04() {
         return Stream.of(
                 // title: not null or empty or blank, but (special chars)? and digits are ok
-        		Arguments.of(TicketPriority.P1, null, "Cannot print labels", customer),
-                Arguments.of(TicketPriority.P1, "", "Cannot print labels", customer),
-                Arguments.of(TicketPriority.P1, "   ", "Cannot print labels", customer),
+        		Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, null, "Cannot print labels", customer),
+                Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "", "Cannot print labels", customer),
+                Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "   ", "Cannot print labels", customer),
                 
                 // description: not null or empty or blank, but special chars and digits are ok
-                Arguments.of(TicketPriority.P1, "Printer Broken", null, customer),
-                Arguments.of(TicketPriority.P1, "Printer Broken", "", customer),
-                Arguments.of(TicketPriority.P1, "Printer Broken", "    ", customer),
+                Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", null, customer),
+                Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "", customer),
+                Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "    ", customer),
                                 
                 // customer: not null
-                Arguments.of(TicketPriority.P1, "Printer Broken", "Cannot print labels", null)
+                Arguments.of(TicketPriority.P1, TicketType.SOFTWARE,"Printer Broken", "Cannot print labels", null)
         		);
     }
 
     private static Stream<Arguments> validActemiumTicketAttributes06() {
     	return Stream.of(
-    			Arguments.of(TicketPriority.P1, "Printer Broken", "Cannot print labels", customer, null, null),
-    			Arguments.of(TicketPriority.P2, "Printer Broken", "Cannot print labels", customer, "", null),
-    			Arguments.of(TicketPriority.P3, "Printer Broken", "Cannot print labels", customer, null, ""),
-    			Arguments.of(TicketPriority.P1, "Printer Broken", "Cannot print labels", customer, "Remarks", "Attachment"),
-    			Arguments.of(TicketPriority.P1, "Printer Broken", "Cannot print labels 123", customer, "Remarks 123", "Attachment 123"),
-    			Arguments.of(TicketPriority.P1, "Printer Broken", "Cannot print labels 123", customer, "", ""),
-    			Arguments.of(TicketPriority.P1, "Printer Broken", "Cannot print labels 123", customer, "    ", "    ")                
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer, null, null),
+    			Arguments.of(TicketPriority.P2, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer, "", null),
+    			Arguments.of(TicketPriority.P3, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer, null, ""),
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer, "Remarks", "Attachment"),
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels 123", customer, "Remarks 123", "Attachment 123"),
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels 123", customer, "", ""),
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels 123", customer, "    ", "    ")
     			);
     }
     
     private static Stream<Arguments> invalidActemiumTicketAttributes06() {
     	return Stream.of(
     			// title: not null or empty or blank, but (special chars)? and digits are ok
-    			Arguments.of(TicketPriority.P1, null, "Cannot print labels", customer, null, null),
-    			Arguments.of(TicketPriority.P1, "", "Cannot print labels", customer, null, null),
-    			Arguments.of(TicketPriority.P1, "   ", "Cannot print labels", customer, null, null),
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, null, "Cannot print labels", customer, null, null),
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "", "Cannot print labels", customer, null, null),
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "   ", "Cannot print labels", customer, null, null),
     			
     			// description: not null or empty or blank, but special chars and digits are ok
-    			Arguments.of(TicketPriority.P1, "Printer Broken", null, customer, null, null),
-    			Arguments.of(TicketPriority.P1, "Printer Broken", "", customer, null, null),
-    			Arguments.of(TicketPriority.P1, "Printer Broken", "    ", customer, null, null),
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", null, customer, null, null),
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "", customer, null, null),
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "    ", customer, null, null),
     			
     			// customer: not null
-    			Arguments.of(TicketPriority.P1, "Printer Broken", "Cannot print labels", null, null, null)
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", null, null, null)
     			);
     }
 
