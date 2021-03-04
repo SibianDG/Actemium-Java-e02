@@ -30,6 +30,9 @@ public class ActemiumTicket implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int ticketId;
+	
+	@Transient
+	private StringProperty ticketIdString = new SimpleStringProperty();
 
 	@Transient
 	private StringProperty status = new SimpleStringProperty();
@@ -84,6 +87,14 @@ public class ActemiumTicket implements Serializable {
 	// remarks and attachments are optional
 	public ActemiumTicket(TicketPriority ticketPriority, String title, String description, Customer customer) {
 		this(ticketPriority, title, description, customer, null, null);
+	}
+	
+	public String getTicketIdString() {
+		return ticketIdString.get();
+	}
+	
+	public void setTicketIdString() {
+		this.ticketIdString.set(String.valueOf(ticketId));
 	}
 
 	public String getStatus() {
@@ -218,8 +229,10 @@ public class ActemiumTicket implements Serializable {
 	public StringProperty statusProperty() {
 		return status;
 	}
-
-	public int getTicketId() {
-		return ticketId;
+	
+	public StringProperty ticketIdProperty() {
+		setTicketIdString();
+		return ticketIdString;
 	}
+	
 }

@@ -92,9 +92,12 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			}
 			case TICKET -> {
 				this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).getActemiumTickets();
+				this.tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 				this.tableViewData = new FilteredList<>(mainData);
 				//propertyMap.put("Number", item -> ((ActemiumTicket) item).numberProperty());
+				propertyMap.put("ID", item -> ((ActemiumTicket) item).ticketIdProperty());
 				propertyMap.put("Title", item -> ((ActemiumTicket) item).titleProperty());
+				propertyMap.put("Priority", item -> ((ActemiumTicket) item).priorityProperty());
 				propertyMap.put("Status", item -> ((ActemiumTicket) item).statusProperty());
 			}
 		}
@@ -105,8 +108,14 @@ public class TableViewPanelCompanion<T> extends GridPane {
 	}
 	
 	private <T> TableColumn<T, String> createColumn(String title, Function<T, Property<String>> prop) {
+		
 		TableColumn<T, String> column = new TableColumn<>(title);
 		column.setCellValueFactory(cellData -> prop.apply(cellData.getValue()));
+		// Resize policy for Title column in Tickets TableView
+		if(title.equals("Title")) {
+			//TODO
+			column.setPrefWidth(420.00);
+		}
 		return column;	
 	}
 	
@@ -283,7 +292,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				Predicate<ActemiumTicket> newPredicate;
 				
 				switch (fieldName) {
-					case "Number" -> newPredicate = e -> String.valueOf(e.getTicketId()).equals(filterText);
+					case "Number" -> newPredicate = e -> e.getTicketIdString().equals(filterText);
 					case "Title" -> newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);
 					case "Priority" -> newPredicate = e -> e.getPriority().toLowerCase().contains(filterText);
 					case "Status" -> newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
