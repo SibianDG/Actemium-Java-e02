@@ -68,6 +68,9 @@ public class Company implements Serializable {
 	}
 
 	public void setAddress(String address) {
+		if (address == null || address.isBlank()) {
+			throw new IllegalArgumentException("Empty address");
+		}
 		this.address = address;
 	}
 

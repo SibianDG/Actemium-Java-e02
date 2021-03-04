@@ -38,6 +38,9 @@ public class ActemiumTicket implements Serializable {
 	private String description;
 	@ManyToOne
 	private Customer customer;
+
+	@ManyToOne
+	private Company company;
 	private String remarks;
 	private String attachments;	
 	// List of technicians contain all the technicians assigned to the ticket
@@ -66,11 +69,12 @@ public class ActemiumTicket implements Serializable {
 		super();
 	}
 
-	public ActemiumTicket(TicketPriority ticketPriority, String title, String description, Customer customer,
+	public ActemiumTicket(TicketPriority ticketPriority, TicketType ticketType, String title, String description, Customer customer,
 			String remarks, String attachments) {
 		super();
 		// new ticket always gets TicketStatus CREATED
 		setStatus(TicketStatus.CREATED);
+		setTicketType(ticketType);
 		setPriority(ticketPriority);
 		setDateOfCreation(LocalDate.now());
 		setTitle(title);
@@ -81,8 +85,8 @@ public class ActemiumTicket implements Serializable {
 	}
 
 	// remarks and attachments are optional
-	public ActemiumTicket(TicketPriority ticketPriority, String title, String description, Customer customer) {
-		this(ticketPriority, title, description, customer, null, null);
+	public ActemiumTicket(TicketPriority ticketPriority, TicketType ticketType, String title, String description, Customer customer) {
+		this(ticketPriority, ticketType, title, description, customer, null, null);
 	}
 	
 	public String getTicketIdString() {

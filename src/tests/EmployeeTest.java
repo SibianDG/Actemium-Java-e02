@@ -76,6 +76,8 @@ public class EmployeeTest {
 				() -> new Employee(username, password, firstName, lastName, address, phoneNumber, emailAddress, role));
 	}
 
+
+
 	@Test
 	public void giveEmployeeSeniroity_returns_valid() {
 		employee = new Employee("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0470099874",
