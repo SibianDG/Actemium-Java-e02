@@ -25,10 +25,14 @@ public class ActemiumTicketTest {
 	
     private static Stream<Arguments> validActemiumTicketAttributes04() {
         return Stream.of(
-                Arguments.of(TicketPriority.P1, "Printer Broken", "Cannot print labels", customer),
-                Arguments.of(TicketPriority.P2, "Printer Broken", "Cannot print labels", customer),
-                Arguments.of(TicketPriority.P3, "Printer Broken", "Cannot print labels", customer)            
-        		);
+                Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer),
+                Arguments.of(TicketPriority.P2, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer),
+                Arguments.of(TicketPriority.P3, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer),
+				Arguments.of(TicketPriority.P1, TicketType.HARDWARE, "Printer Broken", "Cannot print labels", customer),
+				Arguments.of(TicketPriority.P1, TicketType.NETWORK, "Printer Broken", "Cannot print labels", customer),
+				Arguments.of(TicketPriority.P1, TicketType.INFRASTRUCTURE, "Printer Broken", "Cannot print labels", customer)
+
+				);
     }
 
     private static Stream<Arguments> invalidActemiumTicketAttributes04() {

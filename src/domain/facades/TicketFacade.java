@@ -2,6 +2,7 @@ package domain.facades;
 
 import domain.*;
 import domain.enums.TicketPriority;
+import domain.enums.TicketType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import repository.GenericDao;
@@ -25,9 +26,9 @@ public class TicketFacade implements Facade {
 		this.tickets = FXCollections.observableArrayList(ticketList);
 	}
 
-	public void registerTicket(TicketPriority priority, String title, String description,
+	public void registerTicket(TicketPriority priority, TicketType ticketType, String title, String description,
 							   String remarks, String attachments, Customer customer) {
-		ActemiumTicket ticket = new ActemiumTicket(priority, title, description, customer, remarks, attachments);
+		ActemiumTicket ticket = new ActemiumTicket(priority, ticketType, title, description, customer, remarks, attachments);
 		customer.addTicket(ticket);
 		tickets.add(ticket);
 	}
