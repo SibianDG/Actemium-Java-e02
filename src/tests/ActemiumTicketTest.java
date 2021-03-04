@@ -2,6 +2,7 @@ package tests;
 
 import java.util.stream.Stream;
 
+import domain.enums.TicketType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,7 +21,7 @@ public class ActemiumTicketTest {
 	private Employee technician = new Employee("jooKlein123", "PassWd123&", "Joost", "Klein", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.TECHNICIAN);
     private static Company theWhiteHouse = new Company("The White House", "America 420", "911");    
     private static Customer customer = new Customer("customer123", "PassWd123&", "John", "Smith", theWhiteHouse);
-	private ActemiumTicket ticket01 = new ActemiumTicket(TicketPriority.P1, "Printer Broken", "Cannot print labels", customer);
+	private ActemiumTicket ticket01 = new ActemiumTicket(TicketPriority.P1, TicketType.SOFTWARE ,"Printer Broken", "Cannot print labels", customer);
 	
     private static Stream<Arguments> validActemiumTicketAttributes04() {
         return Stream.of(
@@ -96,7 +97,7 @@ public class ActemiumTicketTest {
 	public void createActemiumTicket_ValidAttributes06_DoesNotThrowException(TicketPriority ticketPriority,
 			String title, String description, Customer customer, String remarks, String attachments) {
 		Assertions.assertDoesNotThrow(
-				() -> new ActemiumTicket(ticketPriority, title, description, customer, remarks, attachments));
+				() -> new ActemiumTicket(ticketPriority, ticketType, title, description, customer, remarks, attachments));
 	}
 
 	@ParameterizedTest
@@ -104,7 +105,7 @@ public class ActemiumTicketTest {
 	public void createActemiumTicket_InValidAttributes06_ThrowsIllegalArgumentException(TicketPriority ticketPriority,
 			String title, String description, Customer customer, String remarks, String attachments) {
 		Assertions.assertThrows(IllegalArgumentException.class,
-				() -> new ActemiumTicket(ticketPriority, title, description, customer, remarks, attachments));
+				() -> new ActemiumTicket(ticketPriority, ticketType, title, description, customer, remarks, attachments));
 	}
 
 	// TODO Should this method be tested seperately like it is now
