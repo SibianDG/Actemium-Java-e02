@@ -2,6 +2,7 @@ package domain;
 
 import domain.enums.EmployeeRole;
 import domain.enums.TicketPriority;
+import domain.enums.TicketType;
 import domain.enums.UserStatus;
 import repository.UserDaoJpa;
 
@@ -26,11 +27,11 @@ public class PopulateDB {
 
         userDao.insert(tech);
         userDao.insert(tech2);
-        ActemiumTicket ticket01 = new ActemiumTicket(TicketPriority.P1, "Remove Trump From White House", "I forgot my diary in the white house, Trump doesn't let me in to retriev it", barak);
-        ActemiumTicket ticket02 = new ActemiumTicket(TicketPriority.P1, "Remove Biden From White House", "I forgot my diary in the white house, Trump doesn't let me in to retriev it", barak);
-        ActemiumTicket ticket03 = new ActemiumTicket(TicketPriority.P1, "Get Trump back", "I forgot my diary in the white house, Trump doesn't let me in to retriev it", barak);
-        ActemiumTicket ticket04 = new ActemiumTicket(TicketPriority.P1, "Make America Great Again", "I forgot my diary in the white house, Trump doesn't let me in to retriev it", barak);
-        ActemiumTicket ticket05 = new ActemiumTicket(TicketPriority.P1, "Corona is a HOAX", "I forgot my diary in the white house, Trump doesn't let me in to retriev it", barak);
+        ActemiumTicket ticket01 = new ActemiumTicket(TicketPriority.P1,TicketType.DATABASE, "Remove Trump From White House", "I forgot my diary in the white house, Trump doesn't let me in to retriev it", barak);
+        ActemiumTicket ticket02 = new ActemiumTicket(TicketPriority.P1, TicketType.HARDWARE,"Remove Biden From White House", "I forgot my diary in the white house, Trump doesn't let me in to retriev it", barak);
+        ActemiumTicket ticket03 = new ActemiumTicket(TicketPriority.P1, TicketType.INFRASTRUCTURE, "Get Trump back", "I forgot my diary in the white house, Trump doesn't let me in to retriev it", barak);
+        ActemiumTicket ticket04 = new ActemiumTicket(TicketPriority.P1, TicketType.NETWORK, "Make America Great Again", "I forgot my diary in the white house, Trump doesn't let me in to retriev it", barak);
+        ActemiumTicket ticket05 = new ActemiumTicket(TicketPriority.P1, TicketType.SOFTWARE, "Corona is a HOAX", "I forgot my diary in the white house, Trump doesn't let me in to retriev it", barak);
         barak.addTicket(ticket01);
         barak2.addTicket(ticket02);
         barak3.addTicket(ticket03);
@@ -67,9 +68,10 @@ public class PopulateDB {
         Customer pope = new Customer("PopeFrancis", "Passwd123&", "Jorge Mario", "Bergoglio", vatican);
         SecureRandom randomGen = new SecureRandom();
         TicketPriority[] prios = TicketPriority.values();
-
+        TicketType[] types = TicketType.values() ;
+        
         for (int i = 0; i < 10; i++) {
-            ActemiumTicket t = new ActemiumTicket(prios[randomGen.nextInt(3)], "Title"+i, "Description"+i, pope, "Remark"+i, "screenshot"+i+".png");
+            ActemiumTicket t = new ActemiumTicket(prios[randomGen.nextInt(3)], types[randomGen.nextInt(types.length)], "Title"+i, "Description"+i, pope, "Remark"+i, "screenshot"+i+".png");
             pope.addTicket(t);
         }
         userDao.insert(pope);

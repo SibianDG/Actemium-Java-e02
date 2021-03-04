@@ -177,29 +177,32 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     private void setupPaneNewUser(){
 	    editing = false;
-        ArrayList<String> fields;
+        ArrayList<String> fields = null;
 
-        if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)){
-            fields = ((UserViewModel) viewModel).getDetailsNewEmployee();        
-            txtDetailsTitle.setText("Add new employee");
-            btnModify.setText("Add new employee");
-        } else if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.CUSTOMER)){
-            fields = ((UserViewModel) viewModel).getDetailsNewCustomer();        
-            txtDetailsTitle.setText("Add new customer");
-            btnModify.setText("Add new customer");
-        }else if (((TicketViewModel) viewModel).getCurrentState().equals(GUIEnum.CUSTOMER)){
-            fields = ((TicketViewModel) viewModel).getDetailsNewTicket();        
-            txtDetailsTitle.setText("Add new ticket");
-            btnModify.setText("Add new ticket");
-        } else {
-            fields = null;
-        }
+		if (viewModel instanceof UserViewModel) {
+			if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)) {
+				fields = ((UserViewModel) viewModel).getDetailsNewEmployee();
+				txtDetailsTitle.setText("Add new employee");
+				btnModify.setText("Add new employee");
+			} else if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.CUSTOMER)) {
+				fields = ((UserViewModel) viewModel).getDetailsNewCustomer();
+				txtDetailsTitle.setText("Add new customer");
+				btnModify.setText("Add new customer");
+			}
+		} else if (viewModel instanceof TicketViewModel) {
+			if (((TicketViewModel) viewModel).getCurrentState().equals(GUIEnum.TICKET)) {
+				fields = ((TicketViewModel) viewModel).getDetailsNewTicket();
+				txtDetailsTitle.setText("Add new ticket");
+				btnModify.setText("Add new ticket");
+			}
+		} else {
+			fields = null;
+		}
 
-        btnModify.setVisible(true);
-        assert fields != null;
-        addItemsToGridNewUser(fields);
+		btnModify.setVisible(true);
+		assert fields != null;
+		addItemsToGridNewUser(fields);
     }
-
 
     private void addItemsToGridNewUser(ArrayList<String> fields){
         gridDetails.getChildren().clear();

@@ -1,22 +1,21 @@
 package gui.viewModels;
 
-import domain.ActemiumTicket;
-import domain.Customer;
-import domain.Employee;
-import domain.enums.TicketPriority;
-import domain.facades.Facade;
-import domain.facades.TicketFacade;
-import gui.GUIEnum;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import domain.ActemiumTicket;
+import domain.Customer;
+import domain.Employee;
+import domain.enums.TicketPriority;
+import domain.enums.TicketType;
+import domain.facades.TicketFacade;
+import gui.GUIEnum;
+import javafx.beans.InvalidationListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class TicketViewModel extends ViewModel {
 
@@ -66,16 +65,17 @@ public class TicketViewModel extends ViewModel {
     }
 
     //Todo
-    public void registerTicket(TicketPriority priority, String title, String description,
+    public void registerTicket(TicketPriority priority, TicketType ticketType, String title, String description,
                                String remarks, String attachments, Customer customer) {
         ticketFacade.registerTicket(priority, title, description, remarks, attachments, customer);
     }
 
+ 
+
     //Todo
-    public void modifyTicket(TicketPriority priority, String title, String description,
+    public void modifyTicket(TicketPriority priority, TicketType ticketType, String title, String description,
                              String remarks, String attachments, Customer customer, List<Employee> technicians) {
         ticketFacade.modifyTicket(selectedActemiumTicket, priority, title, description, remarks, attachments, customer, technicians);
-
     }
 
     public GUIEnum getCurrentState() {
