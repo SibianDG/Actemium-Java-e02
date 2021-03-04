@@ -38,7 +38,7 @@ public class TicketViewModel extends ViewModel {
         details.put("Title", ticket.getTitle());
         details.put("Creation date", ticket.getDateOfCreation().toString());
         details.put("Description", ticket.getDescription());
-        //details.put("Type", ticket.getTicketType());
+        details.put("Type", ticket.getTicketType());
         details.put("Customer", ticket.getCustomer().getCompany().getName());
         //details.put("Technician", ticket.getTechnicians().toString());
         details.put("Remarks", ticket.getRemarks());
@@ -67,7 +67,7 @@ public class TicketViewModel extends ViewModel {
     //Todo
     public void registerTicket(TicketPriority priority, TicketType ticketType, String title, String description,
                                String remarks, String attachments, Customer customer) {
-        ticketFacade.registerTicket(priority, title, description, remarks, attachments, customer);
+        ticketFacade.registerTicket(priority, ticketType, title, description, remarks, attachments, customer);
     }
 
  

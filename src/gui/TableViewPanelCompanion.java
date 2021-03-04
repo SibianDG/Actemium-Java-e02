@@ -22,6 +22,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MultipleSelectionModel;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -116,7 +118,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		// Resize policy for Title column in Tickets TableView
 		if(title.equals("Title")) {
 			//TODO
-			column.setPrefWidth(420.00);
+			column.setPrefWidth(320.00);
 		}
 		return column;	
 	}
@@ -155,11 +157,28 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		ArrayList<String> stringArrayListist;
 
 		ObservableList list;
+		
+//		switch (fieldName) {				
+//		case "Firstname" -> {
+//			newPredicate = e -> e.getFirstName().toLowerCase().contains(filterText);		
+//		}
+//		case "Lastname" -> {
+//			newPredicate = e -> e.getLastName().toLowerCase().contains(filterText);					
+//		}
+//		case "Status" -> {
+//			newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
+//		}
+//		case "Role" -> {
+//			newPredicate = e -> e.getRole().toLowerCase().contains(filterText);
+//		}
+//		default -> throw new IllegalStateException("Unexpected value: " + fieldName);
+//	}			
+		
 		if (Arrays.stream(UserStatus.values()).anyMatch(e -> e == o)) {
 			stringArrayListist = new ArrayList<>(Collections.singleton("SELECT STATUS"));
 			Arrays.asList(UserStatus.values()).forEach(string -> stringArrayListist.add(string.toString()));
 			itemText = "UserStatus";
-		} else {
+		} else /* if (Arrays.stream(EmployeeRole.values()).anyMatch(e -> e == o)) */ {
 			stringArrayListist = new ArrayList<>(Collections.singleton("SELECT ROLE"));
 			Arrays.asList(EmployeeRole.values()).forEach(string -> stringArrayListist.add(string.toString()));
 			itemText = "Role";
@@ -171,6 +190,8 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		} else if (itemText.equals("Role")){
 			c.getSelectionModel().select("SELECT ROLE");
 		}
+		
+//		c.getSelectionModel().select(SelectionMode.MULTIPLE);
 		c.valueProperty().addListener(e -> {
 			checkFilters();
 		});
