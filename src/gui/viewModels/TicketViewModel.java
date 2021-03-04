@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,15 @@ public class TicketViewModel extends ViewModel {
         ActemiumTicket ticket = selectedActemiumTicket;
         Map<String, Object> details = new LinkedHashMap<>();
         details.put("Title", ticket.getTitle());
-        return details;
+        details.put("Creation date", ticket.getDateOfCreation().toString());
+        details.put("Description", ticket.getDescription());
+        //details.put("Type", ticket.getTicketType());
+        details.put("Customer", ticket.getCustomer().getCompany().getName());
+        //details.put("Technician", ticket.getTechnicians().toString());
+        details.put("Remarks", ticket.getRemarks());
+        details.put("Attachments", ticket.getAttachments());
+        
+        return details;   
     }
 
     public void setActemiumTickets(ObservableList<ActemiumTicket> tickets) {
@@ -75,5 +84,9 @@ public class TicketViewModel extends ViewModel {
 
     public void setCurrentState(GUIEnum currentState) {
         this.currentState = currentState;
+    }
+    
+    public ArrayList<String> getDetailsNewTicket(){
+        return new ArrayList<String>(Arrays.asList("Creation date", "Title", "Description", "Type", "Remarks", "Attachments"));
     }
 }

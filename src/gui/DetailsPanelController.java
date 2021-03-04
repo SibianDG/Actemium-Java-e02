@@ -187,6 +187,10 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             fields = ((UserViewModel) viewModel).getDetailsNewCustomer();        
             txtDetailsTitle.setText("Add new customer");
             btnModify.setText("Add new customer");
+        }else if (((TicketViewModel) viewModel).getCurrentState().equals(GUIEnum.CUSTOMER)){
+            fields = ((TicketViewModel) viewModel).getDetailsNewTicket();        
+            txtDetailsTitle.setText("Add new ticket");
+            btnModify.setText("Add new ticket");
         } else {
             fields = null;
         }
