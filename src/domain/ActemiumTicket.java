@@ -6,15 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
@@ -49,7 +41,7 @@ public class ActemiumTicket implements Serializable {
 	private String remarks;
 	private String attachments;	
 	// List of technicians contain all the technicians assigned to the ticket
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	private List<Employee> technicians = new ArrayList<>();
 
 	@Transient

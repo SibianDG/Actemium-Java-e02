@@ -35,7 +35,7 @@ public class TicketFacade implements Facade {
 	}
 
 	public void modifyTicket(ActemiumTicket ticket, TicketPriority priority, String title, String description,
-							 String remarks, String attachments, Customer customer) {
+							 String remarks, String attachments, Customer customer, List<Employee> technicians) {
 		int index = tickets.indexOf(ticket);
 
 		ticket.setPriority(priority);
@@ -44,6 +44,7 @@ public class TicketFacade implements Facade {
 		ticket.setRemarks(remarks);
 		ticket.setAttachments(attachments);
 		ticket.setCustomer(customer);
+		technicians.forEach(ticket::addTechnician);
 
 		ticketRepo.startTransaction();
 		ticketRepo.update(ticket);
