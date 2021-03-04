@@ -87,6 +87,7 @@ public class ActemiumTicket implements Serializable {
 	}
 
 	public String getStatus() {
+		System.out.println("GetStatus");
 		return status.get();
 	}
 	
@@ -217,5 +218,8 @@ public class ActemiumTicket implements Serializable {
 	public StringProperty statusProperty() {
 		return status;
 	}
-	
+
+	public int getTicketId() {
+		return ticketId;
+	}
 }

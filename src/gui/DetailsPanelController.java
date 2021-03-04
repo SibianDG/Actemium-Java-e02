@@ -162,7 +162,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     private void setDetailOnModifying(){
         gridDetails.getChildren().clear();
-        System.out.println(viewModel instanceof TicketViewModel);
         if (viewModel instanceof UserViewModel) {
             addDetailsToGridDetails(((UserViewModel) viewModel).getDetails());
             txtDetailsTitle.setText("Details of " + ((UserViewModel) viewModel).getNameOfSelectedUser());

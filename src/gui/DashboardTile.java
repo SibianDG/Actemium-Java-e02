@@ -31,7 +31,7 @@ public class DashboardTile extends VBox {
         this.text = new Text(text);
         this.textColor = Map.of(0, Color.rgb(23, 61, 120), 1, Color.WHITE).get(i);
         this.backgroundColor = Map.of(0, Color.WHITE, 1, Color.rgb(192, 204, 15)).get(i);
-
+        this.getStyleClass().add("dashboardTile");
         initialize();
     }
 

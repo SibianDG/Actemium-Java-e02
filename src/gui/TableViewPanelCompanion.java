@@ -93,7 +93,9 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			case TICKET -> {
 				this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).getActemiumTickets();
 				this.tableViewData = new FilteredList<>(mainData);
+				//propertyMap.put("Number", item -> ((ActemiumTicket) item).numberProperty());
 				propertyMap.put("Title", item -> ((ActemiumTicket) item).titleProperty());
+				propertyMap.put("Status", item -> ((ActemiumTicket) item).statusProperty());
 			}
 		}
 
@@ -285,15 +287,10 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				Predicate<ActemiumTicket> newPredicate;
 				
 				switch (fieldName) {
-					case "Title" -> {
-						newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);						
-					}
-					case "Priority" -> {
-						newPredicate = e -> e.getPriority().toLowerCase().contains(filterText);						
-					}
-					case "Status" -> {
-						newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
-					}
+					case "Number" -> newPredicate = e -> String.valueOf(e.getTicketId()).equals(filterText);
+					case "Title" -> newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);
+					case "Priority" -> newPredicate = e -> e.getPriority().toLowerCase().contains(filterText);
+					case "Status" -> newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
 					//TODO how will we display Company name in our observableList?
 //					case "Company" -> {
 //						newPredicate = e -> e.getCustomer().getCompany().getName().toLowerCase().contains(filterText);

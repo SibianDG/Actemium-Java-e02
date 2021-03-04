@@ -18,10 +18,7 @@ import gui.viewModels.ViewModel;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.geometry.VPos;
+import javafx.geometry.*;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -34,6 +31,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 
 public class DashboardFrameController <T> extends GuiController {
     // Facades
@@ -137,7 +135,11 @@ public class DashboardFrameController <T> extends GuiController {
 
     private void createGridMenu(String[] itemNames){
         resetGridpane(gridMenu);
-        int width = 1000/itemNames.length;
+
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+
+        int gap = 50;
+        int width = (int) (primScreenBounds.getWidth()/(itemNames.length+1) - (gap*itemNames.length));
         for (int i = 0; i < itemNames.length; i++) {
             String text = itemNames[i];
             gridMenu.addColumn(i);
@@ -147,8 +149,10 @@ public class DashboardFrameController <T> extends GuiController {
             setHalignment(button, HPos.CENTER);
             button.setOnMouseClicked(e -> buttonMenusClicked(text));
             gridMenu.add(button, i, 0);
+            setHgrow(button, Priority.ALWAYS);
+            setVgrow(button, Priority.ALWAYS);
         }
-        gridMenu.setVgap(50);
+        gridMenu.setVgap(gap);
     }
     
     private Button createMenuItemButton(String s, int width){
@@ -157,7 +161,7 @@ public class DashboardFrameController <T> extends GuiController {
         button.setTextFill(Color.WHITE);
         button.minWidth(width);
         button.prefWidth(width);
-        button.setPadding(new Insets(15, ((double)width/1.5), 15, ((double)width/1.5)));
+        button.setPadding(new Insets(15, (double)width/2, 15, (double)width/2));
         button.setAlignment(Pos.BOTTOM_CENTER);
         return button;
     }

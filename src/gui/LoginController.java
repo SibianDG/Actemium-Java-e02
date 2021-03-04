@@ -9,6 +9,7 @@ import exceptions.BlockedUserException;
 import exceptions.PasswordException;
 import gui.controllers.GuiController;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -17,6 +18,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
@@ -59,19 +62,34 @@ public class LoginController extends GuiController {
             loader.setRoot(this);
             loader.load();
 
-            txtErrorLogin.setOpacity(0);
-
-            txfUsername.setText("Admin123");
-            pwfPassword.setText("Passwd123&");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        txtErrorLogin.setOpacity(0);
+
+        txfUsername.setOnKeyPressed(ke -> {
+            if (ke.getCode().equals(KeyCode.ENTER))
+                tryLogin();
+        });
+
+        pwfPassword.setOnKeyPressed(ke -> {
+            if (ke.getCode().equals(KeyCode.ENTER))
+                tryLogin();
+        });
+
+        txfUsername.setText("Admin123");
+        pwfPassword.setText("Passwd123&");
+
 
     }
 
     @FXML
     void loginButtonOnAction(ActionEvent event) {
+        tryLogin();
+    }
 
+    private void tryLogin(){
         try {
             if (txfUsername.getText().isEmpty() || pwfPassword.getText().isEmpty()){ //unnecessary check??? is already checked in domain
                 txtErrorLogin.setText(LanguageResource.getString("username_password_mandatory"));
