@@ -1,17 +1,25 @@
 package domain;
 
-import domain.enums.TicketPriority;
-import domain.enums.TicketStatus;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+
+import domain.enums.TicketPriority;
+import domain.enums.TicketStatus;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 @Entity
 @Access(AccessType.FIELD)
@@ -23,10 +31,10 @@ public class ActemiumTicket implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int ticketId;
 
-	@Enumerated(EnumType.STRING)
-	private TicketStatus ticketStatus;
-	@Enumerated(EnumType.STRING)
-	private TicketPriority ticketPriority;
+	@Transient
+	private StringProperty status = new SimpleStringProperty();
+	@Transient
+	private StringProperty priority = new SimpleStringProperty();
 	private LocalDate dateOfCreation;
 
 	@Transient
@@ -63,8 +71,8 @@ public class ActemiumTicket implements Serializable {
 			String remarks, String attachments) {
 		super();
 		// new ticket always gets TicketStatus CREATED
-		setTicketStatus(TicketStatus.CREATED);
-		setTicketPriority(ticketPriority);
+		setStatus(TicketStatus.CREATED);
+		setPriority(ticketPriority);
 		setDateOfCreation(LocalDate.now());
 		setTitle(title);
 		setDescription(description);
@@ -78,20 +86,28 @@ public class ActemiumTicket implements Serializable {
 		this(ticketPriority, title, description, customer, null, null);
 	}
 
-	public TicketStatus getTicketStatus() {
-		return ticketStatus;
+	public String getStatus() {
+		return status.get();
+	}
+	
+	public TicketStatus getStatusAsEnum() {
+		return TicketStatus.valueOf(status.get());
 	}
 
-	public void setTicketStatus(TicketStatus ticketStatus) {
-		this.ticketStatus = ticketStatus;
+	public void setStatus(TicketStatus ticketStatus) {
+		this.status.set(String.valueOf(status));
 	}
 
-	public TicketPriority getTicketPriority() {
-		return ticketPriority;
+	public String getPriority() {
+		return priority.get();
+	}
+	
+	public TicketPriority getPriorityAsEnum() {
+		return TicketPriority.valueOf(priority.get());
 	}
 
-	public void setTicketPriority(TicketPriority ticketPriority) {
-		this.ticketPriority = ticketPriority;
+	public void setPriority(TicketPriority priority) {
+		this.priority.set(String.valueOf(priority));
 	}
 
 	public LocalDate getDateOfCreation() {
@@ -192,6 +208,14 @@ public class ActemiumTicket implements Serializable {
 
 	public StringProperty titleProperty() {
 		return title;
+	}
+	
+	public StringProperty priorityProperty() {
+		return priority;
+	}
+	
+	public StringProperty statusProperty() {
+		return status;
 	}
 	
 }

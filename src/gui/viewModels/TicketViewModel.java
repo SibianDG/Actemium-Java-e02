@@ -55,15 +55,15 @@ public class TicketViewModel extends ViewModel {
     }
 
     //Todo
-    public void registerTicket(TicketPriority ticketPriority, String title, String description,
+    public void registerTicket(TicketPriority priority, String title, String description,
                                String remarks, String attachments, Customer customer) {
-        ticketFacade.registerTicket(ticketPriority, title, description, remarks, attachments, customer);
+        ticketFacade.registerTicket(priority, title, description, remarks, attachments, customer);
     }
 
     //Todo
-    public void modifyTicket(TicketPriority ticketPriority, String title, String description,
+    public void modifyTicket(TicketPriority priority, String title, String description,
                              String remarks, String attachments, Customer customer) {
-        ticketFacade.modifyTicket(selectedActemiumTicket, ticketPriority, title, description, remarks, attachments, customer);
+        ticketFacade.modifyTicket(selectedActemiumTicket, priority, title, description, remarks, attachments, customer);
 
     }
 

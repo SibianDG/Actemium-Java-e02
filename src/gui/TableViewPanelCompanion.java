@@ -280,8 +280,28 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			}
 		} else if (currentState.equals(GUIEnum.TICKET)){
 			//TODO
-					
-			
+			if (fieldName.length() > 0 && !filterText.contains("select")){
+
+				Predicate<ActemiumTicket> newPredicate;
+				
+				switch (fieldName) {
+					case "Title" -> {
+						newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);						
+					}
+					case "Priority" -> {
+						newPredicate = e -> e.getPriority().toLowerCase().contains(filterText);						
+					}
+					case "Status" -> {
+						newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
+					}
+					//TODO how will we display Company name in our observableList?
+//					case "Company" -> {
+//						newPredicate = e -> e.getCustomer().getCompany().getName().toLowerCase().contains(filterText);
+//					}
+					default -> throw new IllegalStateException("Unexpected value: " + fieldName);
+				}				
+				return newPredicate;				
+			}
 		}
 		
 		return null;

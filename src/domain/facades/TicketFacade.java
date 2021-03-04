@@ -27,18 +27,18 @@ public class TicketFacade implements Facade {
 		this.tickets = FXCollections.observableArrayList(ticketList);
 	}
 
-	public void registerTicket(TicketPriority ticketPriority, String title, String description,
+	public void registerTicket(TicketPriority priority, String title, String description,
 							   String remarks, String attachments, Customer customer) {
-		ActemiumTicket ticket = new ActemiumTicket(ticketPriority, title, description, customer, remarks, attachments);
+		ActemiumTicket ticket = new ActemiumTicket(priority, title, description, customer, remarks, attachments);
 		customer.addTicket(ticket);
 		tickets.add(ticket);
 	}
 
-	public void modifyTicket(ActemiumTicket ticket, TicketPriority ticketPriority, String title, String description,
+	public void modifyTicket(ActemiumTicket ticket, TicketPriority priority, String title, String description,
 							 String remarks, String attachments, Customer customer) {
 		int index = tickets.indexOf(ticket);
 
-		ticket.setTicketPriority(ticketPriority);
+		ticket.setPriority(priority);
 		ticket.setTitle(title);
 		ticket.setDescription(description);
 		ticket.setRemarks(remarks);
