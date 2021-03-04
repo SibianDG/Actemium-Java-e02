@@ -2,6 +2,7 @@ package domain;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import languages.LanguageResource;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -29,9 +30,13 @@ public class Company implements Serializable {
 
 	@OneToMany(mappedBy = "company"
 //			   cascade = CascadeType.PERSIST
-			   )
-	private List<Customer> customerList = new ArrayList<>();
-	
+	)
+	private List<Customer> contactPersons = new ArrayList<>();
+
+	@OneToMany(mappedBy = "company",
+				   cascade = CascadeType.PERSIST)
+	private List<ActemiumTicket> actemiumTickets = new ArrayList<>();
+
 	public Company() {		
 		super();
 	}
@@ -52,6 +57,9 @@ public class Company implements Serializable {
 	}
 
 	public void setName(String name) {
+		if (name == null || name.isBlank()) {
+			throw new IllegalArgumentException("Empty name");
+		}
 		this.name.set(name);
 	}
 
@@ -68,6 +76,10 @@ public class Company implements Serializable {
 	}
 
 	public void setPhoneNumber(String phoneNumber) {
+		String usernameRegex = "[0-9 /-]+";
+		if (phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches(usernameRegex)) {
+			throw new IllegalArgumentException(LanguageResource.getString("phonenumber_invalid"));
+		}
 		this.phoneNumber = phoneNumber;
 	}
 
@@ -79,4 +91,19 @@ public class Company implements Serializable {
 		this.registrationDate = registrationDate;
 	}
 
+	public List<Customer> getContactPersons() {
+		return contactPersons;
+	}
+
+	public void addContactPerson(Customer contactPerson) {
+		this.contactPersons.add(contactPerson);
+	}
+
+	public List<ActemiumTicket> getActemiumTickets() {
+		return actemiumTickets;
+	}
+
+	public void addActemiumTicket(ActemiumTicket ticket) {
+		this.actemiumTickets.add(ticket);
+	}
 }

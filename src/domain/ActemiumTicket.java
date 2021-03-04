@@ -94,7 +94,6 @@ public class ActemiumTicket implements Serializable {
 	}
 
 	public String getStatus() {
-		System.out.println("GetStatus");
 		return status.get();
 	}
 	

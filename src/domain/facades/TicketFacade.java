@@ -1,9 +1,7 @@
 package domain.facades;
 
 import domain.*;
-import domain.enums.EmployeeRole;
 import domain.enums.TicketPriority;
-import domain.enums.UserStatus;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import repository.GenericDao;
