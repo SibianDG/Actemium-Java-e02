@@ -4,8 +4,8 @@ import domain.ActemiumTicket;
 import domain.Company;
 import domain.Customer;
 import domain.enums.TicketPriority;
+import domain.enums.TicketType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -91,7 +91,7 @@ public class CompanyTest implements Attributes {
     @Test
     public void addActemiumTicket_CompanyContainsMultipleTickets() {
         for (int i = 0; i < MAX_NUMBER; i++) {
-            ActemiumTicket ticket = new ActemiumTicket(TicketPriority.P1, "Ticket"+i, "Cannot print labels", customer);
+            ActemiumTicket ticket = new ActemiumTicket(TicketPriority.P1, TicketType.SOFTWARE,"Ticket"+i, "Cannot print labels", customer);
             company.addActemiumTicket(ticket);
         }
         Assertions.assertEquals(MAX_NUMBER, company.getActemiumTickets().size());
