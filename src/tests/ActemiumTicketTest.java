@@ -79,22 +79,22 @@ public class ActemiumTicketTest {
 
 	@ParameterizedTest
 	@MethodSource("validActemiumTicketAttributes04")
-	public void createActemiumTicket_ValidAttributes04_DoesNotThrowException(TicketPriority ticketPriority,
+	public void createActemiumTicket_ValidAttributes04_DoesNotThrowException(TicketPriority ticketPriority, TicketType ticketType,
 			String title, String description, Customer customer) {
-		Assertions.assertDoesNotThrow(() -> new ActemiumTicket(ticketPriority, title, description, customer));
+		Assertions.assertDoesNotThrow(() -> new ActemiumTicket(ticketPriority, ticketType, title, description, customer));
 	}
 
 	@ParameterizedTest
 	@MethodSource("invalidActemiumTicketAttributes04")
-	public void createActemiumTicket_InValidAttributes04_ThrowsIllegalArgumentException(TicketPriority ticketPriority,
+	public void createActemiumTicket_InValidAttributes04_ThrowsIllegalArgumentException(TicketPriority ticketPriority, TicketType ticketType,
 			String title, String description, Customer customer) {
 		Assertions.assertThrows(IllegalArgumentException.class,
-				() -> new ActemiumTicket(ticketPriority, title, description, customer));
+				() -> new ActemiumTicket(ticketPriority, ticketType, title, description, customer));
 	}
 
 	@ParameterizedTest
 	@MethodSource("validActemiumTicketAttributes06")
-	public void createActemiumTicket_ValidAttributes06_DoesNotThrowException(TicketPriority ticketPriority,
+	public void createActemiumTicket_ValidAttributes06_DoesNotThrowException(TicketPriority ticketPriority, TicketType ticketType,
 			String title, String description, Customer customer, String remarks, String attachments) {
 		Assertions.assertDoesNotThrow(
 				() -> new ActemiumTicket(ticketPriority, ticketType, title, description, customer, remarks, attachments));
@@ -102,7 +102,7 @@ public class ActemiumTicketTest {
 
 	@ParameterizedTest
 	@MethodSource("invalidActemiumTicketAttributes06")
-	public void createActemiumTicket_InValidAttributes06_ThrowsIllegalArgumentException(TicketPriority ticketPriority,
+	public void createActemiumTicket_InValidAttributes06_ThrowsIllegalArgumentException(TicketPriority ticketPriority, TicketType ticketType,
 			String title, String description, Customer customer, String remarks, String attachments) {
 		Assertions.assertThrows(IllegalArgumentException.class,
 				() -> new ActemiumTicket(ticketPriority, ticketType, title, description, customer, remarks, attachments));
