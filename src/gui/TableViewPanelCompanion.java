@@ -77,18 +77,18 @@ public class TableViewPanelCompanion<T> extends GridPane {
 
 				propertyMap.put("Firstname", item -> ((Employee)item).firstNameProperty());
 				propertyMap.put("Lastname", item -> ((Employee)item).lastNameProperty());
-				propertyMap.put("Username", item -> ((Employee)item).usernameProperty());
-				propertyMap.put("Status", item -> ((Employee)item).statusProperty());
+//				propertyMap.put("Username", item -> ((Employee)item).usernameProperty());
 				propertyMap.put("Role", item -> ((Employee)item).roleProperty());
+				propertyMap.put("Status", item -> ((Employee)item).statusProperty());
 			}
 			case CUSTOMER -> {
 				this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).getCustomers();
 				this.tableViewData = new FilteredList<>(mainData);
+				propertyMap.put("Company", item -> ((Customer)item).getCompany().nameProperty());
+				propertyMap.put("Status", item -> ((Customer)item).statusProperty());
 				propertyMap.put("Firstname", item -> ((Customer)item).firstNameProperty());
 				propertyMap.put("Lastname", item -> ((Customer)item).lastNameProperty());
-				propertyMap.put("Username", item -> ((Customer)item).usernameProperty());
-				propertyMap.put("Status", item -> ((Customer)item).statusProperty());
-				propertyMap.put("Company", item -> ((Customer)item).getCompany().nameProperty());
+//				propertyMap.put("Username", item -> ((Customer)item).usernameProperty());
 			}
 			case TICKET -> {
 				this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).getActemiumTickets();
@@ -114,8 +114,8 @@ public class TableViewPanelCompanion<T> extends GridPane {
 
 	private void initializeFilters() {
 		Map<GUIEnum, ArrayList<Object>> filterMap = new HashMap<>();
-		filterMap.put(GUIEnum.EMPLOYEE, new ArrayList<>(Arrays.asList("Name", "Username", UserStatus.ACTIVE, EmployeeRole.ADMINISTRATOR)));
-		filterMap.put(GUIEnum.CUSTOMER, new ArrayList<>(Arrays.asList("Name", "Username", UserStatus.ACTIVE, "Company")));
+		filterMap.put(GUIEnum.EMPLOYEE, new ArrayList<>(Arrays.asList("Firstname", "Lastname", EmployeeRole.ADMINISTRATOR, UserStatus.ACTIVE)));
+		filterMap.put(GUIEnum.CUSTOMER, new ArrayList<>(Arrays.asList("Company", UserStatus.ACTIVE, "Firstname", "Lastname")));
 		filterMap.put(GUIEnum.TICKET, new ArrayList<>(Arrays.asList("Title")));
 
 		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createElementDetailGridpane(o)));
@@ -238,19 +238,17 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				Predicate<Employee> newPredicate;
 				
 				switch (fieldName) {				
-					case "Name" -> {
-						Predicate<Employee> newPredicateFirstName = e -> e.getFirstName().toLowerCase().contains(filterText);
-						Predicate<Employee> newPredicateLastName = e -> e.getLastName().toLowerCase().contains(filterText);
-						newPredicate = newPredicateFirstName.or(newPredicateLastName);						
-					}	
-					case "Username" -> {
-						newPredicate = e -> e.getUsername().toLowerCase().contains(filterText);						
+					case "Firstname" -> {
+						newPredicate = e -> e.getFirstName().toLowerCase().contains(filterText);		
 					}
-					case "Role" -> {
-						newPredicate = e -> e.getRole().toLowerCase().contains(filterText);
+					case "Lastname" -> {
+						newPredicate = e -> e.getLastName().toLowerCase().contains(filterText);					
 					}
 					case "Status" -> {
 						newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
+					}
+					case "Role" -> {
+						newPredicate = e -> e.getRole().toLowerCase().contains(filterText);
 					}
 					default -> throw new IllegalStateException("Unexpected value: " + fieldName);
 				}				
@@ -262,20 +260,18 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				Predicate<Customer> newPredicate;
 				
 				switch (fieldName) {
-					case "Name" -> {
-						Predicate<Customer> newPredicateFirstName = e -> e.getFirstName().toLowerCase().contains(filterText);
-						Predicate<Customer> newPredicateLastName = e -> e.getLastName().toLowerCase().contains(filterText);
-						newPredicate = newPredicateFirstName.or(newPredicateLastName);						
-					}
-					case "Username" -> {
-						newPredicate = e -> e.getUsername().toLowerCase().contains(filterText);						
-					}
 					case "Company" -> {
 						newPredicate = e -> e.getCompany().getName().toLowerCase().contains(filterText);
-					}
+					}				
 					case "Status" -> {
 						newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
 					}
+					case "Firstname" -> {
+						newPredicate = e -> e.getFirstName().toLowerCase().contains(filterText);		
+					}
+					case "Lastname" -> {
+						newPredicate = e -> e.getLastName().toLowerCase().contains(filterText);					
+					}						
 					default -> throw new IllegalStateException("Unexpected value: " + fieldName);
 				}				
 				return newPredicate;				

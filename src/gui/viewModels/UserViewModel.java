@@ -65,7 +65,7 @@ public class UserViewModel extends ViewModel {
             case "employee" -> {
                 Employee employee = (Employee) selectedUser;
 				Map<String, Object> detailsMap = new LinkedHashMap<>();
-				detailsMap.put("Employee ID", String.valueOf(employee.getEmployeeNr()));
+				detailsMap.put("Employee ID", String.valueOf(employee.getUserId()));
                 detailsMap.put("Username", employee.getUsername());
                 detailsMap.put("Password", employee.getPassword());
                 detailsMap.put("Firstname", employee.getFirstName());
@@ -82,7 +82,7 @@ public class UserViewModel extends ViewModel {
                 Customer customer = (Customer) selectedUser;
         	    // Using LinkedHashMap so the order of the map values doesn't change
                 Map<String, Object> detailsMap = new LinkedHashMap<>();
-                detailsMap.put("Customer ID", String.valueOf(customer.getCustomerNr()));
+                detailsMap.put("Customer ID", String.valueOf(customer.getUserId()));
                 detailsMap.put("Username", customer.getUsername());
                 detailsMap.put("Password", customer.getPassword());
 
