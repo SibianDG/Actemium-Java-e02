@@ -181,15 +181,17 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         ArrayList<String> fields;
 
         if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)){
-            fields = ((UserViewModel) viewModel).getDetailsNewEmployee();
+            fields = ((UserViewModel) viewModel).getDetailsNewEmployee();        
+            txtDetailsTitle.setText("Add new employee");
+            btnModify.setText("Add new employee");
         } else if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.CUSTOMER)){
-            fields = ((UserViewModel) viewModel).getDetailsNewCustomer();
+            fields = ((UserViewModel) viewModel).getDetailsNewCustomer();        
+            txtDetailsTitle.setText("Add new customer");
+            btnModify.setText("Add new customer");
         } else {
             fields = null;
         }
 
-        txtDetailsTitle.setText("Add new user");
-        btnModify.setText("Add new user");
         btnModify.setVisible(true);
         assert fields != null;
         addItemsToGridNewUser(fields);

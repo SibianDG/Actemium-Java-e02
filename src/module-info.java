@@ -17,6 +17,7 @@ module E02.Project2.Java {
     requires org.junit.jupiter.params;
     
     exports domain;
+    exports domain.enums;
     exports domain.facades;
     exports exceptions;
     exports gui;

@@ -112,8 +112,8 @@ public class TableViewPanelCompanion<T> extends GridPane {
 
 	private void initializeFilters() {
 		Map<GUIEnum, ArrayList<Object>> filterMap = new HashMap<>();
-		filterMap.put(GUIEnum.EMPLOYEE, new ArrayList<>(Arrays.asList("Name and username", UserStatus.ACTIVE, EmployeeRole.ADMINISTRATOR)));
-		filterMap.put(GUIEnum.CUSTOMER, new ArrayList<>(Arrays.asList("Name and username", "Company",  UserStatus.ACTIVE)));
+		filterMap.put(GUIEnum.EMPLOYEE, new ArrayList<>(Arrays.asList("Name", "Username", UserStatus.ACTIVE, EmployeeRole.ADMINISTRATOR)));
+		filterMap.put(GUIEnum.CUSTOMER, new ArrayList<>(Arrays.asList("Name", "Username", UserStatus.ACTIVE, "Company")));
 		filterMap.put(GUIEnum.TICKET, new ArrayList<>(Arrays.asList("Title")));
 
 		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createElementDetailGridpane(o)));
@@ -165,14 +165,14 @@ public class TableViewPanelCompanion<T> extends GridPane {
 	}
 
 	private void checkFilters(){
+		
+		List<Predicate> predicates = new ArrayList<>();
 
 		hboxFilterSection.getChildren().forEach(object -> {
 			if (object instanceof TextField) {
 				TextField textField = (TextField) object;
 				if (textField.getText().trim().length() > 0){
-					filter(textField.getPromptText(), textField.getText().trim().toLowerCase());
-				} else {
-					tableViewData.setPredicate(p -> true);
+					predicates.add(giveFilterPredicate(textField.getPromptText(), textField.getText().trim().toLowerCase()));
 				}
 			} else if (object instanceof ComboBox) {
 				ComboBox comboBox = (ComboBox) object;
@@ -184,16 +184,18 @@ public class TableViewPanelCompanion<T> extends GridPane {
 					ArrayList<UserStatus> userStatusArrayList = new ArrayList<>(Arrays.asList(UserStatus.values()));
 					List<String> userStatusRoleStringArray = userStatusArrayList.stream().map(UserStatus::toString).collect(Collectors.toList());
 
-					if (employeeRoleStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
-						filter("Role", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase());
-					} else if (userStatusRoleStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
-						filter("Status", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase());
-					} else {
-						tableViewData.setPredicate(p -> true);
+					if (userStatusRoleStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
+						predicates.add(giveFilterPredicate("Status", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));					
+					} else if (employeeRoleStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
+						predicates.add(giveFilterPredicate("Role", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
 					}
 				}
 			}
 		});
+		// Reset all filters
+		tableViewData.setPredicate(p -> true);
+		// Create one combined predicate by iterating over the list
+		predicates.forEach(p -> setPredicateForFilteredList(p));
 	}
 
 	private void initializeTableView() {
@@ -226,59 +228,68 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		((UserViewModel) viewModel).setSelectedUser(null);
 	}
 
-	private void filter(String fieldName, String filterText){
-
-
+	private Predicate giveFilterPredicate(String fieldName, String filterText){		
+		
 		if(currentState.equals(GUIEnum.EMPLOYEE)) {
 			if (fieldName.length() > 0 && !filterText.contains("select")){
-				Predicate<Employee> currentPredicate = (Predicate<Employee>) tableViewData.getPredicate();
+				
 				Predicate<Employee> newPredicate;
-
-				switch (fieldName) {
-					case "Name and username" -> {
+				
+				switch (fieldName) {				
+					case "Name" -> {
 						Predicate<Employee> newPredicateFirstName = e -> e.getFirstName().toLowerCase().contains(filterText);
 						Predicate<Employee> newPredicateLastName = e -> e.getLastName().toLowerCase().contains(filterText);
-						Predicate<Employee> newPredicateUserName = e -> e.getUsername().toLowerCase().contains(filterText);
-						newPredicate = newPredicateFirstName.or(newPredicateLastName);
-						newPredicate = newPredicate.or(newPredicateUserName);
-
+						newPredicate = newPredicateFirstName.or(newPredicateLastName);						
+					}	
+					case "Username" -> {
+						newPredicate = e -> e.getUsername().toLowerCase().contains(filterText);						
 					}
-					case "Role" -> newPredicate = e -> e.getRole().toLowerCase().contains(filterText);
-					case "Status" -> newPredicate = e -> e.getStatus().toLowerCase().contains(filterText);
+					case "Role" -> {
+						newPredicate = e -> e.getRole().toLowerCase().contains(filterText);
+					}
+					case "Status" -> {
+						newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
+					}
 					default -> throw new IllegalStateException("Unexpected value: " + fieldName);
-				}
-				setPredicateForFilteredList(currentPredicate, newPredicate);
-
+				}				
+				return newPredicate;				
 			}
 		} else if (currentState.equals(GUIEnum.CUSTOMER)){
 			if (fieldName.length() > 0 && !filterText.contains("select")){
 
-				Predicate<Customer> currentPredicate = (Predicate<Customer>) tableViewData.getPredicate();
 				Predicate<Customer> newPredicate;
-
+				
 				switch (fieldName) {
-					case "Name and username" -> {
+					case "Name" -> {
 						Predicate<Customer> newPredicateFirstName = e -> e.getFirstName().toLowerCase().contains(filterText);
 						Predicate<Customer> newPredicateLastName = e -> e.getLastName().toLowerCase().contains(filterText);
-						Predicate<Customer> newPredicateUserName = e -> e.getUsername().toLowerCase().contains(filterText);
-						newPredicate = newPredicateFirstName.or(newPredicateLastName);
-						newPredicate = newPredicate.or(newPredicateUserName);
-
+						newPredicate = newPredicateFirstName.or(newPredicateLastName);						
 					}
-					case "Company" -> newPredicate = e -> e.getCompany().getName().toLowerCase().contains(filterText);
-					case "Status" -> newPredicate = e -> e.getStatus().toLowerCase().contains(filterText);
+					case "Username" -> {
+						newPredicate = e -> e.getUsername().toLowerCase().contains(filterText);						
+					}
+					case "Company" -> {
+						newPredicate = e -> e.getCompany().getName().toLowerCase().contains(filterText);
+					}
+					case "Status" -> {
+						newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
+					}
 					default -> throw new IllegalStateException("Unexpected value: " + fieldName);
-				}
-				setPredicateForFilteredList(currentPredicate, newPredicate);
-
+				}				
+				return newPredicate;				
 			}
 		} else if (currentState.equals(GUIEnum.TICKET)){
-			//todo
+			//TODO
+					
+			
 		}
+		
+		return null;
 	}
-
-	private void setPredicateForFilteredList(Predicate currentPredicate, Predicate newPredicate){
-		Predicate<Customer> resultPredicate;
+		
+	private void setPredicateForFilteredList(Predicate newPredicate){
+		Predicate currentPredicate = tableViewData.getPredicate();
+		Predicate resultPredicate;
 		if(currentPredicate != null){
 			resultPredicate = currentPredicate.and(newPredicate);
 		} else {
