@@ -92,12 +92,14 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			}
 			case TICKET -> {
 				this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).getActemiumTickets();
+//				this.tableView.setPrefWidth(1000.0);
 				this.tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 				this.tableViewData = new FilteredList<>(mainData);
 				//propertyMap.put("Number", item -> ((ActemiumTicket) item).numberProperty());
 				propertyMap.put("ID", item -> ((ActemiumTicket) item).ticketIdProperty());
-				propertyMap.put("Title", item -> ((ActemiumTicket) item).titleProperty());
+				propertyMap.put("Type", item -> ((ActemiumTicket) item).ticketTypeProperty());
 				propertyMap.put("Priority", item -> ((ActemiumTicket) item).priorityProperty());
+				propertyMap.put("Title", item -> ((ActemiumTicket) item).titleProperty());
 				propertyMap.put("Status", item -> ((ActemiumTicket) item).statusProperty());
 			}
 		}
@@ -125,7 +127,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		Map<GUIEnum, ArrayList<Object>> filterMap = new HashMap<>();
 		filterMap.put(GUIEnum.EMPLOYEE, new ArrayList<>(Arrays.asList("Firstname", "Lastname", EmployeeRole.ADMINISTRATOR, UserStatus.ACTIVE)));
 		filterMap.put(GUIEnum.CUSTOMER, new ArrayList<>(Arrays.asList("Company", UserStatus.ACTIVE, "Firstname", "Lastname")));
-		filterMap.put(GUIEnum.TICKET, new ArrayList<>(Arrays.asList("Title")));
+		filterMap.put(GUIEnum.TICKET, new ArrayList<>(Arrays.asList("ID", "Type", "Priority", "Title", "Status")));
 
 		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createElementDetailGridpane(o)));
 	}
@@ -292,10 +294,21 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				Predicate<ActemiumTicket> newPredicate;
 				
 				switch (fieldName) {
-					case "Number" -> newPredicate = e -> e.getTicketIdString().equals(filterText);
-					case "Title" -> newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);
-					case "Priority" -> newPredicate = e -> e.getPriority().toLowerCase().contains(filterText);
-					case "Status" -> newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
+					case "ID" -> {
+						newPredicate = e -> e.getTicketIdString().equals(filterText);
+					}
+					case "Type" -> {
+						newPredicate = e -> e.getTicketIdString().equals(filterText);
+					}
+					case "Priority" -> {
+						newPredicate = e -> e.getPriority().toLowerCase().contains(filterText);
+					}
+					case "Title" -> {
+						newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);
+					}
+					case "Status" -> {
+						newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
+					}
 					//TODO how will we display Company name in our observableList?
 //					case "Company" -> {
 //						newPredicate = e -> e.getCustomer().getCompany().getName().toLowerCase().contains(filterText);
