@@ -265,6 +265,7 @@ public class UserFacade implements Facade {
 		// only needs to be checked if you changed the username 
 		if (!customer.getUsername().equals(username)) {
 			actemium.existingUsername(username);
+			customer.setUsername(username);
 		}
 //		int index = customerList.indexOf(customer);
 
@@ -272,7 +273,6 @@ public class UserFacade implements Facade {
 			customer.setPassword(password);
 		}
 		
-		customer.setUsername(username);
 		customer.setFirstName(firstName);
 		customer.setLastName(lastName);
 		customer.setCompany(company);
@@ -293,6 +293,7 @@ public class UserFacade implements Facade {
 		// only needs to be checked if you changed the username 
 		if (!employee.getUsername().equals(username)) {
 			actemium.existingUsername(username);
+			employee.setUsername(username);
 		}
 //		int index = employeeList.indexOf(employee);
 
@@ -300,7 +301,6 @@ public class UserFacade implements Facade {
 			employee.setPassword(password);
 		}
 		
-		employee.setUsername(username);
 		employee.setFirstName(firstName);
 		employee.setLastName(lastName);
 		employee.setAddress(address);

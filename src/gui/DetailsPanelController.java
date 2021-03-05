@@ -102,9 +102,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                         ((UserViewModel) viewModel).modifyCustomer(
                                 getTextFromGridItem(1)
                                 , getTextFromGridItem(2)
-                                , getTextFromGridItem(3)
-                                , getTextFromGridItem(4)
-                                , getTextFromGridItem(12)
+                                , getTextFromGridItem(8)
+                                , getTextFromGridItem(9)
+                                , getTextFromGridItem(11)
                         );
                     }
 
@@ -200,9 +200,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 				fields = ((UserViewModel) viewModel).getDetailsNewEmployee();
 				txtDetailsTitle.setText("Add new employee");
 				btnModify.setText("Add new employee");
-				btnModify.setVisible(true);
-				assert fields != null;
-				addItemsToGridNewUser(fields);
 			} else if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.CUSTOMER)) {
 				fields = ((UserViewModel) viewModel).getDetailsNewCustomer();
 				txtDetailsTitle.setText("Add new customer");

@@ -21,10 +21,13 @@ import domain.Customer;
 import domain.Employee;
 import domain.Ticket;
 import domain.UserModel;
+import domain.enums.ContractStatus;
+import domain.enums.ContractTypeStatus;
 import domain.enums.EmployeeRole;
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
+import domain.enums.Timestamp;
 import domain.enums.UserStatus;
 import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
@@ -194,22 +197,22 @@ public class TableViewPanelCompanion<T> extends GridPane {
 	        }       
 		    case "TicketStatus" -> {
 		    	stringArrayList = new ArrayList<>(Collections.singleton("SELECT STATUS"));
-				Arrays.asList(TicketType.values()).forEach(string -> stringArrayList.add(string.toString()));
+				Arrays.asList(TicketStatus.values()).forEach(string -> stringArrayList.add(string.toString()));
 				itemText = "TicketStatus";
 		    }                
 		    case "ContractStatus" -> {
 		    	stringArrayList = new ArrayList<>(Collections.singleton("SELECT STATUS"));
-				Arrays.asList(TicketType.values()).forEach(string -> stringArrayList.add(string.toString()));
+				Arrays.asList(ContractStatus.values()).forEach(string -> stringArrayList.add(string.toString()));
 				itemText = "ContractStatus";
 		    }
 		    case "ContractTypeStatus" -> {
 		    	stringArrayList = new ArrayList<>(Collections.singleton("SELECT STATUS"));
-				Arrays.asList(TicketType.values()).forEach(string -> stringArrayList.add(string.toString()));
+				Arrays.asList(ContractTypeStatus.values()).forEach(string -> stringArrayList.add(string.toString()));
 				itemText = "ContractTypeStatus";
 		    }
 		    case "Timestamp" -> {
 		    	stringArrayList = new ArrayList<>(Collections.singleton("SELECT TIMESTAMP"));
-				Arrays.asList(TicketType.values()).forEach(string -> stringArrayList.add(string.toString()));
+				Arrays.asList(Timestamp.values()).forEach(string -> stringArrayList.add(string.toString()));
 				itemText = "Timestamp";
 		    }
 	        default -> {
@@ -272,7 +275,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			} else if (object instanceof ComboBox) {
 				ComboBox comboBox = (ComboBox) object;
 
-//				if (comboBox.getSelectionModel().getSelectedItem() != null &&  !comboBox.getSelectionModel().getSelectedItem().toString().contains("SELECT")) {
+				if (comboBox.getSelectionModel().getSelectedItem() != null &&  !comboBox.getSelectionModel().getSelectedItem().toString().contains("SELECT")) {
 //		        	
 //				 switch(object.getClass().getSimpleName()) {
 //			        case "UserStatus" -> {
@@ -305,17 +308,49 @@ public class TableViewPanelCompanion<T> extends GridPane {
 //			        }
 //		        } 
 //				}
-				if (comboBox.getSelectionModel().getSelectedItem() != null &&  !comboBox.getSelectionModel().getSelectedItem().toString().contains("SELECT")) {
+//				if (comboBox.getSelectionModel().getSelectedItem() != null &&  !comboBox.getSelectionModel().getSelectedItem().toString().contains("SELECT")) {
+
+					ArrayList<UserStatus> userStatusArrayList = new ArrayList<>(Arrays.asList(UserStatus.values()));
+					List<String> userStatusStringArray = userStatusArrayList.stream().map(UserStatus::toString).collect(Collectors.toList());
+					
 					ArrayList<EmployeeRole> employeeRoleArrayList = new ArrayList<>(Arrays.asList(EmployeeRole.values()));
 					List<String> employeeRoleStringArray = employeeRoleArrayList.stream().map(EmployeeRole::toString).collect(Collectors.toList());
 
-					ArrayList<UserStatus> userStatusArrayList = new ArrayList<>(Arrays.asList(UserStatus.values()));
-					List<String> userStatusRoleStringArray = userStatusArrayList.stream().map(UserStatus::toString).collect(Collectors.toList());
+					ArrayList<TicketPriority> ticketPriorityArrayList = new ArrayList<>(Arrays.asList(TicketPriority.values()));
+					List<String> userStatusRoleStringArray = ticketPriorityArrayList.stream().map(TicketPriority::toString).collect(Collectors.toList());
+					
+					ArrayList<TicketType> ticketTypeArrayList = new ArrayList<>(Arrays.asList(TicketType.values()));
+					List<String> ticketTypeStringArray = ticketTypeArrayList.stream().map(TicketType::toString).collect(Collectors.toList());
+					
+					ArrayList<TicketStatus> ticketStatusArrayList = new ArrayList<>(Arrays.asList(TicketStatus.values()));
+					List<String> ticketStatusStringArray = ticketStatusArrayList.stream().map(TicketStatus::toString).collect(Collectors.toList());
+					
+					ArrayList<ContractStatus> contractStatusArrayList = new ArrayList<>(Arrays.asList(ContractStatus.values()));
+					List<String> contractStatusStringArray = contractStatusArrayList.stream().map(ContractStatus::toString).collect(Collectors.toList());
+					
+					ArrayList<ContractTypeStatus> contractTypeStatusArrayList = new ArrayList<>(Arrays.asList(ContractTypeStatus.values()));
+					List<String> contractTypeStatusStringArray = contractTypeStatusArrayList.stream().map(ContractTypeStatus::toString).collect(Collectors.toList());
+					
+					ArrayList<Timestamp> timestampArrayList = new ArrayList<>(Arrays.asList(Timestamp.values()));
+					List<String> timestampStringArray = timestampArrayList.stream().map(Timestamp::toString).collect(Collectors.toList());
+					
 
-					if (userStatusRoleStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
+					if (userStatusStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
 						predicates.add(giveFilterPredicate("UserStatus", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));					
 					} else if (employeeRoleStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
 						predicates.add(giveFilterPredicate("EmployeeRole", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
+					} else if (userStatusRoleStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
+						predicates.add(giveFilterPredicate("TicketPriority", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
+					} else if (ticketTypeStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
+						predicates.add(giveFilterPredicate("TicketType", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
+					} else if (ticketStatusStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
+						predicates.add(giveFilterPredicate("TicketStatus", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
+					} else if (contractStatusStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
+						predicates.add(giveFilterPredicate("ContractStatus", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
+					} else if (contractTypeStatusStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
+						predicates.add(giveFilterPredicate("ContractTypeStatus", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
+					} else if (timestampStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
+						predicates.add(giveFilterPredicate("Timestamp", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
 					}
 				}
 			}
@@ -372,7 +407,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		if(currentState.equals(GUIEnum.EMPLOYEE)) {
 			if (fieldName.length() > 0 && !filterText.contains("select")){
 				
-				Predicate<ActemiumEmployee> newPredicate;
+				Predicate<Employee> newPredicate;
 				
 				switch (fieldName) {				
 					case "Firstname" -> {
@@ -394,7 +429,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		} else if (currentState.equals(GUIEnum.CUSTOMER)){
 			if (fieldName.length() > 0 && !filterText.contains("select")){
 
-				Predicate<ActemiumCustomer> newPredicate;
+				Predicate<Customer> newPredicate;
 				
 				switch (fieldName) {
 					case "Company" -> {
@@ -424,7 +459,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 						newPredicate = e -> e.getTicketIdString().equals(filterText);
 					}
 					case "TicketType" -> {
-						newPredicate = e -> e.getTicketIdString().equals(filterText);
+						newPredicate = e -> e.getTicketType().toLowerCase().equals(filterText);
 					}
 					case "TicketPriority" -> {
 						newPredicate = e -> e.getPriority().toLowerCase().contains(filterText);
