@@ -6,9 +6,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import domain.ActemiumCustomer;
+import domain.ActemiumEmployee;
 import domain.ActemiumTicket;
-import domain.Customer;
-import domain.Employee;
+import domain.Ticket;
 import domain.enums.TicketPriority;
 import domain.enums.TicketType;
 import domain.facades.TicketFacade;
@@ -22,60 +23,71 @@ public class TicketViewModel extends ViewModel {
     private GUIEnum currentState;
     private ActemiumTicket selectedActemiumTicket;
     private final TicketFacade ticketFacade;
-    private ObservableList<ActemiumTicket> actemiumTickets;
+    private ObservableList<Ticket> actemiumTickets;
 
-    private final ArrayList<InvalidationListener> listeners = new ArrayList<>();
+//    private final ArrayList<InvalidationListener> listeners = new ArrayList<>();
 
     public TicketViewModel(TicketFacade ticketFacade) {
         super();
         this.ticketFacade = ticketFacade;
         this.actemiumTickets = FXCollections.observableArrayList();
+        setCurrentState(GUIEnum.TICKET);
     }
 
-    public Map<String, Object> getDetails() {
-        ActemiumTicket ticket = selectedActemiumTicket;
-        Map<String, Object> details = new LinkedHashMap<>();
-        details.put("Title", ticket.getTitle());
-        details.put("Creation date", ticket.getDateOfCreation().toString());
-        details.put("Description", ticket.getDescription());
-        details.put("Type", ticket.getTicketType());
-        details.put("Customer", ticket.getCustomer().getCompany().getName());
-        //details.put("Technician", ticket.getTechnicians().toString());
-        details.put("Remarks", ticket.getRemarks());
-        details.put("Attachments", ticket.getAttachments());
-        
-        return details;   
-    }
-
-    public void setActemiumTickets(ObservableList<ActemiumTicket> tickets) {
-        this.actemiumTickets = tickets;
-    }
-
-    public ObservableList<ActemiumTicket> getActemiumTickets() {
+    public ObservableList<Ticket> getActemiumTickets() {
         return FXCollections.unmodifiableObservableList(actemiumTickets);
+    }
+    
+    public void setActemiumTickets(ObservableList<Ticket> observableList) {
+        this.actemiumTickets = observableList;
     }
 
     public ActemiumTicket getSelectedActemiumTicket() {
         return selectedActemiumTicket;
     }
 
-    public void setSelectedActemiumTicket(ActemiumTicket selectedActemiumTicket) {
-        this.selectedActemiumTicket = selectedActemiumTicket;
+    public void setSelectedActemiumTicket(ActemiumTicket ticket) {
+        this.selectedActemiumTicket = ticket;
+        if (ticket != null){
+        	// substring(8) to remove ACTEMIUM
+        	//TODO obsolete
+            setCurrentState(GUIEnum.valueOf(ticket.getClass().getSimpleName().substring(8).toUpperCase()));
+        }
         fireInvalidationEvent();
+    }   
+    
+    public ArrayList<String> getDetailsNewTicket(){
+        return new ArrayList<String>(Arrays.asList("Title", "Creation date", "Priority", "Type", "Description", "Remarks", "Attachments"));
+    }
+    
+    public Map<String, Object> getDetails() {
+        Ticket ticket = selectedActemiumTicket;
+        Map<String, Object> details = new LinkedHashMap<>();
+        details.put("Title", ticket.getTitle());
+        details.put("Creation date", ticket.getDateOfCreation().toString());
+        details.put("Priority", ticket.getPriority());
+        details.put("Type", ticket.getTicketType());
+        details.put("Description", ticket.getDescription());
+        details.put("Customer", ticket.giveCustomer().getCompany().getName());
+        //details.put("Technician", ticket.getTechnicians().toString());
+        details.put("Remarks", ticket.getRemarks());
+        details.put("Attachments", ticket.getAttachments());
+        
+        return details;   
+    }
+    
+    public String getIdOfSelectedTicket() {
+        return selectedActemiumTicket.getTicketIdString();
     }
 
-    //Todo
     public void registerTicket(TicketPriority priority, TicketType ticketType, String title, String description,
-                               String remarks, String attachments, Customer customer) {
+                               String remarks, String attachments, ActemiumCustomer customer) {
         ticketFacade.registerTicket(priority, ticketType, title, description, remarks, attachments, customer);
     }
 
- 
-
-    //Todo
     public void modifyTicket(TicketPriority priority, TicketType ticketType, String title, String description,
-                             String remarks, String attachments, Customer customer, List<Employee> technicians) {
-        ticketFacade.modifyTicket(selectedActemiumTicket, priority, title, description, remarks, attachments, customer, technicians);
+                             String remarks, String attachments, ActemiumCustomer customer, List<ActemiumEmployee> technicians) {
+        ticketFacade.modifyTicket(selectedActemiumTicket, priority, ticketType, title, description, remarks, attachments, customer, technicians);
     }
 
     public GUIEnum getCurrentState() {
@@ -85,8 +97,5 @@ public class TicketViewModel extends ViewModel {
     public void setCurrentState(GUIEnum currentState) {
         this.currentState = currentState;
     }
-    
-    public ArrayList<String> getDetailsNewTicket(){
-        return new ArrayList<String>(Arrays.asList("Creation date", "Title", "Description", "Type", "Remarks", "Attachments"));
-    }
+ 
 }

@@ -34,7 +34,7 @@ import languages.LanguageResource;
 		@NamedQuery(name = "User.findByUsername",
 				query = "SELECT u FROM UserModel u WHERE u.username = :username")
 })
-public abstract class UserModel implements Serializable {
+public abstract class UserModel implements User, Serializable {
 
 	@Serial
 	private static final long serialVersionUID = 1L;

@@ -1,8 +1,14 @@
 package main;
 
-import domain.*;
+import domain.ActemiumCompany;
+import domain.ActemiumCustomer;
+import domain.ActemiumTicket;
+import domain.PopulateDB;
+import domain.User;
 import domain.enums.UserStatus;
 import domain.facades.UserFacade;
+import domain.manager.Actemium;
+import repository.GenericDaoJpa;
 import repository.UserDaoJpa;
 
 public class MainTester {
@@ -10,6 +16,7 @@ public class MainTester {
         System.out.println("This class tests the same as the follow test in DomainTest:");
         System.out.println("loginAttempt_4InValidAdmin_3InValidTech_1InValidAdmin_AdminUserBlocked_1ValidTech_TechUserLoginSuccess_1ValidAdmin_AdminUserStillBlocked()\n");
         UserDaoJpa userDaoJpa = new UserDaoJpa();
+        GenericDaoJpa ticketDaoJpa = new GenericDaoJpa<>(ActemiumTicket.class);
         PopulateDB populateDB = new PopulateDB();
         populateDB.run(userDaoJpa);
         System.out.println("populateDB successful");
@@ -19,8 +26,8 @@ public class MainTester {
         
         //TODO or do we have to do something like this?
         //GenericDao genericDao = new GenericDaoJpa(UserModel.class);
-
-        UserFacade dc = new UserFacade(userDaoJpa);
+        Actemium actemium = new Actemium(userDaoJpa, ticketDaoJpa);
+        UserFacade dc = new UserFacade(actemium);
 
         // 4 failed login attempts for Admin123
         for (int i = 0; i < 4; i++) {
@@ -69,7 +76,7 @@ public class MainTester {
 			System.out.println(e.getMessage());
 		}
 
-        Company theWhiteHouse = new Company("The White House", "America 420", "911");
+        ActemiumCompany theWhiteHouse = new ActemiumCompany("The White House", "America 420", "911");
         // Can't register if username is already taken
         try {
         	System.out.println("\ndc.registerCustomer(\"Admin123\", \"Passwd123&\", \"Thierry\", \"Kempens\")");
@@ -79,7 +86,7 @@ public class MainTester {
 			System.out.println(e.getMessage());
 		}
         
-        Customer customer = (Customer) userDaoJpa.findByUsername("cust01Barak");
+        ActemiumCustomer customer = (ActemiumCustomer) userDaoJpa.findByUsername("cust01Barak");
         
         System.out.printf("%nCustomer before modifyCustomer:%nFirst name: %s%nLast name: %s%n", customer.getFirstName(), customer.getLastName());
         
@@ -87,11 +94,11 @@ public class MainTester {
         
         System.out.printf("%nCustomer after modifyCustomer:%nFirst name: %s%nLast name: %s%n%n", customer.getFirstName(), customer.getLastName());
         
-        System.out.println(dc.giveCustomerList());
-        dc.giveCustomerList().stream().map(UserModel::getUsername).forEach(System.out::println);
+        System.out.println(actemium.giveActemiumCustomers());
+        actemium.giveActemiumCustomers().stream().map(User::getUsername).forEach(System.out::println);
         System.out.println();
-        System.out.println(dc.giveEmployeeList());
-        dc.giveEmployeeList().stream().map(UserModel::getUsername).forEach(System.out::println);
+        System.out.println(actemium.giveActemiumEmployees());
+        actemium.giveActemiumEmployees().stream().map(User::getUsername).forEach(System.out::println);
 
         userDaoJpa.closePersistency();
     }

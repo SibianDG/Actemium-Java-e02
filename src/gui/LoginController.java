@@ -5,29 +5,27 @@ import java.io.IOException;
 import javax.persistence.EntityNotFoundException;
 
 import domain.facades.UserFacade;
+import domain.manager.Actemium;
 import exceptions.BlockedUserException;
 import exceptions.PasswordException;
 import gui.controllers.GuiController;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import languages.LanguageResource;
 
 public class LoginController extends GuiController {
 
+	private final Actemium actemium;
+	
     private UserFacade domainController;
 
     @FXML
@@ -51,8 +49,10 @@ public class LoginController extends GuiController {
     @FXML
     private Text txtErrorLogin;
 
-    public LoginController(UserFacade domainController){
+    public LoginController(UserFacade domainController, Actemium actemium){
         super();
+        
+        this.actemium = actemium;
         this.domainController = domainController;
 
 
@@ -96,7 +96,7 @@ public class LoginController extends GuiController {
                 txtErrorLogin.setOpacity(1);
             } else {
                 domainController.signIn(txfUsername.getText(), pwfPassword.getText());
-                DashboardFrameController dashboardController = new DashboardFrameController(domainController);
+                DashboardFrameController dashboardController = new DashboardFrameController(domainController, actemium);
                 Scene scene = new Scene(dashboardController);
                 Stage stage = (Stage) this.getScene().getWindow();
                 stage.setTitle(LanguageResource.getString("dashboard")); //TODO review LanguageResource

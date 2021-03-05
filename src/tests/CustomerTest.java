@@ -9,14 +9,14 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import domain.Company;
-import domain.Customer;
+import domain.ActemiumCompany;
+import domain.ActemiumCustomer;
 
 public class CustomerTest {
 
-    private Customer customer;    
+    private ActemiumCustomer customer;    
 
-    Company theWhiteHouse = new Company("The White House", "America 420", "911");    
+    ActemiumCompany theWhiteHouse = new ActemiumCompany("The White House", "America 420", "911");    
 
     private static Stream<Arguments> validUserAttributes() {
         return Stream.of(
@@ -61,7 +61,7 @@ public class CustomerTest {
 	@ParameterizedTest
 	@MethodSource("validUserAttributes")
 	public void createCustomer_ValidAttributes_DoesNotThrowException(String username, String password, String firstName, String lastName) {
-		Assertions.assertDoesNotThrow(() -> new Customer(username, password, firstName, lastName, theWhiteHouse));
+		Assertions.assertDoesNotThrow(() -> new ActemiumCustomer(username, password, firstName, lastName, theWhiteHouse));
 	}
 
 	@ParameterizedTest
@@ -69,12 +69,12 @@ public class CustomerTest {
 	public void createCustomer_InValidAttributes_ThrowsIllegalArgumentException(String username, String password,
 			String firstName, String lastName) {
 		Assertions.assertThrows(IllegalArgumentException.class,
-				() -> new Customer(username, password, firstName, lastName, theWhiteHouse));
+				() -> new ActemiumCustomer(username, password, firstName, lastName, theWhiteHouse));
 	}
     
     @Test
     public void giveEmployeeSeniroity_returns_valid() {
-    	customer = new Customer("Tester123", "Passwd123&", "Jan", "Jannsens", theWhiteHouse);
+    	customer = new ActemiumCustomer("Tester123", "Passwd123&", "Jan", "Jannsens", theWhiteHouse);
     	customer.setRegistrationDate(LocalDate.now().minusYears(10));
         Assertions.assertEquals(10, customer.giveSeniority());
     }

@@ -19,6 +19,7 @@ module E02.Project2.Java {
     exports domain;
     exports domain.enums;
     exports domain.facades;
+    exports domain.manager;
     exports exceptions;
     exports gui;
     exports languages;

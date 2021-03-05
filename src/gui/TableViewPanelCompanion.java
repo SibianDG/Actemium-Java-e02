@@ -1,13 +1,30 @@
 package gui;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import domain.*;
+import domain.ActemiumCustomer;
+import domain.ActemiumEmployee;
+import domain.ActemiumTicket;
+import domain.Contract;
+import domain.ContractType;
+import domain.Customer;
+import domain.Employee;
+import domain.Ticket;
+import domain.UserModel;
 import domain.enums.EmployeeRole;
+import domain.enums.TicketPriority;
+import domain.enums.TicketStatus;
+import domain.enums.TicketType;
 import domain.enums.UserStatus;
 import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
@@ -22,8 +39,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.MultipleSelectionModel;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -98,11 +113,11 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				this.tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 				this.tableViewData = new FilteredList<>(mainData);
 				//propertyMap.put("Number", item -> ((ActemiumTicket) item).numberProperty());
-				propertyMap.put("ID", item -> ((ActemiumTicket) item).ticketIdProperty());
-				propertyMap.put("Type", item -> ((ActemiumTicket) item).ticketTypeProperty());
-				propertyMap.put("Priority", item -> ((ActemiumTicket) item).priorityProperty());
-				propertyMap.put("Title", item -> ((ActemiumTicket) item).titleProperty());
-				propertyMap.put("Status", item -> ((ActemiumTicket) item).statusProperty());
+				propertyMap.put("ID", item -> ((Ticket) item).ticketIdProperty());
+				propertyMap.put("Type", item -> ((Ticket) item).ticketTypeProperty());
+				propertyMap.put("Priority", item -> ((Ticket) item).priorityProperty());
+				propertyMap.put("Title", item -> ((Ticket) item).titleProperty());
+				propertyMap.put("Status", item -> ((Ticket) item).statusProperty());
 			}
 		}
 
@@ -123,13 +138,11 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		return column;	
 	}
 	
-	
-
 	private void initializeFilters() {
 		Map<GUIEnum, ArrayList<Object>> filterMap = new HashMap<>();
 		filterMap.put(GUIEnum.EMPLOYEE, new ArrayList<>(Arrays.asList("Firstname", "Lastname", EmployeeRole.ADMINISTRATOR, UserStatus.ACTIVE)));
 		filterMap.put(GUIEnum.CUSTOMER, new ArrayList<>(Arrays.asList("Company", UserStatus.ACTIVE, "Firstname", "Lastname")));
-		filterMap.put(GUIEnum.TICKET, new ArrayList<>(Arrays.asList("ID", "Type", "Priority", "Title", "Status")));
+		filterMap.put(GUIEnum.TICKET, new ArrayList<>(Arrays.asList("ID", TicketType.SOFTWARE, TicketPriority.P1, "Title", TicketStatus.CREATED)));
 
 		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createElementDetailGridpane(o)));
 	}
@@ -154,42 +167,90 @@ public class TableViewPanelCompanion<T> extends GridPane {
 
 	private ComboBox makeComboBox(Object o){
 		String itemText;
-		ArrayList<String> stringArrayListist;
+		ArrayList<String> stringArrayList;
 
 		ObservableList list;
 		
-//		switch (fieldName) {				
-//		case "Firstname" -> {
-//			newPredicate = e -> e.getFirstName().toLowerCase().contains(filterText);		
-//		}
-//		case "Lastname" -> {
-//			newPredicate = e -> e.getLastName().toLowerCase().contains(filterText);					
-//		}
-//		case "Status" -> {
-//			newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
-//		}
-//		case "Role" -> {
-//			newPredicate = e -> e.getRole().toLowerCase().contains(filterText);
-//		}
-//		default -> throw new IllegalStateException("Unexpected value: " + fieldName);
-//	}			
-		
-		if (Arrays.stream(UserStatus.values()).anyMatch(e -> e == o)) {
-			stringArrayListist = new ArrayList<>(Collections.singleton("SELECT STATUS"));
-			Arrays.asList(UserStatus.values()).forEach(string -> stringArrayListist.add(string.toString()));
-			itemText = "UserStatus";
-		} else /* if (Arrays.stream(EmployeeRole.values()).anyMatch(e -> e == o)) */ {
-			stringArrayListist = new ArrayList<>(Collections.singleton("SELECT ROLE"));
-			Arrays.asList(EmployeeRole.values()).forEach(string -> stringArrayListist.add(string.toString()));
-			itemText = "Role";
-		}
-		list = FXCollections.observableList(stringArrayListist);
+	    switch(o.getClass().getSimpleName()) {
+	        case "UserStatus" -> {
+	        	stringArrayList = new ArrayList<>(Collections.singleton("SELECT STATUS"));
+				Arrays.asList(UserStatus.values()).forEach(string -> stringArrayList.add(string.toString()));
+				itemText = "UserStatus";
+	        }
+	        case "EmployeeRole" -> {
+	        	stringArrayList = new ArrayList<>(Collections.singleton("SELECT ROLE"));
+				Arrays.asList(EmployeeRole.values()).forEach(string -> stringArrayList.add(string.toString()));
+				itemText = "EmployeeRole";
+	        }
+	        case "TicketPriority" -> {
+	        	stringArrayList = new ArrayList<>(Collections.singleton("SELECT PRIO"));
+				Arrays.asList(TicketPriority.values()).forEach(string -> stringArrayList.add(string.toString()));
+				itemText = "TicketPriority";
+	        }
+	        case "TicketType" -> {
+	        	stringArrayList = new ArrayList<>(Collections.singleton("SELECT TYPE"));
+				Arrays.asList(TicketType.values()).forEach(string -> stringArrayList.add(string.toString()));
+				itemText = "TicketType";
+	        }       
+		    case "TicketStatus" -> {
+		    	stringArrayList = new ArrayList<>(Collections.singleton("SELECT STATUS"));
+				Arrays.asList(TicketType.values()).forEach(string -> stringArrayList.add(string.toString()));
+				itemText = "TicketStatus";
+		    }                
+		    case "ContractStatus" -> {
+		    	stringArrayList = new ArrayList<>(Collections.singleton("SELECT STATUS"));
+				Arrays.asList(TicketType.values()).forEach(string -> stringArrayList.add(string.toString()));
+				itemText = "ContractStatus";
+		    }
+		    case "ContractTypeStatus" -> {
+		    	stringArrayList = new ArrayList<>(Collections.singleton("SELECT STATUS"));
+				Arrays.asList(TicketType.values()).forEach(string -> stringArrayList.add(string.toString()));
+				itemText = "ContractTypeStatus";
+		    }
+		    case "Timestamp" -> {
+		    	stringArrayList = new ArrayList<>(Collections.singleton("SELECT TIMESTAMP"));
+				Arrays.asList(TicketType.values()).forEach(string -> stringArrayList.add(string.toString()));
+				itemText = "Timestamp";
+		    }
+	        default -> {
+	        	stringArrayList = new ArrayList<>(Collections.singleton("SELECT STATUS"));
+				Arrays.asList(UserStatus.values()).forEach(string -> stringArrayList.add(string.toString()));
+				itemText = "Status";
+	        }
+	    } 	
+	    
+		list = FXCollections.observableList(stringArrayList);
 		ComboBox c = new ComboBox(list);
-		if (itemText.equals("UserStatus")){
-			c.getSelectionModel().select("SELECT STATUS");
-		} else if (itemText.equals("Role")){
-			c.getSelectionModel().select("SELECT ROLE");
-		}
+		
+		switch(itemText) {
+	        case "UserStatus" -> {
+	        	c.getSelectionModel().select("SELECT STATUS");
+	        }
+	        case "EmployeeRole" -> {
+	        	c.getSelectionModel().select("SELECT ROLE");
+	        }
+	        case "TicketPriority" -> {
+	        	c.getSelectionModel().select("SELECT PRIO");
+	        }
+	        case "TicketType" -> {
+	        	c.getSelectionModel().select("SELECT TYPE");
+	        }	        
+		    case "TicketStatus" -> {
+		    	c.getSelectionModel().select("SELECT STATUS");
+		    }                
+		    case "ContractStatus" -> {
+		    	c.getSelectionModel().select("SELECT STATUS");
+		    }
+		    case "ContractTypeStatus" -> {
+		    	c.getSelectionModel().select("SELECT STATUS");
+		    }
+		    case "Timestamp" -> {
+		    	c.getSelectionModel().select("SELECT TIMESTAMP");
+		    }
+	        default -> {
+	        	c.getSelectionModel().select("SELECT");
+	        }
+	    } 
 		
 //		c.getSelectionModel().select(SelectionMode.MULTIPLE);
 		c.valueProperty().addListener(e -> {
@@ -211,6 +272,39 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			} else if (object instanceof ComboBox) {
 				ComboBox comboBox = (ComboBox) object;
 
+//				if (comboBox.getSelectionModel().getSelectedItem() != null &&  !comboBox.getSelectionModel().getSelectedItem().toString().contains("SELECT")) {
+//		        	
+//				 switch(object.getClass().getSimpleName()) {
+//			        case "UserStatus" -> {
+//			        	predicates.add(giveFilterPredicate("UserStatus", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
+//			        	System.out.println("yoooo");
+//			        }
+//			        case "EmployeeRole" -> {
+//						predicates.add(giveFilterPredicate("EmployeeRole", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
+//			        }
+//			        case "TicketPriority" -> {
+//						predicates.add(giveFilterPredicate("TicketPriority", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
+//			        }
+//			        case "TicketType" -> {
+//						predicates.add(giveFilterPredicate("TicketType", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
+//			        }        
+//				    case "TicketStatus" -> {
+//						predicates.add(giveFilterPredicate("TicketStatus", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
+//				    }                
+//				    case "ContractStatus" -> {
+//						predicates.add(giveFilterPredicate("ContractStatus", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
+//				    }
+//				    case "ContractTypeStatus" -> {
+//						predicates.add(giveFilterPredicate("ContractTypeStatus", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
+//				    }
+//				    case "Timestamp" -> {
+//						predicates.add(giveFilterPredicate("Timestamp", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
+//				    }
+//			        default -> {
+////						predicates.add(giveFilterPredicate("EmployeeRole", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
+//			        }
+//		        } 
+//				}
 				if (comboBox.getSelectionModel().getSelectedItem() != null &&  !comboBox.getSelectionModel().getSelectedItem().toString().contains("SELECT")) {
 					ArrayList<EmployeeRole> employeeRoleArrayList = new ArrayList<>(Arrays.asList(EmployeeRole.values()));
 					List<String> employeeRoleStringArray = employeeRoleArrayList.stream().map(EmployeeRole::toString).collect(Collectors.toList());
@@ -219,9 +313,9 @@ public class TableViewPanelCompanion<T> extends GridPane {
 					List<String> userStatusRoleStringArray = userStatusArrayList.stream().map(UserStatus::toString).collect(Collectors.toList());
 
 					if (userStatusRoleStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
-						predicates.add(giveFilterPredicate("Status", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));					
+						predicates.add(giveFilterPredicate("UserStatus", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));					
 					} else if (employeeRoleStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
-						predicates.add(giveFilterPredicate("Role", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
+						predicates.add(giveFilterPredicate("EmployeeRole", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
 					}
 				}
 			}
@@ -252,14 +346,25 @@ public class TableViewPanelCompanion<T> extends GridPane {
 	}
 
 	@FXML
-	void addOnAction(ActionEvent event) {
-		if(currentState.equals(GUIEnum.EMPLOYEE)) {
-			((UserViewModel) viewModel).setCurrentState(GUIEnum.EMPLOYEE);
-		} else {
-			((UserViewModel) viewModel).setCurrentState(GUIEnum.CUSTOMER);
+	void addOnAction(ActionEvent event) {		
+		switch(currentState) {
+			case EMPLOYEE ->{
+				((UserViewModel) viewModel).setCurrentState(GUIEnum.EMPLOYEE);
+				((UserViewModel) viewModel).setSelectedUser(null);
+			}
+			case CUSTOMER -> {
+				((UserViewModel) viewModel).setCurrentState(GUIEnum.CUSTOMER);
+				((UserViewModel) viewModel).setSelectedUser(null);
+			}
+			case TICKET -> {
+				((TicketViewModel) viewModel).setCurrentState(GUIEnum.TICKET);
+				((TicketViewModel) viewModel).setSelectedActemiumTicket(null);
+			}
+			default -> {
+				//tableView.getSelectionModel().clearSelection();
+				((UserViewModel) viewModel).setSelectedUser(null);
+			}		
 		}
-		//tableView.getSelectionModel().clearSelection();
-		((UserViewModel) viewModel).setSelectedUser(null);
 	}
 
 	private Predicate giveFilterPredicate(String fieldName, String filterText){		
@@ -267,7 +372,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		if(currentState.equals(GUIEnum.EMPLOYEE)) {
 			if (fieldName.length() > 0 && !filterText.contains("select")){
 				
-				Predicate<Employee> newPredicate;
+				Predicate<ActemiumEmployee> newPredicate;
 				
 				switch (fieldName) {				
 					case "Firstname" -> {
@@ -276,10 +381,10 @@ public class TableViewPanelCompanion<T> extends GridPane {
 					case "Lastname" -> {
 						newPredicate = e -> e.getLastName().toLowerCase().contains(filterText);					
 					}
-					case "Status" -> {
+					case "UserStatus" -> {
 						newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
 					}
-					case "Role" -> {
+					case "EmployeeRole" -> {
 						newPredicate = e -> e.getRole().toLowerCase().contains(filterText);
 					}
 					default -> throw new IllegalStateException("Unexpected value: " + fieldName);
@@ -289,13 +394,13 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		} else if (currentState.equals(GUIEnum.CUSTOMER)){
 			if (fieldName.length() > 0 && !filterText.contains("select")){
 
-				Predicate<Customer> newPredicate;
+				Predicate<ActemiumCustomer> newPredicate;
 				
 				switch (fieldName) {
 					case "Company" -> {
 						newPredicate = e -> e.getCompany().getName().toLowerCase().contains(filterText);
 					}				
-					case "Status" -> {
+					case "UserStatus" -> {
 						newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
 					}
 					case "Firstname" -> {
@@ -312,28 +417,73 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			//TODO
 			if (fieldName.length() > 0 && !filterText.contains("select")){
 
-				Predicate<ActemiumTicket> newPredicate;
+				Predicate<Ticket> newPredicate;
 				
 				switch (fieldName) {
 					case "ID" -> {
 						newPredicate = e -> e.getTicketIdString().equals(filterText);
 					}
-					case "Type" -> {
+					case "TicketType" -> {
 						newPredicate = e -> e.getTicketIdString().equals(filterText);
 					}
-					case "Priority" -> {
+					case "TicketPriority" -> {
 						newPredicate = e -> e.getPriority().toLowerCase().contains(filterText);
 					}
 					case "Title" -> {
 						newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);
 					}
-					case "Status" -> {
+					case "TicketStatus" -> {
 						newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
 					}
 					//TODO how will we display Company name in our observableList?
 //					case "Company" -> {
 //						newPredicate = e -> e.getCustomer().getCompany().getName().toLowerCase().contains(filterText);
 //					}
+					default -> throw new IllegalStateException("Unexpected value: " + fieldName);
+				}				
+				return newPredicate;				
+			}
+		} else if (currentState.equals(GUIEnum.CONTRACTTYPE)){
+			//TODO
+			if (fieldName.length() > 0 && !filterText.contains("select")){
+
+				Predicate<ContractType> newPredicate;
+
+				//TODO change fieldnames
+				switch (fieldName) {
+					case "Name" -> {
+						newPredicate = e -> e.getName().toLowerCase().contains(filterText);
+					}
+					case "Type" -> {
+						newPredicate = e -> e.getTimestamp().toString().toLowerCase().equals(filterText);
+					}
+					case "Status" -> {
+						newPredicate = e -> e.getContractTypeStatus().toString().toLowerCase().equals(filterText);
+					}
+					default -> throw new IllegalStateException("Unexpected value: " + fieldName);
+				}				
+				return newPredicate;				
+			}
+		} else if (currentState.equals(GUIEnum.CONTRACT)){
+			//TODO
+			if (fieldName.length() > 0 && !filterText.contains("select")){
+
+				Predicate<Contract> newPredicate;
+				
+				//TODO change fieldnames
+				switch (fieldName) {
+					case "Type" -> {
+						newPredicate = e -> e.getContractType().equals(filterText);
+					}
+					case "Status" -> {
+						newPredicate = e -> e.getStatus().toString().toLowerCase().equals(filterText);
+					}
+					case "StartDate" -> {
+						newPredicate = e -> e.getStartDate().toString().contains(filterText);
+					}
+					case "EndDate" -> {
+						newPredicate = e -> e.getEndDate().toString().contains(filterText);
+					}
 					default -> throw new IllegalStateException("Unexpected value: " + fieldName);
 				}				
 				return newPredicate;				

@@ -4,5 +4,7 @@ public enum GUIEnum {
     CUSTOMER,
     EMPLOYEE,
     TICKET,
-    CONTRACT
+    CONTRACT,
+    CONTRACTTYPE,
+    
 }

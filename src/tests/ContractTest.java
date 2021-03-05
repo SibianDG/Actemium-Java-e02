@@ -9,9 +9,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import domain.ActemiumContract;
+import domain.ActemiumContractType;
 import domain.Contract;
-import domain.enums.ContractStatus;
 import domain.ContractType;
+import domain.enums.ContractStatus;
 import domain.enums.ContractTypeStatus;
 import domain.enums.Timestamp;
 
@@ -37,8 +39,8 @@ public class ContractTest {
 	private static LocalDate inTwoYearsNextWeek = LocalDate.now().plusYears(2).plusWeeks(1);
 	private static LocalDate inThreeYearsNextWeek = LocalDate.now().plusYears(3).plusWeeks(1);
 	
-    private static ContractType contractType01 = new ContractType("BasisEmailSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
-    private static ContractType contractType02 = new ContractType("FullAllSupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.ALWAYS, 3, 1, 3999.99);
+    private static ActemiumContractType contractType01 = new ActemiumContractType("BasisEmailSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
+    private static ActemiumContractType contractType02 = new ActemiumContractType("FullAllSupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.ALWAYS, 3, 1, 3999.99);
 
     private static Stream<Arguments> validContractAttributes02() {
         return Stream.of(
@@ -106,46 +108,46 @@ public class ContractTest {
     // Tests for consturctor with 2 parameters
 	@ParameterizedTest
 	@MethodSource("validContractAttributes02")
-	public void createContract_ValidAttributes02_DoesNotThrowException(ContractType contractType, LocalDate endDate) {
-		Assertions.assertDoesNotThrow(() -> new Contract(contractType, endDate));
+	public void createContract_ValidAttributes02_DoesNotThrowException(ActemiumContractType contractType, LocalDate endDate) {
+		Assertions.assertDoesNotThrow(() -> new ActemiumContract(contractType, endDate));
 	}
 
     // Tests for consturctor with 2 parameters
 	@ParameterizedTest
 	@MethodSource("invalidContractAttributes02")
-	public void createContract_InValidAttributes02_ThrowsIllegalArgumentException(ContractType contractType, LocalDate endDate) {
-		Assertions.assertThrows(IllegalArgumentException.class, () -> new Contract(contractType, endDate));
+	public void createContract_InValidAttributes02_ThrowsIllegalArgumentException(ActemiumContractType contractType, LocalDate endDate) {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> new ActemiumContract(contractType, endDate));
 	}
 
     // Tests for consturctor with 3 parameters
 	@ParameterizedTest
 	@MethodSource("validContractAttributes03")
-	public void createContract_ValidAttributes03_DoesNotThrowException(ContractType contractType, LocalDate startDate, LocalDate endDate) {
-		Assertions.assertDoesNotThrow(() -> new Contract(contractType, startDate, endDate));
+	public void createContract_ValidAttributes03_DoesNotThrowException(ActemiumContractType contractType, LocalDate startDate, LocalDate endDate) {
+		Assertions.assertDoesNotThrow(() -> new ActemiumContract(contractType, startDate, endDate));
 	}
 
     // Tests for consturctor with 3 parameters
     @ParameterizedTest
     @MethodSource("invalidContractAttributes03")
-    public void createContract_InValidAttributes03_ThrowsIllegalArgumentException(ContractType contractType, LocalDate startDate, LocalDate endDate) {
-    	Assertions.assertThrows(IllegalArgumentException.class, () -> new Contract(contractType, startDate, endDate));
+    public void createContract_InValidAttributes03_ThrowsIllegalArgumentException(ActemiumContractType contractType, LocalDate startDate, LocalDate endDate) {
+    	Assertions.assertThrows(IllegalArgumentException.class, () -> new ActemiumContract(contractType, startDate, endDate));
     }
     
     @Test
     public void contractCreation_WithoutStartDate_HasContractStatusCURRENT() {
-    	Contract contract = new Contract(contractType01, nextYear);
+    	ActemiumContract contract = new ActemiumContract(contractType01, nextYear);
         Assertions.assertEquals(ContractStatus.CURRENT, contract.getStatus());
     }
     
     @Test
     public void contractCreation_WithStartDateNow_HasContractStatusCURRENT() {
-    	Contract contract = new Contract(contractType01, today, nextYear);
+    	ActemiumContract contract = new ActemiumContract(contractType01, today, nextYear);
     	Assertions.assertEquals(ContractStatus.CURRENT, contract.getStatus());
     }
     
     @Test
     public void contractCreation_WithStartDateInFuture_HasContractStatusIN_REQUEST() {
-    	Contract contract = new Contract(contractType01, nextWeek, nextYearNextWeek);
+    	ActemiumContract contract = new ActemiumContract(contractType01, nextWeek, nextYearNextWeek);
     	Assertions.assertEquals(ContractStatus.IN_REQUEST, contract.getStatus());
     }
     

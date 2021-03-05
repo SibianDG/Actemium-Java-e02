@@ -1,9 +1,20 @@
 package gui;
 
 import java.io.IOException;
-import java.util.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
+import domain.enums.ContractStatus;
+import domain.enums.ContractTypeStatus;
 import domain.enums.EmployeeRole;
+import domain.enums.TicketPriority;
+import domain.enums.TicketStatus;
+import domain.enums.TicketType;
+import domain.enums.Timestamp;
 import domain.enums.UserStatus;
 import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
@@ -18,7 +29,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -156,26 +171,27 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 	    try {
             setDetailOnModifying();
         } catch (NullPointerException e){
-	        setupPaneNewUser();
+	        setupPaneNewObject();
         }
     }
 
     private void setDetailOnModifying(){
         gridDetails.getChildren().clear();
-        if (viewModel instanceof UserViewModel) {
-            addDetailsToGridDetails(((UserViewModel) viewModel).getDetails());
-            txtDetailsTitle.setText("Details of " + ((UserViewModel) viewModel).getNameOfSelectedUser());
-            btnModify.setText("Modify " + ((UserViewModel) viewModel).getCurrentState().toString().toLowerCase());
-        } else if (viewModel instanceof TicketViewModel) {
-            addDetailsToGridDetails(((TicketViewModel) viewModel).getDetails());
-            btnModify.setText("Modify Ticket");
-        }
+	        if (viewModel instanceof UserViewModel) {
+	            addDetailsToGridDetails(((UserViewModel) viewModel).getDetails());
+	            txtDetailsTitle.setText("Details of " + ((UserViewModel) viewModel).getNameOfSelectedUser());
+	            btnModify.setText("Modify " + ((UserViewModel) viewModel).getCurrentState().toString().toLowerCase());
+	        } else if (viewModel instanceof TicketViewModel) {
+	            addDetailsToGridDetails(((TicketViewModel) viewModel).getDetails());
+	            txtDetailsTitle.setText("Details of ticket: " + ((TicketViewModel) viewModel).getIdOfSelectedTicket());
+	            btnModify.setText("Modify Ticket");
+	        }
         btnModify.setVisible(true);
         txtErrorMessage.setVisible(false);
         editing = true;
     }
 
-    private void setupPaneNewUser(){
+    private void setupPaneNewObject(){
 	    editing = false;
         ArrayList<String> fields = null;
 
@@ -184,24 +200,31 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 				fields = ((UserViewModel) viewModel).getDetailsNewEmployee();
 				txtDetailsTitle.setText("Add new employee");
 				btnModify.setText("Add new employee");
+				btnModify.setVisible(true);
+				assert fields != null;
+				addItemsToGridNewUser(fields);
 			} else if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.CUSTOMER)) {
 				fields = ((UserViewModel) viewModel).getDetailsNewCustomer();
 				txtDetailsTitle.setText("Add new customer");
 				btnModify.setText("Add new customer");
+			} else {
+				fields = null;
 			}
+			btnModify.setVisible(true);
+			assert fields != null;
+			addItemsToGridNewUser(fields);
 		} else if (viewModel instanceof TicketViewModel) {
 			if (((TicketViewModel) viewModel).getCurrentState().equals(GUIEnum.TICKET)) {
 				fields = ((TicketViewModel) viewModel).getDetailsNewTicket();
 				txtDetailsTitle.setText("Add new ticket");
 				btnModify.setText("Add new ticket");
-			}
-		} else {
-			fields = null;
-		}
-
-		btnModify.setVisible(true);
-		assert fields != null;
-		addItemsToGridNewUser(fields);
+			} else {
+				fields = null;
+			} 
+			btnModify.setVisible(true);
+			assert fields != null;
+			addItemsToGridNewTicket(fields);
+		} 
     }
 
     private void addItemsToGridNewUser(ArrayList<String> fields){
@@ -237,9 +260,47 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                 textField.setFont(Font.font("Arial", FontWeight.BOLD, 14));
                 node = textField;
             }
-
             gridDetails.add(node, 1, i);
         }
+    }
+    
+    private void addItemsToGridNewTicket(ArrayList<String> fields){
+    	gridDetails.getChildren().clear();
+    	gridDetails.addColumn(0);
+    	gridDetails.addColumn(1);
+    	
+    	Map<Integer, String> randomValues = Map.of(
+    			0, "WieldingRobot05 Defect"
+    			, 1, LocalDate.now().toString()
+    			, 2, TicketPriority.P1.toString()
+    			, 3, TicketType.INFRASTRUCTURE.toString()
+    			, 4, "WieldingRobot stopped functioning this morning at 9am."
+    			, 5, "Call me asap 094812384"
+    			, 6, "brokenRobot.png"
+    			);
+    	
+    	for (int i = 0; i < fields.size(); i++) {
+    		gridDetails.addRow(i);
+    		
+    		gridDetails.add(makeNewLabel(fields.get(i)), 0, i);
+    		
+    		Node node;
+			if (fields.get(i).toLowerCase().contains("priority")) {
+				node = makeComboBox(TicketPriority.P1);
+			} else if (fields.get(i).toLowerCase().contains("type")) {
+				node = makeComboBox(TicketType.INFRASTRUCTURE);
+			} else {
+				TextField textField;
+				if (fields.size() <= 7) {
+					textField = new TextField(randomValues.get(i));
+				} else {
+					textField = new TextField();
+				}
+				textField.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+				node = textField;
+			}    		
+    		gridDetails.add(node, 1, i);
+    	}
     }
 
     private Label makeNewLabel(String text){
@@ -256,7 +317,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 	    // Using LinkedHashSet so the order of the map values doesn't change
 	    Set<String> keys = new LinkedHashSet<String>(details.keySet());
 	    for (String key : keys) {
-
 	        Label label = makeNewLabel(key);
 
 	        Node detail = createElementDetailGridpane(details.get(key), key);
@@ -264,7 +324,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             gridDetails.add(detail, 1, i);
             i++;
         }
-
     }
 
     private Node createElementDetailGridpane(Object o, String key) {
@@ -296,11 +355,36 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     private ComboBox makeComboBox(Object o){
         ObservableList list;
-        if (Arrays.stream(UserStatus.values()).anyMatch(e -> e == o)) {
-            list = FXCollections.observableList(Arrays.asList(UserStatus.values()));
-        } else {
-            list = FXCollections.observableList(Arrays.asList(EmployeeRole.values()));
-        }
+        
+        switch(o.getClass().getSimpleName()) {
+	        case "UserStatus" -> {
+	        	list = FXCollections.observableList(Arrays.asList(UserStatus.values()));
+	        }
+	        case "EmployeeRole" -> {
+	            list = FXCollections.observableList(Arrays.asList(EmployeeRole.values()));
+	        }
+	        case "TicketPriority" -> {
+	            list = FXCollections.observableList(Arrays.asList(TicketPriority.values()));
+	        }
+	        case "TicketType" -> {
+	        	list = FXCollections.observableList(Arrays.asList(TicketType.values()));
+	        }        
+		    case "TicketStatus" -> {
+		    	list = FXCollections.observableList(Arrays.asList(TicketStatus.values()));
+		    }                
+		    case "ContractStatus" -> {
+		    	list = FXCollections.observableList(Arrays.asList(ContractStatus.values()));
+		    }
+		    case "ContractTypeStatus" -> {
+		    	list = FXCollections.observableList(Arrays.asList(ContractTypeStatus.values()));
+		    }
+		    case "Timestamp" -> {
+		    	list = FXCollections.observableList(Arrays.asList(Timestamp.values()));
+		    }
+	        default -> {
+	        	list = FXCollections.observableList(Arrays.asList(UserStatus.values()));
+	        }
+        } 
         ComboBox c = new ComboBox(list);
         c.getSelectionModel().select(o);
         c.valueProperty().addListener(e -> modified = true );
@@ -312,4 +396,5 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         alert.setHeaderText(headerText);
         alert.showAndWait();
     }
+    
 }
