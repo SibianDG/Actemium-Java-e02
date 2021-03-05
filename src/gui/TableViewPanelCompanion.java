@@ -397,7 +397,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			}
 			default -> {
 				//tableView.getSelectionModel().clearSelection();
-				((UserViewModel) viewModel).setSelectedUser(null);
+//				((UserViewModel) viewModel).setSelectedUser(null);
 			}		
 		}
 	}

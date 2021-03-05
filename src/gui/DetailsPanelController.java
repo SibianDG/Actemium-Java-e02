@@ -8,6 +8,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import domain.ActemiumCustomer;
+import domain.ActemiumEmployee;
 import domain.enums.ContractStatus;
 import domain.enums.ContractTypeStatus;
 import domain.enums.EmployeeRole;
@@ -83,11 +85,11 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     void btnModifyOnAction(ActionEvent event) {
 
 	    try {
+	    	if (viewModel instanceof UserViewModel) {
             if (editing) {
                 if(modified){
                     if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)){
                         ((UserViewModel) viewModel).modifyEmployee(
-
                                 getTextFromGridItem(1)
                                 , getTextFromGridItem(2)
                                 , getTextFromGridItem(3)
@@ -107,15 +109,10 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 , getTextFromGridItem(11)
                         );
                     }
-
                     makePopUp("User edited", "You have successfully edited the user.");
-
                 } else {
                     makePopUp("User not edited", "You haven't changed anything.");
-
                 }
-
-
             } else {
                 if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)){
 
@@ -129,7 +126,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                             , EmployeeRole.valueOf(getTextFromGridItem(6))
                     );
                 } else if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.CUSTOMER)){
-
                     ((UserViewModel) viewModel).registerCustomer(
                             getTextFromGridItem(0)
                             , getTextFromGridItem(1)
@@ -140,7 +136,41 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                     );
                 }
             }
-
+            //TODO
+            // This is just a draft version, nothing is correct here,
+            // everything still needs to be implemented properly
+            // (but you can already modify a ticket
+            // and click on add new ticket)            
+	    	} else if (viewModel instanceof TicketViewModel) {
+	    		if (editing) {
+	                if(modified){
+	                        ((TicketViewModel) viewModel).modifyTicket(
+	                        		// priority, ticketType, title, description, remarks, attachments, technicians
+	                        		TicketPriority.valueOf(getTextFromGridItem(2))
+		                            , TicketType.valueOf(getTextFromGridItem(3))
+		                            , getTextFromGridItem(0)
+		                            , getTextFromGridItem(4)
+		                            , getTextFromGridItem(6)
+		                            , getTextFromGridItem(7)
+		                            , new ArrayList<ActemiumEmployee>()
+	                        );	                    
+	                    makePopUp("Ticket edited", "You have successfully edited the user.");
+	                } else {
+	                    makePopUp("Ticket not edited", "You haven't changed anything.");
+	                }
+	            } else {
+	                    ((TicketViewModel) viewModel).registerTicket(
+	                            // priority, ticketType, title, description, remarks, attachments, customer
+	                    		TicketPriority.valueOf(getTextFromGridItem(2))
+	                            , TicketType.valueOf(getTextFromGridItem(3))
+	                            , getTextFromGridItem(0)
+	                            , getTextFromGridItem(4)
+	                            , getTextFromGridItem(5)
+	                            , getTextFromGridItem(6)
+	                            , new ActemiumCustomer()
+	                    );
+	            }
+	    	}
             setDetailOnModifying();
 
         //TODO: handle the correct error messages, not just all

@@ -85,9 +85,12 @@ public class TicketViewModel extends ViewModel {
         ticketFacade.registerTicket(priority, ticketType, title, description, remarks, attachments, customer);
     }
 
+    // TODO
+    // Cannot modify customer of the ticket, needs to be unmodifiable field
+    // should become Company instead of customer
     public void modifyTicket(TicketPriority priority, TicketType ticketType, String title, String description,
-                             String remarks, String attachments, ActemiumCustomer customer, List<ActemiumEmployee> technicians) {
-        ticketFacade.modifyTicket(selectedActemiumTicket, priority, ticketType, title, description, remarks, attachments, customer, technicians);
+                             String remarks, String attachments, List<ActemiumEmployee> technicians) {
+        ticketFacade.modifyTicket(selectedActemiumTicket, priority, ticketType, title, description, remarks, attachments, selectedActemiumTicket.getCustomer(), technicians);
     }
 
     public GUIEnum getCurrentState() {
