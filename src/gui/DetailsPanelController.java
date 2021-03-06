@@ -202,9 +202,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 Integer.parseInt(getTextFromGridItem(7)),
                                 Double.parseDouble(getTextFromGridItem(8))
                         );
-                        makePopUp("Ticket edited", "You have successfully edited the user.");
+                        makePopUp("Contract type edited", "You have successfully edited the user.");
                     } else {
-                        makePopUp("Ticket not edited", "You haven't changed anything.");
+                        makePopUp("Contract type not edited", "You haven't changed anything.");
                     }
                 } else {
                     ((ContractTypeViewModel) viewModel).registerContractType(
