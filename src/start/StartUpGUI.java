@@ -2,6 +2,7 @@ package start;
 
 import domain.ActemiumTicket;
 import domain.PopulateDB;
+import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
 import domain.manager.Actemium;
 import gui.LoginController;
@@ -31,9 +32,9 @@ public class StartUpGUI extends Application {
             populateDB.run(userDaoJpa);
 
             Actemium actemium = new Actemium(userDaoJpa, ticketDaoJpa);
-            UserFacade domainController = new UserFacade(actemium);
-//            UserFacade domainController = new UserFacade(userDaoJpa);
-            LoginController root = new LoginController(domainController, actemium);
+            UserFacade userFacade = new UserFacade(actemium);
+            TicketFacade ticketFacade = new TicketFacade(actemium);       
+            LoginController root = new LoginController(userFacade, ticketFacade);
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("styles.css").toString());
             primaryStage.setScene(scene);

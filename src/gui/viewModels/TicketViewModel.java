@@ -13,7 +13,6 @@ import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import domain.facades.TicketFacade;
-import domain.manager.Actemium;
 import gui.GUIEnum;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,14 +23,12 @@ public class TicketViewModel extends ViewModel {
     private Ticket selectedActemiumTicket;
     private final TicketFacade ticketFacade;
     private ObservableList<Ticket> actemiumTickets;
-	private Actemium actemium;
 
 //    private final ArrayList<InvalidationListener> listeners = new ArrayList<>();
 
-    public TicketViewModel(TicketFacade ticketFacade, Actemium actemium) {
+    public TicketViewModel(TicketFacade ticketFacade) {
         super();
         this.ticketFacade = ticketFacade;
-        this.actemium = actemium;
         this.actemiumTickets = FXCollections.observableArrayList();
         setCurrentState(GUIEnum.TICKET);
     }
@@ -86,7 +83,7 @@ public class TicketViewModel extends ViewModel {
     public void registerTicket(TicketPriority priority, TicketType ticketType, String title, String description,
                                String remarks, String attachments, long customerId) {
         ticketFacade.registerTicket(priority, ticketType, title, description, remarks, attachments, customerId);
-        setSelectedActemiumTicket(actemium.getLastAddedTicket());
+        setSelectedActemiumTicket(ticketFacade.getLastAddedTicket());
     }
 
     // TODO

@@ -123,7 +123,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 , getTextFromGridItem(11)
                         );
                     }
-                    makePopUp("User edited", "You have successfully edited the %s.");
+                    makePopUp("User edited", "You have successfully edited the user.");
                 } else {
                     makePopUp("User not edited", "You haven't changed anything.");
                 }

@@ -5,10 +5,12 @@ import java.util.List;
 import domain.ActemiumCustomer;
 import domain.ActemiumEmployee;
 import domain.ActemiumTicket;
+import domain.Ticket;
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import domain.manager.Actemium;
+import javafx.collections.ObservableList;
 
 public class TicketFacade implements Facade {
 	
@@ -16,7 +18,7 @@ public class TicketFacade implements Facade {
 	
 //	private GenericDao<ActemiumTicket> ticketRepo;
 
-//	private ObservableList<ActemiumTicket> tickets;
+//	private ObservableList<Ticket> actemiumTickets;
 	
 //	public TicketFacade() {
 //		this.ticketRepo = new GenericDaoJpa<>(ActemiumTicket.class);
@@ -63,9 +65,12 @@ public class TicketFacade implements Facade {
 //		tickets.remove(index+1);
 	}
 
+	public Ticket getLastAddedTicket() {
+		return actemium.getLastAddedTicket();
+	}
 
-//	public ObservableList<ActemiumTicket> getTickets() {
-//		return FXCollections.unmodifiableObservableList(tickets);
-//	}
+	public ObservableList<Ticket> giveActemiumTickets() {
+		return actemium.giveActemiumTickets();
+	}
 	
 }

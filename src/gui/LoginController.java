@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import javax.persistence.EntityNotFoundException;
 
+import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
-import domain.manager.Actemium;
 import exceptions.BlockedUserException;
 import exceptions.PasswordException;
 import gui.controllers.GuiController;
@@ -23,11 +23,10 @@ import javafx.stage.Stage;
 import languages.LanguageResource;
 
 public class LoginController extends GuiController {
-
-	private final Actemium actemium;
+		
+    private UserFacade userFacade;
+	private TicketFacade ticketFacade;
 	
-    private UserFacade domainController;
-
     @FXML
     private Text txtTitle;
 
@@ -49,11 +48,12 @@ public class LoginController extends GuiController {
     @FXML
     private Text txtErrorLogin;
 
-    public LoginController(UserFacade domainController, Actemium actemium){
+    public LoginController(UserFacade userFacade, TicketFacade ticketFacade){
         super();
         
-        this.actemium = actemium;
-        this.domainController = domainController;
+        this.userFacade = userFacade;
+        
+        this.ticketFacade = ticketFacade;
 
 
         try {
@@ -95,8 +95,8 @@ public class LoginController extends GuiController {
                 txtErrorLogin.setText(LanguageResource.getString("username_password_mandatory"));
                 txtErrorLogin.setOpacity(1);
             } else {
-                domainController.signIn(txfUsername.getText(), pwfPassword.getText());
-                DashboardFrameController dashboardController = new DashboardFrameController(domainController, actemium);
+                userFacade.signIn(txfUsername.getText(), pwfPassword.getText());
+                DashboardFrameController dashboardController = new DashboardFrameController(userFacade, ticketFacade);
                 Scene scene = new Scene(dashboardController);
                 Stage stage = (Stage) this.getScene().getWindow();
                 stage.setTitle(LanguageResource.getString("dashboard")); //TODO review LanguageResource

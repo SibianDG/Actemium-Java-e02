@@ -239,6 +239,14 @@ public class Actemium {
 		actemiumEmployees.remove(index + 1);
 	}
 	
+	public Customer getLastAddedCustomer() {
+		return actemiumCustomers.get(actemiumCustomers.size()-1);
+	}
+	
+	public Employee getLastAddedEmployee() {
+		return actemiumEmployees.get(actemiumEmployees.size()-1);
+	}
+		
 	////////-TICKETFACADE-////////
 	
 	public UserModel findById(long userId){

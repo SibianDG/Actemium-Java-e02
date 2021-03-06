@@ -3,9 +3,12 @@ package domain.facades;
 import domain.ActemiumCompany;
 import domain.ActemiumCustomer;
 import domain.ActemiumEmployee;
+import domain.Customer;
+import domain.Employee;
 import domain.enums.EmployeeRole;
 import domain.enums.UserStatus;
 import domain.manager.Actemium;
+import javafx.collections.ObservableList;
 
 public class UserFacade implements Facade {
 
@@ -25,8 +28,8 @@ public class UserFacade implements Facade {
 		
 //	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
 
-//	private ObservableList<Customer> customerList;
-//	private ObservableList<Employee> employeeList;
+//	private ObservableList<Customer> actemiumCustomers;
+//	private ObservableList<Employee> actemiumEmployees;
 	
 //	public UserFacade(UserDao userRepo) {
 //		this.userRepo = userRepo;
@@ -239,6 +242,18 @@ public class UserFacade implements Facade {
 //			//ignore
 //		}
 //	}
+	
+	public String giveUserRole() {
+		return actemium.giveUserRole();
+	}
+	
+	public String giveUserFirstName() {
+		return actemium.giveUserFirstName();
+	}
+
+	public String giveUserLastName() {
+		return actemium.giveUserLastName();
+	}
 
 	public void registerCustomer(String username, String password, String firstName, String lastName, ActemiumCompany company) {
 		actemium.existingUsername(username);		
@@ -318,13 +333,21 @@ public class UserFacade implements Facade {
 //		employeeList.add(index, employee);
 //		employeeList.remove(index+1);
 	}
+	
+	public Customer getLastAddedCustomer() {
+		return actemium.getLastAddedCustomer();
+	}
+	
+	public Employee getLastAddedEmployee() {
+		return actemium.getLastAddedEmployee();
+	}
 
-//	public ObservableList<Customer> giveCustomerList() {
-//		return FXCollections.unmodifiableObservableList(customerList);
-//	}
-//
-//	public ObservableList<Employee> giveEmployeeList() {
-//		return FXCollections.unmodifiableObservableList(employeeList);
-//	}	 
+	public ObservableList<Customer> giveActemiumCustomers() {
+		return actemium.giveActemiumCustomers();
+	}
+
+	public ObservableList<Employee> giveActemiumEmployees() {
+		return actemium.giveActemiumEmployees();
+	}
 	
 }

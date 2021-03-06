@@ -23,15 +23,13 @@ public class UserViewModel extends ViewModel {
 
     private GUIEnum currentState;
     private final UserFacade userFacade;
-    private final Actemium actemium;
     private User selectedUser;
     private ObservableList<Employee> employees;
     private ObservableList<Customer> customers;
     
-    public UserViewModel(UserFacade userFacade, Actemium actemium) {
+    public UserViewModel(UserFacade userFacade) {
     	super();
     	this.userFacade = userFacade;
-    	this.actemium = actemium;
     	this.employees = FXCollections.observableArrayList();
     	this.customers = FXCollections.observableArrayList();
     }
@@ -127,7 +125,7 @@ public class UserViewModel extends ViewModel {
 	public void registerEmployee(String username, String lastName, String firstName, String address,
 			String emailAddress, String phoneNumber, EmployeeRole role) {
 		userFacade.registerEmployee(username, "Passwd123&", firstName, lastName, address, phoneNumber, emailAddress, role);
-		setSelectedUser(actemium.findByUsername(username));
+		setSelectedUser(userFacade.getLastAddedEmployee());
 	}
 
 	public void modifyEmployee(String username, String password, String firstName, String lastName, String address,
@@ -140,7 +138,7 @@ public class UserViewModel extends ViewModel {
 			String companyAddress, String companyPhone) {
 		ActemiumCompany company = new ActemiumCompany(companyName, companyAddress, companyPhone);
 		userFacade.registerCustomer(username, "Passwd123&", firstName, lastName, company);
-		setSelectedUser(actemium.findByUsername(username));
+		setSelectedUser(userFacade.getLastAddedCustomer());
 	}
 
 	public void modifyCustomer(String username, String password, String firstName, String lastName, String status) {
