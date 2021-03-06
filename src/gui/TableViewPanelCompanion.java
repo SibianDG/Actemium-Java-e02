@@ -27,6 +27,7 @@ import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import domain.enums.Timestamp;
 import domain.enums.UserStatus;
+import gui.viewModels.ContractTypeViewModel;
 import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
@@ -124,6 +125,13 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				propertyMap.put("Title", item -> ((Ticket) item).titleProperty());
 				propertyMap.put("Status", item -> ((Ticket) item).statusProperty());
 			}
+			case CONTRACTTYPE -> {
+				this.mainData = (ObservableList<T>) ((ContractTypeViewModel) viewModel).getActemiumContractTypes();
+				this.tableViewData = new FilteredList<>(mainData);
+				propertyMap.put("Name", item -> ((ContractType) item).getContractTypeNameString());
+				propertyMap.put("Status", item -> ((ContractType) item).getContractTypeStatusProperty());
+				//propertyMap.put("Number Active Contracts", item -> ((ContractType) item));
+			}
 		}
 
 		btnAdd.setText("Add "+currentState.toString().toLowerCase());
@@ -148,6 +156,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		filterMap.put(GUIEnum.EMPLOYEE, new ArrayList<>(Arrays.asList("Firstname", "Lastname", EmployeeRole.ADMINISTRATOR, UserStatus.ACTIVE)));
 		filterMap.put(GUIEnum.CUSTOMER, new ArrayList<>(Arrays.asList("Company", UserStatus.ACTIVE, "Firstname", "Lastname")));
 		filterMap.put(GUIEnum.TICKET, new ArrayList<>(Arrays.asList("ID", TicketType.SOFTWARE, TicketPriority.P1, "Title", TicketStatus.CREATED)));
+		filterMap.put(GUIEnum.CONTRACTTYPE, new ArrayList<>(Arrays.asList("Name", ContractTypeStatus.ACTIVE)));
 
 		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createElementDetailGridpane(o)));
 	}
@@ -403,6 +412,8 @@ public class TableViewPanelCompanion<T> extends GridPane {
 					((UserViewModel) viewModel).setSelectedUser((User) data);
 				} else if (data instanceof Ticket) {
 					((TicketViewModel) viewModel).setSelectedActemiumTicket((Ticket) data);
+				} else if (data instanceof ContractType) {
+					((ContractTypeViewModel) viewModel).setSelectedActemiumContractType((ContractType) data);
 				}
 			}
 		});		
@@ -422,6 +433,10 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			case TICKET -> {
 				((TicketViewModel) viewModel).setCurrentState(GUIEnum.TICKET);
 				((TicketViewModel) viewModel).setSelectedActemiumTicket(null);
+			}
+			case CONTRACTTYPE -> {
+				((ContractTypeViewModel) viewModel).setCurrentState(GUIEnum.CONTRACTTYPE);
+				((ContractTypeViewModel) viewModel).setSelectedActemiumContractType(null);
 			}
 			default -> {
 				//tableView.getSelectionModel().clearSelection();

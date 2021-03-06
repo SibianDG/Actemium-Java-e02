@@ -5,18 +5,10 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
-import domain.ActemiumCustomer;
-import domain.ActemiumEmployee;
-import domain.ActemiumTicket;
-import domain.Contract;
-import domain.ContractType;
-import domain.Customer;
-import domain.Employee;
-import domain.LoginAttempt;
-import domain.Ticket;
-import domain.UserModel;
+import domain.*;
 import domain.enums.LoginStatus;
 import domain.enums.UserStatus;
+import domain.facades.ContractTypeFacade;
 import exceptions.BlockedUserException;
 import exceptions.PasswordException;
 import javafx.collections.FXCollections;
@@ -35,8 +27,10 @@ public class Actemium {
 	// All the Dao classes
 	// Generic version, no Type given
 	private GenericDao genericDaoJpa;
-	private GenericDao ticketDaoJpa;
+	private GenericDao<ActemiumTicket> ticketDaoJpa;
 	private UserDao userDaoJpa;
+	private GenericDao<ActemiumContractType> contractTypeDaoJpa;
+	private GenericDao<ActemiumContract> contractDaoJpa;
 
 	// All the ObservableLists
 	private ObservableList<Customer> actemiumCustomers;
@@ -60,14 +54,17 @@ public class Actemium {
 		fillInUserLists();
 	}
 	
-	public Actemium(UserDao userDaoJpa, GenericDao ticketRepo) {
+	public Actemium(UserDao userDaoJpa, GenericDao<ActemiumTicket> ticketRepo, GenericDao<ActemiumContractType> contactTypeRepo, GenericDao<ActemiumContract> contractRepo) {
 		
 		this.userDaoJpa = userDaoJpa; 
-		this.ticketDaoJpa = new GenericDaoJpa<>(ActemiumTicket.class);
+		this.ticketDaoJpa = ticketRepo;
+		this.contractTypeDaoJpa = contactTypeRepo;
+		this.contractDaoJpa = contractRepo;
 		
 		// Fill up ObservableLists
 		fillInUserLists();
 		fillTicketList();
+		FillContractTypesList();
 	}
 	
 	// Fill up ObservableLists
@@ -89,6 +86,11 @@ public class Actemium {
 	public void fillTicketList() {
 		List<ActemiumTicket> ticketList = ticketDaoJpa.findAll();
 		this.actemiumTickets = FXCollections.observableArrayList((List<Ticket>)(Object)ticketList);
+	}
+
+	public void FillContractTypesList() {
+		List<ActemiumContractType> contractTypeList = contractTypeDaoJpa.findAll();
+		this.actemiumContractTypes = FXCollections.observableArrayList((List<ContractType>)(Object)contractTypeList);
 	}
 	
 	//TODO constructor vs setter injection?
@@ -287,12 +289,42 @@ public class Actemium {
 		return FXCollections.unmodifiableObservableList(actemiumTickets);
 	}
 
-	public ObservableList<Contract> giveActemiumContracts() {
-		return FXCollections.unmodifiableObservableList(actemiumContracts);
+
+
+
+
+	////////-CONTRACTTYPEFACADE-////////
+
+	public void registerContractType(ActemiumContractType newContractType) {
+		contractTypeDaoJpa.startTransaction();
+		contractTypeDaoJpa.insert(newContractType);
+		contractTypeDaoJpa.commitTransaction();
+		actemiumContractTypes.add(newContractType);
+	}
+
+	public void modifyContractType(ActemiumContractType contractType) {
+		int index = actemiumContractTypes.indexOf(contractType);
+
+		contractTypeDaoJpa.startTransaction();
+		contractTypeDaoJpa.update(contractType);
+		contractTypeDaoJpa.commitTransaction();
+		actemiumContractTypes.add(contractType);
+
+		actemiumContractTypes.add(index, contractType);
+		actemiumContractTypes.remove(index + 1);
 	}
 
 	public ObservableList<ContractType> giveActemiumContractTypes() {
 		return FXCollections.unmodifiableObservableList(actemiumContractTypes);
 	}
 
+	////////-CONTRACTFACADE-////////
+
+	public Contract getLastAddedContract() {
+		return actemiumContracts.get(actemiumContracts.size()-1);
+	}
+
+	public ObservableList<Contract> giveActemiumContracts() {
+		return FXCollections.unmodifiableObservableList(actemiumContracts);
+	}
 }

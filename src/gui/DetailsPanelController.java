@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import domain.ActemiumEmployee;
+import domain.ContractType;
 import domain.enums.ContractStatus;
 import domain.enums.ContractTypeStatus;
 import domain.enums.EmployeeRole;
@@ -17,6 +18,7 @@ import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import domain.enums.Timestamp;
 import domain.enums.UserStatus;
+import gui.viewModels.ContractTypeViewModel;
 import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
@@ -100,56 +102,56 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
 	    try {
 	    	if (viewModel instanceof UserViewModel) {
-            if (editing) {
-                if(viewModel.isFieldModified()){
-                	if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)){
-                    	((UserViewModel) viewModel).modifyEmployee(
-                                getTextFromGridItem(1)
+                if (editing) {
+                    if(viewModel.isFieldModified()){
+                        if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)){
+                            ((UserViewModel) viewModel).modifyEmployee(
+                                    getTextFromGridItem(1)
+                                    , getTextFromGridItem(2)
+                                    , getTextFromGridItem(3)
+                                    , getTextFromGridItem(4)
+                                    , getTextFromGridItem(5)
+                                    , getTextFromGridItem(6)
+                                    , getTextFromGridItem(7)
+                                    , EmployeeRole.valueOf(getTextFromGridItem(9))
+                                    , UserStatus.valueOf(getTextFromGridItem(10))
+                            );
+                        } else if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.CUSTOMER)){
+                            ((UserViewModel) viewModel).modifyCustomer(
+                                    getTextFromGridItem(1)
+                                    , getTextFromGridItem(2)
+                                    , getTextFromGridItem(8)
+                                    , getTextFromGridItem(9)
+                                    , getTextFromGridItem(11)
+                            );
+                        }
+                        makePopUp("User edited", "You have successfully edited the user.");
+                    } else {
+                        makePopUp("User not edited", "You haven't changed anything.");
+                    }
+                } else {
+                    if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)){
+
+                        ((UserViewModel) viewModel).registerEmployee(
+                                getTextFromGridItem(0)
+                                , getTextFromGridItem(1)
                                 , getTextFromGridItem(2)
                                 , getTextFromGridItem(3)
                                 , getTextFromGridItem(4)
                                 , getTextFromGridItem(5)
-                                , getTextFromGridItem(6)
-                                , getTextFromGridItem(7)
-                                , EmployeeRole.valueOf(getTextFromGridItem(9))
-                                , UserStatus.valueOf(getTextFromGridItem(10))
+                                , EmployeeRole.valueOf(getTextFromGridItem(6))
                         );
                     } else if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.CUSTOMER)){
-                        ((UserViewModel) viewModel).modifyCustomer(
-                                getTextFromGridItem(1)
+                        ((UserViewModel) viewModel).registerCustomer(
+                                getTextFromGridItem(0)
+                                , getTextFromGridItem(1)
                                 , getTextFromGridItem(2)
-                                , getTextFromGridItem(8)
-                                , getTextFromGridItem(9)
-                                , getTextFromGridItem(11)
+                                , getTextFromGridItem(3)
+                                , getTextFromGridItem(4)
+                                , getTextFromGridItem(5)
                         );
                     }
-                    makePopUp("User edited", "You have successfully edited the user.");
-                } else {
-                    makePopUp("User not edited", "You haven't changed anything.");
                 }
-            } else {
-                if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)){
-
-                    ((UserViewModel) viewModel).registerEmployee(
-                            getTextFromGridItem(0)
-                            , getTextFromGridItem(1)
-                            , getTextFromGridItem(2)
-                            , getTextFromGridItem(3)
-                            , getTextFromGridItem(4)
-                            , getTextFromGridItem(5)
-                            , EmployeeRole.valueOf(getTextFromGridItem(6))
-                    );
-                } else if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.CUSTOMER)){
-                    ((UserViewModel) viewModel).registerCustomer(
-                            getTextFromGridItem(0)
-                            , getTextFromGridItem(1)
-                            , getTextFromGridItem(2)
-                            , getTextFromGridItem(3)
-                            , getTextFromGridItem(4)
-                            , getTextFromGridItem(5)
-                    );
-                }
-            }
             //TODO
             // This is just a draft version, nothing is correct here,
             // everything still needs to be implemented properly
@@ -185,7 +187,40 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 	                            , Long.valueOf(getTextFromGridItem(4))
 	                    );
 	            }
-	    	}
+	    	} else if (viewModel instanceof ContractTypeViewModel) {
+                if (editing) {
+                    if(viewModel.isFieldModified()){
+                        ((ContractTypeViewModel) viewModel).modifyContractType(
+                                // priority, ticketType, title, description, remarks, attachments, technicians
+                               getTextFromGridItem(0),
+                                ContractTypeStatus.valueOf(getTextFromGridItem(1)),
+                                Boolean.parseBoolean(getTextFromGridItem(2)),
+                                Boolean.parseBoolean(getTextFromGridItem(3)),
+                                Boolean.parseBoolean(getTextFromGridItem(4)),
+                                Timestamp.valueOf(getTextFromGridItem(5)),
+                                Integer.parseInt(getTextFromGridItem(6)),
+                                Integer.parseInt(getTextFromGridItem(7)),
+                                Double.parseDouble(getTextFromGridItem(8))
+                        );
+                        makePopUp("Ticket edited", "You have successfully edited the user.");
+                    } else {
+                        makePopUp("Ticket not edited", "You haven't changed anything.");
+                    }
+                } else {
+                    ((ContractTypeViewModel) viewModel).registerContractType(
+                            // priority, ticketType, title, description, remarks, attachments, customerId
+                            getTextFromGridItem(0),
+                            ContractTypeStatus.valueOf(getTextFromGridItem(1)),
+                            Boolean.parseBoolean(getTextFromGridItem(2)),
+                            Boolean.parseBoolean(getTextFromGridItem(3)),
+                            Boolean.parseBoolean(getTextFromGridItem(4)),
+                            Timestamp.valueOf(getTextFromGridItem(5)),
+                            Integer.parseInt(getTextFromGridItem(6)),
+                            Integer.parseInt(getTextFromGridItem(7)),
+                            Double.parseDouble(getTextFromGridItem(8))
+                    );
+                }
+            }
 	    	editing = false;
 	    	viewModel.setFieldModified(false);
             setDetailOnModifying();
@@ -232,7 +267,11 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 	            addDetailsToGridDetails(((TicketViewModel) viewModel).getDetails());
 	            txtDetailsTitle.setText("Details of ticket: " + ((TicketViewModel) viewModel).getIdOfSelectedTicket());
 	            btnModify.setText("Modify Ticket");
-	        }
+	        } else if (viewModel instanceof ContractTypeViewModel) {
+                addDetailsToGridDetails(((ContractTypeViewModel) viewModel).getDetails());
+                txtDetailsTitle.setText("Details of ticket: " + ((ContractTypeViewModel) viewModel).getNameSelectedActemiumContractType());
+                btnModify.setText("Modify ContractType");
+            }
         btnModify.setVisible(true);
         txtErrorMessage.setVisible(false);
         editing = true;
@@ -270,7 +309,18 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 			btnModify.setVisible(true);
 			assert fields != null;
 			addItemsToGridNewTicket(fields);
-		} 
+		} else if (viewModel instanceof ContractTypeViewModel) {
+            if (((ContractTypeViewModel) viewModel).getCurrentState().equals(GUIEnum.CONTRACTTYPE)) {
+                fields = ((ContractTypeViewModel) viewModel).getDetailsNewContractType();
+                txtDetailsTitle.setText("Add new contract type");
+                btnModify.setText("Add new contract type");
+            } else {
+                fields = null;
+            }
+            btnModify.setVisible(true);
+            assert fields != null;
+            addItemsToGridNewTicket(fields);
+        }
     }
 
     private void addItemsToGridNewUser(ArrayList<String> fields){

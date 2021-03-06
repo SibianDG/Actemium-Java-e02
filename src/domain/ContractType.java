@@ -2,6 +2,7 @@ package domain;
 
 import domain.enums.ContractTypeStatus;
 import domain.enums.Timestamp;
+import javafx.beans.property.StringProperty;
 
 public interface ContractType {
 	
@@ -25,5 +26,7 @@ public interface ContractType {
 
 	public double getPrice();
 
+	public StringProperty getContractTypeStatusProperty();
 
+	public StringProperty getContractTypeNameString();
 }
