@@ -116,7 +116,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			case TICKET -> {
 				this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).getActemiumTickets();
 //				this.tableView.setPrefWidth(1000.0);
-				this.tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+				//this.tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 				this.tableViewData = new FilteredList<>(mainData);
 				//propertyMap.put("Number", item -> ((ActemiumTicket) item).numberProperty());
 				propertyMap.put("ID", item -> ((Ticket) item).ticketIdProperty());
@@ -237,7 +237,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		ComboBox c = new ComboBox(list);
 		
 		switch(itemText) {
-	        case "UserStatus" -> {
+	        case "UserStatus", "TicketStatus", "ContractStatus", "ContractTypeStatus" -> {
 	        	c.getSelectionModel().select("SELECT STATUS");
 	        }
 	        case "EmployeeRole" -> {
@@ -248,16 +248,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 	        }
 	        case "TicketType" -> {
 	        	c.getSelectionModel().select("SELECT TYPE");
-	        }	        
-		    case "TicketStatus" -> {
-		    	c.getSelectionModel().select("SELECT STATUS");
-		    }                
-		    case "ContractStatus" -> {
-		    	c.getSelectionModel().select("SELECT STATUS");
-		    }
-		    case "ContractTypeStatus" -> {
-		    	c.getSelectionModel().select("SELECT STATUS");
-		    }
+	        }
 		    case "Timestamp" -> {
 		    	c.getSelectionModel().select("SELECT TIMESTAMP");
 		    }
@@ -286,8 +277,10 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			} else if (object instanceof ComboBox) {
 				ComboBox comboBox = (ComboBox) object;
 
+
 				if (comboBox.getSelectionModel().getSelectedItem() != null &&  !comboBox.getSelectionModel().getSelectedItem().toString().contains("SELECT")) {
-//		        	
+					System.out.println("Check filters after check: "+comboBox.getSelectionModel().getSelectedItem().toString());
+//
 //				 switch(object.getClass().getSimpleName()) {
 //			        case "UserStatus" -> {
 //			        	predicates.add(giveFilterPredicate("UserStatus", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
@@ -344,25 +337,34 @@ public class TableViewPanelCompanion<T> extends GridPane {
 					
 					ArrayList<Timestamp> timestampArrayList = new ArrayList<>(Arrays.asList(Timestamp.values()));
 					List<String> timestampStringArray = timestampArrayList.stream().map(Timestamp::toString).collect(Collectors.toList());
-					
 
-					if (userStatusStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
-						predicates.add(giveFilterPredicate("UserStatus", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));					
-					} else if (employeeRoleStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
-						predicates.add(giveFilterPredicate("EmployeeRole", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
-					} else if (userStatusRoleStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
-						predicates.add(giveFilterPredicate("TicketPriority", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
-					} else if (ticketTypeStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
-						predicates.add(giveFilterPredicate("TicketType", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
-					} else if (ticketStatusStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
-						predicates.add(giveFilterPredicate("TicketStatus", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
-					} else if (contractStatusStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
-						predicates.add(giveFilterPredicate("ContractStatus", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
-					} else if (contractTypeStatusStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
-						predicates.add(giveFilterPredicate("ContractTypeStatus", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
-					} else if (timestampStringArray.contains(comboBox.getSelectionModel().getSelectedItem().toString())){
-						predicates.add(giveFilterPredicate("Timestamp", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
+
+					String selectedItem = comboBox.getSelectionModel().getSelectedItem().toString();
+
+					if (currentState.equals(GUIEnum.CONTRACTTYPE)){
+						System.out.println("CONTRACTTYPE");
+						if (contractStatusStringArray.contains(selectedItem)){
+							predicates.add(giveFilterPredicate("ContractStatus", selectedItem.toLowerCase()));
+						} else if (contractTypeStatusStringArray.contains(selectedItem)){
+							System.out.println("yea");
+							predicates.add(giveFilterPredicate("ContractTypeStatus", selectedItem.toLowerCase()));
+						}
+					} else {
+						if (userStatusStringArray.contains(selectedItem)){
+							predicates.add(giveFilterPredicate("UserStatus", selectedItem.toLowerCase()));
+						} else if (employeeRoleStringArray.contains(selectedItem)){
+							predicates.add(giveFilterPredicate("EmployeeRole", selectedItem.toLowerCase()));
+						} else if (userStatusRoleStringArray.contains(selectedItem)){
+							predicates.add(giveFilterPredicate("TicketPriority", selectedItem.toLowerCase()));
+						} else if (ticketTypeStringArray.contains(selectedItem)){
+							predicates.add(giveFilterPredicate("TicketType", selectedItem.toLowerCase()));
+						} else if (ticketStatusStringArray.contains(selectedItem)){
+							predicates.add(giveFilterPredicate("TicketStatus", selectedItem.toLowerCase()));
+						} else if (timestampStringArray.contains(selectedItem)){
+							predicates.add(giveFilterPredicate("Timestamp", selectedItem.toLowerCase()));
+						}
 					}
+
 				}
 			}
 		});
@@ -522,6 +524,9 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				return newPredicate;				
 			}
 		} else if (currentState.equals(GUIEnum.CONTRACTTYPE)){
+			
+			System.out.println("IN FILTER CONTRACTTYPE");
+			System.out.println("filterText " + filterText);
 			//TODO
 			if (fieldName.length() > 0 && !filterText.contains("select")){
 
@@ -535,7 +540,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 					case "Type" -> {
 						newPredicate = e -> e.getTimestamp().toString().toLowerCase().equals(filterText);
 					}
-					case "Status" -> {
+					case "ContractTypeStatus" -> {
 						newPredicate = e -> e.getContractTypeStatus().toString().toLowerCase().equals(filterText);
 					}
 					default -> throw new IllegalStateException("Unexpected value: " + fieldName);
@@ -545,6 +550,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		} else if (currentState.equals(GUIEnum.CONTRACT)){
 			//TODO
 			if (fieldName.length() > 0 && !filterText.contains("select")){
+				System.out.println("filterText " + filterText);
 
 				Predicate<Contract> newPredicate;
 				

@@ -82,7 +82,7 @@ public class LoginController extends GuiController {
                 tryLogin();
         });
 
-        txfUsername.setText("Admin123");
+        txfUsername.setText("Sup123");
         pwfPassword.setText("Passwd123&");
 
 
