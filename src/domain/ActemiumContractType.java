@@ -2,24 +2,29 @@ package domain;
 
 import domain.enums.ContractTypeStatus;
 import domain.enums.Timestamp;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 import java.io.Serial;
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Access(AccessType.FIELD)
 public class ActemiumContractType implements ContractType, Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	private String name;
-	@Enumerated(EnumType.STRING)
-	private ContractTypeStatus contractTypeStatus;
+
+	@Transient
+	private StringProperty ContractTypeNameString = new SimpleStringProperty();
+
+	@Transient
+	private StringProperty contractTypeStatusProperty = new SimpleStringProperty();
+
 	private boolean hasEmail;
 	private boolean hasPhone;
 	private boolean hasApplication;
@@ -53,6 +58,14 @@ public class ActemiumContractType implements ContractType, Serializable {
 		setPrice(price);
 	}
 
+	public StringProperty getContractTypeNameString() {
+		return ContractTypeNameString;
+	}
+
+	public void setContractTypeNameString(String name) {
+		this.ContractTypeNameString.set(String.valueOf(name));
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -64,15 +77,21 @@ public class ActemiumContractType implements ContractType, Serializable {
 		}
 		//TODO check if contractTypeName is not already taken,
 		// two contractTypes can't have the same name
+		setContractTypeNameString(name);
 		this.name = name;
 	}
 
+	@Enumerated(EnumType.STRING)
 	public ContractTypeStatus getContractTypeStatus() {
-		return contractTypeStatus;
+		return ContractTypeStatus.valueOf(contractTypeStatusProperty.get());
 	}
 
 	public void setContractTypeStatus(ContractTypeStatus contractTypeStatus) {
-		this.contractTypeStatus = contractTypeStatus;
+		this.contractTypeStatusProperty.set(contractTypeStatus.toString());
+	}
+
+	public StringProperty getContractTypeStatusProperty() {
+		return this.contractTypeStatusProperty;
 	}
 
 	public boolean isHasEmail() {

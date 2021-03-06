@@ -1,7 +1,7 @@
 package start;
 
-import domain.ActemiumTicket;
-import domain.PopulateDB;
+import domain.*;
+import domain.facades.ContractTypeFacade;
 import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
 import domain.manager.Actemium;
@@ -27,14 +27,17 @@ public class StartUpGUI extends Application {
 
         try {
             UserDaoJpa userDaoJpa= new UserDaoJpa();
-            GenericDaoJpa ticketDaoJpa = new GenericDaoJpa<>(ActemiumTicket.class);
+            GenericDaoJpa<ActemiumTicket> ticketDaoJpa = new GenericDaoJpa<>(ActemiumTicket.class);
+            GenericDaoJpa<ActemiumContractType> contractTypeDaoJpa = new GenericDaoJpa<>(ActemiumContractType.class);
+            GenericDaoJpa<ActemiumContract> contractDaoJpa = new GenericDaoJpa<>(ActemiumContract.class);
             PopulateDB populateDB = new PopulateDB();
-            populateDB.run(userDaoJpa);
+            populateDB.run(userDaoJpa,contractTypeDaoJpa);
 
-            Actemium actemium = new Actemium(userDaoJpa, ticketDaoJpa);
+            Actemium actemium = new Actemium(userDaoJpa, ticketDaoJpa, contractTypeDaoJpa, contractDaoJpa);
             UserFacade userFacade = new UserFacade(actemium);
-            TicketFacade ticketFacade = new TicketFacade(actemium);       
-            LoginController root = new LoginController(userFacade, ticketFacade);
+            TicketFacade ticketFacade = new TicketFacade(actemium);
+            ContractTypeFacade contractTypeFacade = new ContractTypeFacade(actemium);
+            LoginController root = new LoginController(userFacade, ticketFacade, contractTypeFacade);
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("styles.css").toString());
             primaryStage.setScene(scene);

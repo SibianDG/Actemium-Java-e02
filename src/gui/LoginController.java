@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.persistence.EntityNotFoundException;
 
+import domain.facades.ContractTypeFacade;
 import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
 import exceptions.BlockedUserException;
@@ -26,6 +27,7 @@ public class LoginController extends GuiController {
 		
     private UserFacade userFacade;
 	private TicketFacade ticketFacade;
+    private ContractTypeFacade contractTypeFacade;
 	
     @FXML
     private Text txtTitle;
@@ -48,12 +50,14 @@ public class LoginController extends GuiController {
     @FXML
     private Text txtErrorLogin;
 
-    public LoginController(UserFacade userFacade, TicketFacade ticketFacade){
+    public LoginController(UserFacade userFacade, TicketFacade ticketFacade, ContractTypeFacade contractTypeFacade){
         super();
         
         this.userFacade = userFacade;
         
         this.ticketFacade = ticketFacade;
+
+        this.contractTypeFacade = contractTypeFacade;
 
 
         try {
@@ -96,7 +100,7 @@ public class LoginController extends GuiController {
                 txtErrorLogin.setOpacity(1);
             } else {
                 userFacade.signIn(txfUsername.getText(), pwfPassword.getText());
-                DashboardFrameController dashboardController = new DashboardFrameController(userFacade, ticketFacade);
+                DashboardFrameController dashboardController = new DashboardFrameController(userFacade, ticketFacade, contractTypeFacade);
                 Scene scene = new Scene(dashboardController);
                 Stage stage = (Stage) this.getScene().getWindow();
                 stage.setTitle(LanguageResource.getString("dashboard")); //TODO review LanguageResource

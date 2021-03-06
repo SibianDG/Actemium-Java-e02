@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import domain.facades.ContractTypeFacade;
 import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
 import gui.controllers.GuiController;
+import gui.viewModels.ContractTypeViewModel;
 import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
@@ -39,6 +41,7 @@ public class DashboardFrameController <T> extends GuiController {
 	// Facades
     private final UserFacade userFacade;
 	private final TicketFacade ticketFacade;
+    private final ContractTypeFacade contractTypeFacade;
 
     private UserViewModel userViewModel;
 	//private TicketViewModel ticketViewModel;
@@ -79,12 +82,14 @@ public class DashboardFrameController <T> extends GuiController {
     private DetailsPanelController detailsPanelController;
 
 //    public DashboardFrameController(Actemium actemium, UserFacade userFacade) throws FileNotFoundException {
-    public DashboardFrameController(UserFacade userFacade, TicketFacade ticketFacade) throws FileNotFoundException {
+    public DashboardFrameController(UserFacade userFacade, TicketFacade ticketFacade, ContractTypeFacade contractTypeFacade) throws FileNotFoundException {
         super();
         
         this.userFacade = userFacade;
         
         this.ticketFacade = ticketFacade;
+
+        this.contractTypeFacade = contractTypeFacade;
 
         this.userViewModel = new UserViewModel(userFacade);
 
@@ -122,8 +127,8 @@ public class DashboardFrameController <T> extends GuiController {
                 itemIcons = new String[]{"icon_manage", "icon_manage"};
             }
             case "SUPPORT_MANAGER" -> {
-                itemNames = new String[]{"manage knowledge base", "create ticket", "oustanding tickets", "resolved tickets", "statistics"};
-                itemIcons = new String[]{"icon_manage", "icon_create", "icon_outstanding", "icon_resolved", "icon_statistics"};
+                itemNames = new String[]{"manage knowledge base", "outstanding tickets", "resolved tickets", "statistics", "Manage ContractTypes", "Manage Contracts"};
+                itemIcons = new String[]{"icon_manage", "icon_outstanding", "icon_resolved", "icon_statistics", "icon_manage", "icon_manage"};
             }
             case "TECHNICIAN" -> {
                 itemNames = new String[]{"consult knowledge base", "outstanding tickets", "resolved tickets", "statistics"};
@@ -207,6 +212,11 @@ public class DashboardFrameController <T> extends GuiController {
             TicketViewModel viewModel = new TicketViewModel(ticketFacade);
             viewModel.setActemiumTickets(ticketFacade.giveActemiumTickets());
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, viewModel, GUIEnum.TICKET);
+            switchToManageScreen(name, tableViewPanelCompanion, viewModel);
+        } else if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("contracttype")) {
+            ContractTypeViewModel viewModel = new ContractTypeViewModel(contractTypeFacade);
+            viewModel.setActemiumContractTypes(contractTypeFacade.giveActemiumContractTypes());
+            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, viewModel, GUIEnum.CONTRACTTYPE);
             switchToManageScreen(name, tableViewPanelCompanion, viewModel);
         } else {
             makePopUp(name);

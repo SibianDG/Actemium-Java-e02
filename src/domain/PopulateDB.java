@@ -1,16 +1,14 @@
 package domain;
 
-import domain.enums.EmployeeRole;
-import domain.enums.TicketPriority;
-import domain.enums.TicketType;
-import domain.enums.UserStatus;
+import domain.enums.*;
+import repository.GenericDao;
 import repository.UserDaoJpa;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
 
 public class PopulateDB {
-    public void run(UserDaoJpa userDao) {
+    public void run(UserDaoJpa userDao, GenericDao<ActemiumContractType> contractTypeDao) {
     	System.out.println("DBTester - creating and persisting multiple user objects");        
         userDao.startTransaction();
         
@@ -43,6 +41,7 @@ public class PopulateDB {
         ticket04.addTechnician(tech2);
         ticket05.addTechnician(tech2);
         userDao.insert(new ActemiumEmployee("Admin123", "Passwd123&", "Johan", "Van Schoor","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.ADMINISTRATOR));
+        userDao.insert(new ActemiumEmployee("Sup123", "Passwd123&", "Johan", "Van Schoor","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.SUPPORT_MANAGER));
         userDao.insert(new ActemiumEmployee("Tech123", "Passwd123&", "Johan", "Van Schoor","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.TECHNICIAN));
         userDao.insert(new ActemiumEmployee("thomas123", "Passwd123&", "Thomas", "Dirven","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.ADMINISTRATOR));
         userDao.insert(new ActemiumEmployee("isaac123", "Passwd123&", "Isaac", "Bauters","Kerstraat 71","094812384","isaac.bauters@hogent.be", EmployeeRole.ADMINISTRATOR));
@@ -75,8 +74,19 @@ public class PopulateDB {
             pope.addTicket(t);
         }
         userDao.insert(pope);
-
-
         userDao.commitTransaction();
+
+        contractTypeDao.startTransaction();
+        ActemiumContractType contractType = new ActemiumContractType("contractType", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.ALWAYS, 10, 20, 250.89);
+        ActemiumContractType contractType2 = new ActemiumContractType("contractType2", ContractTypeStatus.INACTIVE, true, false, true, Timestamp.WORKINGHOURS, 76, 345, 250.89);
+        ActemiumContractType contractType3 = new ActemiumContractType("contractType3", ContractTypeStatus.ACTIVE, true, true, false, Timestamp.ALWAYS, 10, 20, 2345.34);
+        ActemiumContractType contractType4 = new ActemiumContractType("contractType4", ContractTypeStatus.ACTIVE, false, true, true, Timestamp.WORKINGHOURS, 5, 45, 2345);
+        contractTypeDao.insert(contractType);
+        contractTypeDao.insert(contractType2);
+        contractTypeDao.insert(contractType3);
+        contractTypeDao.insert(contractType4);
+        contractTypeDao.commitTransaction();
+
     }
+
 }
