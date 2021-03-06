@@ -47,7 +47,8 @@ public class ContractTypeViewModel extends ViewModel {
     }
 
     public ArrayList<String> getDetailsNewContractType(){
-        return new ArrayList<String>(Arrays.asList("Name", "Email", "Phone", "Application", "Timestamp ticket creation", "Max handling time", "Min throughput time contract", "Price contract"));
+
+        return new ArrayList<String>(Arrays.asList("Name", "Status", "Email", "Phone", "Application", "Timestamp ticket creation", "Max handling time", "Min throughput time contract", "Price contract"));
     }
 
     public Map<String, Object> getDetails() {
@@ -77,7 +78,9 @@ public class ContractTypeViewModel extends ViewModel {
 
     public void modifyContractType(String name, ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone,
                                    boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) {
-        contractTypeFacade.modifyContractType((ActemiumContractType) selectedActemiumContractType,  name, contractTypeStatus, hasEmail, hasPhone, hasApplication, timestamp, maxHandlingTime, minThroughputTime,price );
+        //ActemiumContractType contractType, String name, ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone,
+        //                                   boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) {
+        contractTypeFacade.modifyContractType((ActemiumContractType) selectedActemiumContractType, name, contractTypeStatus, hasEmail, hasPhone, hasApplication, timestamp, maxHandlingTime, minThroughputTime, price );
     }
 
     public GUIEnum getCurrentState() {

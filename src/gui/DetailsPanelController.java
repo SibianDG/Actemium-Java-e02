@@ -2,11 +2,7 @@ package gui;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import domain.ActemiumEmployee;
 import domain.ContractType;
@@ -171,7 +167,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 		                            , getTextFromGridItem(8)
 		                            , new ArrayList<ActemiumEmployee>()
 	                        );	                    
-	                    makePopUp("Ticket edited", "You have successfully edited the user.");
+	                    makePopUp("Ticket edited", "You have successfully edited the ticket.");
 	                } else {
 	                    makePopUp("Ticket not edited", "You haven't changed anything.");
 	                }
@@ -184,31 +180,34 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 	                            , getTextFromGridItem(5)
 	                            , getTextFromGridItem(6)
 	                            , getTextFromGridItem(7)
-	                            , Long.valueOf(getTextFromGridItem(4))
+	                            , Long.parseLong(getTextFromGridItem(4))
 	                    );
 	            }
 	    	} else if (viewModel instanceof ContractTypeViewModel) {
                 if (editing) {
                     if(viewModel.isFieldModified()){
                         ((ContractTypeViewModel) viewModel).modifyContractType(
+                        //        (String name, ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone,
+                        //boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price)
                                 // priority, ticketType, title, description, remarks, attachments, technicians
-                               getTextFromGridItem(0),
-                                ContractTypeStatus.valueOf(getTextFromGridItem(1)),
-                                Boolean.parseBoolean(getTextFromGridItem(2)),
-                                Boolean.parseBoolean(getTextFromGridItem(3)),
-                                Boolean.parseBoolean(getTextFromGridItem(4)),
-                                Timestamp.valueOf(getTextFromGridItem(5)),
-                                Integer.parseInt(getTextFromGridItem(6)),
-                                Integer.parseInt(getTextFromGridItem(7)),
-                                Double.parseDouble(getTextFromGridItem(8))
+                               getTextFromGridItem(0), //name
+                                ContractTypeStatus.valueOf(getTextFromGridItem(1)), //staus
+                                Boolean.parseBoolean(getTextFromGridItem(2)), //email
+                                Boolean.parseBoolean(getTextFromGridItem(3)), //phone
+                                Boolean.parseBoolean(getTextFromGridItem(4)), //application
+                                Timestamp.valueOf(getTextFromGridItem(5)), //Timestamp
+                                Integer.parseInt(getTextFromGridItem(6)), //max hand time
+                                Integer.parseInt(getTextFromGridItem(7)), //min troughputtime contract
+                                Double.parseDouble(getTextFromGridItem(8).replace(",", ".")) //price contract
                         );
-                        makePopUp("Contract type edited", "You have successfully edited the user.");
+                        System.out.println("Edited ContractTypeViewModel");
+                        makePopUp("Contract type edited", "You have successfully edited the Contract type.");
                     } else {
                         makePopUp("Contract type not edited", "You haven't changed anything.");
                     }
                 } else {
                     ((ContractTypeViewModel) viewModel).registerContractType(
-                            // priority, ticketType, title, description, remarks, attachments, customerId
+//"Name", "Status", "Email", "Phone", "Application", "Timestamp ticket creation", "Max handling time", "Min throughput time contract", "Price contract"
                             getTextFromGridItem(0),
                             ContractTypeStatus.valueOf(getTextFromGridItem(1)),
                             Boolean.parseBoolean(getTextFromGridItem(2)),
@@ -217,7 +216,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                             Timestamp.valueOf(getTextFromGridItem(5)),
                             Integer.parseInt(getTextFromGridItem(6)),
                             Integer.parseInt(getTextFromGridItem(7)),
-                            Double.parseDouble(getTextFromGridItem(8))
+                            Double.parseDouble(getTextFromGridItem(8).replace(",", "."))
                     );
                 }
             }
@@ -319,7 +318,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             }
             btnModify.setVisible(true);
             assert fields != null;
-            addItemsToGridNewTicket(fields);
+            addItemsToGridNewContractType(fields);
         }
     }
 
@@ -329,15 +328,12 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         gridDetails.addColumn(1);
 
         Map<Integer, String> randomValues = Map.of(
-                0, "Username9999"
-                , 1, "FirstNameeee"
-                , 2, "LastNameeee"
-                , 3, "Stationstraat 99"
-                , 4, "test@gmail.com"
-                , 5, "094812384"
-                , 6, EmployeeRole.SUPPORT_MANAGER.toString()
+                0, "ContractTypeeeeee"
+                , 1, "12"
+                , 2, "2"
+                , 3, "500"
         );
-
+        int randomValuesCounter = 0;
         for (int i = 0; i < fields.size(); i++) {
             gridDetails.addRow(i);
 
@@ -348,8 +344,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                 node = makeComboBox(EmployeeRole.ADMINISTRATOR);
             } else {
                 TextField textField;
-                if(fields.size() <= 7){
-                    textField = new TextField(randomValues.get(i));
+                if(fields.size() <= randomValues.size()){
+                    textField = new TextField(randomValues.get(randomValuesCounter++));
                 } else {
                     textField = new TextField();
                 }
@@ -364,23 +360,22 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     	gridDetails.getChildren().clear();
     	gridDetails.addColumn(0);
     	gridDetails.addColumn(1);
-    	
-    	Map<Integer, String> randomValues = Map.of(
-    			0, "WieldingRobot05 Defect"
-    			, 1, LocalDate.now().toString()
-    			, 2, TicketPriority.P3.toString()
-    			, 3, TicketType.OTHER.toString()
-    			, 4, "001"
-    			, 5, "WieldingRobot stopped functioning this morning at 9am."
-    			, 6, "Call me asap 094812384"
-    			, 7, "brokenRobot.png"
-    			);
-    	
+
+        Map<Integer, String> randomValues = Map.of(
+                0, "Username9999"
+                , 1, "FirstNameeee"
+                , 2, "LastNameeee"
+                , 3, "Stationstraat 99"
+                , 4, "test@gmail.com"
+                , 5, "094812384"
+                , 6, EmployeeRole.SUPPORT_MANAGER.toString()
+        );
+
     	for (int i = 0; i < fields.size(); i++) {
     		gridDetails.addRow(i);
-    		
+
     		gridDetails.add(makeNewLabel(fields.get(i)), 0, i);
-    		
+
     		Node node;
 			if (fields.get(i).toLowerCase().contains("priority")) {
 				node = makeComboBox(TicketPriority.P3);
@@ -395,9 +390,55 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 //				}
 				textField.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 				node = textField;
-			}    		
+			}
     		gridDetails.add(node, 1, i);
     	}
+    }
+
+    private void addItemsToGridNewContractType(ArrayList<String> fields){
+        gridDetails.getChildren().clear();
+        gridDetails.addColumn(0);
+        gridDetails.addColumn(1);
+
+        Map<Integer, String> randomValues = Map.of(
+                0, "ContractTypeeeeee"
+                , 1, "12"
+                , 2, "2"
+                , 3, "500"
+        );
+
+        //"Name", "Status", "Email", "Phone", "Application", "Timestamp ticket creation", "Max handling time", "Min throughput time contract", "Price contract"
+
+        int randomValuesCounter = 0;
+
+        for (int i = 0; i < fields.size(); i++) {
+            String itemName = fields.get(i);
+
+            gridDetails.addRow(i);
+
+            gridDetails.add(makeNewLabel(itemName), 0, i);
+
+            itemName = itemName.toLowerCase();
+
+            Node node;
+            if (itemName.contains("status")) {
+                node = makeComboBox(ContractTypeStatus.ACTIVE);
+            } else if (itemName.contains("timestamp ticket creation")) {
+                node = makeComboBox(Timestamp.ALWAYS);
+            } else if (itemName.contains("email") || itemName.contains("phone") || itemName.contains("application")){
+                node = makeComboBox(false);
+            } else {
+                TextField textField;
+//				if (fields.size() <= 9) {
+                textField = new TextField(randomValues.get(randomValuesCounter++));
+//				} else {
+//					textField = new TextField();
+//				}
+                textField.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+                node = textField;
+            }
+            gridDetails.add(node, 1, i);
+        }
     }
 
     private Label makeNewLabel(String text){
@@ -454,37 +495,42 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     }
 
     private ComboBox makeComboBox(Object o){
+
+
         ObservableList list;
-        
-        switch(o.getClass().getSimpleName()) {
-	        case "UserStatus" -> {
-	        	list = FXCollections.observableList(Arrays.asList(UserStatus.values()));
-	        }
-	        case "EmployeeRole" -> {
-	            list = FXCollections.observableList(Arrays.asList(EmployeeRole.values()));
-	        }
-	        case "TicketPriority" -> {
-	            list = FXCollections.observableList(Arrays.asList(TicketPriority.values()));
-	        }
-	        case "TicketType" -> {
-	        	list = FXCollections.observableList(Arrays.asList(TicketType.values()));
-	        }        
-		    case "TicketStatus" -> {
-		    	list = FXCollections.observableList(Arrays.asList(TicketStatus.values()));
-		    }                
-		    case "ContractStatus" -> {
-		    	list = FXCollections.observableList(Arrays.asList(ContractStatus.values()));
-		    }
-		    case "ContractTypeStatus" -> {
-		    	list = FXCollections.observableList(Arrays.asList(ContractTypeStatus.values()));
-		    }
-		    case "Timestamp" -> {
-		    	list = FXCollections.observableList(Arrays.asList(Timestamp.values()));
-		    }
-	        default -> {
-	        	list = FXCollections.observableList(Arrays.asList(UserStatus.values()));
-	        }
-        } 
+        if (o instanceof Boolean){
+            list = FXCollections.observableList(Arrays.asList(true, false));
+        } else {
+            switch(o.getClass().getSimpleName()) {
+                case "UserStatus" -> {
+                    list = FXCollections.observableList(Arrays.asList(UserStatus.values()));
+                }
+                case "EmployeeRole" -> {
+                    list = FXCollections.observableList(Arrays.asList(EmployeeRole.values()));
+                }
+                case "TicketPriority" -> {
+                    list = FXCollections.observableList(Arrays.asList(TicketPriority.values()));
+                }
+                case "TicketType" -> {
+                    list = FXCollections.observableList(Arrays.asList(TicketType.values()));
+                }
+                case "TicketStatus" -> {
+                    list = FXCollections.observableList(Arrays.asList(TicketStatus.values()));
+                }
+                case "ContractStatus" -> {
+                    list = FXCollections.observableList(Arrays.asList(ContractStatus.values()));
+                }
+                case "ContractTypeStatus" -> {
+                    list = FXCollections.observableList(Arrays.asList(ContractTypeStatus.values()));
+                }
+                case "Timestamp" -> {
+                    list = FXCollections.observableList(Arrays.asList(Timestamp.values()));
+                }
+                default -> {
+                    list = FXCollections.observableList(Arrays.asList(UserStatus.values()));
+                }
+            }
+        }
         ComboBox c = new ComboBox(list);
         c.getSelectionModel().select(o);
         c.valueProperty().addListener(e -> {

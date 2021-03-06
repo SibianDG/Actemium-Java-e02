@@ -34,6 +34,7 @@ public class ContractTypeFacade implements Facade{
         contractType.setMinThroughputTime(minThroughputTime);
         contractType.setPrice(price);
 
+        System.out.println("All setters are ok.");
         actemium.modifyContractType(contractType);
     }
 
