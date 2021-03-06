@@ -8,19 +8,17 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import domain.ActemiumCustomer;
-import domain.ActemiumEmployee;
-import domain.ActemiumTicket;
 import domain.Contract;
 import domain.ContractType;
 import domain.Customer;
 import domain.Employee;
 import domain.Ticket;
-import domain.UserModel;
+import domain.User;
 import domain.enums.ContractStatus;
 import domain.enums.ContractTypeStatus;
 import domain.enums.EmployeeRole;
@@ -40,7 +38,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -254,7 +256,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 	        	c.getSelectionModel().select("SELECT");
 	        }
 	    } 
-		
+		//TODO e.g. select technician and admin at the same time
 //		c.getSelectionModel().select(SelectionMode.MULTIPLE);
 		c.valueProperty().addListener(e -> {
 			checkFilters();
@@ -370,14 +372,40 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		tableView.setItems(tableViewData);
 		
 		tableView.setOnMouseClicked((MouseEvent m) -> {
-			T data = tableView.getSelectionModel().selectedItemProperty().get();
-			if (data instanceof Employee || data instanceof Customer){
-				((UserViewModel) viewModel).setSelectedUser((UserModel) data);
-			} else if (data instanceof ActemiumTicket) {
-				((TicketViewModel) viewModel).setSelectedActemiumTicket((ActemiumTicket) data);
+			boolean showNewObject = true;
+			if(viewModel.isFieldModified()) {
+				//popup
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.setTitle("Fields were modified without saving!");
+				alert.setHeaderText("Fields were modified without saving!");
+				alert.setContentText("Choose your option.");
+
+				ButtonType discardChanges = new ButtonType("Discard Changes");
+				ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+
+				alert.getButtonTypes().setAll(discardChanges, buttonTypeCancel);
+
+				Optional<ButtonType> result = alert.showAndWait();
+				if (result.get() == discardChanges){
+					// using this variable with if to avoid duplicate code
+					showNewObject = true;
+					viewModel.setFieldModified(false);
+				} else {
+				    // ... user chose CANCEL or closed the dialog
+					// nothing happens -> back to same detail panel
+					showNewObject = false;
+				}
+			} 
+			// using this if to avoid duplicate code
+			if (showNewObject) {
+				T data = tableView.getSelectionModel().selectedItemProperty().get();
+				if (data instanceof Employee || data instanceof Customer){
+					((UserViewModel) viewModel).setSelectedUser((User) data);
+				} else if (data instanceof Ticket) {
+					((TicketViewModel) viewModel).setSelectedActemiumTicket((Ticket) data);
+				}
 			}
-		});
-		
+		});		
 	}
 
 	@FXML

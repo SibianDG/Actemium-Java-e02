@@ -208,7 +208,7 @@ public class DashboardFrameController <T> extends GuiController {
             switchToManageScreen(name, tableViewPanelCompanion, userViewModel);
         } else if (name.toLowerCase().contains("ticket") && name.toLowerCase().contains("outstanding")) {
             TicketFacade ticketFacade = new TicketFacade(actemium);
-            TicketViewModel viewModel = new TicketViewModel(ticketFacade);
+            TicketViewModel viewModel = new TicketViewModel(ticketFacade, actemium);
             viewModel.setActemiumTickets(actemium.giveActemiumTickets());
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, viewModel, GUIEnum.TICKET);
             switchToManageScreen(name, tableViewPanelCompanion, viewModel);

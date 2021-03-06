@@ -4,8 +4,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 
 import domain.LoginAttempt;
-import domain.enums.LoginStatus;
 import domain.UserModel;
+import domain.enums.LoginStatus;
 import languages.LanguageResource;
 
 public class UserDaoJpa extends GenericDaoJpa<UserModel> implements UserDao {
@@ -36,4 +36,5 @@ public class UserDaoJpa extends GenericDaoJpa<UserModel> implements UserDao {
 			throw new EntityNotFoundException(LanguageResource.getString("wrongUsernamePasswordCombination"));
 		}
 	}
+	
 }

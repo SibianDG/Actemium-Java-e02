@@ -241,6 +241,10 @@ public class Actemium {
 	
 	////////-TICKETFACADE-////////
 	
+	public UserModel findById(long userId){
+		return userDaoJpa.get(userId);
+	}
+	
 	public void registerTicket(ActemiumTicket ticket, ActemiumCustomer customer) {
 		userDaoJpa.startTransaction();
 		customer.addTicket(ticket);
@@ -257,6 +261,10 @@ public class Actemium {
 
 		actemiumTickets.add(index, ticket);
 		actemiumTickets.remove(index + 1);
+	}
+	
+	public Ticket getLastAddedTicket() {
+		return actemiumTickets.get(actemiumTickets.size()-1);
 	}
 
 	public ObservableList<Customer> giveActemiumCustomers() {

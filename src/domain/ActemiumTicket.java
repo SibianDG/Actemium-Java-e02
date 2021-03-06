@@ -93,9 +93,9 @@ public class ActemiumTicket implements Ticket, Serializable {
 		setAttachments(attachments);
 	}
 
-	// remarks and attachments are optional
+	// remarks and attachments are optional ( (none) is used so the field can be modified in gui)
 	public ActemiumTicket(TicketPriority ticketPriority, TicketType ticketType, String title, String description, ActemiumCustomer customer) {
-		this(ticketPriority, ticketType, title, description, customer, "", "");
+		this(ticketPriority, ticketType, title, description, customer, "(none)", "(none)");
 	}
 	
 	public String getTicketIdString() {

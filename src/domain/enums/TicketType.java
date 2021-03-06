@@ -5,5 +5,6 @@ public enum TicketType {
     SOFTWARE,
     INFRASTRUCTURE,
     DATABASE,
-    NETWORK
+    NETWORK,
+    OTHER
 }

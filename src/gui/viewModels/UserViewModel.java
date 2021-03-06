@@ -10,7 +10,7 @@ import domain.ActemiumCustomer;
 import domain.ActemiumEmployee;
 import domain.Customer;
 import domain.Employee;
-import domain.UserModel;
+import domain.User;
 import domain.enums.EmployeeRole;
 import domain.enums.UserStatus;
 import domain.facades.UserFacade;
@@ -24,7 +24,7 @@ public class UserViewModel extends ViewModel {
     private GUIEnum currentState;
     private final UserFacade userFacade;
     private final Actemium actemium;
-    private UserModel selectedUser;
+    private User selectedUser;
     private ObservableList<Employee> employees;
     private ObservableList<Customer> customers;
     
@@ -52,11 +52,14 @@ public class UserViewModel extends ViewModel {
         this.customers = customers;
     }
 
-    public void setSelectedUser(UserModel user) {
+    public void setSelectedUser(User user) {
         this.selectedUser = user;
         if (user != null){
+        	// How can the type still be ActemiumEmployee when we casted it to Employee?
+        	System.out.println(user.getClass().getSimpleName().toUpperCase());
         	// substring(8) to remove ACTEMIUM
             setCurrentState(GUIEnum.valueOf(user.getClass().getSimpleName().substring(8).toUpperCase()));
+//            setCurrentState(GUIEnum.valueOf(user.getClass().getSimpleName().toUpperCase()));
         }
         fireInvalidationEvent();
     }
@@ -70,6 +73,7 @@ public class UserViewModel extends ViewModel {
     }
 
     public Map<String, Object> getDetails(){
+//    	switch (selectedUser.getClass().getSimpleName().toLowerCase()) {
         switch (selectedUser.getClass().getSimpleName().substring(8).toLowerCase()) {
             case "employee" -> {
                 Employee employee = (Employee) selectedUser;
@@ -116,37 +120,40 @@ public class UserViewModel extends ViewModel {
         }
     }
 
-    public String getNameOfSelectedUser() {
-        return selectedUser.getFirstName() + " " + selectedUser.getLastName();
-    }
+	public String getNameOfSelectedUser() {
+		return selectedUser.getFirstName() + " " + selectedUser.getLastName();
+	}
 
-    public void registerEmployee(String username, String lastName, String firstName, String address,
-                                 String emailAddress, String phoneNumber, EmployeeRole role) {
-        userFacade.registerEmployee(username, "Passwd123&", firstName, lastName, address, phoneNumber, emailAddress, role);
-        setSelectedUser(actemium.findByUsername(username));
-    }
+	public void registerEmployee(String username, String lastName, String firstName, String address,
+			String emailAddress, String phoneNumber, EmployeeRole role) {
+		userFacade.registerEmployee(username, "Passwd123&", firstName, lastName, address, phoneNumber, emailAddress, role);
+		setSelectedUser(actemium.findByUsername(username));
+	}
 
-    public void modifyEmployee(String username, String password, String firstName, String lastName, String address,
-                               String phoneNumber, String emailAddress, EmployeeRole role, UserStatus status) {
-        userFacade.modifyEmployee( (ActemiumEmployee) selectedUser,  username, password, firstName,  lastName,  address,
-                 phoneNumber,  emailAddress,  role, status);
-    }
+	public void modifyEmployee(String username, String password, String firstName, String lastName, String address,
+			String phoneNumber, String emailAddress, EmployeeRole role, UserStatus status) {
+		userFacade.modifyEmployee((ActemiumEmployee) selectedUser, username, password, firstName, lastName, address,
+				phoneNumber, emailAddress, role, status);
+	}
 
-    public void registerCustomer(String username, String firstName, String lastName, String companyName, String companyAddress, String companyPhone) {
-    	ActemiumCompany company = new ActemiumCompany(companyName, companyAddress, companyPhone);
-        userFacade.registerCustomer(username, "Passwd123&", firstName, lastName, company);
-        setSelectedUser(actemium.findByUsername(username));
-    }
-    
-    public void modifyCustomer(String username, String password, String firstName, String lastName, String status) {
-        userFacade.modifyCustomer((ActemiumCustomer) this.selectedUser, username, password, firstName, lastName, ((ActemiumCustomer)selectedUser).getCompany(), UserStatus.valueOf(status));
-    }
+	public void registerCustomer(String username, String firstName, String lastName, String companyName,
+			String companyAddress, String companyPhone) {
+		ActemiumCompany company = new ActemiumCompany(companyName, companyAddress, companyPhone);
+		userFacade.registerCustomer(username, "Passwd123&", firstName, lastName, company);
+		setSelectedUser(actemium.findByUsername(username));
+	}
 
-    public GUIEnum getCurrentState() {
-        return currentState;
-    }
+	public void modifyCustomer(String username, String password, String firstName, String lastName, String status) {
+		userFacade.modifyCustomer((ActemiumCustomer) this.selectedUser, username, password, firstName, lastName,
+				((ActemiumCustomer) selectedUser).getCompany(), UserStatus.valueOf(status));
+	}
 
-    public void setCurrentState(GUIEnum currentState) {
-        this.currentState = currentState;
-    }
+	public GUIEnum getCurrentState() {
+		return currentState;
+	}
+
+	public void setCurrentState(GUIEnum currentState) {
+		this.currentState = currentState;
+	}
+	
 }

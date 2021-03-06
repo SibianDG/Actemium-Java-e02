@@ -8,7 +8,6 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import domain.ActemiumCustomer;
 import domain.ActemiumEmployee;
 import domain.enums.ContractStatus;
 import domain.enums.ContractTypeStatus;
@@ -47,7 +46,7 @@ import javafx.scene.text.TextAlignment;
 public class DetailsPanelController extends GridPane implements InvalidationListener {
 
     private final ViewModel viewModel;
-    private boolean editing = false, modified = false;
+    private boolean editing = false;
 
     @FXML
     private Text txtDetailsTitle;
@@ -76,7 +75,22 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
         gridDetails.setHgap(5);
         gridDetails.setVgap(5);
-        txtDetailsTitle.setText("No user is selected");
+        // TODO not working, error viewModel is null ?? how?
+        // This whole if block is for the title when nothing is selected
+//		if (viewModel instanceof UserViewModel) {
+//			if (((UserViewModel) viewModel).getCurrentState()
+//					.equals(GUIEnum.EMPLOYEE)) {
+//		        txtDetailsTitle.setText("No employee is selected");
+//			} else if (((UserViewModel) viewModel).getCurrentState()
+//					.equals(GUIEnum.CUSTOMER)) {
+//		        txtDetailsTitle.setText("No customer is selected");
+//			} else {
+//		        txtDetailsTitle.setText("No user is selected");
+//			}
+//		} else if (viewModel instanceof TicketViewModel) {
+//	        txtDetailsTitle.setText("No ticket is selected");
+//		}
+        txtDetailsTitle.setText("Nothing is selected");
         btnModify.setVisible(false);
         txtErrorMessage.setVisible(false);
     }
@@ -87,9 +101,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 	    try {
 	    	if (viewModel instanceof UserViewModel) {
             if (editing) {
-                if(modified){
-                    if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)){
-                        ((UserViewModel) viewModel).modifyEmployee(
+                if(viewModel.isFieldModified()){
+                	if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)){
+                    	((UserViewModel) viewModel).modifyEmployee(
                                 getTextFromGridItem(1)
                                 , getTextFromGridItem(2)
                                 , getTextFromGridItem(3)
@@ -109,7 +123,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 , getTextFromGridItem(11)
                         );
                     }
-                    makePopUp("User edited", "You have successfully edited the user.");
+                    makePopUp("User edited", "You have successfully edited the %s.");
                 } else {
                     makePopUp("User not edited", "You haven't changed anything.");
                 }
@@ -143,15 +157,16 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             // and click on add new ticket)            
 	    	} else if (viewModel instanceof TicketViewModel) {
 	    		if (editing) {
-	                if(modified){
+	                if(viewModel.isFieldModified()){
 	                        ((TicketViewModel) viewModel).modifyTicket(
 	                        		// priority, ticketType, title, description, remarks, attachments, technicians
 	                        		TicketPriority.valueOf(getTextFromGridItem(2))
 		                            , TicketType.valueOf(getTextFromGridItem(3))
+		                            , TicketStatus.valueOf(getTextFromGridItem(4))
 		                            , getTextFromGridItem(0)
-		                            , getTextFromGridItem(4)
-		                            , getTextFromGridItem(6)
+		                            , getTextFromGridItem(5)
 		                            , getTextFromGridItem(7)
+		                            , getTextFromGridItem(8)
 		                            , new ArrayList<ActemiumEmployee>()
 	                        );	                    
 	                    makePopUp("Ticket edited", "You have successfully edited the user.");
@@ -160,17 +175,19 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 	                }
 	            } else {
 	                    ((TicketViewModel) viewModel).registerTicket(
-	                            // priority, ticketType, title, description, remarks, attachments, customer
+	                            // priority, ticketType, title, description, remarks, attachments, customerId
 	                    		TicketPriority.valueOf(getTextFromGridItem(2))
 	                            , TicketType.valueOf(getTextFromGridItem(3))
 	                            , getTextFromGridItem(0)
-	                            , getTextFromGridItem(4)
 	                            , getTextFromGridItem(5)
 	                            , getTextFromGridItem(6)
-	                            , new ActemiumCustomer()
+	                            , getTextFromGridItem(7)
+	                            , Long.valueOf(getTextFromGridItem(4))
 	                    );
 	            }
 	    	}
+	    	editing = false;
+	    	viewModel.setFieldModified(false);
             setDetailOnModifying();
 
         //TODO: handle the correct error messages, not just all
@@ -225,6 +242,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 	    editing = false;
         ArrayList<String> fields = null;
 
+    	viewModel.setFieldModified(true);
+        
 		if (viewModel instanceof UserViewModel) {
 			if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)) {
 				fields = ((UserViewModel) viewModel).getDetailsNewEmployee();
@@ -299,11 +318,12 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     	Map<Integer, String> randomValues = Map.of(
     			0, "WieldingRobot05 Defect"
     			, 1, LocalDate.now().toString()
-    			, 2, TicketPriority.P1.toString()
-    			, 3, TicketType.INFRASTRUCTURE.toString()
-    			, 4, "WieldingRobot stopped functioning this morning at 9am."
-    			, 5, "Call me asap 094812384"
-    			, 6, "brokenRobot.png"
+    			, 2, TicketPriority.P3.toString()
+    			, 3, TicketType.OTHER.toString()
+    			, 4, "001"
+    			, 5, "WieldingRobot stopped functioning this morning at 9am."
+    			, 6, "Call me asap 094812384"
+    			, 7, "brokenRobot.png"
     			);
     	
     	for (int i = 0; i < fields.size(); i++) {
@@ -313,16 +333,16 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     		
     		Node node;
 			if (fields.get(i).toLowerCase().contains("priority")) {
-				node = makeComboBox(TicketPriority.P1);
+				node = makeComboBox(TicketPriority.P3);
 			} else if (fields.get(i).toLowerCase().contains("type")) {
-				node = makeComboBox(TicketType.INFRASTRUCTURE);
+				node = makeComboBox(TicketType.OTHER);
 			} else {
 				TextField textField;
-				if (fields.size() <= 7) {
+//				if (fields.size() <= 9) {
 					textField = new TextField(randomValues.get(i));
-				} else {
-					textField = new TextField();
-				}
+//				} else {
+//					textField = new TextField();
+//				}
 				textField.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 				node = textField;
 			}    		
@@ -362,7 +382,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             }
             TextField detail = new TextField(string);
             detail.textProperty().addListener((observable, oldValue, newValue) -> {
-                modified = true;
+//                modified = true;
+                viewModel.setFieldModified(true);
                 System.out.println("textfield changed from " + oldValue + " to " + newValue);
             });
             detail.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
@@ -370,7 +391,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             if (string.trim().equals("")){
                 detail.setVisible(false);
                 detail.setPadding(new Insets(15, 0, 0, 0));
-            } else if (key.toLowerCase().contains("id")){
+            } else if (key.toLowerCase().contains("id")
+            			|| key.equals("Creation date")
+            			|| key.toLowerCase().contains("company")){
                 detail.setDisable(true);
             }
             return detail;
@@ -414,7 +437,10 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         } 
         ComboBox c = new ComboBox(list);
         c.getSelectionModel().select(o);
-        c.valueProperty().addListener(e -> modified = true );
+        c.valueProperty().addListener(e -> {
+//        	modified = true;
+            viewModel.setFieldModified(true);
+        });
         return c;
     }
 

@@ -6,6 +6,7 @@ import domain.ActemiumCustomer;
 import domain.ActemiumEmployee;
 import domain.ActemiumTicket;
 import domain.enums.TicketPriority;
+import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import domain.manager.Actemium;
 
@@ -32,22 +33,24 @@ public class TicketFacade implements Facade {
 //	}
 
 	public void registerTicket(TicketPriority priority, TicketType ticketType, String title, String description,
-							   String remarks, String attachments, ActemiumCustomer customer) {
+							   String remarks, String attachments, long customerId) {
+		ActemiumCustomer customer = (ActemiumCustomer) actemium.findById(customerId);
 		ActemiumTicket ticket = new ActemiumTicket(priority, ticketType, title, description, customer, remarks, attachments);
 		actemium.registerTicket(ticket, customer);
 	}
 
-	public void modifyTicket(ActemiumTicket ticket, TicketPriority priority, TicketType ticketType, String title, String description,
-							 String remarks, String attachments, ActemiumCustomer customer, List<ActemiumEmployee> technicians) {
+	public void modifyTicket(ActemiumTicket ticket, TicketPriority priority, TicketType ticketType, TicketStatus status, String title, String description,
+							 String remarks, String attachments, List<ActemiumEmployee> technicians) {
 //		int index = tickets.indexOf(ticket);
 
 		ticket.setPriority(priority);
 		ticket.setTicketType(ticketType);
+		ticket.setStatus(status);
 		ticket.setTitle(title);
 		ticket.setDescription(description);
 		ticket.setRemarks(remarks);
 		ticket.setAttachments(attachments);
-		ticket.setCustomer(customer);
+//		ticket.setCustomer(customer);
 		technicians.forEach(ticket::addTechnician);
 
 		actemium.modifyTicket(ticket);
