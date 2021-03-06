@@ -8,7 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import domain.ContractType;
+import domain.ActemiumContractType;
 import domain.enums.ContractTypeStatus;
 import domain.enums.Timestamp;
 
@@ -60,7 +60,7 @@ public class ContractTypeTest {
     public void createContractType_ValidAttributes_DoesNotThrowException(String name,
 			ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone, boolean hasApplication,
 			Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) {
-        Assertions.assertDoesNotThrow(() -> new ContractType(name, contractTypeStatus,
+        Assertions.assertDoesNotThrow(() -> new ActemiumContractType(name, contractTypeStatus,
 				hasEmail, hasPhone, hasApplication, timestamp, maxHandlingTime, minThroughputTime, price));
     }
 
@@ -69,7 +69,7 @@ public class ContractTypeTest {
 	public void createContractType_InValidAttributes_ThrowsIllegalArgumentException(String name,
 			ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone, boolean hasApplication,
 			Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) {
-		Assertions.assertThrows(IllegalArgumentException.class, () -> new ContractType(name, contractTypeStatus,
+		Assertions.assertThrows(IllegalArgumentException.class, () -> new ActemiumContractType(name, contractTypeStatus,
 				hasEmail, hasPhone, hasApplication, timestamp, maxHandlingTime, minThroughputTime, price));
 	}
     
@@ -78,7 +78,7 @@ public class ContractTypeTest {
 	@Test
 	public void verifyTicketCreationMethods_NoCreationMethods_ThrowsIllegalArgumentException() {
 		boolean hasEmail = false, hasPhone = false, hasApplication = false;
-		ContractType contractType = new ContractType();
+		ActemiumContractType contractType = new ActemiumContractType();
 		Assertions.assertThrows(IllegalArgumentException.class,
 				() -> contractType.verifyTicketCreationMethods(hasEmail, hasPhone, hasApplication));
 	}

@@ -6,9 +6,6 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import domain.ActemiumTicket;
-import domain.Customer;
-import domain.Employee;
 import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
 import gui.controllers.GuiController;
@@ -18,7 +15,11 @@ import gui.viewModels.ViewModel;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.*;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
+import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -34,9 +35,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 
 public class DashboardFrameController <T> extends GuiController {
-    // Facades
+	
+	// Facades
     private final UserFacade userFacade;
-	//private final TicketFacade ticketFacade;
+	private final TicketFacade ticketFacade;
 
     private UserViewModel userViewModel;
 	//private TicketViewModel ticketViewModel;
@@ -76,10 +78,13 @@ public class DashboardFrameController <T> extends GuiController {
     private TableViewPanelCompanion<T> tableViewPanelCompanion;
     private DetailsPanelController detailsPanelController;
 
-    public DashboardFrameController(UserFacade userFacade) throws FileNotFoundException {
+//    public DashboardFrameController(Actemium actemium, UserFacade userFacade) throws FileNotFoundException {
+    public DashboardFrameController(UserFacade userFacade, TicketFacade ticketFacade) throws FileNotFoundException {
         super();
-
+        
         this.userFacade = userFacade;
+        
+        this.ticketFacade = ticketFacade;
 
         this.userViewModel = new UserViewModel(userFacade);
 
@@ -111,7 +116,7 @@ public class DashboardFrameController <T> extends GuiController {
         String[] itemNames = new String[] {};
         String[] itemIcons = new String[] {};
 
-        switch (((UserFacade) userFacade).giveUserRole().toUpperCase()) {
+        switch (userFacade.giveUserRole().toUpperCase()) {
             case "ADMINISTRATOR" -> {
                 itemNames = new String[]{"manage employees", "manage customers"};
                 itemIcons = new String[]{"icon_manage", "icon_manage"};
@@ -191,17 +196,16 @@ public class DashboardFrameController <T> extends GuiController {
     private void buttonMenusClicked(String name){
         if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("employee")) {
             //Todo weird
-            userViewModel.setEmployees((userFacade).giveEmployeeList());
+            userViewModel.setEmployees(userFacade.giveActemiumEmployees());
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.EMPLOYEE);
             switchToManageScreen(name, tableViewPanelCompanion, userViewModel);
         } else if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("customer")) {
-            userViewModel.setCustomers((userFacade).giveCustomerList());
+            userViewModel.setCustomers(userFacade.giveActemiumCustomers());
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.CUSTOMER);
             switchToManageScreen(name, tableViewPanelCompanion, userViewModel);
         } else if (name.toLowerCase().contains("ticket") && name.toLowerCase().contains("outstanding")) {
-            TicketFacade ticketFacade = new TicketFacade();
             TicketViewModel viewModel = new TicketViewModel(ticketFacade);
-            viewModel.setActemiumTickets(ticketFacade.getTickets());
+            viewModel.setActemiumTickets(ticketFacade.giveActemiumTickets());
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, viewModel, GUIEnum.TICKET);
             switchToManageScreen(name, tableViewPanelCompanion, viewModel);
         } else {
@@ -241,8 +245,8 @@ public class DashboardFrameController <T> extends GuiController {
     }
 
     private void initializeText() {
-        txtName.setText(String.format("%s %s" , ((UserFacade) userFacade).giveUserFirstName(), ((UserFacade) userFacade).giveUserLastName()));
-        txtEmployeeRole.setText(((UserFacade) userFacade).giveUserRole());
+        txtName.setText(String.format("%s %s" , userFacade.giveUserFirstName(), userFacade.giveUserLastName()));
+        txtEmployeeRole.setText(userFacade.giveUserRole());
     }
 
     @FXML
@@ -271,4 +275,5 @@ public class DashboardFrameController <T> extends GuiController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, text);
         alert.showAndWait();
     }
+    
 }

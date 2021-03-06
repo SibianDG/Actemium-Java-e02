@@ -1,19 +1,19 @@
 package tests;
 
-import domain.ActemiumTicket;
-import domain.Company;
-import domain.Customer;
-import domain.enums.TicketPriority;
-import domain.enums.TicketType;
+import java.time.LocalDate;
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.time.LocalDate;
-import java.util.stream.Stream;
+import domain.ActemiumCompany;
+import domain.ActemiumCustomer;
+import domain.ActemiumTicket;
+import domain.enums.TicketPriority;
+import domain.enums.TicketType;
 
 public class CompanyTest implements Attributes {
 
@@ -67,14 +67,14 @@ public class CompanyTest implements Attributes {
     @ParameterizedTest
     @MethodSource("validCompanyAttributes")
     public void createCompany_ValidCompanyAttributes_DoesNotThrowException(String companyName, String address, String phonenumber) {
-        Assertions.assertDoesNotThrow(() -> new Company(companyName, address, phonenumber));
+        Assertions.assertDoesNotThrow(() -> new ActemiumCompany(companyName, address, phonenumber));
     }
 
     @ParameterizedTest
     @MethodSource("invalidCompanyAttributes")
     public void createActemiumTicket_InValidAttributes04_ThrowsIllegalArgumentException(String companyName, String address, String phonenumber) {
         Assertions.assertThrows(IllegalArgumentException.class,
-                () -> new Company(companyName, address, phonenumber));
+                () -> new ActemiumCompany(companyName, address, phonenumber));
     }
 
     @Test
@@ -84,8 +84,13 @@ public class CompanyTest implements Attributes {
 
     @Test
     public void addActemiumTicket_CompanyContainsTicket() {
-        company.addActemiumTicket(actemiumTicket);
-        Assertions.assertEquals(actemiumTicket, company.getActemiumTickets().get(0));
+    	ActemiumCompany company = new ActemiumCompany("Actemium", "Mainway 99", "0470099874");
+    	company.addActemiumTicket(actemiumTicket);
+    	Assertions.assertEquals(actemiumTicket, company.getActemiumTickets().get(0));
+    	// cannot use static company, this does not reset before each test
+    	// you will not get the right ActemiumTicket
+//    	company.addActemiumTicket(actemiumTicket);
+//      Assertions.assertEquals(actemiumTicket, company.getActemiumTickets().get(0));
     }
 
     @Test
@@ -97,8 +102,13 @@ public class CompanyTest implements Attributes {
         Assertions.assertEquals(MAX_NUMBER, company.getActemiumTickets().size());
     }
 
+    // Customer is the contactPerson of a company
+    // Company is the "real" Customer, but for ease of naming
+    // we will use the name Customer for contactPerson
+    // Could be changed if we realy have to
     @Test
     public void addContactPerson_CompanyContainsContactPerson() {
+    	ActemiumCompany company = new ActemiumCompany("Actemium", "Mainway 99", "0470099874");
         company.addContactPerson(customer);
         Assertions.assertEquals(customer, company.getContactPersons().get(0));
     }
@@ -106,7 +116,7 @@ public class CompanyTest implements Attributes {
     @Test
     public void addContactPerson_CompanyContainsMultipleContactPerson() {
         for (int i = 0; i < MAX_NUMBER; i++) {
-            Customer contactPerson = new Customer("customer"+i, "PassWd123&", "John", "Smith", company);
+        	ActemiumCustomer contactPerson = new ActemiumCustomer("customer"+i, "PassWd123&", "John", "Smith", company);
             company.addContactPerson(contactPerson);
         }
         Assertions.assertEquals(MAX_NUMBER, company.getContactPersons().size());

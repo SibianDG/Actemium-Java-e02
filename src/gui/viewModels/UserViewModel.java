@@ -5,10 +5,16 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import domain.*;
+import domain.ActemiumCompany;
+import domain.ActemiumCustomer;
+import domain.ActemiumEmployee;
+import domain.Customer;
+import domain.Employee;
+import domain.User;
 import domain.enums.EmployeeRole;
 import domain.enums.UserStatus;
 import domain.facades.UserFacade;
+import domain.manager.Actemium;
 import gui.GUIEnum;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,7 +23,7 @@ public class UserViewModel extends ViewModel {
 
     private GUIEnum currentState;
     private final UserFacade userFacade;
-    private UserModel selectedUser;
+    private User selectedUser;
     private ObservableList<Employee> employees;
     private ObservableList<Customer> customers;
     
@@ -34,8 +40,7 @@ public class UserViewModel extends ViewModel {
     
     public ObservableList<Customer> getCustomers() {
         return FXCollections.unmodifiableObservableList(customers);
-    }
-    
+    }    
     
     public void setEmployees(ObservableList<Employee> employees) {
         this.employees = employees;
@@ -45,10 +50,14 @@ public class UserViewModel extends ViewModel {
         this.customers = customers;
     }
 
-    public void setSelectedUser(UserModel user) {
+    public void setSelectedUser(User user) {
         this.selectedUser = user;
         if (user != null){
-            setCurrentState(GUIEnum.valueOf(user.getClass().getSimpleName().toUpperCase()));
+        	// How can the type still be ActemiumEmployee when we casted it to Employee?
+        	System.out.println(user.getClass().getSimpleName().toUpperCase());
+        	// substring(8) to remove ACTEMIUM
+            setCurrentState(GUIEnum.valueOf(user.getClass().getSimpleName().substring(8).toUpperCase()));
+//            setCurrentState(GUIEnum.valueOf(user.getClass().getSimpleName().toUpperCase()));
         }
         fireInvalidationEvent();
     }
@@ -56,12 +65,14 @@ public class UserViewModel extends ViewModel {
     public ArrayList<String> getDetailsNewEmployee(){
         return new ArrayList<String>(Arrays.asList("Username", "Lastname", "Firstname", "Address", "Email address", "Phone nr", "Employee role"));
     }
+    
     public ArrayList<String> getDetailsNewCustomer(){
         return new ArrayList<String>(Arrays.asList("Username", "Lastname", "Firstname", "Company name", "Company Address", "Company Phone number"));
     }
 
     public Map<String, Object> getDetails(){
-        switch (selectedUser.getClass().getSimpleName().toLowerCase()) {
+//    	switch (selectedUser.getClass().getSimpleName().toLowerCase()) {
+        switch (selectedUser.getClass().getSimpleName().substring(8).toLowerCase()) {
             case "employee" -> {
                 Employee employee = (Employee) selectedUser;
 				Map<String, Object> detailsMap = new LinkedHashMap<>();
@@ -86,16 +97,15 @@ public class UserViewModel extends ViewModel {
                 detailsMap.put("Username", customer.getUsername());
                 detailsMap.put("Password", customer.getPassword());
 
-                // here it's the name and firstname of the customer
-                detailsMap.put("Firstname", customer.getFirstName());
-                detailsMap.put("Lastname", customer.getLastName());
                 detailsMap.put("Company", "");
                 detailsMap.put("Name", customer.getCompany().getName());
                 detailsMap.put("Address", customer.getCompany().getAddress());
                 detailsMap.put("Phone Nr", customer.getCompany().getPhoneNumber());
                 // Here it's the name and email of the contactperson
                 detailsMap.put("Contact person", "");
-                detailsMap.put("Name and Firstname", String.format("%s %s", "none", "none"));
+                // here it's the name and firstname of the customer
+                detailsMap.put("Firstname", customer.getFirstName());
+                detailsMap.put("Lastname", customer.getLastName());
                 detailsMap.put("Seniority", String.valueOf(customer.giveSeniority()));
                 //TODO
                 // how are we going to show all the contracts in the details pannel?
@@ -108,37 +118,40 @@ public class UserViewModel extends ViewModel {
         }
     }
 
-    public String getNameOfSelectedUser() {
-        return selectedUser.getFirstName() + " " + selectedUser.getLastName();
-    }
+	public String getNameOfSelectedUser() {
+		return selectedUser.getFirstName() + " " + selectedUser.getLastName();
+	}
 
-    public void registerEmployee(String username, String lastName, String firstName, String address,
-                                 String emailAddress, String phoneNumber, EmployeeRole role) {
-        userFacade.registerEmployee(username, "Passwd123&", firstName, lastName, address, phoneNumber, emailAddress, role);
-        setSelectedUser(userFacade.findByUsername(username));
-    }
+	public void registerEmployee(String username, String lastName, String firstName, String address,
+			String emailAddress, String phoneNumber, EmployeeRole role) {
+		userFacade.registerEmployee(username, "Passwd123&", firstName, lastName, address, phoneNumber, emailAddress, role);
+		setSelectedUser(userFacade.getLastAddedEmployee());
+	}
 
-    public void modifyEmployee(String username, String password, String firstName, String lastName, String address,
-                               String phoneNumber, String emailAddress, EmployeeRole role, UserStatus status) {
-        userFacade.modifyEmployee( (Employee) selectedUser,  username, password, firstName,  lastName,  address,
-                 phoneNumber,  emailAddress,  role, status);
-    }
+	public void modifyEmployee(String username, String password, String firstName, String lastName, String address,
+			String phoneNumber, String emailAddress, EmployeeRole role, UserStatus status) {
+		userFacade.modifyEmployee((ActemiumEmployee) selectedUser, username, password, firstName, lastName, address,
+				phoneNumber, emailAddress, role, status);
+	}
 
-    public void modifyCustomer(String username, String password, String firstName, String lastName, String status) {
-        userFacade.modifyCustomer((Customer) this.selectedUser, username, password, firstName, lastName, ((Customer)selectedUser).getCompany(), UserStatus.valueOf(status));
-    }
+	public void registerCustomer(String username, String firstName, String lastName, String companyName,
+			String companyAddress, String companyPhone) {
+		ActemiumCompany company = new ActemiumCompany(companyName, companyAddress, companyPhone);
+		userFacade.registerCustomer(username, "Passwd123&", firstName, lastName, company);
+		setSelectedUser(userFacade.getLastAddedCustomer());
+	}
 
-    public void registerCustomer(String username, String firstName, String lastName, String companyName, String companyAddress, String companyPhone) {
-        Company company = new Company(companyName, companyAddress, companyPhone);
-        userFacade.registerCustomer(username, "Passwd123&", firstName, lastName, company);
-        setSelectedUser(userFacade.findByUsername(username));
-    }
+	public void modifyCustomer(String username, String password, String firstName, String lastName, String status) {
+		userFacade.modifyCustomer((ActemiumCustomer) this.selectedUser, username, password, firstName, lastName,
+				((ActemiumCustomer) selectedUser).getCompany(), UserStatus.valueOf(status));
+	}
 
-    public GUIEnum getCurrentState() {
-        return currentState;
-    }
+	public GUIEnum getCurrentState() {
+		return currentState;
+	}
 
-    public void setCurrentState(GUIEnum currentState) {
-        this.currentState = currentState;
-    }
+	public void setCurrentState(GUIEnum currentState) {
+		this.currentState = currentState;
+	}
+	
 }

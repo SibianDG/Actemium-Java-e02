@@ -6,6 +6,8 @@ import javafx.beans.Observable;
 import java.util.ArrayList;
 
 public abstract class ViewModel implements Observable {
+	
+	private boolean fieldModified = false;
 
     private ArrayList<InvalidationListener> listeners = new ArrayList<>();
 
@@ -24,4 +26,12 @@ public abstract class ViewModel implements Observable {
     public void removeListener(InvalidationListener invalidationListener) {
         listeners.remove(invalidationListener);
     }
+
+	public boolean isFieldModified() {
+		return fieldModified;
+	}
+
+	public void setFieldModified(boolean fieldModified) {
+		this.fieldModified = fieldModified;
+	}
 }

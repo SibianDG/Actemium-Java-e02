@@ -2,25 +2,25 @@ package tests;
 
 import java.util.stream.Stream;
 
-import domain.enums.TicketType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import domain.ActemiumCompany;
+import domain.ActemiumCustomer;
+import domain.ActemiumEmployee;
 import domain.ActemiumTicket;
-import domain.Company;
-import domain.Customer;
-import domain.Employee;
 import domain.enums.EmployeeRole;
 import domain.enums.TicketPriority;
+import domain.enums.TicketType;
 
 public class ActemiumTicketTest {
 	
-	private Employee technician = new Employee("jooKlein123", "PassWd123&", "Joost", "Klein", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.TECHNICIAN);
-    private static Company theWhiteHouse = new Company("The White House", "America 420", "911");    
-    private static Customer customer = new Customer("customer123", "PassWd123&", "John", "Smith", theWhiteHouse);
+	private ActemiumEmployee technician = new ActemiumEmployee("jooKlein123", "PassWd123&", "Joost", "Klein", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.TECHNICIAN);
+    private static ActemiumCompany theWhiteHouse = new ActemiumCompany("The White House", "America 420", "911");    
+    private static ActemiumCustomer customer = new ActemiumCustomer("customer123", "PassWd123&", "John", "Smith", theWhiteHouse);
 	private ActemiumTicket ticket01 = new ActemiumTicket(TicketPriority.P1, TicketType.SOFTWARE ,"Printer Broken", "Cannot print labels", customer);
 	
     private static Stream<Arguments> validActemiumTicketAttributes04() {
@@ -84,14 +84,14 @@ public class ActemiumTicketTest {
 	@ParameterizedTest
 	@MethodSource("validActemiumTicketAttributes04")
 	public void createActemiumTicket_ValidAttributes04_DoesNotThrowException(TicketPriority ticketPriority, TicketType ticketType,
-			String title, String description, Customer customer) {
+			String title, String description, ActemiumCustomer customer) {
 		Assertions.assertDoesNotThrow(() -> new ActemiumTicket(ticketPriority, ticketType, title, description, customer));
 	}
 
 	@ParameterizedTest
 	@MethodSource("invalidActemiumTicketAttributes04")
 	public void createActemiumTicket_InValidAttributes04_ThrowsIllegalArgumentException(TicketPriority ticketPriority, TicketType ticketType,
-			String title, String description, Customer customer) {
+			String title, String description, ActemiumCustomer customer) {
 		Assertions.assertThrows(IllegalArgumentException.class,
 				() -> new ActemiumTicket(ticketPriority, ticketType, title, description, customer));
 	}
@@ -99,7 +99,7 @@ public class ActemiumTicketTest {
 	@ParameterizedTest
 	@MethodSource("validActemiumTicketAttributes06")
 	public void createActemiumTicket_ValidAttributes06_DoesNotThrowException(TicketPriority ticketPriority, TicketType ticketType,
-			String title, String description, Customer customer, String remarks, String attachments) {
+			String title, String description, ActemiumCustomer customer, String remarks, String attachments) {
 		Assertions.assertDoesNotThrow(
 				() -> new ActemiumTicket(ticketPriority, ticketType, title, description, customer, remarks, attachments));
 	}
@@ -107,7 +107,7 @@ public class ActemiumTicketTest {
 	@ParameterizedTest
 	@MethodSource("invalidActemiumTicketAttributes06")
 	public void createActemiumTicket_InValidAttributes06_ThrowsIllegalArgumentException(TicketPriority ticketPriority, TicketType ticketType,
-			String title, String description, Customer customer, String remarks, String attachments) {
+			String title, String description, ActemiumCustomer customer, String remarks, String attachments) {
 		Assertions.assertThrows(IllegalArgumentException.class,
 				() -> new ActemiumTicket(ticketPriority, ticketType, title, description, customer, remarks, attachments));
 	}

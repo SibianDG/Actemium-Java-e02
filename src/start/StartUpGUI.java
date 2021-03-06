@@ -1,7 +1,10 @@
 package start;
 
+import domain.ActemiumTicket;
 import domain.PopulateDB;
+import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
+import domain.manager.Actemium;
 import gui.LoginController;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
@@ -12,6 +15,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import languages.LanguageResource;
+import repository.GenericDaoJpa;
 import repository.UserDaoJpa;
 
 public class StartUpGUI extends Application {
@@ -22,13 +26,15 @@ public class StartUpGUI extends Application {
     {
 
         try {
-            UserDaoJpa userDaoJpa;
-            userDaoJpa = new UserDaoJpa();
+            UserDaoJpa userDaoJpa= new UserDaoJpa();
+            GenericDaoJpa ticketDaoJpa = new GenericDaoJpa<>(ActemiumTicket.class);
             PopulateDB populateDB = new PopulateDB();
             populateDB.run(userDaoJpa);
 
-            UserFacade domainController = new UserFacade(userDaoJpa);
-            LoginController root = new LoginController(domainController);
+            Actemium actemium = new Actemium(userDaoJpa, ticketDaoJpa);
+            UserFacade userFacade = new UserFacade(actemium);
+            TicketFacade ticketFacade = new TicketFacade(actemium);       
+            LoginController root = new LoginController(userFacade, ticketFacade);
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("styles.css").toString());
             primaryStage.setScene(scene);

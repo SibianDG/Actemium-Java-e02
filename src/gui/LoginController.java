@@ -4,32 +4,29 @@ import java.io.IOException;
 
 import javax.persistence.EntityNotFoundException;
 
+import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
 import exceptions.BlockedUserException;
 import exceptions.PasswordException;
 import gui.controllers.GuiController;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import languages.LanguageResource;
 
 public class LoginController extends GuiController {
-
-    private UserFacade domainController;
-
+		
+    private UserFacade userFacade;
+	private TicketFacade ticketFacade;
+	
     @FXML
     private Text txtTitle;
 
@@ -51,9 +48,12 @@ public class LoginController extends GuiController {
     @FXML
     private Text txtErrorLogin;
 
-    public LoginController(UserFacade domainController){
+    public LoginController(UserFacade userFacade, TicketFacade ticketFacade){
         super();
-        this.domainController = domainController;
+        
+        this.userFacade = userFacade;
+        
+        this.ticketFacade = ticketFacade;
 
 
         try {
@@ -95,8 +95,8 @@ public class LoginController extends GuiController {
                 txtErrorLogin.setText(LanguageResource.getString("username_password_mandatory"));
                 txtErrorLogin.setOpacity(1);
             } else {
-                domainController.signIn(txfUsername.getText(), pwfPassword.getText());
-                DashboardFrameController dashboardController = new DashboardFrameController(domainController);
+                userFacade.signIn(txfUsername.getText(), pwfPassword.getText());
+                DashboardFrameController dashboardController = new DashboardFrameController(userFacade, ticketFacade);
                 Scene scene = new Scene(dashboardController);
                 Stage stage = (Stage) this.getScene().getWindow();
                 stage.setTitle(LanguageResource.getString("dashboard")); //TODO review LanguageResource

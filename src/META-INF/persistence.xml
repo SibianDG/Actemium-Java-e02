@@ -3,14 +3,14 @@
     <persistence-unit name="ticketlocal1" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <class>domain.UserModel</class>
-        <class>domain.Customer</class>
-        <class>domain.Employee</class>
+        <class>domain.ActemiumCustomer</class>
+        <class>domain.ActemiumEmployee</class>
         <class>domain.LoginAttempt</class>
         <!--<class>domain.ContactPerson</class>-->
         <class>domain.ActemiumTicket</class>
-        <class>domain.Contract</class>
-        <class>domain.Company</class>
-        <class>domain.ContractType</class>
+        <class>domain.ActemiumContract</class>
+        <class>domain.ActemiumCompany</class>
+        <class>domain.ActemiumContractType</class>
 
 
         <properties>

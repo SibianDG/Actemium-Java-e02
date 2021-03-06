@@ -6,7 +6,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
@@ -16,7 +25,7 @@ import javafx.beans.property.StringProperty;
 
 @Entity
 @Access(AccessType.FIELD)
-public class ActemiumTicket implements Serializable {
+public class ActemiumTicket implements Ticket, Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
@@ -37,15 +46,15 @@ public class ActemiumTicket implements Serializable {
 	private StringProperty title = new SimpleStringProperty();
 	private String description;
 	@ManyToOne
-	private Customer customer;
+	private ActemiumCustomer customer;
 
 	@ManyToOne
-	private Company company;
+	private ActemiumCompany company;
 	private String remarks;
 	private String attachments;	
 	// List of technicians contain all the technicians assigned to the ticket
 	@ManyToMany(cascade = CascadeType.PERSIST)
-	private List<Employee> technicians = new ArrayList<>();
+	private List<ActemiumEmployee> technicians = new ArrayList<>();
 
 	@Transient
 	private StringProperty ticketType = new SimpleStringProperty();
@@ -69,7 +78,7 @@ public class ActemiumTicket implements Serializable {
 		super();
 	}
 
-	public ActemiumTicket(TicketPriority ticketPriority, TicketType ticketType, String title, String description, Customer customer,
+	public ActemiumTicket(TicketPriority ticketPriority, TicketType ticketType, String title, String description, ActemiumCustomer customer,
 			String remarks, String attachments) {
 		super();
 		// new ticket always gets TicketStatus CREATED
@@ -84,9 +93,9 @@ public class ActemiumTicket implements Serializable {
 		setAttachments(attachments);
 	}
 
-	// remarks and attachments are optional
-	public ActemiumTicket(TicketPriority ticketPriority, TicketType ticketType, String title, String description, Customer customer) {
-		this(ticketPriority, ticketType, title, description, customer, null, null);
+	// remarks and attachments are optional ( (none) is used so the field can be modified in gui)
+	public ActemiumTicket(TicketPriority ticketPriority, TicketType ticketType, String title, String description, ActemiumCustomer customer) {
+		this(ticketPriority, ticketType, title, description, customer, "(none)", "(none)");
 	}
 	
 	public String getTicketIdString() {
@@ -165,11 +174,17 @@ public class ActemiumTicket implements Serializable {
 		this.description = description;
 	}
 
-	public Customer getCustomer() {
+	public ActemiumCustomer getCustomer() {
 		return customer;
 	}
+	
+	@Override
+	public Customer giveCustomer() {
+		return (Customer) customer;
+	}
 
-	public void setCustomer(Customer customer) {
+
+	public void setCustomer(ActemiumCustomer customer) {
 		if (customer == null) {
 			throw new IllegalArgumentException("Ticket must belong to a customer.");
 		}
@@ -194,15 +209,20 @@ public class ActemiumTicket implements Serializable {
 		this.attachments = attachments;
 	}
 	
-	public List<Employee> getTechnicians() {
+	public List<ActemiumEmployee> getTechnicians() {
 		return technicians;
 	}
 
-	public void setTechnicians(List<Employee> technicians) {
+	@Override
+	public List<Employee> giveTechnicians() {
+		return (List<Employee>) (Object) technicians;
+	}
+	
+	public void setTechnicians(List<ActemiumEmployee> technicians) {
 		this.technicians = technicians;
 	}
 	
-	public void addTechnician(Employee technician) {
+	public void addTechnician(ActemiumEmployee technician) {
 		technicians.add(technician);
 	}
 
@@ -243,6 +263,7 @@ public class ActemiumTicket implements Serializable {
 	}
 	
 	public StringProperty ticketIdProperty() {
+		// must be set right before requesting the ticketIdProperty
 		setTicketIdString();
 		return ticketIdString;
 	}

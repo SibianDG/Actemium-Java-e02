@@ -3,17 +3,18 @@ package tests;
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
-import domain.Employee;
-import domain.enums.EmployeeRole;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import domain.ActemiumEmployee;
+import domain.enums.EmployeeRole;
+
 public class EmployeeTest {
 
-    private Employee employee;
+    private ActemiumEmployee employee;
 
     // The first 4 attributes are tested by CustomerTest which uses the same:
     // super(username, password, firstName, lastName)
@@ -64,7 +65,7 @@ public class EmployeeTest {
 	public void createEmployee_ValidAttributes_DoesNotThrowException(String username, String password, String firstName,
 			String lastName, String address, String phoneNumber, String emailAddress, EmployeeRole role) {
 		Assertions.assertDoesNotThrow(
-				() -> new Employee(username, password, firstName, lastName, address, phoneNumber, emailAddress, role));
+				() -> new ActemiumEmployee(username, password, firstName, lastName, address, phoneNumber, emailAddress, role));
 	}
 
 	@ParameterizedTest
@@ -73,14 +74,12 @@ public class EmployeeTest {
 			String firstName, String lastName, String address, String phoneNumber, String emailAddress,
 			EmployeeRole role) {
 		Assertions.assertThrows(IllegalArgumentException.class,
-				() -> new Employee(username, password, firstName, lastName, address, phoneNumber, emailAddress, role));
+				() -> new ActemiumEmployee(username, password, firstName, lastName, address, phoneNumber, emailAddress, role));
 	}
-
-
 
 	@Test
 	public void giveEmployeeSeniroity_returns_valid() {
-		employee = new Employee("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0470099874",
+		employee = new ActemiumEmployee("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0470099874",
 				"student@student.hogent.be", EmployeeRole.ADMINISTRATOR);
 		employee.setRegistrationDate(LocalDate.now().minusYears(10));
 		Assertions.assertEquals(10, employee.giveSeniority());
