@@ -318,6 +318,10 @@ public class Actemium {
 		return FXCollections.unmodifiableObservableList(actemiumContractTypes);
 	}
 
+	public ContractType getLastAddedContractType() {
+		return actemiumContractTypes.get(actemiumContractTypes.size()-1);
+	}
+
 	////////-CONTRACTFACADE-////////
 
 	public Contract getLastAddedContract() {

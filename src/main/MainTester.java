@@ -1,10 +1,6 @@
 package main;
 
-import domain.ActemiumCompany;
-import domain.ActemiumCustomer;
-import domain.ActemiumTicket;
-import domain.PopulateDB;
-import domain.User;
+import domain.*;
 import domain.enums.UserStatus;
 import domain.facades.UserFacade;
 import domain.manager.Actemium;
@@ -16,9 +12,11 @@ public class MainTester {
         System.out.println("This class tests the same as the follow test in DomainTest:");
         System.out.println("loginAttempt_4InValidAdmin_3InValidTech_1InValidAdmin_AdminUserBlocked_1ValidTech_TechUserLoginSuccess_1ValidAdmin_AdminUserStillBlocked()\n");
         UserDaoJpa userDaoJpa = new UserDaoJpa();
-        GenericDaoJpa ticketDaoJpa = new GenericDaoJpa<>(ActemiumTicket.class);
+        GenericDaoJpa<ActemiumTicket> ticketDaoJpa = new GenericDaoJpa<>(ActemiumTicket.class);
+        GenericDaoJpa<ActemiumContractType> contractTypeDaoJpa = new GenericDaoJpa<>(ActemiumContractType.class);
+        GenericDaoJpa<ActemiumContract> contractDaoJpa = new GenericDaoJpa<>(ActemiumContract.class);
         PopulateDB populateDB = new PopulateDB();
-        populateDB.run(userDaoJpa);
+        populateDB.run(userDaoJpa, contractTypeDaoJpa);
         System.out.println("populateDB successful");
         
 //        UserModel a = new Administrator("Admin123", "PassWd123&","Jan", "A");
@@ -26,7 +24,7 @@ public class MainTester {
         
         //TODO or do we have to do something like this?
         //GenericDao genericDao = new GenericDaoJpa(UserModel.class);
-        Actemium actemium = new Actemium(userDaoJpa, ticketDaoJpa);
+        Actemium actemium = new Actemium(userDaoJpa, ticketDaoJpa, contractTypeDaoJpa, contractDaoJpa);
         UserFacade dc = new UserFacade(actemium);
 
         // 4 failed login attempts for Admin123
