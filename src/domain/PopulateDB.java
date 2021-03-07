@@ -25,11 +25,11 @@ public class PopulateDB {
 
         userDao.insert(tech);
         userDao.insert(tech2);
-        ActemiumTicket ticket01 = new ActemiumTicket(TicketPriority.P1,TicketType.DATABASE, "Remove Trump From White House", "I forgot my diary in the white house, Trump doesn't let me in to retriev it", barak);
-        ActemiumTicket ticket02 = new ActemiumTicket(TicketPriority.P1, TicketType.HARDWARE,"Remove Biden From White House", "I forgot my diary in the white house, Trump doesn't let me in to retriev it", barak);
-        ActemiumTicket ticket03 = new ActemiumTicket(TicketPriority.P1, TicketType.INFRASTRUCTURE, "Get Trump back", "I forgot my diary in the white house, Trump doesn't let me in to retriev it", barak);
-        ActemiumTicket ticket04 = new ActemiumTicket(TicketPriority.P1, TicketType.NETWORK, "Make America Great Again", "I forgot my diary in the white house, Trump doesn't let me in to retriev it", barak);
-        ActemiumTicket ticket05 = new ActemiumTicket(TicketPriority.P1, TicketType.SOFTWARE, "Corona is a HOAX", "I forgot my diary in the white house, Trump doesn't let me in to retriev it", barak);
+        ActemiumTicket ticket01 = new ActemiumTicket(TicketPriority.P1,TicketType.DATABASE, "Ticket1", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", barak);
+        ActemiumTicket ticket02 = new ActemiumTicket(TicketPriority.P1, TicketType.HARDWARE,"Ticket2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", barak);
+        ActemiumTicket ticket03 = new ActemiumTicket(TicketPriority.P1, TicketType.INFRASTRUCTURE, "Ticket3", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", barak);
+        ActemiumTicket ticket04 = new ActemiumTicket(TicketPriority.P1, TicketType.NETWORK, "Ticket4", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", barak);
+        ActemiumTicket ticket05 = new ActemiumTicket(TicketPriority.P1, TicketType.SOFTWARE, "Ticket5", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", barak);
         ticket05.setStatus(TicketStatus.COMPLETED);
         barak.addTicket(ticket01);
         barak2.addTicket(ticket02);
@@ -70,8 +70,11 @@ public class PopulateDB {
         TicketPriority[] prios = TicketPriority.values();
         TicketType[] types = TicketType.values() ;
         
-        for (int i = 0; i < 10; i++) {
+        TicketStatus[] status = TicketStatus.values();
+        
+        for (int i = 0; i < 20; i++) {
             ActemiumTicket t = new ActemiumTicket(prios[randomGen.nextInt(3)], types[randomGen.nextInt(types.length)], "Title"+i, "Description"+i, pope, "Remark"+i, "screenshot"+i+".png");
+            t.setStatus(status[randomGen.nextInt(status.length)]);
             pope.addTicket(t);
         }
         userDao.insert(pope);
