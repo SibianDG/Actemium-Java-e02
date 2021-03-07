@@ -73,4 +73,13 @@ public class TicketFacade implements Facade {
 		return actemium.giveActemiumTickets();
 	}
 	
+	public ObservableList<Ticket> giveActemiumTicketsResolved() {
+		return actemium.giveActemiumTicketsResolved();
+	}
+
+	public ObservableList<Ticket> giveActemiumTicketsOutstanding() {
+		return actemium.giveActemiumTicketsOutstanding();
+	}
+
+	
 }

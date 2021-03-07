@@ -1,5 +1,6 @@
 package domain.manager;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -7,6 +8,7 @@ import javax.persistence.EntityNotFoundException;
 
 import domain.*;
 import domain.enums.LoginStatus;
+import domain.enums.TicketStatus;
 import domain.enums.UserStatus;
 import domain.facades.ContractTypeFacade;
 import exceptions.BlockedUserException;
@@ -36,6 +38,8 @@ public class Actemium {
 	private ObservableList<Customer> actemiumCustomers;
 	private ObservableList<Employee> actemiumEmployees;
 	private ObservableList<Ticket> actemiumTickets;
+	private ObservableList<Ticket> actemiumTicketsResolved;
+	private ObservableList<Ticket> actemiumTicketsOutstanding;
 	private ObservableList<Contract> actemiumContracts;
 	private ObservableList<ContractType> actemiumContractTypes;
 	
@@ -86,6 +90,16 @@ public class Actemium {
 	public void fillTicketList() {
 		List<ActemiumTicket> ticketList = ticketDaoJpa.findAll();
 		this.actemiumTickets = FXCollections.observableArrayList((List<Ticket>)(Object)ticketList);
+		List<TicketStatus> outstanding = Arrays.asList(TicketStatus.CREATED, TicketStatus.IN_PROGRESS, TicketStatus.WAITING_ON_USER_INFORMATION, TicketStatus.USER_INFORMATION_RECEIVED, TicketStatus.IN_DEVELOPMENT);
+        this.actemiumTicketsOutstanding = FXCollections.observableArrayList((List<Ticket>)(Object)ticketList
+                .stream()
+                .filter(t -> outstanding.contains(t.getStatusAsEnum()))
+                .collect(Collectors.toList()));
+		List<TicketStatus> resolved = Arrays.asList(TicketStatus.COMPLETED, TicketStatus.CANCELLED);
+        this.actemiumTicketsResolved = FXCollections.observableArrayList((List<Ticket>)(Object)ticketList
+                .stream()
+                .filter(t -> resolved.contains(t.getStatusAsEnum()))
+                .collect(Collectors.toList()));
 	}
 
 	public void FillContractTypesList() {
@@ -260,17 +274,27 @@ public class Actemium {
 		customer.addTicket(ticket);
 		userDaoJpa.commitTransaction();
 		actemiumTickets.add(ticket);
+		if (TicketStatus.isOutstanding()) {
+			actemiumTicketsOutstanding.add(ticket);
+		} else {
+			actemiumTicketsResolved.add(ticket);
+		}
 	}
 	
 	public void modifyTicket(ActemiumTicket ticket) {
-		int index = actemiumTickets.indexOf(ticket);
+		//TODO
+		// it seems like it works without it
+		// so can we leave this code out
+		// or am I missing something?
+		// This should be changed in the other modify methods as well
+//		int index = actemiumTickets.indexOf(ticket);
 		
 		ticketDaoJpa.startTransaction();
 		ticketDaoJpa.update(ticket);
 		ticketDaoJpa.commitTransaction();
 
-		actemiumTickets.add(index, ticket);
-		actemiumTickets.remove(index + 1);
+//		actemiumTickets.add(index, ticket);
+//		actemiumTickets.remove(index + 1);
 	}
 	
 	public Ticket getLastAddedTicket() {
@@ -289,9 +313,13 @@ public class Actemium {
 		return FXCollections.unmodifiableObservableList(actemiumTickets);
 	}
 
+	public ObservableList<Ticket> giveActemiumTicketsResolved() {
+		return FXCollections.unmodifiableObservableList(actemiumTicketsResolved);
+	}
 
-
-
+	public ObservableList<Ticket> giveActemiumTicketsOutstanding() {
+		return FXCollections.unmodifiableObservableList(actemiumTicketsOutstanding);
+	}
 
 	////////-CONTRACTTYPEFACADE-////////
 

@@ -50,8 +50,10 @@ public class DashboardFrameController <T> extends GuiController {
 	private final TicketFacade ticketFacade;
     private final ContractTypeFacade contractTypeFacade;
 
+    // ViewModels
     private UserViewModel userViewModel;
-	//private TicketViewModel ticketViewModel;
+	private TicketViewModel ticketViewModel;
+	private ContractTypeViewModel contractTypeViewModel;
 
     @FXML
     private GridPane gridDashboard;
@@ -89,13 +91,13 @@ public class DashboardFrameController <T> extends GuiController {
     public DashboardFrameController(UserFacade userFacade, TicketFacade ticketFacade, ContractTypeFacade contractTypeFacade) throws FileNotFoundException {
         super();
         
-        this.userFacade = userFacade;
-        
+        this.userFacade = userFacade;        
         this.ticketFacade = ticketFacade;
-
         this.contractTypeFacade = contractTypeFacade;
 
-        this.userViewModel = new UserViewModel(userFacade);
+        this.userViewModel = new UserViewModel(userFacade);        
+        this.ticketViewModel = new TicketViewModel(ticketFacade);        
+        this.contractTypeViewModel = new ContractTypeViewModel(contractTypeFacade);        
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
@@ -233,30 +235,27 @@ public class DashboardFrameController <T> extends GuiController {
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.CUSTOMER);
             switchToManageScreen(name, tableViewPanelCompanion, userViewModel);
         } else if (name.toLowerCase().contains("ticket") && name.toLowerCase().contains("outstanding")) {
-            List<TicketStatus> outstanding = Arrays.asList(TicketStatus.CREATED, TicketStatus.IN_PROGRESS, TicketStatus.WAITING_ON_USER_INFORMATION, TicketStatus.USER_INFORMATION_RECEIVED, TicketStatus.IN_DEVELOPMENT);
-            TicketViewModel viewModelOutstanding = new TicketViewModel(ticketFacade);
-            viewModelOutstanding.setActemiumTickets(FXCollections.observableArrayList(ticketFacade.giveActemiumTickets()
-                    .stream()
-                    .filter(t -> outstanding.contains(t.getStatusAsEnum()))
-                    .collect(Collectors.toList())));
+//            List<TicketStatus> outstanding = Arrays.asList(TicketStatus.CREATED, TicketStatus.IN_PROGRESS, TicketStatus.WAITING_ON_USER_INFORMATION, TicketStatus.USER_INFORMATION_RECEIVED, TicketStatus.IN_DEVELOPMENT);
+            ticketViewModel.setActemiumTickets(ticketFacade.giveActemiumTicketsOutstanding());
+//                    .stream()
+//                    .filter(t -> outstanding.contains(t.getStatusAsEnum()))
+//                    .collect(Collectors.toList())));
             TicketStatus.setOutstanding(true);
-            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, viewModelOutstanding, GUIEnum.TICKET);
-            switchToManageScreen(name, tableViewPanelCompanion, viewModelOutstanding);
-        }else if (name.toLowerCase().contains("ticket") && name.toLowerCase().contains("resolved")) {
-            List<TicketStatus> resolved = Arrays.asList(TicketStatus.COMPLETED, TicketStatus.CANCELLED);
-            TicketViewModel viewModelResolved = new TicketViewModel(ticketFacade);
-            viewModelResolved.setActemiumTickets(FXCollections.observableArrayList(ticketFacade.giveActemiumTickets()
-                    .stream()
-                    .filter(t -> resolved.contains(t.getStatusAsEnum()))
-                    .collect(Collectors.toList())));
+            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, ticketViewModel, GUIEnum.TICKET);
+            switchToManageScreen(name, tableViewPanelCompanion, ticketViewModel);
+        } else if (name.toLowerCase().contains("ticket") && name.toLowerCase().contains("resolved")) {
+//            List<TicketStatus> resolved = Arrays.asList(TicketStatus.COMPLETED, TicketStatus.CANCELLED);
+            ticketViewModel.setActemiumTickets(ticketFacade.giveActemiumTicketsResolved());
+//                    .stream()
+//                    .filter(t -> resolved.contains(t.getStatusAsEnum()))
+//                    .collect(Collectors.toList())));
             TicketStatus.setOutstanding(false);
-            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, viewModelResolved, GUIEnum.TICKET);
-            switchToManageScreen(name, tableViewPanelCompanion, viewModelResolved);
+            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, ticketViewModel, GUIEnum.TICKET);
+            switchToManageScreen(name, tableViewPanelCompanion, ticketViewModel);
         } else if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("contract type")) {
-            ContractTypeViewModel viewModel = new ContractTypeViewModel(contractTypeFacade);
-            viewModel.setContractTypes(contractTypeFacade.giveActemiumContractTypes());
-            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, viewModel, GUIEnum.CONTRACTTYPE);
-            switchToManageScreen(name, tableViewPanelCompanion, viewModel);
+        	contractTypeViewModel.setContractTypes(contractTypeFacade.giveActemiumContractTypes());
+            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, contractTypeViewModel, GUIEnum.CONTRACTTYPE);
+            switchToManageScreen(name, tableViewPanelCompanion, contractTypeViewModel);
         } else {
             makePopUp(name);
         }
@@ -285,7 +284,6 @@ public class DashboardFrameController <T> extends GuiController {
         for (int i = 0; i < x; i++) {
             gridContent.addColumn(i);
             gridContent.getColumnConstraints().add(new ColumnConstraints(width, height, -1, Priority.ALWAYS, HPos.CENTER, false));
-
         }
         for (int i = 0; i < y; i++) {
             gridContent.addRow(i);
