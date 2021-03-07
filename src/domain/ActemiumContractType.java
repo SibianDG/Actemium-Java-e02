@@ -20,16 +20,17 @@ public class ActemiumContractType implements ContractType, Serializable {
 	private String name;
 
 	@Transient
-	private StringProperty ContractTypeNameString = new SimpleStringProperty();
+	private StringProperty contractTypeName = new SimpleStringProperty();
 
 	@Transient
-	private StringProperty contractTypeStatusProperty = new SimpleStringProperty();
+	private StringProperty contractTypeStatus = new SimpleStringProperty();
 
 	private boolean hasEmail;
 	private boolean hasPhone;
 	private boolean hasApplication;
-	@Enumerated(EnumType.STRING)
-	private Timestamp timestamp;
+
+	@Transient
+	private StringProperty timestamp = new SimpleStringProperty();
 	// Does the integer represent:
 	// Days, Hours, Minutes?
 	private int maxHandlingTime;
@@ -58,14 +59,6 @@ public class ActemiumContractType implements ContractType, Serializable {
 		setPrice(price);
 	}
 
-	public StringProperty getContractTypeNameString() {
-		return ContractTypeNameString;
-	}
-
-	public void setContractTypeNameString(String name) {
-		this.ContractTypeNameString.set(String.valueOf(name));
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -77,21 +70,24 @@ public class ActemiumContractType implements ContractType, Serializable {
 		}
 		//TODO check if contractTypeName is not already taken,
 		// two contractTypes can't have the same name
-		setContractTypeNameString(name);
+		setContractTypeName();
 		this.name = name;
 	}
+	
+	private void setContractTypeName() {
+		this.contractTypeName.set(name);
+	}
 
-	@Enumerated(EnumType.STRING)
-	public ContractTypeStatus getContractTypeStatus() {
-		return ContractTypeStatus.valueOf(contractTypeStatusProperty.get());
+	public String getContractTypeStatus() {
+		return contractTypeStatus.get();
+	}
+
+	public ContractTypeStatus getContractTypeStatusAsEnum() {
+		return ContractTypeStatus.valueOf(contractTypeStatus.get());
 	}
 
 	public void setContractTypeStatus(ContractTypeStatus contractTypeStatus) {
-		this.contractTypeStatusProperty.set(contractTypeStatus.toString());
-	}
-
-	public StringProperty getContractTypeStatusProperty() {
-		return this.contractTypeStatusProperty;
+		this.contractTypeStatus.set(contractTypeStatus.toString());
 	}
 
 	public boolean isHasEmail() {
@@ -121,12 +117,16 @@ public class ActemiumContractType implements ContractType, Serializable {
 		this.hasApplication = hasApplication;
 	}
 
-	public Timestamp getTimestamp() {
-		return timestamp;
+	public String getTimestamp() {
+		return timestamp.get();
+	}
+	
+	public Timestamp getTimestampAsEnum() {
+		return Timestamp.valueOf(timestamp.get());
 	}
 
 	public void setTimestamp(Timestamp timestamp) {
-		this.timestamp = timestamp;
+		this.timestamp.set(timestamp.toString());
 	}
 
 	public int getMaxHandlingTime() {
@@ -176,6 +176,19 @@ public class ActemiumContractType implements ContractType, Serializable {
 		if (!(hasEmail || hasPhone || hasApplication)) {
 			throw new IllegalArgumentException("You must have at least 1 way to create the ticket.");
 		}
+	}
+	
+	public StringProperty contractTypeNameProperty() {
+		setContractTypeName();
+		return contractTypeName;
+	}
+	
+	public StringProperty contractTypeStatusProperty() {
+		return contractTypeStatus;
+	}
+	
+	public StringProperty contractTypestampProperty() {
+		return timestamp;
 	}
 	
 }

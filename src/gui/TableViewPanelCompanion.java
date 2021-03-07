@@ -126,10 +126,11 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				propertyMap.put("Status", item -> ((Ticket) item).statusProperty());
 			}
 			case CONTRACTTYPE -> {
-				this.mainData = (ObservableList<T>) ((ContractTypeViewModel) viewModel).getActemiumContractTypes();
+				this.mainData = (ObservableList<T>) ((ContractTypeViewModel) viewModel).getContractTypes();
 				this.tableViewData = new FilteredList<>(mainData);
-				propertyMap.put("Name", item -> ((ContractType) item).getContractTypeNameString());
-				propertyMap.put("Status", item -> ((ContractType) item).getContractTypeStatusProperty());
+				propertyMap.put("Name", item -> ((ContractType) item).contractTypeNameProperty());
+				propertyMap.put("Timestamp", item -> ((ContractType) item).contractTypestampProperty());
+				propertyMap.put("Status", item -> ((ContractType) item).contractTypeStatusProperty());
 				//propertyMap.put("Number Active Contracts", item -> ((ContractType) item));
 			}
 		}
@@ -156,7 +157,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		filterMap.put(GUIEnum.EMPLOYEE, new ArrayList<>(Arrays.asList("Firstname", "Lastname", EmployeeRole.ADMINISTRATOR, UserStatus.ACTIVE)));
 		filterMap.put(GUIEnum.CUSTOMER, new ArrayList<>(Arrays.asList("Company", UserStatus.ACTIVE, "Firstname", "Lastname")));
 		filterMap.put(GUIEnum.TICKET, new ArrayList<>(Arrays.asList("ID", TicketType.SOFTWARE, TicketPriority.P1, "Title", TicketStatus.CREATED)));
-		filterMap.put(GUIEnum.CONTRACTTYPE, new ArrayList<>(Arrays.asList("Name", ContractTypeStatus.ACTIVE)));
+		filterMap.put(GUIEnum.CONTRACTTYPE, new ArrayList<>(Arrays.asList("Name", Timestamp.WORKINGHOURS, ContractTypeStatus.ACTIVE)));
 
 		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createElementDetailGridpane(o)));
 	}
@@ -340,31 +341,48 @@ public class TableViewPanelCompanion<T> extends GridPane {
 
 
 					String selectedItem = comboBox.getSelectionModel().getSelectedItem().toString();
-
-					if (currentState.equals(GUIEnum.CONTRACTTYPE)){
-						System.out.println("CONTRACTTYPE");
-						if (contractStatusStringArray.contains(selectedItem)){
-							predicates.add(giveFilterPredicate("ContractStatus", selectedItem.toLowerCase()));
-						} else if (contractTypeStatusStringArray.contains(selectedItem)){
-							System.out.println("yea");
-							predicates.add(giveFilterPredicate("ContractTypeStatus", selectedItem.toLowerCase()));
-						}
-					} else {
-						if (userStatusStringArray.contains(selectedItem)){
-							predicates.add(giveFilterPredicate("UserStatus", selectedItem.toLowerCase()));
-						} else if (employeeRoleStringArray.contains(selectedItem)){
-							predicates.add(giveFilterPredicate("EmployeeRole", selectedItem.toLowerCase()));
-						} else if (userStatusRoleStringArray.contains(selectedItem)){
-							predicates.add(giveFilterPredicate("TicketPriority", selectedItem.toLowerCase()));
-						} else if (ticketTypeStringArray.contains(selectedItem)){
-							predicates.add(giveFilterPredicate("TicketType", selectedItem.toLowerCase()));
-						} else if (ticketStatusStringArray.contains(selectedItem)){
-							predicates.add(giveFilterPredicate("TicketStatus", selectedItem.toLowerCase()));
-						} else if (timestampStringArray.contains(selectedItem)){
-							predicates.add(giveFilterPredicate("Timestamp", selectedItem.toLowerCase()));
-						}
+				
+					if (userStatusStringArray.contains(selectedItem)){
+						predicates.add(giveFilterPredicate("UserStatus", selectedItem.toLowerCase()));
+					} else if (employeeRoleStringArray.contains(selectedItem)){
+						predicates.add(giveFilterPredicate("EmployeeRole", selectedItem.toLowerCase()));
+					} else if (userStatusRoleStringArray.contains(selectedItem)){
+						predicates.add(giveFilterPredicate("TicketPriority", selectedItem.toLowerCase()));
+					} else if (ticketTypeStringArray.contains(selectedItem)){
+						predicates.add(giveFilterPredicate("TicketType", selectedItem.toLowerCase()));
+					} else if (ticketStatusStringArray.contains(selectedItem)){
+						predicates.add(giveFilterPredicate("TicketStatus", selectedItem.toLowerCase()));
+					} else if (contractStatusStringArray.contains(selectedItem)){
+						predicates.add(giveFilterPredicate("ContractStatus", selectedItem.toLowerCase()));
+					} else if (contractTypeStatusStringArray.contains(selectedItem)){
+						predicates.add(giveFilterPredicate("ContractTypeStatus", selectedItem.toLowerCase()));
+					} else if (timestampStringArray.contains(selectedItem)){
+						predicates.add(giveFilterPredicate("Timestamp", selectedItem.toLowerCase()));
 					}
-
+					
+//					if (currentState.equals(GUIEnum.CONTRACTTYPE)){
+//						System.out.println("CONTRACTTYPE");
+//						if (contractStatusStringArray.contains(selectedItem)){
+//							predicates.add(giveFilterPredicate("ContractStatus", selectedItem.toLowerCase()));
+//						} else if (contractTypeStatusStringArray.contains(selectedItem)){
+//							System.out.println("yea");
+//							predicates.add(giveFilterPredicate("ContractTypeStatus", selectedItem.toLowerCase()));
+//						}
+//					} else {
+//						if (userStatusStringArray.contains(selectedItem)){
+//							predicates.add(giveFilterPredicate("UserStatus", selectedItem.toLowerCase()));
+//						} else if (employeeRoleStringArray.contains(selectedItem)){
+//							predicates.add(giveFilterPredicate("EmployeeRole", selectedItem.toLowerCase()));
+//						} else if (userStatusRoleStringArray.contains(selectedItem)){
+//							predicates.add(giveFilterPredicate("TicketPriority", selectedItem.toLowerCase()));
+//						} else if (ticketTypeStringArray.contains(selectedItem)){
+//							predicates.add(giveFilterPredicate("TicketType", selectedItem.toLowerCase()));
+//						} else if (ticketStatusStringArray.contains(selectedItem)){
+//							predicates.add(giveFilterPredicate("TicketStatus", selectedItem.toLowerCase()));
+//						} else if (timestampStringArray.contains(selectedItem)){
+//							predicates.add(giveFilterPredicate("Timestamp", selectedItem.toLowerCase()));
+//						}
+//					}
 				}
 			}
 		});
@@ -415,7 +433,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				} else if (data instanceof Ticket) {
 					((TicketViewModel) viewModel).setSelectedActemiumTicket((Ticket) data);
 				} else if (data instanceof ContractType) {
-					((ContractTypeViewModel) viewModel).setSelectedActemiumContractType((ContractType) data);
+					((ContractTypeViewModel) viewModel).setSelectedContractType((ContractType) data);
 				}
 			}
 		});		
@@ -438,7 +456,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			}
 			case CONTRACTTYPE -> {
 				((ContractTypeViewModel) viewModel).setCurrentState(GUIEnum.CONTRACTTYPE);
-				((ContractTypeViewModel) viewModel).setSelectedActemiumContractType(null);
+				((ContractTypeViewModel) viewModel).setSelectedContractType(null);
 			}
 			default -> {
 				//tableView.getSelectionModel().clearSelection();
@@ -537,7 +555,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 					case "Name" -> {
 						newPredicate = e -> e.getName().toLowerCase().contains(filterText);
 					}
-					case "Type" -> {
+					case "Timestamp" -> {
 						newPredicate = e -> e.getTimestamp().toString().toLowerCase().equals(filterText);
 					}
 					case "ContractTypeStatus" -> {

@@ -268,7 +268,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 	            btnModify.setText("Modify Ticket");
 	        } else if (viewModel instanceof ContractTypeViewModel) {
                 addDetailsToGridDetails(((ContractTypeViewModel) viewModel).getDetails());
-                txtDetailsTitle.setText("Details of ticket: " + ((ContractTypeViewModel) viewModel).getNameSelectedActemiumContractType());
+                txtDetailsTitle.setText("Details of ContractType: " + ((ContractTypeViewModel) viewModel).getNameSelectedContractType());
                 btnModify.setText("Modify ContractType");
             }
         btnModify.setVisible(true);
@@ -328,10 +328,13 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         gridDetails.addColumn(1);
 
         Map<Integer, String> randomValues = Map.of(
-                0, "ContractTypeeeeee"
-                , 1, "12"
-                , 2, "2"
-                , 3, "500"
+        		 0, "Username9999"
+                 , 1, "FirstNameeee"
+                 , 2, "LastNameeee"
+                 , 3, "Stationstraat 99"
+                 , 4, "test@gmail.com"
+                 , 5, "094812384"
+                 , 6, EmployeeRole.SUPPORT_MANAGER.toString()
         );
         int randomValuesCounter = 0;
         for (int i = 0; i < fields.size(); i++) {
@@ -362,13 +365,14 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     	gridDetails.addColumn(1);
 
         Map<Integer, String> randomValues = Map.of(
-                0, "Username9999"
-                , 1, "FirstNameeee"
-                , 2, "LastNameeee"
-                , 3, "Stationstraat 99"
-                , 4, "test@gmail.com"
-                , 5, "094812384"
-                , 6, EmployeeRole.SUPPORT_MANAGER.toString()
+        		0, "WieldingRobot05 Defect"
+    			, 1, LocalDate.now().toString()
+    			, 2, TicketPriority.P3.toString()
+    			, 3, TicketType.OTHER.toString()
+    			, 4, "001"
+    			, 5, "WieldingRobot stopped functioning this morning at 9am."
+    			, 6, "Call me asap 094812384"
+    			, 7, "brokenRobot.png"
         );
 
     	for (int i = 0; i < fields.size(); i++) {
@@ -421,11 +425,13 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             itemName = itemName.toLowerCase();
 
             Node node;
-            if (itemName.contains("status")) {
+            if (itemName.toLowerCase().contains("status")) {
                 node = makeComboBox(ContractTypeStatus.ACTIVE);
-            } else if (itemName.contains("timestamp ticket creation")) {
+            } else if (itemName.toLowerCase().contains("timestamp")) {
                 node = makeComboBox(Timestamp.ALWAYS);
-            } else if (itemName.contains("email") || itemName.contains("phone") || itemName.contains("application")){
+            } else if (itemName.toLowerCase().contains("email") 
+            		|| itemName.toLowerCase().contains("phone") 
+            		|| itemName.toLowerCase().contains("application")){
                 node = makeComboBox(false);
             } else {
                 TextField textField;
@@ -473,7 +479,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             }
             TextField detail = new TextField(string);
             detail.textProperty().addListener((observable, oldValue, newValue) -> {
-//                modified = true;
                 viewModel.setFieldModified(true);
                 System.out.println("textfield changed from " + oldValue + " to " + newValue);
             });
@@ -490,6 +495,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             return detail;
         } else if (o instanceof Enum) {
             return makeComboBox(o);
+        } else if (o instanceof Boolean) {
+        	return makeComboBox(o);
         }
         return null;
     }
@@ -534,7 +541,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         ComboBox c = new ComboBox(list);
         c.getSelectionModel().select(o);
         c.valueProperty().addListener(e -> {
-//        	modified = true;
             viewModel.setFieldModified(true);
         });
         return c;

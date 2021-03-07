@@ -215,7 +215,7 @@ public class DashboardFrameController <T> extends GuiController {
             switchToManageScreen(name, tableViewPanelCompanion, viewModel);
         } else if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("contracttype")) {
             ContractTypeViewModel viewModel = new ContractTypeViewModel(contractTypeFacade);
-            viewModel.setActemiumContractTypes(contractTypeFacade.giveActemiumContractTypes());
+            viewModel.setContractTypes(contractTypeFacade.giveActemiumContractTypes());
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, viewModel, GUIEnum.CONTRACTTYPE);
             switchToManageScreen(name, tableViewPanelCompanion, viewModel);
         } else {
