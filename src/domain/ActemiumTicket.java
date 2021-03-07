@@ -99,7 +99,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 	}
 	
 	public String getTicketIdString() {
-		return ticketIdString.get();
+		return String.valueOf(ticketId);
 	}
 	
 	public void setTicketIdString() {
