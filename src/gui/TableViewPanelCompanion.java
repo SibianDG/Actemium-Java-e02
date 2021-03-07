@@ -204,9 +204,15 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				itemText = "TicketType";
 	        }       
 		    case "TicketStatus" -> {
-		    	stringArrayList = new ArrayList<>(Collections.singleton("SELECT STATUS"));
-				Arrays.asList(TicketStatus.values()).forEach(string -> stringArrayList.add(string.toString()));
-				itemText = "TicketStatus";
+	        	if (TicketStatus.isOutstanding()) {
+					stringArrayList = new ArrayList<>(Collections.singleton("SELECT STATUS"));
+					Arrays.asList(TicketStatus.getOutstandingTicketStatuses()).forEach(string -> stringArrayList.add(string.toString()));
+					itemText = "TicketStatus";
+				} else {
+					stringArrayList = new ArrayList<>(Collections.singleton("SELECT STATUS"));
+					Arrays.asList(TicketStatus.getResolvedTicketStatuses()).forEach(string -> stringArrayList.add(string.toString()));
+					itemText = "TicketStatus";
+				}
 		    }                
 		    case "ContractStatus" -> {
 		    	stringArrayList = new ArrayList<>(Collections.singleton("SELECT STATUS"));

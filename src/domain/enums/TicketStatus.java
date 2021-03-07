@@ -23,22 +23,21 @@ public enum TicketStatus {
 	// *Data is still kept in the database
 	CANCELLED;
 
-	private boolean outstanding = false;
+	private static boolean outstanding;
 
-
-	public boolean isOutstanding() {
+	public static boolean isOutstanding() {
 		return outstanding;
 	}
 
-	public void setOutstanding(boolean outstanding) {
-		this.outstanding = outstanding;
+	public static void setOutstanding(boolean outstanding) {
+		TicketStatus.outstanding = outstanding;
 	}
 
-	private List<TicketStatus> getOutstandingTicketStatuses() {
+	public static List<TicketStatus> getOutstandingTicketStatuses() {
 		return Arrays.asList(CREATED, IN_PROGRESS, WAITING_ON_USER_INFORMATION, USER_INFORMATION_RECEIVED, IN_DEVELOPMENT);
 	}
 
-	private List<TicketStatus> getResolvedTicketStatuses() {
+	public static List<TicketStatus> getResolvedTicketStatuses() {
 		return Arrays.asList(COMPLETED, CANCELLED);
 	}
 }

@@ -239,6 +239,7 @@ public class DashboardFrameController <T> extends GuiController {
                     .stream()
                     .filter(t -> outstanding.contains(t.getStatusAsEnum()))
                     .collect(Collectors.toList())));
+            TicketStatus.setOutstanding(true);
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, viewModelOutstanding, GUIEnum.TICKET);
             switchToManageScreen(name, tableViewPanelCompanion, viewModelOutstanding);
         }else if (name.toLowerCase().contains("ticket") && name.toLowerCase().contains("resolved")) {
@@ -248,7 +249,7 @@ public class DashboardFrameController <T> extends GuiController {
                     .stream()
                     .filter(t -> resolved.contains(t.getStatusAsEnum()))
                     .collect(Collectors.toList())));
-            System.out.println(viewModelResolved.getActemiumTickets());
+            TicketStatus.setOutstanding(false);
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, viewModelResolved, GUIEnum.TICKET);
             switchToManageScreen(name, tableViewPanelCompanion, viewModelResolved);
         } else if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("contract type")) {
