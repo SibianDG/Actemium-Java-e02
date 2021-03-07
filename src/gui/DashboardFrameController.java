@@ -3,9 +3,15 @@ package gui;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import domain.ActemiumCustomer;
+import domain.Ticket;
+import domain.enums.TicketStatus;
 import domain.facades.ContractTypeFacade;
 import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
@@ -15,6 +21,8 @@ import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
@@ -207,28 +215,42 @@ public class DashboardFrameController <T> extends GuiController {
 
     }
 
-    private void buttonMenusClicked(String name){
+    private void buttonMenusClicked(String name) {
         hboxMenu.getChildren().forEach(child -> child.getStyleClass().remove("menuButton-active"));
         hboxMenu.getChildren().forEach(child -> {
-            if (((Button) child).getText().replace("\n", " ").toLowerCase().contains(name.toLowerCase())){
+            if (((Button) child).getText().replace("\n", " ").toLowerCase().contains(name.toLowerCase())) {
                 child.getStyleClass().add("menuButton-active");
             }
         });
 
-        if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("employee")) {
+        if (name.toLowerCase().contains("manage") && name.toLowerCase().contains("employee")) {
             //Todo weird
             userViewModel.setEmployees(userFacade.giveActemiumEmployees());
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.EMPLOYEE);
             switchToManageScreen(name, tableViewPanelCompanion, userViewModel);
-        } else if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("customer")) {
+        } else if (name.toLowerCase().contains("manage") && name.toLowerCase().contains("customer")) {
             userViewModel.setCustomers(userFacade.giveActemiumCustomers());
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.CUSTOMER);
             switchToManageScreen(name, tableViewPanelCompanion, userViewModel);
         } else if (name.toLowerCase().contains("ticket") && name.toLowerCase().contains("outstanding")) {
-            TicketViewModel viewModel = new TicketViewModel(ticketFacade);
-            viewModel.setActemiumTickets(ticketFacade.giveActemiumTickets());
-            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, viewModel, GUIEnum.TICKET);
-            switchToManageScreen(name, tableViewPanelCompanion, viewModel);
+            List<TicketStatus> outstanding = Arrays.asList(TicketStatus.CREATED, TicketStatus.IN_PROGRESS, TicketStatus.WAITING_ON_USER_INFORMATION, TicketStatus.USER_INFORMATION_RECEIVED, TicketStatus.IN_DEVELOPMENT);
+            TicketViewModel viewModelOutstanding = new TicketViewModel(ticketFacade);
+            viewModelOutstanding.setActemiumTickets(FXCollections.observableArrayList(ticketFacade.giveActemiumTickets()
+                    .stream()
+                    .filter(t -> outstanding.contains(t.getStatusAsEnum()))
+                    .collect(Collectors.toList())));
+            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, viewModelOutstanding, GUIEnum.TICKET);
+            switchToManageScreen(name, tableViewPanelCompanion, viewModelOutstanding);
+        }else if (name.toLowerCase().contains("ticket") && name.toLowerCase().contains("resolved")) {
+            List<TicketStatus> resolved = Arrays.asList(TicketStatus.COMPLETED, TicketStatus.CANCELLED);
+            TicketViewModel viewModelResolved = new TicketViewModel(ticketFacade);
+            viewModelResolved.setActemiumTickets(FXCollections.observableArrayList(ticketFacade.giveActemiumTickets()
+                    .stream()
+                    .filter(t -> resolved.contains(t.getStatusAsEnum()))
+                    .collect(Collectors.toList())));
+            System.out.println(viewModelResolved.getActemiumTickets());
+            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, viewModelResolved, GUIEnum.TICKET);
+            switchToManageScreen(name, tableViewPanelCompanion, viewModelResolved);
         } else if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("contract type")) {
             ContractTypeViewModel viewModel = new ContractTypeViewModel(contractTypeFacade);
             viewModel.setContractTypes(contractTypeFacade.giveActemiumContractTypes());

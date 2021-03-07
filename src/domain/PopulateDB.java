@@ -30,6 +30,7 @@ public class PopulateDB {
         ActemiumTicket ticket03 = new ActemiumTicket(TicketPriority.P1, TicketType.INFRASTRUCTURE, "Get Trump back", "I forgot my diary in the white house, Trump doesn't let me in to retriev it", barak);
         ActemiumTicket ticket04 = new ActemiumTicket(TicketPriority.P1, TicketType.NETWORK, "Make America Great Again", "I forgot my diary in the white house, Trump doesn't let me in to retriev it", barak);
         ActemiumTicket ticket05 = new ActemiumTicket(TicketPriority.P1, TicketType.SOFTWARE, "Corona is a HOAX", "I forgot my diary in the white house, Trump doesn't let me in to retriev it", barak);
+        ticket05.setStatus(TicketStatus.COMPLETED);
         barak.addTicket(ticket01);
         barak2.addTicket(ticket02);
         barak3.addTicket(ticket03);

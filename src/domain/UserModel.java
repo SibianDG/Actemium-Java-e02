@@ -90,6 +90,7 @@ public abstract class UserModel implements User, Serializable {
 //		if (failedLoginAttempts > USER_LOGIN_MAX_ATTEMPTS) {
 //			throw new IllegalArgumentException("User has reached more than 5 failed login attempts, account has been blocked.");
 //		}
+
 	}
 
 	public List<LoginAttempt> getLoginAttempts() {
