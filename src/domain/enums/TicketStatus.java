@@ -1,5 +1,8 @@
 package domain.enums;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum TicketStatus {
 
 	// Ticket has just been created
@@ -18,6 +21,24 @@ public enum TicketStatus {
 	// The customer did not need any further support for this ticket
 	// Ticket was removed* by the customer/support engineer
 	// *Data is still kept in the database
-	CANCELLED
+	CANCELLED;
 
+	private boolean outstanding = false;
+
+
+	public boolean isOutstanding() {
+		return outstanding;
+	}
+
+	public void setOutstanding(boolean outstanding) {
+		this.outstanding = outstanding;
+	}
+
+	private List<TicketStatus> getOutstandingTicketStatuses() {
+		return Arrays.asList(CREATED, IN_PROGRESS, WAITING_ON_USER_INFORMATION, USER_INFORMATION_RECEIVED, IN_DEVELOPMENT);
+	}
+
+	private List<TicketStatus> getResolvedTicketStatuses() {
+		return Arrays.asList(COMPLETED, CANCELLED);
+	}
 }
