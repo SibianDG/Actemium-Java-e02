@@ -28,13 +28,12 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
+import javafx.stage.Stage;
 
 public class DashboardFrameController <T> extends GuiController {
 	
@@ -50,9 +49,6 @@ public class DashboardFrameController <T> extends GuiController {
     private GridPane gridDashboard;
 
     @FXML
-    private GridPane gridContent;
-
-    @FXML
     private ImageView imgNotifications;
 
     @FXML
@@ -65,16 +61,16 @@ public class DashboardFrameController <T> extends GuiController {
     private Text txtEmployeeRole;
 
     @FXML
-    private ImageView imgLogo;
-
-    @FXML
     private ImageView imgLogout;
 
     @FXML
-    private Text txtTitle;
+    private ImageView imgLogo;
 
     @FXML
-    private GridPane gridMenu;
+    private HBox hboxMenu;
+
+    @FXML
+    private GridPane gridContent;
 
     private Set<DashboardTile> dashboardTiles = new HashSet<>();
 
@@ -114,7 +110,12 @@ public class DashboardFrameController <T> extends GuiController {
 
     public void initializeDashboard() throws FileNotFoundException {
 
-        txtTitle.setText("Dashboard");
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+
+        gridDashboard.setPrefWidth(primScreenBounds.getWidth());
+        gridDashboard.prefHeight(primScreenBounds.getHeight());
+
+        //txtTitle.setText("Dashboard");
         resetGridpane(gridContent);
         initializeGridPane(3, 2, 300, 300);
 
@@ -127,7 +128,7 @@ public class DashboardFrameController <T> extends GuiController {
                 itemIcons = new String[]{"icon_manage", "icon_manage"};
             }
             case "SUPPORT_MANAGER" -> {
-                itemNames = new String[]{"manage knowledge base", "outstanding tickets", "resolved tickets", "statistics", "Manage ContractTypes", "Manage Contracts"};
+                itemNames = new String[]{"manage knowledge base", "outstanding tickets", "resolved tickets", "statistics", "manage contract types", "manage contracts"};
                 itemIcons = new String[]{"icon_manage", "icon_outstanding", "icon_resolved", "icon_statistics", "icon_manage", "icon_manage"};
             }
             case "TECHNICIAN" -> {
@@ -143,36 +144,44 @@ public class DashboardFrameController <T> extends GuiController {
         createGridMenu(itemNames);
     }
 
+
     private void createGridMenu(String[] itemNames){
-        resetGridpane(gridMenu);
+        hboxMenu.getChildren().clear();
+        
+        //int width = (int) (primScreenBounds.getWidth()/(itemNames.length+1) - (gap*itemNames.length));
+        for (String text : itemNames) {
+            //gridMenu.addColumn(i);
+            //gridMenu.getColumnConstraints().add(new ColumnConstraints(width, 100, -1, Priority.ALWAYS, HPos.CENTER, false));
+            Button button = createMenuItemButton(text, itemNames.length);
+            button.setOnMouseClicked(e -> {
+
+                buttonMenusClicked(text);
+            });
+            hboxMenu.getChildren().add(button);
+        }
+    }
+    
+    private Button createMenuItemButton(String s, int numberOfItems){
+        if (numberOfItems > 4){
+            s = s.replace(" ", "\n");
+        }
 
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
 
-        int gap = 50;
-        int width = (int) (primScreenBounds.getWidth()/(itemNames.length+1) - (gap*itemNames.length));
-        for (int i = 0; i < itemNames.length; i++) {
-            String text = itemNames[i];
-            gridMenu.addColumn(i);
-            gridMenu.getColumnConstraints().add(new ColumnConstraints(width, 100, -1, Priority.ALWAYS, HPos.CENTER, false));
-            Button button = createMenuItemButton(text, width);
-            setValignment(button, VPos.BOTTOM);
-            setHalignment(button, HPos.CENTER);
-            button.setOnMouseClicked(e -> buttonMenusClicked(text));
-            gridMenu.add(button, i, 0);
-            setHgrow(button, Priority.ALWAYS);
-            setVgrow(button, Priority.ALWAYS);
-        }
-        gridMenu.setVgap(gap);
-    }
-    
-    private Button createMenuItemButton(String s, int width){
         Button button = new Button(s);
         button.getStyleClass().add("menuButton");
         button.setTextFill(Color.WHITE);
-        button.minWidth(width);
-        button.prefWidth(width);
-        button.setPadding(new Insets(15, (double)width/2, 15, (double)width/2));
-        button.setAlignment(Pos.BOTTOM_CENTER);
+        button.setAlignment(Pos.CENTER);
+        button.setTextAlignment(TextAlignment.CENTER);
+        button.prefWidthProperty().bind(hboxMenu.widthProperty().divide(numberOfItems));
+        button.prefHeightProperty().bind(hboxMenu.heightProperty());
+
+        if (numberOfItems < 4) {
+            button.setMaxHeight(75);
+            button.setMaxWidth((primScreenBounds.getWidth() * 0.7) / (numberOfItems * 1.75));
+        }
+
+//        button.setPadding(new Insets(5, paddingX, 5, paddingX));
         return button;
     }
 
@@ -199,6 +208,13 @@ public class DashboardFrameController <T> extends GuiController {
     }
 
     private void buttonMenusClicked(String name){
+        hboxMenu.getChildren().forEach(child -> child.getStyleClass().remove("menuButton-active"));
+        hboxMenu.getChildren().forEach(child -> {
+            if (((Button) child).getText().replace("\n", " ").toLowerCase().contains(name.toLowerCase())){
+                child.getStyleClass().add("menuButton-active");
+            }
+        });
+
         if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("employee")) {
             //Todo weird
             userViewModel.setEmployees(userFacade.giveActemiumEmployees());
@@ -213,7 +229,7 @@ public class DashboardFrameController <T> extends GuiController {
             viewModel.setActemiumTickets(ticketFacade.giveActemiumTickets());
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, viewModel, GUIEnum.TICKET);
             switchToManageScreen(name, tableViewPanelCompanion, viewModel);
-        } else if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("contracttype")) {
+        } else if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("contract type")) {
             ContractTypeViewModel viewModel = new ContractTypeViewModel(contractTypeFacade);
             viewModel.setContractTypes(contractTypeFacade.giveActemiumContractTypes());
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, viewModel, GUIEnum.CONTRACTTYPE);
@@ -224,7 +240,7 @@ public class DashboardFrameController <T> extends GuiController {
     }
 
 	private void switchToManageScreen(String name, TableViewPanelCompanion<T> tableViewPanelCompanion, ViewModel viewModel) {
-		txtTitle.setText(name);
+		//txtTitle.setText(name);
 		resetGridpane(gridContent);
 		
 		//tableViewPanelCompanion = new TableViewPanelCompanion(this, userViewModel, currentState);
@@ -283,6 +299,10 @@ public class DashboardFrameController <T> extends GuiController {
 
     private void makePopUp(String text){
         Alert alert = new Alert(Alert.AlertType.INFORMATION, text);
+
+        alert.getDialogPane().getStylesheets().add("file:src/start/styles.css");
+        alert.getDialogPane().getStyleClass().add("alert");
+        ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
         alert.showAndWait();
     }
     

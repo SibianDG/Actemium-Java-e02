@@ -13,25 +13,24 @@
 
 <fx:root fx:id="gridDashboard" styleClass="bg-gray" stylesheets="@../start/styles.css" type="GridPane" xmlns="http://javafx.com/javafx/14.0.2.1" xmlns:fx="http://javafx.com/fxml/1">
     <rowConstraints>
-        <RowConstraints minHeight="-Infinity" percentHeight="10" />
-        <RowConstraints minHeight="-Infinity" percentHeight="83.5" />
-      <RowConstraints minHeight="-Infinity" percentHeight="6.5" />
+        <RowConstraints minHeight="-Infinity" percentHeight="10.0" />
+        <RowConstraints minHeight="-Infinity" percentHeight="90.0" />
     </rowConstraints>
     <columnConstraints>
-        <ColumnConstraints percentWidth="100" />
+        <ColumnConstraints maxWidth="1920.0" minWidth="-Infinity" percentWidth="100" prefWidth="1920.0" />
     </columnConstraints>
     <children>
-        <GridPane styleClass="gridpaneDashboardHeader">
+        <GridPane maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="1920.0" styleClass="gridpaneDashboardHeader">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="1500.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" />
+                <ColumnConstraints percentWidth="10.0" />
+                <ColumnConstraints percentWidth="76.0" />
+                <ColumnConstraints percentWidth="14.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="-Infinity" percentHeight="100.0" prefHeight="50.0" />
             </rowConstraints>
             <children>
-                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                <HBox alignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <children>
                         <ImageView fx:id="imgNotifications" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#btnNotificationAction" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -77,19 +76,14 @@
                                 <Image url="@../pictures/dashboard/icon_logout.png" />
                             </image>
                             <HBox.margin>
-                                <Insets right="50.0" />
+                                <Insets />
                             </HBox.margin>
                         </ImageView>
                     </children>
                     <GridPane.margin>
-                        <Insets right="25.0" />
+                        <Insets />
                     </GridPane.margin>
                 </HBox>
-                <Text fx:id="txtTitle" fill="#173d78" strokeType="OUTSIDE" strokeWidth="0.0" text="Dashboard" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                    <font>
-                        <Font name="Arial Bold" size="48.0" />
-                    </font>
-                </Text>
                 <ImageView fx:id="imgLogo" fitHeight="60.0" fitWidth="150.0" onMouseClicked="#navigateToHome" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                     <GridPane.margin>
                         <Insets left="25.0" />
@@ -98,17 +92,17 @@
                         <Image url="@../pictures/actemium.png" />
                     </image>
                 </ImageView>
+            <HBox fx:id="hboxMenu" alignment="CENTER" spacing="5.0" GridPane.columnIndex="1">
+               <padding>
+                  <Insets bottom="10.0" left="25.0" right="25.0" />
+               </padding>
+            </HBox>
             </children>
         </GridPane>
-        <GridPane fx:id="gridContent" gridLinesVisible="true" prefHeight="900.0" prefWidth="1800.0" GridPane.rowIndex="1">
+        <GridPane fx:id="gridContent" gridLinesVisible="true" GridPane.rowIndex="1">
             <GridPane.margin>
                 <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
             </GridPane.margin>
         </GridPane>
-      <GridPane fx:id="gridMenu" alignment="BOTTOM_CENTER" GridPane.rowIndex="2">
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-      </GridPane>
     </children>
 </fx:root>

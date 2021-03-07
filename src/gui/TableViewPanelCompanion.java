@@ -48,11 +48,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 
 public class TableViewPanelCompanion<T> extends GridPane {
@@ -341,24 +343,28 @@ public class TableViewPanelCompanion<T> extends GridPane {
 
 
 					String selectedItem = comboBox.getSelectionModel().getSelectedItem().toString();
-				
-					if (userStatusStringArray.contains(selectedItem)){
-						predicates.add(giveFilterPredicate("UserStatus", selectedItem.toLowerCase()));
-					} else if (employeeRoleStringArray.contains(selectedItem)){
-						predicates.add(giveFilterPredicate("EmployeeRole", selectedItem.toLowerCase()));
-					} else if (userStatusRoleStringArray.contains(selectedItem)){
-						predicates.add(giveFilterPredicate("TicketPriority", selectedItem.toLowerCase()));
-					} else if (ticketTypeStringArray.contains(selectedItem)){
-						predicates.add(giveFilterPredicate("TicketType", selectedItem.toLowerCase()));
-					} else if (ticketStatusStringArray.contains(selectedItem)){
-						predicates.add(giveFilterPredicate("TicketStatus", selectedItem.toLowerCase()));
-					} else if (contractStatusStringArray.contains(selectedItem)){
-						predicates.add(giveFilterPredicate("ContractStatus", selectedItem.toLowerCase()));
-					} else if (contractTypeStatusStringArray.contains(selectedItem)){
+
+					//There are 2 active ENUMS
+					if (currentState.equals(GUIEnum.CONTRACTTYPE) && contractTypeStatusStringArray.contains(selectedItem)) {
 						predicates.add(giveFilterPredicate("ContractTypeStatus", selectedItem.toLowerCase()));
-					} else if (timestampStringArray.contains(selectedItem)){
-						predicates.add(giveFilterPredicate("Timestamp", selectedItem.toLowerCase()));
+					} else {
+						if (userStatusStringArray.contains(selectedItem)){
+							predicates.add(giveFilterPredicate("UserStatus", selectedItem.toLowerCase()));
+						} else if (employeeRoleStringArray.contains(selectedItem)){
+							predicates.add(giveFilterPredicate("EmployeeRole", selectedItem.toLowerCase()));
+						} else if (userStatusRoleStringArray.contains(selectedItem)){
+							predicates.add(giveFilterPredicate("TicketPriority", selectedItem.toLowerCase()));
+						} else if (ticketTypeStringArray.contains(selectedItem)){
+							predicates.add(giveFilterPredicate("TicketType", selectedItem.toLowerCase()));
+						} else if (ticketStatusStringArray.contains(selectedItem)){
+							predicates.add(giveFilterPredicate("TicketStatus", selectedItem.toLowerCase()));
+						} else if (contractStatusStringArray.contains(selectedItem)){
+							predicates.add(giveFilterPredicate("ContractStatus", selectedItem.toLowerCase()));
+						} else if (timestampStringArray.contains(selectedItem)){
+							predicates.add(giveFilterPredicate("Timestamp", selectedItem.toLowerCase()));
+						}
 					}
+
 					
 //					if (currentState.equals(GUIEnum.CONTRACTTYPE)){
 //						System.out.println("CONTRACTTYPE");
@@ -405,11 +411,20 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			if(viewModel.isFieldModified()) {
 				//popup
 				Alert alert = new Alert(AlertType.CONFIRMATION);
+
+
 				alert.setTitle("Fields were modified without saving!");
 				alert.setHeaderText("Fields were modified without saving!");
 				alert.setContentText("Choose your option.");
 
+				alert.getDialogPane().getStylesheets().add("file:src/start/styles.css");
+				alert.getDialogPane().getStyleClass().add("alert");
+				((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
+
 				ButtonType discardChanges = new ButtonType("Discard Changes");
+				//TODO: make discard red
+				//((Button) discardChanges).styleClass().add("btn-red");
+
 				ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
 
 				alert.getButtonTypes().setAll(discardChanges, buttonTypeCancel);

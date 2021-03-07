@@ -1,6 +1,21 @@
+.root {
+    -fx-default-button: red;
+}
+
 .button {
     -fx-font-size: 17px;
     -fx-background-radius: 30px;
+}
+
+.button:default {
+    -fx-font-size: 17px;
+    -fx-background-radius: 30px;
+    -fx-background-color: #1d3d78;
+    -fx-text-fill: #ffffff;
+}
+
+.button:default:hover {
+    -fx-background-color: #5070b5;
 }
 
 .bg-white {
@@ -9,6 +24,11 @@
 
 .btn-blue {
     -fx-background-color: #1d3d78;
+    -fx-text-fill: #ffffff;
+}
+
+.btn-red {
+    -fx-background-color: #c41010;
     -fx-text-fill: #ffffff;
 }
 
@@ -104,13 +124,21 @@
 }
 
 .menuButton {
-    -fx-font-size: 20pt;
+    -fx-font-size: 14pt;
     -fx-font-family: "Arial", bold;
     -fx-background-color: #1D3D78;
-    -fx-text-background-color: #ffffff!important;
+    -fx-text-background-color: #ffffff;
     -fx-alignment: center;
-    -fx-border-radius: 20 20 0 0;
-    -fx-background-radius: 20 20 0 0;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+}
+
+.menuButton-active {
+    -fx-background-color: #ffffff;
+    -fx-text-background-color: #1D3D78 !important;
+    -fx-text-fill: #1D3D78 !important;
+    -fx-border-color: #1D3D78;
+    -fx-border-width: 3px;
 }
 
 .menuButton:hover {
@@ -142,6 +170,20 @@
 
 .dashboardTile:hover {
     -fx-opacity: .4;
+}
+
+.alert, .alert > *.button-bar > *.container, .alert > *.label.content, .alert:header *.header-panel, .alert:header *.header-panel *.label {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #1D3D78;
+    -fx-font-size: 15px;
+    -fx-text-background-color: #1D3D78 !important;
+}
+
+
+.alert > .dialog-pane > .button-bar {
+    -fx-font-size: 24px;
+    -fx-background-color: indianred;
+    -fx-font-family: "Andalus";
 }
 
 /*

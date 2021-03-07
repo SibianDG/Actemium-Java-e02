@@ -33,12 +33,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 
 
 public class DetailsPanelController extends GridPane implements InvalidationListener {
@@ -424,6 +426,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
             itemName = itemName.toLowerCase();
 
+            //todo: itemName is already lowercase
             Node node;
             if (itemName.toLowerCase().contains("status")) {
                 node = makeComboBox(ContractTypeStatus.ACTIVE);
@@ -549,6 +552,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     private void makePopUp(String headerText, String text){
         Alert alert = new Alert(Alert.AlertType.INFORMATION, text);
         alert.setHeaderText(headerText);
+        alert.getDialogPane().getStylesheets().add("file:src/start/styles.css");
+        alert.getDialogPane().getStyleClass().add("alert");
+        ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
         alert.showAndWait();
     }
     
