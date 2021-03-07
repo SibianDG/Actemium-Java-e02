@@ -287,7 +287,7 @@ public class Actemium {
 		// so can we leave this code out
 		// or am I missing something?
 		// This should be changed in the other modify methods as well
-//		int index = actemiumTickets.indexOf(ticket);
+		int index = actemiumTickets.indexOf(ticket);
 		
 		ticketDaoJpa.startTransaction();
 		ticketDaoJpa.update(ticket);
@@ -295,6 +295,21 @@ public class Actemium {
 
 //		actemiumTickets.add(index, ticket);
 //		actemiumTickets.remove(index + 1);
+		
+		// change ticket to completed, it will move to resolved tickets
+		if (TicketStatus.isOutstanding() &&
+				(ticket.getStatusAsEnum().equals(TicketStatus.COMPLETED)
+				|| ticket.getStatusAsEnum().equals(TicketStatus.CANCELLED))) {
+			actemiumTicketsResolved.add(ticket);
+			actemiumTicketsOutstanding.remove(ticket);
+		}
+		// change ticket to not-completed, it will move to outstanding tickets
+		if (!TicketStatus.isOutstanding() &&
+				!(ticket.getStatusAsEnum().equals(TicketStatus.COMPLETED)
+						|| ticket.getStatusAsEnum().equals(TicketStatus.CANCELLED))) {
+			actemiumTicketsOutstanding.add(ticket);
+			actemiumTicketsResolved.remove(ticket);
+		}
 	}
 	
 	public Ticket getLastAddedTicket() {
