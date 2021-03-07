@@ -39,15 +39,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -428,6 +422,23 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
 
 				alert.getButtonTypes().setAll(discardChanges, buttonTypeCancel);
+
+				alert.getDialogPane().getChildren().forEach(node -> {
+					if (node instanceof ButtonBar) {
+						System.out.println("IN ALERT");
+						ButtonBar buttonBar = (ButtonBar) node;
+						buttonBar.getButtons().forEach(possibleButtons -> {
+							if (possibleButtons instanceof Button) {
+								Button b = (Button) possibleButtons;
+								if (b.getText().equals("Discard Changes")) {
+									b.setStyle("-fx-background-color: #c41010;  -fx-text-fill: #ffffff;");
+								} else if (b.getText().equals("Cancel")) {
+									b.setStyle("-fx-background-color: #1d3d78;  -fx-text-fill: #ffffff;");
+								}
+							}
+						});
+					}
+				});
 
 				Optional<ButtonType> result = alert.showAndWait();
 				if (result.get() == discardChanges){
