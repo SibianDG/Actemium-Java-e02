@@ -87,7 +87,7 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 	}
 
 	public void setEmailAddress(String emailAddress) {
-		String emailRegex = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+		String emailRegex = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+[.][a-zA-Z0-9-]{2,4}$";
 		//TODO the regex below doesn't work because we create employees with a false email according to this regex in PopulateDB
 		// "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
 		if (emailAddress == null || emailAddress.isBlank() || !emailAddress.matches(emailRegex)) {
