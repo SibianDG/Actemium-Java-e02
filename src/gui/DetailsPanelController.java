@@ -62,18 +62,18 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     @FXML
     private Text txtErrorMessage;
-	
-	public DetailsPanelController(ViewModel viewModel) {
+
+    public DetailsPanelController(ViewModel viewModel) {
         this.viewModel = viewModel;
         viewModel.addListener(this);
 
-		try {
+        try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("DetailsPanel.fxml"));
             loader.setController(this);
             loader.setRoot(this);
             loader.load();
         } catch (IOException e) {
-        	throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
 
         gridDetails.setHgap(5);
@@ -101,8 +101,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     @FXML
     void btnModifyOnAction(ActionEvent event) {
 
-	    try {
-	    	if (viewModel instanceof UserViewModel) {
+        try {
+            if (viewModel instanceof UserViewModel) {
                 if (editing) {
                     if(viewModel.isFieldModified()){
                         if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)){
@@ -153,49 +153,49 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                         );
                     }
                 }
-            //TODO
-            // This is just a draft version, nothing is correct here,
-            // everything still needs to be implemented properly
-            // (but you can already modify a ticket
-            // and click on add new ticket)            
-	    	} else if (viewModel instanceof TicketViewModel) {
-	    		if (editing) {
-	                if(viewModel.isFieldModified()){
-	                        ((TicketViewModel) viewModel).modifyTicket(
-	                        		// priority, ticketType, title, description, remarks, attachments, technicians
-	                        		TicketPriority.valueOf(getTextFromGridItem(2))
-		                            , TicketType.valueOf(getTextFromGridItem(3))
-		                            , TicketStatus.valueOf(getTextFromGridItem(4))
-		                            , getTextFromGridItem(0)
-		                            , getTextFromGridItem(5)
-		                            , getTextFromGridItem(7)
-		                            , getTextFromGridItem(8)
-		                            , new ArrayList<ActemiumEmployee>()
-	                        );	                    
-	                    makePopUp("Ticket edited", "You have successfully edited the ticket.");
-	                } else {
-	                    makePopUp("Ticket not edited", "You haven't changed anything.");
-	                }
-	            } else {
-	                    ((TicketViewModel) viewModel).registerTicket(
-	                            // priority, ticketType, title, description, remarks, attachments, customerId
-	                    		TicketPriority.valueOf(getTextFromGridItem(2))
-	                            , TicketType.valueOf(getTextFromGridItem(3))
-	                            , getTextFromGridItem(0)
-	                            , getTextFromGridItem(5)
-	                            , getTextFromGridItem(6)
-	                            , getTextFromGridItem(7)
-	                            , Long.parseLong(getTextFromGridItem(4))
-	                    );
-	            }
-	    	} else if (viewModel instanceof ContractTypeViewModel) {
+                //TODO
+                // This is just a draft version, nothing is correct here,
+                // everything still needs to be implemented properly
+                // (but you can already modify a ticket
+                // and click on add new ticket)
+            } else if (viewModel instanceof TicketViewModel) {
+                if (editing) {
+                    if(viewModel.isFieldModified()){
+                        ((TicketViewModel) viewModel).modifyTicket(
+                                // priority, ticketType, title, description, remarks, attachments, technicians
+                                TicketPriority.valueOf(getTextFromGridItem(2))
+                                , TicketType.valueOf(getTextFromGridItem(3))
+                                , TicketStatus.valueOf(getTextFromGridItem(4))
+                                , getTextFromGridItem(0)
+                                , getTextFromGridItem(5)
+                                , getTextFromGridItem(7)
+                                , getTextFromGridItem(8)
+                                , new ArrayList<ActemiumEmployee>()
+                        );
+                        makePopUp("Ticket edited", "You have successfully edited the ticket.");
+                    } else {
+                        makePopUp("Ticket not edited", "You haven't changed anything.");
+                    }
+                } else {
+                    ((TicketViewModel) viewModel).registerTicket(
+                            // priority, ticketType, title, description, remarks, attachments, customerId
+                            TicketPriority.valueOf(getTextFromGridItem(2))
+                            , TicketType.valueOf(getTextFromGridItem(3))
+                            , getTextFromGridItem(0)
+                            , getTextFromGridItem(5)
+                            , getTextFromGridItem(6)
+                            , getTextFromGridItem(7)
+                            , Long.parseLong(getTextFromGridItem(4))
+                    );
+                }
+            } else if (viewModel instanceof ContractTypeViewModel) {
                 if (editing) {
                     if(viewModel.isFieldModified()){
                         ((ContractTypeViewModel) viewModel).modifyContractType(
-                        //        (String name, ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone,
-                        //boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price)
+                                //        (String name, ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone,
+                                //boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price)
                                 // priority, ticketType, title, description, remarks, attachments, technicians
-                               getTextFromGridItem(0), //name
+                                getTextFromGridItem(0), //name
                                 ContractTypeStatus.valueOf(getTextFromGridItem(1)), //staus
                                 Boolean.parseBoolean(getTextFromGridItem(2)), //email
                                 Boolean.parseBoolean(getTextFromGridItem(3)), //phone
@@ -225,11 +225,11 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                     );
                 }
             }
-	    	editing = false;
-	    	viewModel.setFieldModified(false);
+            editing = false;
+            viewModel.setFieldModified(false);
             setDetailOnModifying();
 
-        //TODO: handle the correct error messages, not just all
+            //TODO: handle the correct error messages, not just all
         } catch (Exception e){
             System.out.println(Arrays.toString(e.getStackTrace()));
             txtErrorMessage.setText(e.getMessage());
@@ -238,7 +238,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     }
 
     private String getTextFromGridItem(int i){
-	    String text;
+        String text;
         Node node = gridDetails.getChildren().get(2*i+1);
 
         if (node instanceof ComboBox){
@@ -254,66 +254,66 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     @Override
     public void invalidated(Observable observable) {
-	    try {
+        try {
             setDetailOnModifying();
         } catch (NullPointerException e){
-	        setupPaneNewObject();
+            setupPaneNewObject();
         }
     }
 
     private void setDetailOnModifying(){
         gridDetails.getChildren().clear();
-	        if (viewModel instanceof UserViewModel) {
-	            addDetailsToGridDetails(((UserViewModel) viewModel).getDetails());
-	            txtDetailsTitle.setText("Details of " + ((UserViewModel) viewModel).getNameOfSelectedUser());
-	            btnModify.setText("Modify " + ((UserViewModel) viewModel).getCurrentState().toString().toLowerCase());
-	        } else if (viewModel instanceof TicketViewModel) {
-	            addDetailsToGridDetails(((TicketViewModel) viewModel).getDetails());
-	            txtDetailsTitle.setText("Details of ticket: " + ((TicketViewModel) viewModel).getIdOfSelectedTicket());
-	            btnModify.setText("Modify Ticket");
-	        } else if (viewModel instanceof ContractTypeViewModel) {
-                addDetailsToGridDetails(((ContractTypeViewModel) viewModel).getDetails());
-                txtDetailsTitle.setText("Details of ContractType: " + ((ContractTypeViewModel) viewModel).getNameSelectedContractType());
-                btnModify.setText("Modify ContractType");
-            }
+        if (viewModel instanceof UserViewModel) {
+            addGridDetails(((UserViewModel) viewModel).getDetails());
+            txtDetailsTitle.setText("Details of " + ((UserViewModel) viewModel).getNameOfSelectedUser());
+            btnModify.setText("Modify " + ((UserViewModel) viewModel).getCurrentState().toString().toLowerCase());
+        } else if (viewModel instanceof TicketViewModel) {
+            addGridDetails(((TicketViewModel) viewModel).getDetails());
+            txtDetailsTitle.setText("Details of ticket: " + ((TicketViewModel) viewModel).getIdOfSelectedTicket());
+            btnModify.setText("Modify Ticket");
+        } else if (viewModel instanceof ContractTypeViewModel) {
+            addGridDetails(((ContractTypeViewModel) viewModel).getDetails());
+            txtDetailsTitle.setText("Details of ContractType: " + ((ContractTypeViewModel) viewModel).getNameSelectedContractType());
+            btnModify.setText("Modify ContractType");
+        }
         btnModify.setVisible(true);
         txtErrorMessage.setVisible(false);
         editing = true;
     }
 
     private void setupPaneNewObject(){
-	    editing = false;
+        editing = false;
         ArrayList<String> fields = null;
 
-    	viewModel.setFieldModified(true);
-        
-		if (viewModel instanceof UserViewModel) {
-			if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)) {
-				fields = ((UserViewModel) viewModel).getDetailsNewEmployee();
-				txtDetailsTitle.setText("Add new employee");
-				btnModify.setText("Add new employee");
-			} else if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.CUSTOMER)) {
-				fields = ((UserViewModel) viewModel).getDetailsNewCustomer();
-				txtDetailsTitle.setText("Add new customer");
-				btnModify.setText("Add new customer");
-			} else {
-				fields = null;
-			}
-			btnModify.setVisible(true);
-			assert fields != null;
-			addItemsToGridNewUser(fields);
-		} else if (viewModel instanceof TicketViewModel) {
-			if (((TicketViewModel) viewModel).getCurrentState().equals(GUIEnum.TICKET)) {
-				fields = ((TicketViewModel) viewModel).getDetailsNewTicket();
-				txtDetailsTitle.setText("Add new ticket");
-				btnModify.setText("Add new ticket");
-			} else {
-				fields = null;
-			} 
-			btnModify.setVisible(true);
-			assert fields != null;
-			addItemsToGridNewTicket(fields);
-		} else if (viewModel instanceof ContractTypeViewModel) {
+        viewModel.setFieldModified(true);
+
+        if (viewModel instanceof UserViewModel) {
+            if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)) {
+                fields = ((UserViewModel) viewModel).getDetailsNewEmployee();
+                txtDetailsTitle.setText("Add new employee");
+                btnModify.setText("Add new employee");
+            } else if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.CUSTOMER)) {
+                fields = ((UserViewModel) viewModel).getDetailsNewCustomer();
+                txtDetailsTitle.setText("Add new customer");
+                btnModify.setText("Add new customer");
+            } else {
+                fields = null;
+            }
+            btnModify.setVisible(true);
+            assert fields != null;
+            addItemsToGridNewUser(fields);
+        } else if (viewModel instanceof TicketViewModel) {
+            if (((TicketViewModel) viewModel).getCurrentState().equals(GUIEnum.TICKET)) {
+                fields = ((TicketViewModel) viewModel).getDetailsNewTicket();
+                txtDetailsTitle.setText("Add new ticket");
+                btnModify.setText("Add new ticket");
+            } else {
+                fields = null;
+            }
+            btnModify.setVisible(true);
+            assert fields != null;
+            addItemsToGridNewTicket(fields);
+        } else if (viewModel instanceof ContractTypeViewModel) {
             if (((ContractTypeViewModel) viewModel).getCurrentState().equals(GUIEnum.CONTRACTTYPE)) {
                 fields = ((ContractTypeViewModel) viewModel).getDetailsNewContractType();
                 txtDetailsTitle.setText("Add new contract type");
@@ -327,19 +327,29 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         }
     }
 
+    //todo alles in 1 methode brengen
+    private void addNewItemToGrid(ArrayList<String> fields){
+        gridDetails.getChildren().clear();
+        gridDetails.addColumn(0);
+        gridDetails.addColumn(1);
+
+        //addGridDetails();
+
+    }
+
     private void addItemsToGridNewUser(ArrayList<String> fields){
         gridDetails.getChildren().clear();
         gridDetails.addColumn(0);
         gridDetails.addColumn(1);
 
         Map<Integer, String> randomValues = Map.of(
-        		 0, "Username9999"
-                 , 1, "FirstNameeee"
-                 , 2, "LastNameeee"
-                 , 3, "Stationstraat 99"
-                 , 4, "test@gmail.com"
-                 , 5, "094812384"
-                 , 6, EmployeeRole.SUPPORT_MANAGER.toString()
+                0, "Username9999"
+                , 1, "FirstNameeee"
+                , 2, "LastNameeee"
+                , 3, "Stationstraat 99"
+                , 4, "test@gmail.com"
+                , 5, "094812384"
+                , 6, EmployeeRole.SUPPORT_MANAGER.toString()
         );
         int randomValuesCounter = 0;
         for (int i = 0; i < fields.size(); i++) {
@@ -357,51 +367,47 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                 } else {
                     textField = new TextField();
                 }
-                textField.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+                textField.setFont(Font.font("Arial", 14));
                 node = textField;
             }
             gridDetails.add(node, 1, i);
         }
     }
-    
+
     private void addItemsToGridNewTicket(ArrayList<String> fields){
-    	gridDetails.getChildren().clear();
-    	gridDetails.addColumn(0);
-    	gridDetails.addColumn(1);
+        gridDetails.getChildren().clear();
+        gridDetails.addColumn(0);
+        gridDetails.addColumn(1);
 
         Map<Integer, String> randomValues = Map.of(
-        		0, "WieldingRobot05 Defect"
-    			, 1, LocalDate.now().toString()
-    			, 2, TicketPriority.P3.toString()
-    			, 3, TicketType.OTHER.toString()
-    			, 4, "001"
-    			, 5, "WieldingRobot stopped functioning this morning at 9am."
-    			, 6, "Call me asap 094812384"
-    			, 7, "brokenRobot.png"
+                0, "WieldingRobot05 Defect"
+                , 1, LocalDate.now().toString()
+                , 2, TicketPriority.P3.toString()
+                , 3, TicketType.OTHER.toString()
+                , 4, "001"
+                , 5, "WieldingRobot stopped functioning this morning at 9am."
+                , 6, "Call me asap 094812384"
+                , 7, "brokenRobot.png"
         );
 
-    	for (int i = 0; i < fields.size(); i++) {
-    		gridDetails.addRow(i);
+        for (int i = 0; i < fields.size(); i++) {
+            gridDetails.addRow(i);
 
-    		gridDetails.add(makeNewLabel(fields.get(i)), 0, i);
+            gridDetails.add(makeNewLabel(fields.get(i)), 0, i);
 
-    		Node node;
-			if (fields.get(i).toLowerCase().contains("priority")) {
-				node = makeComboBox(TicketPriority.P3);
-			} else if (fields.get(i).toLowerCase().contains("type")) {
-				node = makeComboBox(TicketType.OTHER);
-			} else {
-				TextField textField;
-//				if (fields.size() <= 9) {
-					textField = new TextField(randomValues.get(i));
-//				} else {
-//					textField = new TextField();
-//				}
-				textField.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-				node = textField;
-			}
-    		gridDetails.add(node, 1, i);
-    	}
+            Node node;
+            if (fields.get(i).toLowerCase().contains("priority")) {
+                node = makeComboBox(TicketPriority.P3);
+            } else if (fields.get(i).toLowerCase().contains("type")) {
+                node = makeComboBox(TicketType.OTHER);
+            } else {
+                TextField textField;
+                textField = new TextField(randomValues.get(i));
+                textField.setFont(Font.font("Arial", 14));
+                node = textField;
+            }
+            gridDetails.add(node, 1, i);
+        }
     }
 
     private void addItemsToGridNewContractType(ArrayList<String> fields){
@@ -416,8 +422,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                 , 3, "500"
         );
 
-        //"Name", "Status", "Email", "Phone", "Application", "Timestamp ticket creation", "Max handling time", "Min throughput time contract", "Price contract"
-
         int randomValuesCounter = 0;
 
         for (int i = 0; i < fields.size(); i++) {
@@ -429,24 +433,19 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
             itemName = itemName.toLowerCase();
 
-            //todo: itemName is already lowercase
             Node node;
-            if (itemName.toLowerCase().contains("status")) {
+            if (itemName.contains("status")) {
                 node = makeComboBox(ContractTypeStatus.ACTIVE);
-            } else if (itemName.toLowerCase().contains("timestamp")) {
+            } else if (itemName.contains("timestamp")) {
                 node = makeComboBox(Timestamp.ALWAYS);
-            } else if (itemName.toLowerCase().contains("email") 
-            		|| itemName.toLowerCase().contains("phone") 
-            		|| itemName.toLowerCase().contains("application")){
+            } else if (itemName.contains("email")
+                    || itemName.contains("phone")
+                    || itemName.contains("application")){
                 node = makeComboBox(false);
             } else {
                 TextField textField;
-//				if (fields.size() <= 9) {
                 textField = new TextField(randomValues.get(randomValuesCounter++));
-//				} else {
-//					textField = new TextField();
-//				}
-                textField.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+                textField.setFont(Font.font("Arial", 14));
                 node = textField;
             }
             gridDetails.add(node, 1, i);
@@ -462,14 +461,14 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         return label;
     }
 
-    private void addDetailsToGridDetails(Map<String, Object> details){
-	    int i = 0;
-	    // Using LinkedHashSet so the order of the map values doesn't change
-	    Set<String> keys = new LinkedHashSet<String>(details.keySet());
-	    for (String key : keys) {
-	        Label label = makeNewLabel(key);
+    private void addGridDetails(Map<String, Object> details){
+        int i = 0;
+        // Using LinkedHashSet so the order of the map values doesn't change
+        Set<String> keys = new LinkedHashSet<String>(details.keySet());
+        for (String key : keys) {
+            Label label = makeNewLabel(key);
 
-	        Node detail = createElementDetailGridpane(details.get(key), key);
+            Node detail = createElementDetailGridpane(details.get(key), key);
             gridDetails.add(label, 0, i);
             gridDetails.add(detail, 1, i);
             i++;
@@ -494,15 +493,15 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                 detail.setVisible(false);
                 detail.setPadding(new Insets(15, 0, 0, 0));
             } else if (key.toLowerCase().contains("id")
-            			|| key.equals("Creation date")
-            			|| key.toLowerCase().contains("company")){
+                    || key.equals("Creation date")
+                    || key.toLowerCase().contains("company")){
                 detail.setDisable(true);
             }
             return detail;
         } else if (o instanceof Enum) {
             return makeComboBox(o);
         } else if (o instanceof Boolean) {
-        	return makeComboBox(o);
+            return makeComboBox(o);
         }
         return null;
     }
@@ -515,33 +514,15 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             list = FXCollections.observableList(Arrays.asList(true, false));
         } else {
             switch(o.getClass().getSimpleName()) {
-                case "UserStatus" -> {
-                    list = FXCollections.observableList(Arrays.asList(UserStatus.values()));
-                }
-                case "EmployeeRole" -> {
-                    list = FXCollections.observableList(Arrays.asList(EmployeeRole.values()));
-                }
-                case "TicketPriority" -> {
-                    list = FXCollections.observableList(Arrays.asList(TicketPriority.values()));
-                }
-                case "TicketType" -> {
-                    list = FXCollections.observableList(Arrays.asList(TicketType.values()));
-                }
-                case "TicketStatus" -> {
-                    list = FXCollections.observableList(Arrays.asList(TicketStatus.values()));
-                }
-                case "ContractStatus" -> {
-                    list = FXCollections.observableList(Arrays.asList(ContractStatus.values()));
-                }
-                case "ContractTypeStatus" -> {
-                    list = FXCollections.observableList(Arrays.asList(ContractTypeStatus.values()));
-                }
-                case "Timestamp" -> {
-                    list = FXCollections.observableList(Arrays.asList(Timestamp.values()));
-                }
-                default -> {
-                    list = FXCollections.observableList(Arrays.asList(UserStatus.values()));
-                }
+                case "UserStatus" -> list = FXCollections.observableList(Arrays.asList(UserStatus.values()));
+                case "EmployeeRole" -> list = FXCollections.observableList(Arrays.asList(EmployeeRole.values()));
+                case "TicketPriority" -> list = FXCollections.observableList(Arrays.asList(TicketPriority.values()));
+                case "TicketType" -> list = FXCollections.observableList(Arrays.asList(TicketType.values()));
+                case "TicketStatus" -> list = FXCollections.observableList(Arrays.asList(TicketStatus.values()));
+                case "ContractStatus" -> list = FXCollections.observableList(Arrays.asList(ContractStatus.values()));
+                case "ContractTypeStatus" -> list = FXCollections.observableList(Arrays.asList(ContractTypeStatus.values()));
+                case "Timestamp" -> list = FXCollections.observableList(Arrays.asList(Timestamp.values()));
+                default -> list = FXCollections.observableList(Arrays.asList(UserStatus.values()));
             }
         }
         ComboBox c = new ComboBox(list);
@@ -560,5 +541,5 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
         alert.showAndWait();
     }
-    
+
 }
