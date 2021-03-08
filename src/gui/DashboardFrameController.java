@@ -31,6 +31,8 @@ import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -42,6 +44,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import languages.LanguageResource;
 
 public class DashboardFrameController <T> extends GuiController {
 	
@@ -54,6 +57,9 @@ public class DashboardFrameController <T> extends GuiController {
     private UserViewModel userViewModel;
 	private TicketViewModel ticketViewModel;
 	private ContractTypeViewModel contractTypeViewModel;
+	
+	//LoginController
+	private LoginController loginController;
 
     @FXML
     private GridPane gridDashboard;
@@ -88,7 +94,7 @@ public class DashboardFrameController <T> extends GuiController {
     private DetailsPanelController detailsPanelController;
 
 //    public DashboardFrameController(Actemium actemium, UserFacade userFacade) throws FileNotFoundException {
-    public DashboardFrameController(UserFacade userFacade, TicketFacade ticketFacade, ContractTypeFacade contractTypeFacade) throws FileNotFoundException {
+    public DashboardFrameController(UserFacade userFacade, TicketFacade ticketFacade, ContractTypeFacade contractTypeFacade, LoginController loginController) throws FileNotFoundException {
         super();
         
         this.userFacade = userFacade;        
@@ -97,7 +103,12 @@ public class DashboardFrameController <T> extends GuiController {
 
         this.userViewModel = new UserViewModel(userFacade);        
         this.ticketViewModel = new TicketViewModel(ticketFacade);        
-        this.contractTypeViewModel = new ContractTypeViewModel(contractTypeFacade);        
+        this.contractTypeViewModel = new ContractTypeViewModel(contractTypeFacade);    
+        
+        this.loginController = loginController;
+        System.out.println(this.loginController.getHgap());
+        System.out.println(this.loginController.getVgap());
+        System.out.println(this.loginController.getAlignment());
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
@@ -286,8 +297,17 @@ public class DashboardFrameController <T> extends GuiController {
     @FXML
     void btnLogOutAction(MouseEvent event) {
         makePopUp("Logout and exit");
-        Platform.exit();
-        System.exit(0);
+        //Platform.exit();
+        //System.exit(0);    
+        
+        Scene scene = this.loginController.getScene();
+        Stage stage = (Stage) this.getScene().getWindow();
+        stage.setTitle(LanguageResource.getString("login"));
+        stage.setScene(scene);
+        stage.setMaximized(true);
+        stage.setResizable(true);
+        stage.centerOnScreen();
+        stage.show();
     }
 
     @FXML

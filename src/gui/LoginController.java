@@ -100,13 +100,14 @@ public class LoginController extends GuiController {
                 txtErrorLogin.setOpacity(1);
             } else {
                 userFacade.signIn(txfUsername.getText(), pwfPassword.getText());
-                DashboardFrameController dashboardController = new DashboardFrameController(userFacade, ticketFacade, contractTypeFacade);
+                DashboardFrameController dashboardController = new DashboardFrameController(userFacade, ticketFacade, contractTypeFacade, this);
                 Scene scene = new Scene(dashboardController);
                 Stage stage = (Stage) this.getScene().getWindow();
                 stage.setTitle(LanguageResource.getString("dashboard")); //TODO review LanguageResource
                 stage.setScene(scene);
                 stage.setMaximized(true);
                 stage.setResizable(true);
+                stage.centerOnScreen();
                 stage.show();
             }
         } catch (IllegalArgumentException | PasswordException | BlockedUserException | EntityNotFoundException e) {

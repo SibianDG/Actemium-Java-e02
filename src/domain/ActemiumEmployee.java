@@ -87,10 +87,10 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 	}
 
 	public void setEmailAddress(String emailAddress) {
-		// String usernameRegex =
+		String emailRegex = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+		//TODO the regex below doesn't work because we create employees with a false email according to this regex in PopulateDB
 		// "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
-		String emailregex = "^(.+)@(.+)$";
-		if (emailAddress == null || emailAddress.isBlank() || !emailAddress.matches(emailregex)) {
+		if (emailAddress == null || emailAddress.isBlank() || !emailAddress.matches(emailRegex)) {
 			throw new IllegalArgumentException(LanguageResource.getString("email_invalid"));
 		}
 		this.emailAddress = emailAddress;
