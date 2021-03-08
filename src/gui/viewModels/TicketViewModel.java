@@ -14,7 +14,6 @@ import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import domain.facades.TicketFacade;
 import gui.GUIEnum;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class TicketViewModel extends ViewModel {
@@ -22,24 +21,24 @@ public class TicketViewModel extends ViewModel {
     private GUIEnum currentState;
     private Ticket selectedActemiumTicket;
     private final TicketFacade ticketFacade;
-    private ObservableList<Ticket> actemiumTickets;
-
-//    private final ArrayList<InvalidationListener> listeners = new ArrayList<>();
 
     public TicketViewModel(TicketFacade ticketFacade) {
         super();
         this.ticketFacade = ticketFacade;
-        this.actemiumTickets = FXCollections.observableArrayList();
         setCurrentState(GUIEnum.TICKET);
     }
 
-    public ObservableList<Ticket> getActemiumTickets() {
-        return FXCollections.unmodifiableObservableList(actemiumTickets);
-    }
-    
-    public void setActemiumTickets(ObservableList<Ticket> observableList) {
-        this.actemiumTickets = observableList;
-    }
+	public ObservableList<Ticket> giveActemiumTickets() {
+		return ticketFacade.giveActemiumTickets();
+	}
+
+	public ObservableList<Ticket> giveActemiumTicketsOutstanding() {
+		return ticketFacade.giveActemiumTicketsOutstanding();
+	}
+
+	public ObservableList<Ticket> giveActemiumTicketsResolved() {
+		return ticketFacade.giveActemiumTicketsResolved();
+	}
 
     public Ticket getSelectedActemiumTicket() {
         return selectedActemiumTicket;
@@ -49,7 +48,6 @@ public class TicketViewModel extends ViewModel {
         this.selectedActemiumTicket = ticket;
         if (ticket != null){
         	// substring(8) to remove ACTEMIUM
-        	//TODO obsolete
             setCurrentState(GUIEnum.valueOf(ticket.getClass().getSimpleName().substring(8).toUpperCase()));
         }
         fireInvalidationEvent();

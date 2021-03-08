@@ -1,11 +1,11 @@
 package domain.facades;
 
-import domain.*;
-import domain.enums.*;
+import domain.ActemiumContractType;
+import domain.ContractType;
+import domain.enums.ContractTypeStatus;
+import domain.enums.Timestamp;
 import domain.manager.Actemium;
 import javafx.collections.ObservableList;
-
-import java.util.List;
 
 public class ContractTypeFacade implements Facade{
 
@@ -34,7 +34,6 @@ public class ContractTypeFacade implements Facade{
         contractType.setMinThroughputTime(minThroughputTime);
         contractType.setPrice(price);
 
-        System.out.println("All setters are ok.");
         actemium.modifyContractType(contractType);
     }
 

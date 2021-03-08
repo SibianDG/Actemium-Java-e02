@@ -14,9 +14,7 @@ import domain.User;
 import domain.enums.EmployeeRole;
 import domain.enums.UserStatus;
 import domain.facades.UserFacade;
-import domain.manager.Actemium;
 import gui.GUIEnum;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class UserViewModel extends ViewModel {
@@ -24,32 +22,20 @@ public class UserViewModel extends ViewModel {
     private GUIEnum currentState;
     private final UserFacade userFacade;
     private User selectedUser;
-    private ObservableList<Employee> employees;
-    private ObservableList<Customer> customers;
     
     public UserViewModel(UserFacade userFacade) {
     	super();
     	this.userFacade = userFacade;
-    	this.employees = FXCollections.observableArrayList();
-    	this.customers = FXCollections.observableArrayList();
     }
 
-    public ObservableList<Employee> getEmployees() {
-        return FXCollections.unmodifiableObservableList(employees);
+    public ObservableList<Employee> giveEmployees() {
+        return userFacade.giveActemiumEmployees();
     }
     
-    public ObservableList<Customer> getCustomers() {
-        return FXCollections.unmodifiableObservableList(customers);
+    public ObservableList<Customer> giveCustomers() {
+        return userFacade.giveActemiumCustomers();
     }    
-    
-    public void setEmployees(ObservableList<Employee> employees) {
-        this.employees = employees;
-    }
-    
-    public void setCustomers(ObservableList<Customer> customers) {
-        this.customers = customers;
-    }
-
+ 
     public void setSelectedUser(User user) {
         this.selectedUser = user;
         if (user != null){
@@ -57,7 +43,6 @@ public class UserViewModel extends ViewModel {
         	System.out.println(user.getClass().getSimpleName().toUpperCase());
         	// substring(8) to remove ACTEMIUM
             setCurrentState(GUIEnum.valueOf(user.getClass().getSimpleName().substring(8).toUpperCase()));
-//            setCurrentState(GUIEnum.valueOf(user.getClass().getSimpleName().toUpperCase()));
         }
         fireInvalidationEvent();
     }
@@ -113,7 +98,6 @@ public class UserViewModel extends ViewModel {
                 detailsMap.put("Status", customer.getStatusAsEnum());
                 return detailsMap;
             } 
-            //TODO: later then Ticket
             default -> {return null;}
         }
     }

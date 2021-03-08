@@ -91,7 +91,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		
 		switch(currentState) {
 			case EMPLOYEE -> {
-				this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).getEmployees();
+				this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).giveEmployees();
 				this.tableViewData = new FilteredList<>(mainData);
 
 				propertyMap.put("Firstname", item -> ((Employee)item).firstNameProperty());
@@ -101,7 +101,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				propertyMap.put("Status", item -> ((Employee)item).statusProperty());
 			}
 			case CUSTOMER -> {
-				this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).getCustomers();
+				this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).giveCustomers();
 				this.tableViewData = new FilteredList<>(mainData);
 				propertyMap.put("Company", item -> ((Customer)item).getCompany().nameProperty());
 				propertyMap.put("Status", item -> ((Customer)item).statusProperty());
@@ -110,7 +110,15 @@ public class TableViewPanelCompanion<T> extends GridPane {
 //				propertyMap.put("Username", item -> ((Customer)item).usernameProperty());
 			}
 			case TICKET -> {
-				this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).getActemiumTickets();
+				// obsolete, but just in case we want all the tickets in the future
+				this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveActemiumTickets();
+				
+				if (TicketStatus.isOutstanding()) {
+					this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveActemiumTicketsOutstanding();
+				} else {
+					this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveActemiumTicketsResolved();
+				}
+				
 //				this.tableView.setPrefWidth(1000.0);
 				//this.tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 				this.tableViewData = new FilteredList<>(mainData);
@@ -122,7 +130,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				propertyMap.put("Status", item -> ((Ticket) item).statusProperty());
 			}
 			case CONTRACTTYPE -> {
-				this.mainData = (ObservableList<T>) ((ContractTypeViewModel) viewModel).getContractTypes();
+				this.mainData = (ObservableList<T>) ((ContractTypeViewModel) viewModel).giveContractTypes();
 				this.tableViewData = new FilteredList<>(mainData);
 				propertyMap.put("Name", item -> ((ContractType) item).contractTypeNameProperty());
 				propertyMap.put("Timestamp", item -> ((ContractType) item).contractTypestampProperty());
@@ -280,42 +288,8 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			} else if (object instanceof ComboBox) {
 				ComboBox comboBox = (ComboBox) object;
 
-
 				if (comboBox.getSelectionModel().getSelectedItem() != null &&  !comboBox.getSelectionModel().getSelectedItem().toString().contains("SELECT")) {
 					System.out.println("Check filters after check: "+comboBox.getSelectionModel().getSelectedItem().toString());
-//
-//				 switch(object.getClass().getSimpleName()) {
-//			        case "UserStatus" -> {
-//			        	predicates.add(giveFilterPredicate("UserStatus", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
-//			        	System.out.println("yoooo");
-//			        }
-//			        case "EmployeeRole" -> {
-//						predicates.add(giveFilterPredicate("EmployeeRole", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
-//			        }
-//			        case "TicketPriority" -> {
-//						predicates.add(giveFilterPredicate("TicketPriority", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
-//			        }
-//			        case "TicketType" -> {
-//						predicates.add(giveFilterPredicate("TicketType", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
-//			        }        
-//				    case "TicketStatus" -> {
-//						predicates.add(giveFilterPredicate("TicketStatus", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
-//				    }                
-//				    case "ContractStatus" -> {
-//						predicates.add(giveFilterPredicate("ContractStatus", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
-//				    }
-//				    case "ContractTypeStatus" -> {
-//						predicates.add(giveFilterPredicate("ContractTypeStatus", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
-//				    }
-//				    case "Timestamp" -> {
-//						predicates.add(giveFilterPredicate("Timestamp", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
-//				    }
-//			        default -> {
-////						predicates.add(giveFilterPredicate("EmployeeRole", comboBox.getSelectionModel().getSelectedItem().toString().toLowerCase()));
-//			        }
-//		        } 
-//				}
-//				if (comboBox.getSelectionModel().getSelectedItem() != null &&  !comboBox.getSelectionModel().getSelectedItem().toString().contains("SELECT")) {
 
 					ArrayList<UserStatus> userStatusArrayList = new ArrayList<>(Arrays.asList(UserStatus.values()));
 					List<String> userStatusStringArray = userStatusArrayList.stream().map(UserStatus::toString).collect(Collectors.toList());
@@ -341,7 +315,6 @@ public class TableViewPanelCompanion<T> extends GridPane {
 					ArrayList<Timestamp> timestampArrayList = new ArrayList<>(Arrays.asList(Timestamp.values()));
 					List<String> timestampStringArray = timestampArrayList.stream().map(Timestamp::toString).collect(Collectors.toList());
 
-
 					String selectedItem = comboBox.getSelectionModel().getSelectedItem().toString();
 
 					//There are 2 active ENUMS
@@ -365,30 +338,6 @@ public class TableViewPanelCompanion<T> extends GridPane {
 						}
 					}
 
-					
-//					if (currentState.equals(GUIEnum.CONTRACTTYPE)){
-//						System.out.println("CONTRACTTYPE");
-//						if (contractStatusStringArray.contains(selectedItem)){
-//							predicates.add(giveFilterPredicate("ContractStatus", selectedItem.toLowerCase()));
-//						} else if (contractTypeStatusStringArray.contains(selectedItem)){
-//							System.out.println("yea");
-//							predicates.add(giveFilterPredicate("ContractTypeStatus", selectedItem.toLowerCase()));
-//						}
-//					} else {
-//						if (userStatusStringArray.contains(selectedItem)){
-//							predicates.add(giveFilterPredicate("UserStatus", selectedItem.toLowerCase()));
-//						} else if (employeeRoleStringArray.contains(selectedItem)){
-//							predicates.add(giveFilterPredicate("EmployeeRole", selectedItem.toLowerCase()));
-//						} else if (userStatusRoleStringArray.contains(selectedItem)){
-//							predicates.add(giveFilterPredicate("TicketPriority", selectedItem.toLowerCase()));
-//						} else if (ticketTypeStringArray.contains(selectedItem)){
-//							predicates.add(giveFilterPredicate("TicketType", selectedItem.toLowerCase()));
-//						} else if (ticketStatusStringArray.contains(selectedItem)){
-//							predicates.add(giveFilterPredicate("TicketStatus", selectedItem.toLowerCase()));
-//						} else if (timestampStringArray.contains(selectedItem)){
-//							predicates.add(giveFilterPredicate("Timestamp", selectedItem.toLowerCase()));
-//						}
-//					}
 				}
 			}
 		});

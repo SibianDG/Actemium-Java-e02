@@ -234,25 +234,25 @@ public class Actemium {
 	}
 
 	public void modifyCustomer(ActemiumCustomer modifiedCustomer) {
-		int index = actemiumCustomers.indexOf(modifiedCustomer);
+//		int index = actemiumCustomers.indexOf(modifiedCustomer);
 
 		userDaoJpa.startTransaction();
 		userDaoJpa.update(modifiedCustomer);
 		userDaoJpa.commitTransaction();
 
-		actemiumCustomers.add(index, modifiedCustomer);
-		actemiumCustomers.remove(index + 1);
+//		actemiumCustomers.add(index, modifiedCustomer);
+//		actemiumCustomers.remove(index + 1);
 	}
 
 	public void modifyEmployee(ActemiumEmployee modifiedEmployee) {
-		int index = actemiumEmployees.indexOf(modifiedEmployee);
+//		int index = actemiumEmployees.indexOf(modifiedEmployee);
 
 		userDaoJpa.startTransaction();
 		userDaoJpa.update(modifiedEmployee);
 		userDaoJpa.commitTransaction();
 
-		actemiumEmployees.add(index, modifiedEmployee);
-		actemiumEmployees.remove(index + 1);
+//		actemiumEmployees.add(index, modifiedEmployee);
+//		actemiumEmployees.remove(index + 1);
 	}
 	
 	public Customer getLastAddedCustomer() {
@@ -287,7 +287,7 @@ public class Actemium {
 		// so can we leave this code out
 		// or am I missing something?
 		// This should be changed in the other modify methods as well
-		int index = actemiumTickets.indexOf(ticket);
+//		int index = actemiumTickets.indexOf(ticket);
 		
 		ticketDaoJpa.startTransaction();
 		ticketDaoJpa.update(ticket);
@@ -346,15 +346,15 @@ public class Actemium {
 	}
 
 	public void modifyContractType(ActemiumContractType contractType) {
-		int index = actemiumContractTypes.indexOf(contractType);
+//		int index = actemiumContractTypes.indexOf(contractType);
 
 		contractTypeDaoJpa.startTransaction();
 		contractTypeDaoJpa.update(contractType);
 		contractTypeDaoJpa.commitTransaction();
-		actemiumContractTypes.add(contractType);
-
-		actemiumContractTypes.add(index, contractType);
-		actemiumContractTypes.remove(index + 1);
+//		actemiumContractTypes.add(contractType);
+//
+//		actemiumContractTypes.add(index, contractType);
+//		actemiumContractTypes.remove(index + 1);
 	}
 
 	public ObservableList<ContractType> giveActemiumContractTypes() {
@@ -374,4 +374,5 @@ public class Actemium {
 	public ObservableList<Contract> giveActemiumContracts() {
 		return FXCollections.unmodifiableObservableList(actemiumContracts);
 	}
+	
 }

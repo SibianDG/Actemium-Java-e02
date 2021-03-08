@@ -16,6 +16,12 @@ public class ActemiumContractType implements ContractType, Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 	
+	//TODO
+	// Name is primary key so it cannot be changed
+	// This could be a good thing
+	// this means if you want to change a contract type name
+	// it's better to set the old contract type to inactive
+	// and create a new contractype with a new name
 	@Id
 	private String name;
 
@@ -31,6 +37,7 @@ public class ActemiumContractType implements ContractType, Serializable {
 
 	@Transient
 	private StringProperty timestamp = new SimpleStringProperty();
+	//TODO
 	// Does the integer represent:
 	// Days, Hours, Minutes?
 	private int maxHandlingTime;

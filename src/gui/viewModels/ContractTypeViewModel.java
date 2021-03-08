@@ -11,7 +11,6 @@ import domain.enums.ContractTypeStatus;
 import domain.enums.Timestamp;
 import domain.facades.ContractTypeFacade;
 import gui.GUIEnum;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class ContractTypeViewModel extends ViewModel {
@@ -19,21 +18,15 @@ public class ContractTypeViewModel extends ViewModel {
     private GUIEnum currentState;
     private ContractType selectedContractType;
     private final ContractTypeFacade contractTypeFacade;
-    private ObservableList<ContractType> contractTypes;
 
     public ContractTypeViewModel(ContractTypeFacade contractTypeFacade) {
         super();
         this.contractTypeFacade = contractTypeFacade;
-        this.contractTypes = FXCollections.observableArrayList();
         setCurrentState(GUIEnum.CONTRACTTYPE);
     }
 
-    public ObservableList<ContractType> getContractTypes() {
-        return FXCollections.unmodifiableObservableList(contractTypes);
-    }
-
-    public void setContractTypes(ObservableList<ContractType> observableList) {
-        this.contractTypes = observableList;
+    public ObservableList<ContractType> giveContractTypes() {
+        return contractTypeFacade.giveActemiumContractTypes();
     }
 
     public ContractType getSelectedContractTypes() {
@@ -44,16 +37,15 @@ public class ContractTypeViewModel extends ViewModel {
         this.selectedContractType = contractType;
         if (contractType != null){
             // substring(8) to remove ACTEMIUM
-            //TODO obsolete
             setCurrentState(GUIEnum.valueOf(contractType.getClass().getSimpleName().substring(8).toUpperCase()));
         }
         fireInvalidationEvent();
     }
 
-    public ArrayList<String> getDetailsNewContractType(){
-
-        return new ArrayList<String>(Arrays.asList("Name", "Status", "Email", "Phone", "Application", "Timestamp (support hours)", "Max handling time", "Min throughput time contract", "Price contract"));
-    }
+	public ArrayList<String> getDetailsNewContractType() {
+		return new ArrayList<String>(Arrays.asList("Name", "Status", "Email", "Phone", "Application",
+				"Timestamp (support hours)", "Max handling time", "Min throughput time contract", "Price contract"));
+	}
 
     public Map<String, Object> getDetails() {
         ContractType contractType = selectedContractType;

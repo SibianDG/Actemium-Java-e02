@@ -226,34 +226,21 @@ public class DashboardFrameController <T> extends GuiController {
         });
 
         if (name.toLowerCase().contains("manage") && name.toLowerCase().contains("employee")) {
-            //Todo weird
-            userViewModel.setEmployees(userFacade.giveActemiumEmployees());
+            //Todo weird => fixed? or still weird?
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.EMPLOYEE);
             switchToManageScreen(name, tableViewPanelCompanion, userViewModel);
         } else if (name.toLowerCase().contains("manage") && name.toLowerCase().contains("customer")) {
-            userViewModel.setCustomers(userFacade.giveActemiumCustomers());
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.CUSTOMER);
             switchToManageScreen(name, tableViewPanelCompanion, userViewModel);
         } else if (name.toLowerCase().contains("ticket") && name.toLowerCase().contains("outstanding")) {
-//            List<TicketStatus> outstanding = Arrays.asList(TicketStatus.CREATED, TicketStatus.IN_PROGRESS, TicketStatus.WAITING_ON_USER_INFORMATION, TicketStatus.USER_INFORMATION_RECEIVED, TicketStatus.IN_DEVELOPMENT);
-            ticketViewModel.setActemiumTickets(ticketFacade.giveActemiumTicketsOutstanding());
-//                    .stream()
-//                    .filter(t -> outstanding.contains(t.getStatusAsEnum()))
-//                    .collect(Collectors.toList())));
             TicketStatus.setOutstanding(true);
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, ticketViewModel, GUIEnum.TICKET);
             switchToManageScreen(name, tableViewPanelCompanion, ticketViewModel);
         } else if (name.toLowerCase().contains("ticket") && name.toLowerCase().contains("resolved")) {
-//            List<TicketStatus> resolved = Arrays.asList(TicketStatus.COMPLETED, TicketStatus.CANCELLED);
-            ticketViewModel.setActemiumTickets(ticketFacade.giveActemiumTicketsResolved());
-//                    .stream()
-//                    .filter(t -> resolved.contains(t.getStatusAsEnum()))
-//                    .collect(Collectors.toList())));
             TicketStatus.setOutstanding(false);
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, ticketViewModel, GUIEnum.TICKET);
             switchToManageScreen(name, tableViewPanelCompanion, ticketViewModel);
         } else if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("contract type")) {
-        	contractTypeViewModel.setContractTypes(contractTypeFacade.giveActemiumContractTypes());
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, contractTypeViewModel, GUIEnum.CONTRACTTYPE);
             switchToManageScreen(name, tableViewPanelCompanion, contractTypeViewModel);
         } else {

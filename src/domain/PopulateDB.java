@@ -7,6 +7,8 @@ import repository.UserDaoJpa;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 
+import org.junit.jupiter.params.provider.Arguments;
+
 public class PopulateDB {
     public void run(UserDaoJpa userDao, GenericDao<ActemiumContractType> contractTypeDao) {
     	System.out.println("DBTester - creating and persisting multiple user objects");        
@@ -81,15 +83,16 @@ public class PopulateDB {
         userDao.commitTransaction();
 
         contractTypeDao.startTransaction();
-        ActemiumContractType contractType = new ActemiumContractType("contractType", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.ALWAYS, 10, 20, 250.89);
-        ActemiumContractType contractType2 = new ActemiumContractType("contractType2", ContractTypeStatus.INACTIVE, true, false, true, Timestamp.WORKINGHOURS, 76, 345, 250.89);
-        ActemiumContractType contractType3 = new ActemiumContractType("contractType3", ContractTypeStatus.ACTIVE, true, true, false, Timestamp.ALWAYS, 10, 20, 2345.34);
-        ActemiumContractType contractType4 = new ActemiumContractType("contractType4", ContractTypeStatus.ACTIVE, false, true, true, Timestamp.WORKINGHOURS, 5, 45, 2345);
-        contractTypeDao.insert(contractType);
-        contractTypeDao.insert(contractType2);
-        contractTypeDao.insert(contractType3);
-        contractTypeDao.insert(contractType4);
-        contractTypeDao.commitTransaction();
+        contractTypeDao.insert(new ActemiumContractType("BasisEmailSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99));
+        contractTypeDao.insert(new ActemiumContractType("BasisPhoneSupport", ContractTypeStatus.ACTIVE, false, true, false, Timestamp.WORKINGHOURS, 5, 2, 1999.99));
+        contractTypeDao.insert(new ActemiumContractType("BasisAppSupport", ContractTypeStatus.ACTIVE, false, false, true, Timestamp.WORKINGHOURS, 5, 2, 1299.99));
+        contractTypeDao.insert(new ActemiumContractType("FullEmailSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.ALWAYS, 4, 1, 1999.99));
+        contractTypeDao.insert(new ActemiumContractType("FullPhoneSupport", ContractTypeStatus.ACTIVE, false, true, false, Timestamp.ALWAYS, 4, 1, 2999.99));
+        contractTypeDao.insert(new ActemiumContractType("FullAppSupport", ContractTypeStatus.ACTIVE, false, false, true, Timestamp.ALWAYS, 4, 1, 2299.99));
+        contractTypeDao.insert(new ActemiumContractType("BasisAllSupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.WORKINGHOURS, 4, 2, 2999.99));
+        contractTypeDao.insert(new ActemiumContractType("FullAllSupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.ALWAYS, 3, 1, 3999.99));
+        contractTypeDao.insert(new ActemiumContractType("ExperimentalSupport", ContractTypeStatus.INACTIVE, true, false, true, Timestamp.ALWAYS, 4, 1, 2999.99));
+		contractTypeDao.commitTransaction();
 
     }
 
