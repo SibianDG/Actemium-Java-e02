@@ -461,7 +461,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         return label;
     }
 
-    private void addGridDetails(Map<String, Object> details){
+    private void addGridDetails(Map<String, Map<Boolean, Object>> details){
         int i = 0;
         // Using LinkedHashSet so the order of the map values doesn't change
         Set<String> keys = new LinkedHashSet<String>(details.keySet());
@@ -475,7 +475,13 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         }
     }
 
-    private Node createElementDetailGridpane(Object o, String key) {
+    private Node createElementDetailGridpane(Map<Boolean, Object> map, String key) {
+        boolean disable = (boolean) map.keySet().toArray()[0];
+        Object o = map.get(disable);
+
+        disable = !disable;
+
+        Node node = null;
 
         if (o instanceof String) {
             String string = (String) o;
@@ -492,18 +498,18 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             if (string.trim().equals("")){
                 detail.setVisible(false);
                 detail.setPadding(new Insets(15, 0, 0, 0));
-            } else if (key.toLowerCase().contains("id")
-                    || key.equals("Creation date")
-                    || key.toLowerCase().contains("company")){
-                detail.setDisable(true);
             }
-            return detail;
+            detail.setDisable(disable);
+
+            node = detail;
         } else if (o instanceof Enum) {
-            return makeComboBox(o);
+            node = makeComboBox(o);
         } else if (o instanceof Boolean) {
-            return makeComboBox(o);
+            node = makeComboBox(o);
         }
-        return null;
+        if (node != null)
+            node.setDisable(disable);
+        return node;
     }
 
     private ComboBox makeComboBox(Object o){

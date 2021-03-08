@@ -1,10 +1,6 @@
 package gui.viewModels;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import domain.ActemiumEmployee;
 import domain.ActemiumTicket;
@@ -57,19 +53,19 @@ public class TicketViewModel extends ViewModel {
         return new ArrayList<String>(Arrays.asList("Title", "Creation date", "Priority", "Type", "CustomerId", "Description", "Remarks", "Attachments"));
     }
     
-    public Map<String, Object> getDetails() {
+    public Map<String, Map<Boolean, Object>> getDetails() {
         Ticket ticket = selectedActemiumTicket;
-        Map<String, Object> details = new LinkedHashMap<>();
-        details.put("Title", ticket.getTitle());
-        details.put("Creation date", ticket.getDateOfCreation().toString());
-        details.put("Priority", ticket.getPriorityAsEnum());
-        details.put("Type", ticket.getTicketTypeAsEnum());
-        details.put("Status", ticket.getStatusAsEnum());
-        details.put("Description", ticket.getDescription());
-        details.put("Customer/Company", ticket.giveCustomer().getCompany().getName());
+        Map<String, Map<Boolean, Object>> details = new LinkedHashMap<>();
+        details.put("Title", Collections.singletonMap(true, ticket.getTitle()));
+        details.put("Creation date", Collections.singletonMap(false, ticket.getDateOfCreation().toString()));
+        details.put("Priority", Collections.singletonMap(true, ticket.getPriorityAsEnum()));
+        details.put("Type", Collections.singletonMap(true, ticket.getTicketTypeAsEnum()));
+        details.put("Status", Collections.singletonMap(true, ticket.getStatusAsEnum()));
+        details.put("Description", Collections.singletonMap(true, ticket.getDescription()));
+        details.put("Customer/Company", Collections.singletonMap(false, ticket.giveCustomer().getCompany().getName()));
         //details.put("Technician", ticket.getTechnicians().toString());
-        details.put("Remarks", ticket.getRemarks());
-        details.put("Attachments", ticket.getAttachments());
+        details.put("Remarks", Collections.singletonMap(true, ticket.getRemarks()));
+        details.put("Attachments", Collections.singletonMap(true, ticket.getAttachments()));
         
         return details;   
     }

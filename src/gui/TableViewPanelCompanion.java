@@ -380,7 +380,6 @@ public class TableViewPanelCompanion<T> extends GridPane {
 
 				alert.getDialogPane().getChildren().forEach(node -> {
 					if (node instanceof ButtonBar) {
-						System.out.println("IN ALERT");
 						ButtonBar buttonBar = (ButtonBar) node;
 						buttonBar.getButtons().forEach(possibleButtons -> {
 							if (possibleButtons instanceof Button) {

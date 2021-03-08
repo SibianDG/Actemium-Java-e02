@@ -1,9 +1,6 @@
 package gui.viewModels;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import domain.ActemiumCompany;
 import domain.ActemiumCustomer;
@@ -55,47 +52,47 @@ public class UserViewModel extends ViewModel {
         return new ArrayList<String>(Arrays.asList("Username", "Lastname", "Firstname", "Company name", "Company Address", "Company Phone number"));
     }
 
-    public Map<String, Object> getDetails(){
+    public Map<String, Map<Boolean, Object>> getDetails(){
 //    	switch (selectedUser.getClass().getSimpleName().toLowerCase()) {
         switch (selectedUser.getClass().getSimpleName().substring(8).toLowerCase()) {
             case "employee" -> {
                 Employee employee = (Employee) selectedUser;
-				Map<String, Object> detailsMap = new LinkedHashMap<>();
-				detailsMap.put("Employee ID", String.valueOf(employee.getUserId()));
-                detailsMap.put("Username", employee.getUsername());
-                detailsMap.put("Password", employee.getPassword());
-                detailsMap.put("Firstname", employee.getFirstName());
-                detailsMap.put("Lastname", employee.getLastName());
-				detailsMap.put("Address", employee.getAddress());
-				detailsMap.put("Phone number", employee.getPhoneNumber());
-				detailsMap.put("Email", employee.getEmailAddress());
-				detailsMap.put("Company Seniority", String.valueOf(employee.giveSeniority()));
-				detailsMap.put("Role", employee.getRoleAsEnum());
-				detailsMap.put("Status", employee.getStatusAsEnum());
-				return detailsMap;
+                Map<String, Map<Boolean, Object>> detailsMap = new LinkedHashMap<>();
+                detailsMap.put("Employee ID", Collections.singletonMap(false, String.valueOf(employee.getUserId())));
+                detailsMap.put("Username", Collections.singletonMap(true, employee.getUsername()));
+                detailsMap.put("Password", Collections.singletonMap(true, employee.getPassword()));
+                detailsMap.put("Firstname", Collections.singletonMap(true, employee.getFirstName()));
+                detailsMap.put("Lastname", Collections.singletonMap(true, employee.getLastName()));
+                detailsMap.put("Address", Collections.singletonMap(true, employee.getAddress()));
+                detailsMap.put("Phone number", Collections.singletonMap(true, employee.getPhoneNumber()));
+                detailsMap.put("Email", Collections.singletonMap(true, employee.getEmailAddress()));
+                detailsMap.put("Company Seniority", Collections.singletonMap(false, String.valueOf(employee.giveSeniority())));
+                detailsMap.put("Role", Collections.singletonMap(true, employee.getRoleAsEnum()));
+                detailsMap.put("Status", Collections.singletonMap(true, employee.getStatusAsEnum()));
+                return detailsMap;
             }
             case "customer" -> {
                 Customer customer = (Customer) selectedUser;
-        	    // Using LinkedHashMap so the order of the map values doesn't change
-                Map<String, Object> detailsMap = new LinkedHashMap<>();
-                detailsMap.put("Customer ID", String.valueOf(customer.getUserId()));
-                detailsMap.put("Username", customer.getUsername());
-                detailsMap.put("Password", customer.getPassword());
+                // Using LinkedHashMap so the order of the map values doesn't change
+                Map<String, Map<Boolean, Object>> detailsMap = new LinkedHashMap<>();
+                detailsMap.put("Customer ID", Collections.singletonMap(false, String.valueOf(customer.getUserId())));
+                detailsMap.put("Username", Collections.singletonMap(true, customer.getUsername()));
+                detailsMap.put("Password", Collections.singletonMap(true, customer.getPassword()));
 
-                detailsMap.put("Company", "");
-                detailsMap.put("Name", customer.getCompany().getName());
-                detailsMap.put("Address", customer.getCompany().getAddress());
-                detailsMap.put("Phone Nr", customer.getCompany().getPhoneNumber());
+                detailsMap.put("Company", Collections.singletonMap(false, ""));
+                detailsMap.put("Name", Collections.singletonMap(true, customer.getCompany().getName()));
+                detailsMap.put("Address", Collections.singletonMap(true, customer.getCompany().getAddress()));
+                detailsMap.put("Phone Nr", Collections.singletonMap(true, customer.getCompany().getPhoneNumber()));
                 // Here it's the name and email of the contactperson
-                detailsMap.put("Contact person", "");
+                detailsMap.put("Contact person", Collections.singletonMap(false, ""));
                 // here it's the name and firstname of the customer
-                detailsMap.put("Firstname", customer.getFirstName());
-                detailsMap.put("Lastname", customer.getLastName());
-                detailsMap.put("Seniority", String.valueOf(customer.giveSeniority()));
+                detailsMap.put("Firstname", Collections.singletonMap(true, customer.getFirstName()));
+                detailsMap.put("Lastname", Collections.singletonMap(true, customer.getLastName()));
+                detailsMap.put("Seniority", Collections.singletonMap(true, String.valueOf(customer.giveSeniority())));
                 //TODO
                 // how are we going to show all the contracts in the details pannel?
                 // they request it in the use case "Manage Users"
-                detailsMap.put("Status", customer.getStatusAsEnum());
+                detailsMap.put("Status", Collections.singletonMap(true, customer.getStatusAsEnum()));
                 return detailsMap;
             } 
             default -> {return null;}

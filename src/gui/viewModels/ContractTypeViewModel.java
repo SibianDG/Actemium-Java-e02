@@ -1,9 +1,6 @@
 package gui.viewModels;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import domain.ActemiumContractType;
 import domain.ContractType;
@@ -47,18 +44,18 @@ public class ContractTypeViewModel extends ViewModel {
 				"Timestamp (support hours)", "Max handling time", "Min throughput time contract", "Price contract"));
 	}
 
-    public Map<String, Object> getDetails() {
+    public Map<String, Map<Boolean, Object>> getDetails() {
         ContractType contractType = selectedContractType;
-        Map<String, Object> details = new LinkedHashMap<>();
-        details.put("Name", contractType.getName());
-        details.put("Status", contractType.getContractTypeStatusAsEnum());
-        details.put("Email", (Boolean) contractType.isHasEmail());
-        details.put("Phone", (Boolean) contractType.isHasPhone());
-        details.put("Application", (Boolean) contractType.isHasApplication());
-        details.put("Timestamp (support hours)", contractType.getTimestampAsEnum());
-        details.put("Max handling time", String.format("%d", contractType.getMaxHandlingTime()));
-        details.put("Min throughput time contract", String.format("%d", contractType.getMinThroughputTime()));
-        details.put("Price contract", String.format("%.2f", contractType.getPrice()));
+        Map<String,Map<Boolean, Object>> details = new LinkedHashMap<>();
+        details.put("Name", Collections.singletonMap(true, contractType.getName()));
+        details.put("Status", Collections.singletonMap(true, contractType.getContractTypeStatusAsEnum()));
+        details.put("Email", Collections.singletonMap(true, (Boolean) contractType.isHasEmail()));
+        details.put("Phone", Collections.singletonMap(true, (Boolean) contractType.isHasPhone()));
+        details.put("Application", Collections.singletonMap(true, (Boolean) contractType.isHasApplication()));
+        details.put("Timestamp (support hours)", Collections.singletonMap(true, contractType.getTimestampAsEnum()));
+        details.put("Max handling time", Collections.singletonMap(true, String.format("%d", contractType.getMaxHandlingTime())));
+        details.put("Min throughput time contract", Collections.singletonMap(true, String.format("%d", contractType.getMinThroughputTime())));
+        details.put("Price contract", Collections.singletonMap(true, String.format("%.2f", contractType.getPrice())));
         //details.put("Amount open contracts", contractType);
         //details.put("Amount resolved tickets", contractType);
         //details.put("Percentage tickets resolved within agreed time", contractType);
