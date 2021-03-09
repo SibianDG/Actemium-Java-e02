@@ -19,7 +19,7 @@
       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="900.0" styleClass="bg-rounded" stylesheets="@../start/styles.css">
+      <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="900.0" styleClass="bg-rounded" stylesheets="@../start/styles.css">
          <children>
             <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#addOnAction" styleClass="btn-blue" text="Add">
                <VBox.margin>
@@ -40,7 +40,7 @@
                </VBox.margin>
             </Text>
             <HBox fx:id="hboxFilterSection" prefHeight="35.0" prefWidth="900.0" spacing="30.0" />
-            <TableView fx:id="tableView">
+            <TableView fx:id="tableView" prefHeight="600.0" prefWidth="900.0">
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
