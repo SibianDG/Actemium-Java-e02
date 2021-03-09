@@ -88,4 +88,8 @@ public class ContractTypeViewModel extends ViewModel {
         return selectedContractType.getName();
     }
 
+    @Override
+    public void delete() {
+        contractTypeFacade.delete((ActemiumContractType) selectedContractType);
+    }
 }

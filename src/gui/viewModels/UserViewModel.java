@@ -126,12 +126,16 @@ public class UserViewModel extends ViewModel {
 				company, UserStatus.valueOf(status));
 	}
 
-	public GUIEnum getCurrentState() {
+	@Override
+    public void delete() {
+        userFacade.deleteUser((UserModel) selectedUser);
+    }
+
+    public GUIEnum getCurrentState() {
 		return currentState;
 	}
 
 	public void setCurrentState(GUIEnum currentState) {
 		this.currentState = currentState;
 	}
-	
 }

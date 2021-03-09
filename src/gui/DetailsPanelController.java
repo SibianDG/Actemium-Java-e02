@@ -55,6 +55,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     private GridPane gridDetails;
 
     @FXML
+    private Button btnDelete;
+
+    @FXML
     private Button btnModify;
 
     @FXML
@@ -90,9 +93,21 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 //		} else if (viewModel instanceof TicketViewModel) {
 //	        txtDetailsTitle.setText("No ticket is selected");
 //		}
+        clearDetailPane();
+    }
+
+    public void clearDetailPane() {
         txtDetailsTitle.setText("Nothing is selected");
+        gridDetails.getChildren().clear();
         btnModify.setVisible(false);
+        btnDelete.setVisible(false);
         txtErrorMessage.setVisible(false);
+    }
+
+    @FXML
+    void btnDeleteOnAction(ActionEvent event) {
+        viewModel.delete();
+        clearDetailPane();
     }
 
     @FXML
@@ -259,7 +274,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         try {
             setDetailOnModifying();
         } catch (NullPointerException e){
-            setupPaneNewObject();
+            clearDetailPane();
         }
     }
 
@@ -279,6 +294,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             btnModify.setText("Modify ContractType");
         }
         btnModify.setVisible(true);
+        btnDelete.setVisible(true);
         txtErrorMessage.setVisible(false);
         editing = true;
     }

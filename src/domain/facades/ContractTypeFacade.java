@@ -37,6 +37,10 @@ public class ContractTypeFacade implements Facade{
         actemium.modifyContractType(contractType);
     }
 
+    public void delete(ActemiumContractType contractType) {
+        actemium.deleteContractType(contractType);
+    }
+
     public ObservableList<ContractType> giveActemiumContractTypes() {
         return actemium.giveActemiumContractTypes();
     }

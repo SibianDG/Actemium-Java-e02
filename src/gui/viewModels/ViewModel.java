@@ -16,6 +16,7 @@ public abstract class ViewModel implements Observable {
             listener.invalidated(this);
         }
     }
+    
 
     @Override
     public void addListener(InvalidationListener invalidationListener) {
@@ -34,4 +35,6 @@ public abstract class ViewModel implements Observable {
 	public void setFieldModified(boolean fieldModified) {
 		this.fieldModified = fieldModified;
 	}
+
+    public abstract void delete();
 }

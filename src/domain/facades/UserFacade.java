@@ -1,10 +1,6 @@
 package domain.facades;
 
-import domain.ActemiumCompany;
-import domain.ActemiumCustomer;
-import domain.ActemiumEmployee;
-import domain.Customer;
-import domain.Employee;
+import domain.*;
 import domain.enums.EmployeeRole;
 import domain.enums.UserStatus;
 import domain.manager.Actemium;
@@ -332,6 +328,10 @@ public class UserFacade implements Facade {
 
 //		employeeList.add(index, employee);
 //		employeeList.remove(index+1);
+	}
+
+	public void deleteUser(UserModel user) {
+		actemium.deleteUser(user);
 	}
 	
 	public Customer getLastAddedCustomer() {

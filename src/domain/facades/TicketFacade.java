@@ -81,5 +81,8 @@ public class TicketFacade implements Facade {
 		return actemium.giveActemiumTicketsOutstanding();
 	}
 
-	
+
+    public void delete(ActemiumTicket ticket) {
+		actemium.deleteTicket(ticket);
+    }
 }

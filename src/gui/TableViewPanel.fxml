@@ -21,7 +21,7 @@
    <children>
       <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="900.0" styleClass="bg-rounded" stylesheets="@../start/styles.css">
          <children>
-            <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#addOnAction" styleClass="btn-blue" text="Add">
+            <Button fx:id="btnAdd" mnemonicParsing="false" onMouseClicked="#addOnMouseClicked" styleClass="btn-blue" text="Add">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>

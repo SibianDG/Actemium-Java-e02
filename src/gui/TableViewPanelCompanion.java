@@ -31,6 +31,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -405,11 +406,17 @@ public class TableViewPanelCompanion<T> extends GridPane {
 					((ContractTypeViewModel) viewModel).setSelectedContractType((ContractType) data);
 				}
 			}
-		});		
+		});
+
+		/*tableView.setOnKeyPressed( keyEvent -> {
+			if (keyEvent.getCode().equals(KeyCode.DELETE)) {
+				viewModel.delete();
+			}
+		});*/
 	}
 
 	@FXML
-	void addOnAction(ActionEvent event) {		
+	void  addOnMouseClicked(MouseEvent event) {
 		switch(currentState) {
 			case EMPLOYEE ->{
 				((UserViewModel) viewModel).setCurrentState(GUIEnum.EMPLOYEE);
@@ -430,7 +437,8 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			default -> {
 				//tableView.getSelectionModel().clearSelection();
 //				((UserViewModel) viewModel).setSelectedUser(null);
-			}		
+			}
+
 		}
 	}
 
