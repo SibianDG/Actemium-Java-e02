@@ -362,8 +362,8 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 
 
-				alert.setTitle("Fields were modified without saving!");
-				alert.setHeaderText("Fields were modified without saving!");
+				alert.setTitle("Fields were modified without saving.");
+				alert.setHeaderText("You have unsaved changes!");
 				alert.setContentText("Choose your option.");
 
 				alert.getDialogPane().getStylesheets().add("file:src/start/styles.css");
@@ -374,7 +374,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				//TODO: make discard red
 				//((Button) discardChanges).styleClass().add("btn-red");
 
-				ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+				ButtonType buttonTypeCancel = new ButtonType("Keep Editing", ButtonData.CANCEL_CLOSE);
 
 				alert.getButtonTypes().setAll(discardChanges, buttonTypeCancel);
 
@@ -386,7 +386,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 								Button b = (Button) possibleButtons;
 								if (b.getText().equals("Discard Changes")) {
 									b.setStyle("-fx-background-color: #c41010;  -fx-text-fill: #ffffff;");
-								} else if (b.getText().equals("Cancel")) {
+								} else if (b.getText().equals("Keep Editing")) {
 									b.setStyle("-fx-background-color: #1d3d78;  -fx-text-fill: #ffffff;");
 								}
 							}
