@@ -15,7 +15,7 @@ import javafx.collections.ObservableList;
 public class TicketViewModel extends ViewModel {
 
     private GUIEnum currentState;
-    private Ticket selectedActemiumTicket;
+    private Ticket selectedTicket;
     private final TicketFacade ticketFacade;
 
     public TicketViewModel(TicketFacade ticketFacade) {
@@ -24,24 +24,24 @@ public class TicketViewModel extends ViewModel {
         setCurrentState(GUIEnum.TICKET);
     }
 
-	public ObservableList<Ticket> giveActemiumTickets() {
+	public ObservableList<Ticket> giveTickets() {
 		return ticketFacade.giveActemiumTickets();
 	}
 
-	public ObservableList<Ticket> giveActemiumTicketsOutstanding() {
+	public ObservableList<Ticket> giveTicketsOutstanding() {
 		return ticketFacade.giveActemiumTicketsOutstanding();
 	}
 
-	public ObservableList<Ticket> giveActemiumTicketsResolved() {
+	public ObservableList<Ticket> giveTicketsResolved() {
 		return ticketFacade.giveActemiumTicketsResolved();
 	}
 
-    public Ticket getSelectedActemiumTicket() {
-        return selectedActemiumTicket;
+    public Ticket getSelectedTicket() {
+        return selectedTicket;
     }
 
-    public void setSelectedActemiumTicket(Ticket ticket) {
-        this.selectedActemiumTicket = ticket;
+    public void setSelectedTicket(Ticket ticket) {
+        this.selectedTicket = ticket;
         if (ticket != null){
         	// substring(8) to remove ACTEMIUM
             setCurrentState(GUIEnum.valueOf(ticket.getClass().getSimpleName().substring(8).toUpperCase()));
@@ -54,7 +54,7 @@ public class TicketViewModel extends ViewModel {
     }
     
     public Map<String, Map<Boolean, Object>> getDetails() {
-        Ticket ticket = selectedActemiumTicket;
+        Ticket ticket = selectedTicket;
         Map<String, Map<Boolean, Object>> details = new LinkedHashMap<>();
         details.put("Title", Collections.singletonMap(true, ticket.getTitle()));
         details.put("Creation date", Collections.singletonMap(false, ticket.getDateOfCreation().toString()));
@@ -71,13 +71,13 @@ public class TicketViewModel extends ViewModel {
     }
     
     public String getIdOfSelectedTicket() {
-        return selectedActemiumTicket.getTicketIdString();
+        return selectedTicket.getTicketIdString();
     }
 
     public void registerTicket(TicketPriority priority, TicketType ticketType, String title, String description,
                                String remarks, String attachments, long customerId) {
         ticketFacade.registerTicket(priority, ticketType, title, description, remarks, attachments, customerId);
-        setSelectedActemiumTicket(ticketFacade.getLastAddedTicket());
+        setSelectedTicket(ticketFacade.getLastAddedTicket());
     }
 
     // TODO
@@ -85,7 +85,7 @@ public class TicketViewModel extends ViewModel {
     // should become Company instead of customer
     public void modifyTicket(TicketPriority priority, TicketType ticketType, TicketStatus status, String title, String description,
                              String remarks, String attachments, List<ActemiumEmployee> technicians) {
-        ticketFacade.modifyTicket((ActemiumTicket) selectedActemiumTicket, priority, ticketType, status, title, description, remarks, attachments, technicians);
+        ticketFacade.modifyTicket((ActemiumTicket) selectedTicket, priority, ticketType, status, title, description, remarks, attachments, technicians);
     }
 
     public GUIEnum getCurrentState() {

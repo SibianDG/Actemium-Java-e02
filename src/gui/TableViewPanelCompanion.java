@@ -111,12 +111,12 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			}
 			case TICKET -> {
 				// obsolete, but just in case we want all the tickets in the future
-				this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveActemiumTickets();
+//				this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTickets();
 				
 				if (TicketStatus.isOutstanding()) {
-					this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveActemiumTicketsOutstanding();
+					this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTicketsOutstanding();
 				} else {
-					this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveActemiumTicketsResolved();
+					this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTicketsResolved();
 				}
 				
 //				this.tableView.setPrefWidth(1000.0);
@@ -411,7 +411,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				if (data instanceof Employee || data instanceof Customer){
 					((UserViewModel) viewModel).setSelectedUser((User) data);
 				} else if (data instanceof Ticket) {
-					((TicketViewModel) viewModel).setSelectedActemiumTicket((Ticket) data);
+					((TicketViewModel) viewModel).setSelectedTicket((Ticket) data);
 				} else if (data instanceof ContractType) {
 					((ContractTypeViewModel) viewModel).setSelectedContractType((ContractType) data);
 				}
@@ -432,7 +432,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			}
 			case TICKET -> {
 				((TicketViewModel) viewModel).setCurrentState(GUIEnum.TICKET);
-				((TicketViewModel) viewModel).setSelectedActemiumTicket(null);
+				((TicketViewModel) viewModel).setSelectedTicket(null);
 			}
 			case CONTRACTTYPE -> {
 				((ContractTypeViewModel) viewModel).setCurrentState(GUIEnum.CONTRACTTYPE);
