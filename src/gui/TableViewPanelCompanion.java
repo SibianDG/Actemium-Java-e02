@@ -1,24 +1,12 @@
 package gui;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import domain.Contract;
-import domain.ContractType;
-import domain.Customer;
-import domain.Employee;
-import domain.Ticket;
-import domain.User;
+import domain.*;
 import domain.enums.ContractStatus;
 import domain.enums.ContractTypeStatus;
 import domain.enums.EmployeeRole;
@@ -93,7 +81,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			case EMPLOYEE -> {
 				this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).giveEmployees();
 				this.tableViewData = new FilteredList<>(mainData);
-
+				tableViewData.sorted((Comparator<T>) Comparator.comparing(c -> ((User) c).getFirstName().toLowerCase()).thenComparing(c -> ((User) c).getLastName().toLowerCase()));
 				propertyMap.put("Firstname", item -> ((Employee)item).firstNameProperty());
 				propertyMap.put("Lastname", item -> ((Employee)item).lastNameProperty());
 //				propertyMap.put("Username", item -> ((Employee)item).usernameProperty());
@@ -103,6 +91,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			case CUSTOMER -> {
 				this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).giveCustomers();
 				this.tableViewData = new FilteredList<>(mainData);
+				tableViewData.sorted((Comparator<T>) Comparator.comparing(c -> ((Customer) c).getCompany().getName().toLowerCase()).thenComparing(c -> ((User) c).getFirstName().toLowerCase()).thenComparing(c -> ((User) c).getLastName().toLowerCase()));
 				propertyMap.put("Company", item -> ((Customer)item).getCompany().nameProperty());
 				propertyMap.put("Status", item -> ((Customer)item).statusProperty());
 				propertyMap.put("Firstname", item -> ((Customer)item).firstNameProperty());
