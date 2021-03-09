@@ -56,6 +56,7 @@ public class ActemiumCompany implements Company, Serializable {
 		setRegistrationDate(LocalDate.now());
 	}
 
+	@Access(AccessType.PROPERTY)
 	public String getName() {
 		return name.get();
 	}

@@ -2,12 +2,7 @@ package gui.viewModels;
 
 import java.util.*;
 
-import domain.ActemiumCompany;
-import domain.ActemiumCustomer;
-import domain.ActemiumEmployee;
-import domain.Customer;
-import domain.Employee;
-import domain.User;
+import domain.*;
 import domain.enums.EmployeeRole;
 import domain.enums.UserStatus;
 import domain.facades.UserFacade;
@@ -122,9 +117,13 @@ public class UserViewModel extends ViewModel {
 		setSelectedUser(userFacade.getLastAddedCustomer());
 	}
 
-	public void modifyCustomer(String username, String password, String firstName, String lastName, String status) {
+	public void modifyCustomer(String username, String password, String firstName, String lastName, String status, String companyName, String companyPhone, String companyAddress) {
+        ActemiumCompany company = ((ActemiumCustomer) selectedUser).getCompany();
+        company.setName(companyName);
+        company.setPhoneNumber(companyPhone);
+        company.setAddress(companyAddress);
 		userFacade.modifyCustomer((ActemiumCustomer) this.selectedUser, username, password, firstName, lastName,
-				((ActemiumCustomer) selectedUser).getCompany(), UserStatus.valueOf(status));
+				company, UserStatus.valueOf(status));
 	}
 
 	public GUIEnum getCurrentState() {
