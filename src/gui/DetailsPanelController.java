@@ -41,6 +41,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import languages.LanguageResource;
 
 
 public class DetailsPanelController extends GridPane implements InvalidationListener {
@@ -97,7 +98,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     }
 
     public void clearDetailPane() {
-        txtDetailsTitle.setText("Nothing is selected");
+        txtDetailsTitle.setText(LanguageResource.getString("nothingSelected"));
         gridDetails.getChildren().clear();
         btnModify.setVisible(false);
         btnDelete.setVisible(false);
@@ -189,9 +190,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 , getTextFromGridItem(8)
                                 , new ArrayList<ActemiumEmployee>()
                         );
-                        makePopUp("Ticket edited", "You have successfully edited the ticket.");
+                        makePopUp(LanguageResource.getString("ticketEdited"), LanguageResource.getString("ticketEdited_succes"));
                     } else {
-                        makePopUp("Ticket not edited", "You haven't changed anything.");
+                        makePopUp(LanguageResource.getString("ticketEdited_false"), LanguageResource.getString("unchangedMessage"));
                     }
                 } else {
                     ((TicketViewModel) viewModel).registerTicket(
@@ -223,9 +224,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 Double.parseDouble(getTextFromGridItem(8).replace(",", ".")) //price contract
                         );
                         System.out.println("Edited ContractTypeViewModel");
-                        makePopUp("Contract type edited", "You have successfully edited the Contract type.");
+                        makePopUp(LanguageResource.getString("contractTypeEdited"), LanguageResource.getString("contractTypeEdited_succes"));
                     } else {
-                        makePopUp("Contract type not edited", "You haven't changed anything.");
+                        makePopUp(LanguageResource.getString("contractTypeEdited_false"), LanguageResource.getString("unchangedMessage"));
                     }
                 } else {
                     ((ContractTypeViewModel) viewModel).registerContractType(
@@ -308,12 +309,12 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         if (viewModel instanceof UserViewModel) {
             if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)) {
                 fields = ((UserViewModel) viewModel).getDetailsNewEmployee();
-                txtDetailsTitle.setText("Add new employee");
-                btnModify.setText("Add new employee");
+                txtDetailsTitle.setText(LanguageResource.getString("addEmployee"));
+                btnModify.setText(LanguageResource.getString("addEmployee"));
             } else if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.CUSTOMER)) {
                 fields = ((UserViewModel) viewModel).getDetailsNewCustomer();
-                txtDetailsTitle.setText("Add new customer");
-                btnModify.setText("Add new customer");
+                txtDetailsTitle.setText(LanguageResource.getString("addCustomer"));
+                btnModify.setText(LanguageResource.getString("addCustomer"));
             } else {
                 fields = null;
             }
@@ -323,8 +324,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         } else if (viewModel instanceof TicketViewModel) {
             if (((TicketViewModel) viewModel).getCurrentState().equals(GUIEnum.TICKET)) {
                 fields = ((TicketViewModel) viewModel).getDetailsNewTicket();
-                txtDetailsTitle.setText("Add new ticket");
-                btnModify.setText("Add new ticket");
+                txtDetailsTitle.setText(LanguageResource.getString("addTicket"));
+                btnModify.setText(LanguageResource.getString("addTicket"));
             } else {
                 fields = null;
             }
@@ -334,8 +335,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         } else if (viewModel instanceof ContractTypeViewModel) {
             if (((ContractTypeViewModel) viewModel).getCurrentState().equals(GUIEnum.CONTRACTTYPE)) {
                 fields = ((ContractTypeViewModel) viewModel).getDetailsNewContractType();
-                txtDetailsTitle.setText("Add new contract type");
-                btnModify.setText("Add new contract type");
+                txtDetailsTitle.setText(LanguageResource.getString("addContractType"));
+                btnModify.setText(LanguageResource.getString("addContractType"));
             } else {
                 fields = null;
             }

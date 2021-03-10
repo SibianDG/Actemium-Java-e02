@@ -40,6 +40,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import languages.LanguageResource;
 
 
 public class TableViewPanelCompanion<T> extends GridPane implements InvalidationListener {
@@ -366,19 +367,19 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 
 
-			alert.setTitle("Fields were modified without saving.");
-			alert.setHeaderText("You have unsaved changes!");
-			alert.setContentText("Choose your option.");
+			alert.setTitle(LanguageResource.getString("modifiedWithoutSaving"));
+			alert.setHeaderText(LanguageResource.getString("unsavedChanges"));
+			alert.setContentText(LanguageResource.getString("chooseOption"));
 
 			alert.getDialogPane().getStylesheets().add("file:src/start/styles.css");
 			alert.getDialogPane().getStyleClass().add("alert");
 			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
 
-			ButtonType discardChanges = new ButtonType("Discard Changes");
+			ButtonType discardChanges = new ButtonType(LanguageResource.getString("discardChanges"));
 			//TODO: make discard red
 			//((Button) discardChanges).styleClass().add("btn-red");
 
-			ButtonType buttonTypeCancel = new ButtonType("Keep Editing", ButtonData.CANCEL_CLOSE);
+			ButtonType buttonTypeCancel = new ButtonType(LanguageResource.getString("keepEditing"), ButtonData.CANCEL_CLOSE);
 
 			alert.getButtonTypes().setAll(discardChanges, buttonTypeCancel);
 
@@ -388,9 +389,9 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 					buttonBar.getButtons().forEach(possibleButtons -> {
 						if (possibleButtons instanceof Button) {
 							Button b = (Button) possibleButtons;
-							if (b.getText().equals("Discard Changes")) {
+							if (b.getText().equals(LanguageResource.getString("discardChanges"))) {
 								b.setStyle("-fx-background-color: #c41010;  -fx-text-fill: #ffffff;");
-							} else if (b.getText().equals("Keep Editing")) {
+							} else if (b.getText().equals(LanguageResource.getString("keepEditing"))) {
 								b.setStyle("-fx-background-color: #1d3d78;  -fx-text-fill: #ffffff;");
 							}
 						}
@@ -471,7 +472,7 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 					case "EmployeeRole" -> {
 						newPredicate = e -> e.getRole().toLowerCase().contains(filterText);
 					}
-					default -> throw new IllegalStateException("Unexpected value: " + fieldName);
+					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 				}				
 				return newPredicate;				
 			}
@@ -493,7 +494,7 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 					case "Lastname" -> {
 						newPredicate = e -> e.getLastName().toLowerCase().contains(filterText);					
 					}						
-					default -> throw new IllegalStateException("Unexpected value: " + fieldName);
+					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 				}				
 				return newPredicate;				
 			}
@@ -523,7 +524,7 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 //					case "Company" -> {
 //						newPredicate = e -> e.getCustomer().getCompany().getName().toLowerCase().contains(filterText);
 //					}
-					default -> throw new IllegalStateException("Unexpected value: " + fieldName);
+					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 				}				
 				return newPredicate;				
 			}
@@ -547,7 +548,7 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 					case "ContractTypeStatus" -> {
 						newPredicate = e -> e.getContractTypeStatus().toString().toLowerCase().equals(filterText);
 					}
-					default -> throw new IllegalStateException("Unexpected value: " + fieldName);
+					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 				}				
 				return newPredicate;				
 			}
@@ -572,7 +573,7 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 					case "EndDate" -> {
 						newPredicate = e -> e.getEndDate().toString().contains(filterText);
 					}
-					default -> throw new IllegalStateException("Unexpected value: " + fieldName);
+					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 				}				
 				return newPredicate;				
 			}
