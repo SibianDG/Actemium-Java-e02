@@ -255,6 +255,7 @@ public class Actemium {
 //		actemiumEmployees.remove(index + 1);
 	}
 
+	/*
 	public void deleteUser(UserModel user) {
 		userDaoJpa.startTransaction();
 		userDaoJpa.delete(user);
@@ -263,7 +264,7 @@ public class Actemium {
 			actemiumEmployees.remove(user);
 		else
 			actemiumCustomers.remove(user);
-	}
+	}*/
 	
 	public Customer getLastAddedCustomer() {
 		return actemiumCustomers.get(actemiumCustomers.size()-1);
@@ -322,13 +323,14 @@ public class Actemium {
 		}
 	}
 
+	/*
 	//Todo delete ticket from resolved or outstanding
 	public void deleteTicket(ActemiumTicket ticket) {
 		ticketDaoJpa.startTransaction();
 		ticketDaoJpa.delete(ticket);
 		ticketDaoJpa.commitTransaction();
 		actemiumTickets.remove(ticket);
-	}
+	}*/
 	
 	public Ticket getLastAddedTicket() {
 		return actemiumTickets.get(actemiumTickets.size()-1);
@@ -375,12 +377,13 @@ public class Actemium {
 //		actemiumContractTypes.remove(index + 1);
 	}
 
+	/*
 	public void deleteContractType(ActemiumContractType contractType) {
 		contractTypeDaoJpa.startTransaction();
 		contractTypeDaoJpa.delete(contractType);
 		contractTypeDaoJpa.commitTransaction();
 		actemiumContractTypes.remove(contractType);
-	}
+	}*/
 
 	public ObservableList<ContractType> giveActemiumContractTypes() {
 		return FXCollections.unmodifiableObservableList(actemiumContractTypes);

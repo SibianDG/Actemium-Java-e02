@@ -83,6 +83,7 @@ public class TicketFacade implements Facade {
 
 
     public void delete(ActemiumTicket ticket) {
-		actemium.deleteTicket(ticket);
+		ticket.setStatus(TicketStatus.CANCELLED);
+		actemium.modifyTicket(ticket);
     }
 }

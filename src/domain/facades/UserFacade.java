@@ -331,7 +331,11 @@ public class UserFacade implements Facade {
 	}
 
 	public void deleteUser(UserModel user) {
-		actemium.deleteUser(user);
+		user.setStatus(UserStatus.INACTIVE);
+		if (user instanceof Employee)
+			actemium.modifyEmployee((ActemiumEmployee) user);
+		else
+			actemium.modifyCustomer((ActemiumCustomer) user);
 	}
 	
 	public Customer getLastAddedCustomer() {
