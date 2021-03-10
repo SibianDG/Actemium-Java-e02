@@ -19,6 +19,8 @@ import gui.viewModels.ContractTypeViewModel;
 import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -40,7 +42,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
-public class TableViewPanelCompanion<T> extends GridPane {
+public class TableViewPanelCompanion<T> extends GridPane implements InvalidationListener {
 
 	//private UserFacade userFacade;
 	private final DashboardFrameController dashboardFrameController;
@@ -68,6 +70,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		this.dashboardFrameController = dashboardFrameController;
 		this.viewModel = viewModel;
 		this.currentState = currentState;
+		dashboardFrameController.addListener(this);
 
 		try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("TableViewPanel.fxml"));
@@ -346,66 +349,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		tableView.setItems(tableViewData);
 		
 		tableView.setOnMouseClicked((MouseEvent m) -> {
-			boolean showNewObject = true;
-			if(viewModel.isFieldModified()) {
-				//popup
-				Alert alert = new Alert(AlertType.CONFIRMATION);
-
-
-				alert.setTitle("Fields were modified without saving.");
-				alert.setHeaderText("You have unsaved changes!");
-				alert.setContentText("Choose your option.");
-
-				alert.getDialogPane().getStylesheets().add("file:src/start/styles.css");
-				alert.getDialogPane().getStyleClass().add("alert");
-				((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
-
-				ButtonType discardChanges = new ButtonType("Discard Changes");
-				//TODO: make discard red
-				//((Button) discardChanges).styleClass().add("btn-red");
-
-				ButtonType buttonTypeCancel = new ButtonType("Keep Editing", ButtonData.CANCEL_CLOSE);
-
-				alert.getButtonTypes().setAll(discardChanges, buttonTypeCancel);
-
-				alert.getDialogPane().getChildren().forEach(node -> {
-					if (node instanceof ButtonBar) {
-						ButtonBar buttonBar = (ButtonBar) node;
-						buttonBar.getButtons().forEach(possibleButtons -> {
-							if (possibleButtons instanceof Button) {
-								Button b = (Button) possibleButtons;
-								if (b.getText().equals("Discard Changes")) {
-									b.setStyle("-fx-background-color: #c41010;  -fx-text-fill: #ffffff;");
-								} else if (b.getText().equals("Keep Editing")) {
-									b.setStyle("-fx-background-color: #1d3d78;  -fx-text-fill: #ffffff;");
-								}
-							}
-						});
-					}
-				});
-
-				Optional<ButtonType> result = alert.showAndWait();
-				if (result.get() == discardChanges){
-					// using this variable with if to avoid duplicate code
-					showNewObject = true;
-					viewModel.setFieldModified(false);
-				} else {
-				    // ... user chose CANCEL or closed the dialog
-					// nothing happens -> back to same detail panel
-					showNewObject = false;
-				}
-			} 
-			// using this if to avoid duplicate code
-			if (showNewObject) {
-				T data = tableView.getSelectionModel().selectedItemProperty().get();
-				if (data instanceof Employee || data instanceof Customer){
-					((UserViewModel) viewModel).setSelectedUser((User) data);
-				} else if (data instanceof Ticket) {
-					((TicketViewModel) viewModel).setSelectedTicket((Ticket) data);
-				} else if (data instanceof ContractType) {
-					((ContractTypeViewModel) viewModel).setSelectedContractType((ContractType) data);
-				}
-			}
+			alertChangesOnTabelView();
 		});
 
 		/*tableView.setOnKeyPressed( keyEvent -> {
@@ -413,6 +357,71 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				viewModel.delete();
 			}
 		});*/
+	}
+
+	public void alertChangesOnTabelView() {
+		boolean showNewObject = true;
+		if(viewModel.isFieldModified()) {
+			//popup
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+
+
+			alert.setTitle("Fields were modified without saving.");
+			alert.setHeaderText("You have unsaved changes!");
+			alert.setContentText("Choose your option.");
+
+			alert.getDialogPane().getStylesheets().add("file:src/start/styles.css");
+			alert.getDialogPane().getStyleClass().add("alert");
+			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
+
+			ButtonType discardChanges = new ButtonType("Discard Changes");
+			//TODO: make discard red
+			//((Button) discardChanges).styleClass().add("btn-red");
+
+			ButtonType buttonTypeCancel = new ButtonType("Keep Editing", ButtonData.CANCEL_CLOSE);
+
+			alert.getButtonTypes().setAll(discardChanges, buttonTypeCancel);
+
+			alert.getDialogPane().getChildren().forEach(node -> {
+				if (node instanceof ButtonBar) {
+					ButtonBar buttonBar = (ButtonBar) node;
+					buttonBar.getButtons().forEach(possibleButtons -> {
+						if (possibleButtons instanceof Button) {
+							Button b = (Button) possibleButtons;
+							if (b.getText().equals("Discard Changes")) {
+								b.setStyle("-fx-background-color: #c41010;  -fx-text-fill: #ffffff;");
+							} else if (b.getText().equals("Keep Editing")) {
+								b.setStyle("-fx-background-color: #1d3d78;  -fx-text-fill: #ffffff;");
+							}
+						}
+					});
+				}
+			});
+
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == discardChanges){
+				// using this variable with if to avoid duplicate code
+				showNewObject = true;
+				dashboardFrameController.setEnabled(true);
+				viewModel.setFieldModified(false);
+			} else {
+				// ... user chose CANCEL or closed the dialog
+				// nothing happens -> back to same detail panel
+				dashboardFrameController.setEnabled(false);
+				showNewObject = false;
+			}
+		}
+		// using this if to avoid duplicate code
+		if (showNewObject) {
+			T data = tableView.getSelectionModel().selectedItemProperty().get();
+			if (data instanceof Employee || data instanceof Customer){
+				((UserViewModel) viewModel).setSelectedUser((User) data);
+			} else if (data instanceof Ticket) {
+				((TicketViewModel) viewModel).setSelectedTicket((Ticket) data);
+			} else if (data instanceof ContractType) {
+				((ContractTypeViewModel) viewModel).setSelectedContractType((ContractType) data);
+			}
+		}
 	}
 
 	@FXML
@@ -582,5 +591,9 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		}
 		tableViewData.setPredicate((Predicate<? super T>) resultPredicate);
 	}
-	
+
+	@Override
+	public void invalidated(Observable observable) {
+		alertChangesOnTabelView();
+	}
 }

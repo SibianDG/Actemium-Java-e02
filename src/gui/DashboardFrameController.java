@@ -3,10 +3,7 @@ package gui;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import domain.ActemiumCustomer;
@@ -21,6 +18,8 @@ import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -46,7 +45,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import languages.LanguageResource;
 
-public class DashboardFrameController <T> extends GuiController {
+public class DashboardFrameController <T> extends GuiController implements Observable {
 	
 	// Facades
     private final UserFacade userFacade;
@@ -60,6 +59,9 @@ public class DashboardFrameController <T> extends GuiController {
 	
 	//LoginController
 	private LoginController loginController;
+
+    //variable for enable menu button on change table view
+    private boolean enabled = true;
 
     @FXML
     private GridPane gridDashboard;
@@ -175,8 +177,10 @@ public class DashboardFrameController <T> extends GuiController {
             //gridMenu.getColumnConstraints().add(new ColumnConstraints(width, 100, -1, Priority.ALWAYS, HPos.CENTER, false));
             Button button = createMenuItemButton(text, itemNames.length);
             button.setOnMouseClicked(e -> {
-
-                buttonMenusClicked(text);
+                fireInvalidationEvent();
+                if (enabled) {
+                    buttonMenusClicked(text);
+                }
             });
             hboxMenu.getChildren().add(button);
         }
@@ -251,7 +255,7 @@ public class DashboardFrameController <T> extends GuiController {
             TicketStatus.setOutstanding(false);
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, ticketViewModel, GUIEnum.TICKET);
             switchToManageScreen(name, tableViewPanelCompanion, ticketViewModel);
-        } else if(name.toLowerCase().contains("manage") && name.toLowerCase().contains("contract type")) {
+        } else if (name.toLowerCase().contains("manage") && name.toLowerCase().contains("contract type")) {
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, contractTypeViewModel, GUIEnum.CONTRACTTYPE);
             switchToManageScreen(name, tableViewPanelCompanion, contractTypeViewModel);
         } else {
@@ -333,5 +337,26 @@ public class DashboardFrameController <T> extends GuiController {
         ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
         alert.showAndWait();
     }
-    
+
+    private ArrayList<InvalidationListener> listeners = new ArrayList<>();
+
+    @Override
+    public void addListener(InvalidationListener invalidationListener) {
+        listeners.add(invalidationListener);
+    }
+
+    @Override
+    public void removeListener(InvalidationListener invalidationListener) {
+        listeners.remove(invalidationListener);
+    }
+
+    protected void fireInvalidationEvent() {
+        for (InvalidationListener listener : listeners) {
+            listener.invalidated(this);
+        }
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 }
