@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.persistence.EntityNotFoundException;
@@ -28,6 +29,7 @@ public class LoginController extends GuiController {
     private UserFacade userFacade;
 	private TicketFacade ticketFacade;
     private ContractTypeFacade contractTypeFacade;
+    private DashboardFrameController dashboardFrameController;
 	
     @FXML
     private Text txtTitle;
@@ -58,8 +60,7 @@ public class LoginController extends GuiController {
         this.ticketFacade = ticketFacade;
 
         this.contractTypeFacade = contractTypeFacade;
-
-
+           
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
             loader.setController(this);
@@ -100,10 +101,11 @@ public class LoginController extends GuiController {
                 txtErrorLogin.setOpacity(1);
             } else {
                 userFacade.signIn(txfUsername.getText(), pwfPassword.getText());
-                DashboardFrameController dashboardController = new DashboardFrameController(userFacade, ticketFacade, contractTypeFacade, this);
-                Scene scene = new Scene(dashboardController);
+                //DashboardFrameController dashboardController = new DashboardFrameController(userFacade, ticketFacade, contractTypeFacade, this);
+                dashboardFrameController = new DashboardFrameController(userFacade, ticketFacade, contractTypeFacade, this);
+                Scene scene = new Scene(dashboardFrameController);
                 Stage stage = (Stage) this.getScene().getWindow();
-                stage.setTitle(LanguageResource.getString("dashboard")); //TODO review LanguageResource
+                stage.setTitle(LanguageResource.getString("dashboard"));
                 stage.setScene(scene);
                 stage.setMaximized(true);
                 stage.setResizable(true);

@@ -108,9 +108,6 @@ public class DashboardFrameController <T> extends GuiController implements Obser
         this.contractTypeViewModel = new ContractTypeViewModel(contractTypeFacade);    
         
         this.loginController = loginController;
-        System.out.println(this.loginController.getHgap());
-        System.out.println(this.loginController.getVgap());
-        System.out.println(this.loginController.getAlignment());
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
@@ -132,13 +129,16 @@ public class DashboardFrameController <T> extends GuiController implements Obser
     }
 
     public void initializeDashboard() throws FileNotFoundException {
-
+    	//this.setPrefHeight(1080);
+    	//this.setPrefWidth(1920);
+    	
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-
+        
         gridDashboard.setPrefWidth(primScreenBounds.getWidth());
         gridDashboard.prefHeight(primScreenBounds.getHeight());
-
-        //txtTitle.setText("Dashboard");
+        System.out.println(primScreenBounds.getWidth());
+        System.out.println(primScreenBounds.getHeight());
+    
         resetGridpane(gridContent);
         initializeGridPane(3, 2, 300, 300);
 
