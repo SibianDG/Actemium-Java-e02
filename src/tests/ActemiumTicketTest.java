@@ -18,10 +18,10 @@ import domain.enums.TicketType;
 
 public class ActemiumTicketTest {
 	
-	private ActemiumEmployee technician = new ActemiumEmployee("jooKlein123", "PassWd123&", "Joost", "Klein", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.TECHNICIAN);
-    private static ActemiumCompany theWhiteHouse = new ActemiumCompany("The White House", "America 420", "911");    
-    private static ActemiumCustomer customer = new ActemiumCustomer("customer123", "PassWd123&", "John", "Smith", theWhiteHouse);
-	private ActemiumTicket ticket01 = new ActemiumTicket(TicketPriority.P1, TicketType.SOFTWARE ,"Printer Broken", "Cannot print labels", customer);
+	private final ActemiumEmployee technician = new ActemiumEmployee("jooKlein123", "PassWd123&", "Joost", "Klein", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.TECHNICIAN);
+    private static final ActemiumCompany theWhiteHouse = new ActemiumCompany("The White House", "America 420", "911");
+    private static final ActemiumCustomer customer = new ActemiumCustomer("customer123", "PassWd123&", "John", "Smith", theWhiteHouse);
+	private final ActemiumTicket ticket01 = new ActemiumTicket(TicketPriority.P1, TicketType.SOFTWARE ,"Printer Broken", "Cannot print labels", customer);
 	
     private static Stream<Arguments> validActemiumTicketAttributes04() {
         return Stream.of(

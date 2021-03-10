@@ -14,9 +14,7 @@ import domain.ActemiumCustomer;
 
 public class CustomerTest {
 
-    private ActemiumCustomer customer;    
-
-    ActemiumCompany theWhiteHouse = new ActemiumCompany("The White House", "America 420", "911");    
+	ActemiumCompany theWhiteHouse = new ActemiumCompany("The White House", "America 420", "911");
 
     private static Stream<Arguments> validUserAttributes() {
         return Stream.of(
@@ -74,7 +72,7 @@ public class CustomerTest {
     
     @Test
     public void giveEmployeeSeniroity_returns_valid() {
-    	customer = new ActemiumCustomer("Tester123", "Passwd123&", "Jan", "Jannsens", theWhiteHouse);
+		ActemiumCustomer customer = new ActemiumCustomer("Tester123", "Passwd123&", "Jan", "Jannsens", theWhiteHouse);
     	customer.setRegistrationDate(LocalDate.now().minusYears(10));
         Assertions.assertEquals(10, customer.giveSeniority());
     }

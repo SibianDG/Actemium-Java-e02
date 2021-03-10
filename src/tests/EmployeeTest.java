@@ -14,9 +14,7 @@ import domain.enums.EmployeeRole;
 
 public class EmployeeTest {
 
-    private ActemiumEmployee employee;
-
-    // The first 4 attributes are tested by CustomerTest which uses the same:
+	// The first 4 attributes are tested by CustomerTest which uses the same:
     // super(username, password, firstName, lastName)
     
     private static Stream<Arguments> validUserAttributes() {
@@ -79,7 +77,7 @@ public class EmployeeTest {
 
 	@Test
 	public void giveEmployeeSeniroity_returns_valid() {
-		employee = new ActemiumEmployee("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0470099874",
+		ActemiumEmployee employee = new ActemiumEmployee("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0470099874",
 				"student@student.hogent.be", EmployeeRole.ADMINISTRATOR);
 		employee.setRegistrationDate(LocalDate.now().minusYears(10));
 		Assertions.assertEquals(10, employee.giveSeniority());

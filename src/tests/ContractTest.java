@@ -19,28 +19,28 @@ import domain.enums.Timestamp;
 
 public class ContractTest {
 	
-	private static LocalDate lastWeek = LocalDate.now().minusWeeks(1);
-	private static LocalDate yesterday = LocalDate.now().minusDays(1);
-	private static LocalDate today = LocalDate.now();
-	private static LocalDate tomorrow = LocalDate.now().plusDays(1);
-	private static LocalDate nextWeek = LocalDate.now().plusWeeks(1);
+	private static final LocalDate lastWeek = LocalDate.now().minusWeeks(1);
+	private static final LocalDate yesterday = LocalDate.now().minusDays(1);
+	private static final LocalDate today = LocalDate.now();
+	private static final LocalDate tomorrow = LocalDate.now().plusDays(1);
+	private static final LocalDate nextWeek = LocalDate.now().plusWeeks(1);
 	
-	private static LocalDate nextYear = LocalDate.now().plusYears(1);
-	private static LocalDate inTwoYears = LocalDate.now().plusYears(2);
-	private static LocalDate inThreeYears = LocalDate.now().plusYears(3);
-	private static LocalDate inFourYears = LocalDate.now().plusYears(4);
-	private static LocalDate inFiveYears = LocalDate.now().plusYears(5);
+	private static final LocalDate nextYear = LocalDate.now().plusYears(1);
+	private static final LocalDate inTwoYears = LocalDate.now().plusYears(2);
+	private static final LocalDate inThreeYears = LocalDate.now().plusYears(3);
+	private static final LocalDate inFourYears = LocalDate.now().plusYears(4);
+	private static final LocalDate inFiveYears = LocalDate.now().plusYears(5);
 	
-	private static LocalDate nextYearTomorrow = LocalDate.now().plusYears(1).plusDays(1);
-	private static LocalDate inTwoYearsTomorrow = LocalDate.now().plusYears(2).plusDays(1);
-	private static LocalDate inThreeYearsTomorrow = LocalDate.now().plusYears(3).plusDays(1);
+	private static final LocalDate nextYearTomorrow = LocalDate.now().plusYears(1).plusDays(1);
+	private static final LocalDate inTwoYearsTomorrow = LocalDate.now().plusYears(2).plusDays(1);
+	private static final LocalDate inThreeYearsTomorrow = LocalDate.now().plusYears(3).plusDays(1);
 	
-	private static LocalDate nextYearNextWeek = LocalDate.now().plusYears(1).plusWeeks(1);
-	private static LocalDate inTwoYearsNextWeek = LocalDate.now().plusYears(2).plusWeeks(1);
-	private static LocalDate inThreeYearsNextWeek = LocalDate.now().plusYears(3).plusWeeks(1);
+	private static final LocalDate nextYearNextWeek = LocalDate.now().plusYears(1).plusWeeks(1);
+	private static final LocalDate inTwoYearsNextWeek = LocalDate.now().plusYears(2).plusWeeks(1);
+	private static final LocalDate inThreeYearsNextWeek = LocalDate.now().plusYears(3).plusWeeks(1);
 	
-    private static ActemiumContractType contractType01 = new ActemiumContractType("BasisEmailSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
-    private static ActemiumContractType contractType02 = new ActemiumContractType("FullAllSupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.ALWAYS, 3, 1, 3999.99);
+    private static final ActemiumContractType contractType01 = new ActemiumContractType("BasisEmailSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
+    private static final ActemiumContractType contractType02 = new ActemiumContractType("FullAllSupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.ALWAYS, 3, 1, 3999.99);
 
     private static Stream<Arguments> validContractAttributes02() {
         return Stream.of(
