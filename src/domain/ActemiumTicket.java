@@ -22,6 +22,7 @@ import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import languages.LanguageResource;
 
 @Entity
 @Access(AccessType.FIELD)
@@ -158,7 +159,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 
 	public void setTitle(String title) {
 		if (title == null || title.isBlank()) {
-			throw new IllegalArgumentException("You must provide a title for the ticket.");
+			throw new IllegalArgumentException(LanguageResource.getString("ticketTitle_invalid"));
 		}
 		this.title.set(title);
 	}
@@ -169,7 +170,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 
 	public void setDescription(String description) {
 		if (description == null || description.isBlank()) {
-			throw new IllegalArgumentException("You must provide a description for the ticket.");
+			throw new IllegalArgumentException(LanguageResource.getString("description_invalid"));
 		}
 		this.description = description;
 	}
@@ -186,7 +187,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 
 	public void setCustomer(ActemiumCustomer customer) {
 		if (customer == null) {
-			throw new IllegalArgumentException("Ticket must belong to a customer.");
+			throw new IllegalArgumentException(LanguageResource.getString("customerAssigned_invalid"));
 		}
 		this.customer = customer;
 	}

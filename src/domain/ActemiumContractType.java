@@ -4,6 +4,7 @@ import domain.enums.ContractTypeStatus;
 import domain.enums.Timestamp;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import languages.LanguageResource;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -73,7 +74,7 @@ public class ActemiumContractType implements ContractType, Serializable {
 	public void setName(String name) {
 		//TODO no naming rules yet
 		if (name == null || name.isBlank()) {
-			throw new IllegalArgumentException("Name can't be left blank.");
+			throw new IllegalArgumentException(LanguageResource.getString("name_invalid"));
 		}
 		//TODO check if contractTypeName is not already taken,
 		// two contractTypes can't have the same name
@@ -142,7 +143,7 @@ public class ActemiumContractType implements ContractType, Serializable {
 
 	public void setMaxHandlingTime(int maxHandlingTime) {
 		if(maxHandlingTime <= 0) {
-			throw new IllegalArgumentException("maxHandlingTime must be greater than 0.");
+			throw new IllegalArgumentException(LanguageResource.getString("maxHandlingTime_invalid"));
 		}
 		this.maxHandlingTime = maxHandlingTime;
 	}
@@ -153,7 +154,7 @@ public class ActemiumContractType implements ContractType, Serializable {
 
 	public void setMinThroughputTime(int minThroughputTime) {
 		if(minThroughputTime <= 0) {
-			throw new IllegalArgumentException("minThroughputTime must be greater than 0.");
+			throw new IllegalArgumentException(LanguageResource.getString("minThroughputTime_invalid"));
 		}
 		this.minThroughputTime = minThroughputTime;
 	}
@@ -164,7 +165,7 @@ public class ActemiumContractType implements ContractType, Serializable {
 
 	public void setPrice(double price) {
 		if(price <= 0) {
-			throw new IllegalArgumentException("Price must be greater than 0.");
+			throw new IllegalArgumentException(LanguageResource.getString("price_invalid"));
 		}
 		this.price = price;
 	}
@@ -181,7 +182,7 @@ public class ActemiumContractType implements ContractType, Serializable {
 	public void verifyTicketCreationMethods(boolean hasEmail, boolean hasPhone,
 			boolean hasApplication) {
 		if (!(hasEmail || hasPhone || hasApplication)) {
-			throw new IllegalArgumentException("You must have at least 1 way to create the ticket.");
+			throw new IllegalArgumentException(LanguageResource.getString("ticketCreation_invalid"));
 		}
 	}
 	

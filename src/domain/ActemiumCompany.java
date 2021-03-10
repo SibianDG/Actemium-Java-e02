@@ -67,7 +67,7 @@ public class ActemiumCompany implements Company, Serializable {
 
 	public void setName(String name) {
 		if (name == null || name.isBlank()) {
-			throw new IllegalArgumentException("Empty name");
+			throw new IllegalArgumentException(LanguageResource.getString("companyName_invalid"));
 		}
 		this.name.set(name);
 	}
@@ -78,7 +78,7 @@ public class ActemiumCompany implements Company, Serializable {
 
 	public void setAddress(String address) {
 		if (address == null || address.isBlank()) {
-			throw new IllegalArgumentException("Empty address");
+			throw new IllegalArgumentException(LanguageResource.getString("empty_address"));
 		}
 		this.address = address;
 	}

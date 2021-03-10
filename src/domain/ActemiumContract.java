@@ -1,6 +1,7 @@
 package domain;
 
 import domain.enums.ContractStatus;
+import languages.LanguageResource;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -80,7 +81,7 @@ public class ActemiumContract implements Contract, Serializable {
 
 	public void setStartDate(LocalDate startDate) {
 		if(startDate.isBefore(LocalDate.now())) {
-			throw new IllegalArgumentException("StartDate must be today or in the future.");
+			throw new IllegalArgumentException(LanguageResource.getString("startDate_invalid"));
 		}
 		this.startDate = startDate;
 	}
@@ -91,12 +92,12 @@ public class ActemiumContract implements Contract, Serializable {
 
 	public void setEndDate(LocalDate endDate) {
 		if(endDate.isBefore(startDate)) {
-			throw new IllegalArgumentException("EndDate needs to be at least 1 year after startDate.");
+			throw new IllegalArgumentException(LanguageResource.getString("endDate_invalid1"));
 		}
 		if(!(endDate.minusYears(1).equals(startDate) 
 				|| endDate.minusYears(2).equals(startDate) 
 				|| endDate.minusYears(3).equals(startDate))) {
-			throw new IllegalArgumentException("EndDate needs to be exactly 1, 2 or 3 years after startDate.");
+			throw new IllegalArgumentException(LanguageResource.getString("endDate_invalid2"));
 		}
 		this.endDate = endDate;
 	}
