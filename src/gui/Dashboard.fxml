@@ -20,14 +20,14 @@
         <ColumnConstraints maxWidth="1920.0" minWidth="-Infinity" percentWidth="100" prefWidth="1920.0" />
     </columnConstraints>
     <children>
-        <GridPane maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="1920.0" styleClass="gridpaneDashboardHeader">
+        <GridPane minWidth="-Infinity" prefWidth="1920.0" styleClass="gridpaneDashboardHeader">
             <columnConstraints>
                 <ColumnConstraints percentWidth="10.0" />
                 <ColumnConstraints percentWidth="76.0" />
                 <ColumnConstraints percentWidth="14.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints maxHeight="-Infinity" percentHeight="100.0" prefHeight="50.0" />
+                <RowConstraints maxHeight="-Infinity" percentHeight="100.0" prefHeight="100.0" />
             </rowConstraints>
             <children>
                 <HBox alignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">

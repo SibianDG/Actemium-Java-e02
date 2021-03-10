@@ -3,18 +3,20 @@
     <persistence-unit name="ticketlocal1" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <class>domain.UserModel</class>
-        <class>domain.Customer</class>
-        <class>domain.Employee</class>
+        <class>domain.ActemiumCustomer</class>
+        <class>domain.ActemiumEmployee</class>
         <class>domain.LoginAttempt</class>
-        <class>domain.Contract</class>
-        <class>domain.Company</class>
-        <class>domain.ContractType</class>
+        <!--<class>domain.ContactPerson</class>-->
+        <class>domain.ActemiumTicket</class>
+        <class>domain.ActemiumContract</class>
+        <class>domain.ActemiumCompany</class>
+        <class>domain.ActemiumContractType</class>
 
         <properties>
-            <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://e02-sqlserver.database.windows.net:1433;database=TicketSystemE02;user=AdminE02@e02-sqlserver;password=ProjectE02;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"/>
-            <property name="javax.persistence.jdbc.user" value="AdminE02"/>
             <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
-            <property name="javax.persistence.jdbc.password" value="ProjectE02"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=ticketsysteme02;Trusted_Connection=True;"/>
+            <!--<property name="javax.persistence.jdbc.user" value="HoGent_SQLLogin_1"/>
+            <property name="javax.persistence.jdbc.password" value="c5d8zsol7z"/>-->
             <!--<property name="javax.persistence.schema-generation.database.action" value="create"/>-->
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
         </properties>

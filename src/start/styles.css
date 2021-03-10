@@ -22,15 +22,18 @@
     -fx-background-color: #ffffff;
 }
 
-.btn-blue {
+#cancelBtn, .btn-blue {
     -fx-background-color: #1d3d78;
     -fx-text-fill: #ffffff;
+
 }
 
-.btn-red {
+#discardBtn, .btn-red {
     -fx-background-color: #c41010;
     -fx-text-fill: #ffffff;
 }
+
+
 
 .gridpaneDashboardHeader {
     -fx-background-color: #ffffff;

@@ -245,21 +245,11 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 	        case "UserStatus", "TicketStatus", "ContractStatus", "ContractTypeStatus" -> {
 	        	c.getSelectionModel().select("SELECT STATUS");
 	        }
-	        case "EmployeeRole" -> {
-	        	c.getSelectionModel().select("SELECT ROLE");
-	        }
-	        case "TicketPriority" -> {
-	        	c.getSelectionModel().select("SELECT PRIO");
-	        }
-	        case "TicketType" -> {
-	        	c.getSelectionModel().select("SELECT TYPE");
-	        }
-		    case "Timestamp" -> {
-		    	c.getSelectionModel().select("SELECT TIMESTAMP");
-		    }
-	        default -> {
-	        	c.getSelectionModel().select("SELECT");
-	        }
+	        case "EmployeeRole" -> c.getSelectionModel().select("SELECT ROLE");
+	        case "TicketPriority" -> c.getSelectionModel().select("SELECT PRIO");
+	        case "TicketType" -> c.getSelectionModel().select("SELECT TYPE");
+		    case "Timestamp" -> c.getSelectionModel().select("SELECT TIMESTAMP");
+	        default -> c.getSelectionModel().select("SELECT");
 	    } 
 		//TODO e.g. select technician and admin at the same time
 //		c.getSelectionModel().select(SelectionMode.MULTIPLE);
@@ -376,28 +366,13 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 			((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
 
 			ButtonType discardChanges = new ButtonType(LanguageResource.getString("discardChanges"));
-			//TODO: make discard red
-			//((Button) discardChanges).styleClass().add("btn-red");
-
 			ButtonType buttonTypeCancel = new ButtonType(LanguageResource.getString("keepEditing"), ButtonData.CANCEL_CLOSE);
-
 			alert.getButtonTypes().setAll(discardChanges, buttonTypeCancel);
 
-			alert.getDialogPane().getChildren().forEach(node -> {
-				if (node instanceof ButtonBar) {
-					ButtonBar buttonBar = (ButtonBar) node;
-					buttonBar.getButtons().forEach(possibleButtons -> {
-						if (possibleButtons instanceof Button) {
-							Button b = (Button) possibleButtons;
-							if (b.getText().equals(LanguageResource.getString("discardChanges"))) {
-								b.setStyle("-fx-background-color: #c41010;  -fx-text-fill: #ffffff;");
-							} else if (b.getText().equals(LanguageResource.getString("keepEditing"))) {
-								b.setStyle("-fx-background-color: #1d3d78;  -fx-text-fill: #ffffff;");
-							}
-						}
-					});
-				}
-			});
+			Node discardButton = alert.getDialogPane().lookupButton(discardChanges);
+			discardButton.setId("discardBtn");
+			Node CancelButton = alert.getDialogPane().lookupButton(buttonTypeCancel);
+			CancelButton.setId("cancelBtn");
 
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == discardChanges){
@@ -426,7 +401,7 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 	}
 
 	@FXML
-	void  addOnMouseClicked(MouseEvent event) {
+	void addOnMouseClicked(MouseEvent event) {
 		switch(currentState) {
 			case EMPLOYEE ->{
 				((UserViewModel) viewModel).setCurrentState(GUIEnum.EMPLOYEE);
@@ -460,18 +435,10 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 				Predicate<Employee> newPredicate;
 				
 				switch (fieldName) {				
-					case "Firstname" -> {
-						newPredicate = e -> e.getFirstName().toLowerCase().contains(filterText);		
-					}
-					case "Lastname" -> {
-						newPredicate = e -> e.getLastName().toLowerCase().contains(filterText);					
-					}
-					case "UserStatus" -> {
-						newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
-					}
-					case "EmployeeRole" -> {
-						newPredicate = e -> e.getRole().toLowerCase().contains(filterText);
-					}
+					case "Firstname" -> newPredicate = e -> e.getFirstName().toLowerCase().contains(filterText);
+					case "Lastname" -> newPredicate = e -> e.getLastName().toLowerCase().contains(filterText);
+					case "UserStatus" -> newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
+					case "EmployeeRole" -> newPredicate = e -> e.getRole().toLowerCase().contains(filterText);
 					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 				}				
 				return newPredicate;				
@@ -482,18 +449,10 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 				Predicate<Customer> newPredicate;
 				
 				switch (fieldName) {
-					case "Company" -> {
-						newPredicate = e -> e.getCompany().getName().toLowerCase().contains(filterText);
-					}				
-					case "UserStatus" -> {
-						newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
-					}
-					case "Firstname" -> {
-						newPredicate = e -> e.getFirstName().toLowerCase().contains(filterText);		
-					}
-					case "Lastname" -> {
-						newPredicate = e -> e.getLastName().toLowerCase().contains(filterText);					
-					}						
+					case "Company" -> newPredicate = e -> e.getCompany().getName().toLowerCase().contains(filterText);
+					case "UserStatus" -> newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
+					case "Firstname" -> newPredicate = e -> e.getFirstName().toLowerCase().contains(filterText);
+					case "Lastname" -> newPredicate = e -> e.getLastName().toLowerCase().contains(filterText);
 					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 				}				
 				return newPredicate;				
@@ -505,21 +464,11 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 				Predicate<Ticket> newPredicate;
 				
 				switch (fieldName) {
-					case "ID" -> {
-						newPredicate = e -> e.getTicketIdString().equals(filterText);
-					}
-					case "TicketType" -> {
-						newPredicate = e -> e.getTicketType().toLowerCase().equals(filterText);
-					}
-					case "TicketPriority" -> {
-						newPredicate = e -> e.getPriority().toLowerCase().contains(filterText);
-					}
-					case "Title" -> {
-						newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);
-					}
-					case "TicketStatus" -> {
-						newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
-					}
+					case "ID" -> newPredicate = e -> e.getTicketIdString().equals(filterText);
+					case "TicketType" -> newPredicate = e -> e.getTicketType().toLowerCase().equals(filterText);
+					case "TicketPriority" -> newPredicate = e -> e.getPriority().toLowerCase().contains(filterText);
+					case "Title" -> newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);
+					case "TicketStatus" -> newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
 					//TODO how will we display Company name in our observableList?
 //					case "Company" -> {
 //						newPredicate = e -> e.getCustomer().getCompany().getName().toLowerCase().contains(filterText);
@@ -539,15 +488,9 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 
 				//TODO change fieldnames
 				switch (fieldName) {
-					case "Name" -> {
-						newPredicate = e -> e.getName().toLowerCase().contains(filterText);
-					}
-					case "Timestamp" -> {
-						newPredicate = e -> e.getTimestamp().toString().toLowerCase().equals(filterText);
-					}
-					case "ContractTypeStatus" -> {
-						newPredicate = e -> e.getContractTypeStatus().toString().toLowerCase().equals(filterText);
-					}
+					case "Name" -> newPredicate = e -> e.getName().toLowerCase().contains(filterText);
+					case "Timestamp" -> newPredicate = e -> e.getTimestamp().toString().toLowerCase().equals(filterText);
+					case "ContractTypeStatus" -> newPredicate = e -> e.getContractTypeStatus().toString().toLowerCase().equals(filterText);
 					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 				}				
 				return newPredicate;				
@@ -561,24 +504,15 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 				
 				//TODO change fieldnames
 				switch (fieldName) {
-					case "Type" -> {
-						newPredicate = e -> e.getContractType().equals(filterText);
-					}
-					case "Status" -> {
-						newPredicate = e -> e.getStatus().toString().toLowerCase().equals(filterText);
-					}
-					case "StartDate" -> {
-						newPredicate = e -> e.getStartDate().toString().contains(filterText);
-					}
-					case "EndDate" -> {
-						newPredicate = e -> e.getEndDate().toString().contains(filterText);
-					}
+					case "Type" -> newPredicate = e -> e.getContractType().equals(filterText);
+					case "Status" -> newPredicate = e -> e.getStatus().toString().toLowerCase().equals(filterText);
+					case "StartDate" -> newPredicate = e -> e.getStartDate().toString().contains(filterText);
+					case "EndDate" -> newPredicate = e -> e.getEndDate().toString().contains(filterText);
 					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 				}				
 				return newPredicate;				
 			}
 		}
-		
 		return null;
 	}
 		
