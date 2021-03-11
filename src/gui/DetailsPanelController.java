@@ -293,8 +293,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         try {
             setDetailOnModifying();
         } catch (NullPointerException e){
-            //setupPaneNewObject();
-            clearDetailPane();
+            setupPaneNewObject();
+//            clearDetailPane();
         }
     }
 
@@ -378,7 +378,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         gridDetails.addColumn(0);
         gridDetails.addColumn(1);
 
-        //addGridDetails();
+//        addGridDetails();
 
     }
 

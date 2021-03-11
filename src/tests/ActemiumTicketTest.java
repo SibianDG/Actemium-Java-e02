@@ -31,7 +31,6 @@ public class ActemiumTicketTest {
 				Arguments.of(TicketPriority.P1, TicketType.HARDWARE, "Printer Broken", "Cannot print labels", customer),
 				Arguments.of(TicketPriority.P1, TicketType.NETWORK, "Printer Broken", "Cannot print labels", customer),
 				Arguments.of(TicketPriority.P1, TicketType.INFRASTRUCTURE, "Printer Broken", "Cannot print labels", customer)
-
 				);
     }
 
