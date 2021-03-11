@@ -1,6 +1,10 @@
 package start;
 
-import domain.*;
+import domain.ActemiumContract;
+import domain.ActemiumContractType;
+import domain.ActemiumTicket;
+import domain.PopulateDB;
+import domain.facades.ContractFacade;
 import domain.facades.ContractTypeFacade;
 import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
@@ -37,7 +41,8 @@ public class StartUpGUI extends Application {
             UserFacade userFacade = new UserFacade(actemium);
             TicketFacade ticketFacade = new TicketFacade(actemium);
             ContractTypeFacade contractTypeFacade = new ContractTypeFacade(actemium);
-            LoginController root = new LoginController(userFacade, ticketFacade, contractTypeFacade);
+            ContractFacade contractFacade = new ContractFacade(actemium);
+            LoginController root = new LoginController(userFacade, ticketFacade, contractTypeFacade, contractFacade);
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("styles.css").toString());
             primaryStage.setScene(scene);

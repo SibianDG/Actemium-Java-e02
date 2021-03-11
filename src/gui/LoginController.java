@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import javax.persistence.EntityNotFoundException;
 
+import domain.facades.ContractFacade;
 import domain.facades.ContractTypeFacade;
 import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
@@ -30,6 +31,7 @@ public class LoginController extends GuiController {
 	private TicketFacade ticketFacade;
     private ContractTypeFacade contractTypeFacade;
     private DashboardFrameController dashboardFrameController;
+    private ContractFacade contractFacade;
 	
     @FXML
     private Text txtTitle;
@@ -52,14 +54,13 @@ public class LoginController extends GuiController {
     @FXML
     private Text txtErrorLogin;
 
-    public LoginController(UserFacade userFacade, TicketFacade ticketFacade, ContractTypeFacade contractTypeFacade){
+    public LoginController(UserFacade userFacade, TicketFacade ticketFacade, ContractTypeFacade contractTypeFacade, ContractFacade contractFacade){
         super();
         
-        this.userFacade = userFacade;
-        
+        this.userFacade = userFacade;        
         this.ticketFacade = ticketFacade;
-
         this.contractTypeFacade = contractTypeFacade;
+        this.contractFacade = contractFacade;
            
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
@@ -102,7 +103,7 @@ public class LoginController extends GuiController {
             } else {
                 userFacade.signIn(txfUsername.getText(), pwfPassword.getText());
                 //DashboardFrameController dashboardController = new DashboardFrameController(userFacade, ticketFacade, contractTypeFacade, this);
-                dashboardFrameController = new DashboardFrameController(userFacade, ticketFacade, contractTypeFacade, this);
+                dashboardFrameController = new DashboardFrameController(userFacade, ticketFacade, contractTypeFacade, contractFacade, this);
                 Scene scene = new Scene(dashboardFrameController);
                 Stage stage = (Stage) this.getScene().getWindow();
                 stage.setTitle(LanguageResource.getString("dashboard"));

@@ -68,7 +68,8 @@ public class Actemium {
 		// Fill up ObservableLists
 		fillInUserLists();
 		fillTicketList();
-		FillContractTypesList();
+		fillContractTypeList();
+		fillContractList();
 	}
 	
 	// Fill up ObservableLists
@@ -102,9 +103,14 @@ public class Actemium {
                 .collect(Collectors.toList()));
 	}
 
-	public void FillContractTypesList() {
+	public void fillContractTypeList() {
 		List<ActemiumContractType> contractTypeList = contractTypeDaoJpa.findAll();
 		this.actemiumContractTypes = FXCollections.observableArrayList((List<ContractType>)(Object)contractTypeList);
+	}
+	
+	public void fillContractList() {
+		List<ActemiumContract> contractList = contractDaoJpa.findAll();
+		this.actemiumContracts = FXCollections.observableArrayList((List<Contract>)(Object)contractList);
 	}
 	
 	//TODO constructor vs setter injection?

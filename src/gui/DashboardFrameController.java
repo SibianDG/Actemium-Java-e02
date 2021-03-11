@@ -3,41 +3,41 @@ package gui;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
-import domain.ActemiumCustomer;
-import domain.Ticket;
 import domain.enums.TicketStatus;
+import domain.facades.ContractFacade;
 import domain.facades.ContractTypeFacade;
 import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
 import gui.controllers.GuiController;
 import gui.viewModels.ContractTypeViewModel;
+import gui.viewModels.ContractViewModel;
 import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
-import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -51,11 +51,13 @@ public class DashboardFrameController <T> extends GuiController implements Obser
     private final UserFacade userFacade;
 	private final TicketFacade ticketFacade;
     private final ContractTypeFacade contractTypeFacade;
+    private final ContractFacade contractFacade;
 
     // ViewModels
     private UserViewModel userViewModel;
 	private TicketViewModel ticketViewModel;
 	private ContractTypeViewModel contractTypeViewModel;
+	private ContractViewModel contractViewModel;
 	
 	//LoginController
 	private LoginController loginController;
@@ -96,16 +98,18 @@ public class DashboardFrameController <T> extends GuiController implements Obser
     private DetailsPanelController detailsPanelController;
 
 //    public DashboardFrameController(Actemium actemium, UserFacade userFacade) throws FileNotFoundException {
-    public DashboardFrameController(UserFacade userFacade, TicketFacade ticketFacade, ContractTypeFacade contractTypeFacade, LoginController loginController) throws FileNotFoundException {
+    public DashboardFrameController(UserFacade userFacade, TicketFacade ticketFacade, ContractTypeFacade contractTypeFacade, ContractFacade contractFacade, LoginController loginController) throws FileNotFoundException {
         super();
         
         this.userFacade = userFacade;        
         this.ticketFacade = ticketFacade;
         this.contractTypeFacade = contractTypeFacade;
+        this.contractFacade = contractFacade;
 
         this.userViewModel = new UserViewModel(userFacade);        
         this.ticketViewModel = new TicketViewModel(ticketFacade);        
         this.contractTypeViewModel = new ContractTypeViewModel(contractTypeFacade);    
+        this.contractViewModel = new ContractViewModel(contractFacade);    
         
         this.loginController = loginController;
 
@@ -258,6 +262,9 @@ public class DashboardFrameController <T> extends GuiController implements Obser
         } else if (name.toLowerCase().contains("manage") && name.toLowerCase().contains("contract type")) {
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, contractTypeViewModel, GUIEnum.CONTRACTTYPE);
             switchToManageScreen(name, tableViewPanelCompanion, contractTypeViewModel);
+        } else if (name.toLowerCase().contains("manage") && name.toLowerCase().contains("contracts")) {
+        	tableViewPanelCompanion = new TableViewPanelCompanion<>(this, contractViewModel, GUIEnum.CONTRACT);
+        	switchToManageScreen(name, tableViewPanelCompanion, contractViewModel);
         } else {
             makePopUp(name);
         }

@@ -182,6 +182,7 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 		filterMap.put(GUIEnum.CUSTOMER, new ArrayList<>(Arrays.asList("Company", UserStatus.ACTIVE, "Firstname", "Lastname")));
 		filterMap.put(GUIEnum.TICKET, new ArrayList<>(Arrays.asList("ID", TicketType.SOFTWARE, TicketPriority.P1, "Title", TicketStatus.CREATED)));
 		filterMap.put(GUIEnum.CONTRACTTYPE, new ArrayList<>(Arrays.asList("Name", Timestamp.WORKINGHOURS, ContractTypeStatus.ACTIVE)));
+		filterMap.put(GUIEnum.CONTRACT, new ArrayList<>(Arrays.asList("ContractNr", "CompanyName", "ContractTypeName", ContractStatus.CURRENT)));
 
 		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createElementDetailGridpane(o)));
 	}
@@ -330,6 +331,8 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 					//There are 2 active ENUMS
 					if (currentState.equals(GUIEnum.CONTRACTTYPE) && contractTypeStatusStringArray.contains(selectedItem)) {
 						predicates.add(giveFilterPredicate("ContractTypeStatus", selectedItem.toLowerCase()));
+					} else if (currentState.equals(GUIEnum.CONTRACT) && contractStatusStringArray.contains(selectedItem)) {
+						predicates.add(giveFilterPredicate("ContractStatus", selectedItem.toLowerCase()));
 					} else {
 						if (userStatusStringArray.contains(selectedItem)){
 							predicates.add(giveFilterPredicate("UserStatus", selectedItem.toLowerCase()));
@@ -422,6 +425,8 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 				((TicketViewModel) viewModel).setSelectedTicket((Ticket) data);
 			} else if (data instanceof ContractType) {
 				((ContractTypeViewModel) viewModel).setSelectedContractType((ContractType) data);
+			} else if (data instanceof Contract) {
+				((ContractViewModel) viewModel).setSelectedContract((Contract) data);
 			}
 		}
 	}
@@ -444,6 +449,10 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 			case CONTRACTTYPE -> {
 				((ContractTypeViewModel) viewModel).setCurrentState(GUIEnum.CONTRACTTYPE);
 				((ContractTypeViewModel) viewModel).setSelectedContractType(null);
+			}
+			case CONTRACT -> {
+				((ContractViewModel) viewModel).setCurrentState(GUIEnum.CONTRACT);
+				((ContractViewModel) viewModel).setSelectedContract(null);
 			}
 			default -> {
 				//tableView.getSelectionModel().clearSelection();
@@ -530,10 +539,12 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 				
 				//TODO change fieldnames
 				switch (fieldName) {
-					case "Type" -> newPredicate = e -> e.giveContractType().equals(filterText);
-					case "Status" -> newPredicate = e -> e.getStatus().toString().toLowerCase().equals(filterText);
-					case "StartDate" -> newPredicate = e -> e.getStartDate().toString().contains(filterText);
-					case "EndDate" -> newPredicate = e -> e.getEndDate().toString().contains(filterText);
+					case "ContractNr" -> newPredicate = e -> e.getContractNrString().equals(filterText);
+					case "CompanyName" -> newPredicate = e -> e.giveCustomer().giveCompany().getName().toLowerCase().contains(filterText);
+					case "ContractTypeName" -> newPredicate = e -> e.giveContractType().getName().toLowerCase().contains(filterText);
+					case "ContractStatus" -> newPredicate = e -> e.getStatus().toString().toLowerCase().equals(filterText);
+//					case "StartDate" -> newPredicate = e -> e.getStartDate().toString().contains(filterText);
+//					case "EndDate" -> newPredicate = e -> e.getEndDate().toString().contains(filterText);
 					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 				}				
 				return newPredicate;				
