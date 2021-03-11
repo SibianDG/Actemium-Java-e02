@@ -50,7 +50,7 @@ public class TicketViewModel extends ViewModel {
     }   
     
     public ArrayList<String> getDetailsNewTicket(){
-        return new ArrayList<String>(Arrays.asList("Title", "Creation date", "Priority", "Type", "CustomerId", "Description", "Remarks", "Attachments"));
+        return new ArrayList<String>(Arrays.asList("Title", "Creation date", "Priority", "Type", "Customer ID", "Description", "Remarks", "Attachments"));
     }
     
     public Map<String, Map<Boolean, Object>> getDetails() {

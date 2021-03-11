@@ -300,7 +300,7 @@ public class DashboardFrameController <T> extends GuiController implements Obser
 
     @FXML
     void btnLogOutAction(MouseEvent event) {
-        makePopUp("Logout and exit");
+        makePopUp("You are loged out.");
         //Platform.exit();
         //System.exit(0);    
         

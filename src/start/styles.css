@@ -33,7 +33,10 @@
     -fx-text-fill: #ffffff;
 }
 
+#textFieldWithPadding {
+    -fx-padding: 0, 0, 0, 15px;
 
+}
 
 .gridpaneDashboardHeader {
     -fx-background-color: #ffffff;

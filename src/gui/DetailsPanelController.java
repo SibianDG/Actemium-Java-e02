@@ -387,6 +387,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                     textField = new TextField();
                 }
                 textField.setFont(Font.font("Arial", 14));
+                textField.setPromptText(fields.get(i));
                 node = textField;
             }
             gridDetails.add(node, 1, i);
@@ -423,6 +424,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                 TextField textField;
                 textField = new TextField(randomValues.get(i));
                 textField.setFont(Font.font("Arial", 14));
+                textField.setPromptText(fields.get(i));
                 node = textField;
             }
             gridDetails.add(node, 1, i);
@@ -465,6 +467,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                 TextField textField;
                 textField = new TextField(randomValues.get(randomValuesCounter++));
                 textField.setFont(Font.font("Arial", 14));
+                textField.setPromptText(fields.get(i));
                 node = textField;
             }
             gridDetails.add(node, 1, i);
@@ -517,8 +520,12 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             if (string.trim().equals("")){
                 detail.setVisible(false);
                 detail.setPadding(new Insets(15, 0, 0, 0));
+            } else {
+                //detail.setPadding(new Insets(0, 0, 0, 15));
+                detail.setId("textFieldWithPadding");
             }
             detail.setDisable(disable);
+            detail.setPromptText(key);
 
             node = detail;
         } else if (o instanceof Enum) {
