@@ -1,5 +1,6 @@
 package gui.viewModels;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -7,6 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import domain.ActemiumContract;
+import domain.ActemiumContractType;
+import domain.ActemiumCustomer;
 import domain.Contract;
 import domain.enums.ContractStatus;
 import domain.facades.ContractFacade;
@@ -61,8 +64,13 @@ public class ContractViewModel extends ViewModel {
         return details;
     }
 
-    public void modifyContract(ActemiumContract selectedContract, ContractStatus status) {
+    public void modifyContract(ContractStatus status) {
         contractFacade.modifyContract((ActemiumContract) selectedContract, status);
+    }
+    
+    public void registerContract(ActemiumContractType contractType, ActemiumCustomer customer, LocalDate startDate, LocalDate endDate) {
+    	contractFacade.registerContract(contractType, customer, startDate, endDate);
+    	 setSelectedContract(contractFacade.getLastAddedContract());
     }
 
     public GUIEnum getCurrentState() {
@@ -71,6 +79,10 @@ public class ContractViewModel extends ViewModel {
 
     public void setCurrentState(GUIEnum currentState) {
         this.currentState = currentState;
+    }
+    
+    public String getNrSelectedContract() {
+        return selectedContract.getContractNrString();
     }
 
 	@Override

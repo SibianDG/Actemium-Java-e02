@@ -2,10 +2,15 @@ package gui;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
+import domain.ActemiumContractType;
+import domain.ActemiumCustomer;
 import domain.ActemiumEmployee;
-import domain.Customer;
 import domain.Employee;
 import domain.enums.ContractStatus;
 import domain.enums.ContractTypeStatus;
@@ -16,6 +21,7 @@ import domain.enums.TicketType;
 import domain.enums.Timestamp;
 import domain.enums.UserStatus;
 import gui.viewModels.ContractTypeViewModel;
+import gui.viewModels.ContractViewModel;
 import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
@@ -29,7 +35,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -239,6 +250,24 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                             Double.parseDouble(getTextFromGridItem(8).replace(",", "."))
                     );
                 }
+            } else if (viewModel instanceof ContractViewModel) {
+                if (editing) {
+                    if(viewModel.isFieldModified()){
+                        ((ContractViewModel) viewModel).modifyContract(
+                                // Only the status can be modified in case a customer didnt pay his bills                        		
+                                ContractStatus.valueOf(getTextFromGridItem(2))
+                                
+                        );
+                        makePopUp(LanguageResource.getString("contractEdited"), LanguageResource.getString("contractEdited_succes"));
+                    } else {
+                        makePopUp(LanguageResource.getString("contractEdited_false"), LanguageResource.getString("unchangedMessage"));
+                    }
+                } else {
+//                    ((ContractTypeViewModel) viewModel).registerContract(
+//                    		// contractType, customer, startDate, endDate
+//                            getTextFromGridItem(0)                            
+//                    );
+                }
             }
             editing = false;
             viewModel.setFieldModified(false);
@@ -283,17 +312,24 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             addGridDetails(((UserViewModel) viewModel).getDetails());
             txtDetailsTitle.setText("Details of " + ((UserViewModel) viewModel).getNameOfSelectedUser());
             btnModify.setText("Modify " + ((UserViewModel) viewModel).getCurrentState().toString().toLowerCase());
+            btnDelete.setVisible(true);
         } else if (viewModel instanceof TicketViewModel) {
             addGridDetails(((TicketViewModel) viewModel).getDetails());
             txtDetailsTitle.setText("Details of ticket: " + ((TicketViewModel) viewModel).getIdOfSelectedTicket());
             btnModify.setText("Modify Ticket");
+            btnDelete.setVisible(true);
         } else if (viewModel instanceof ContractTypeViewModel) {
             addGridDetails(((ContractTypeViewModel) viewModel).getDetails());
             txtDetailsTitle.setText("Details of ContractType: " + ((ContractTypeViewModel) viewModel).getNameSelectedContractType());
             btnModify.setText("Modify ContractType");
+            btnDelete.setVisible(true);
+        } else if (viewModel instanceof ContractViewModel) {
+            addGridDetails(((ContractViewModel) viewModel).getDetails());
+            txtDetailsTitle.setText("Details of Contract: " + ((ContractViewModel) viewModel).getNrSelectedContract());
+            btnModify.setText("Modify Contract");
+            btnDelete.setVisible(false);
         }
         btnModify.setVisible(true);
-        btnDelete.setVisible(true);
         txtErrorMessage.setVisible(false);
         editing = true;
     }
@@ -341,7 +377,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             btnModify.setVisible(true);
             assert fields != null;
             addItemsToGridNewContractType(fields);
-        }
+        } 
     }
 
     //todo alles in 1 methode brengen

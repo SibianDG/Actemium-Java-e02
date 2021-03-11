@@ -401,6 +401,13 @@ public class Actemium {
 
 	////////-CONTRACTFACADE-////////
 	
+	//TODO verify correct persist
+	public void registerContract(ActemiumContract contract) {
+		contractDaoJpa.startTransaction();
+		contractDaoJpa.insert(contract);
+		contractDaoJpa.commitTransaction();
+	}
+	
 	public void modifyContract(ActemiumContract contract) {
 		contractDaoJpa.startTransaction();
 		contractDaoJpa.update(contract);
@@ -414,5 +421,6 @@ public class Actemium {
 	public ObservableList<Contract> giveActemiumContracts() {
 		return FXCollections.unmodifiableObservableList(actemiumContracts);
 	}
+
 
 }

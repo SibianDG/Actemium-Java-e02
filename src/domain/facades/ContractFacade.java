@@ -1,6 +1,10 @@
 package domain.facades;
 
+import java.time.LocalDate;
+
 import domain.ActemiumContract;
+import domain.ActemiumContractType;
+import domain.ActemiumCustomer;
 import domain.Contract;
 import domain.enums.ContractStatus;
 import domain.manager.Actemium;
@@ -18,18 +22,19 @@ public class ContractFacade implements Facade {
     	contract.setStatus(status);
         actemium.modifyContract(contract);
     }
-
-//    public void delete(ActemiumContractType contractType) {
-//        contractType.setContractTypeStatus(ContractTypeStatus.INACTIVE);
-//        actemium.modifyContractType(contractType);
-//    }
+    
+	public void registerContract(ActemiumContractType contractType, ActemiumCustomer customer, LocalDate startDate,
+			LocalDate endDate) {
+		ActemiumContract contract = new ActemiumContract(contractType, customer, startDate, endDate);
+		actemium.registerContract(contract);
+	}
 
     public ObservableList<Contract> giveActemiumContracts() {
         return actemium.giveActemiumContracts();
     }
 
-//    public ContractType getLastAddedContractType() {
-//        return actemium.getLastAddedContractType();
-//    }
+	public Contract getLastAddedContract() {
+		return actemium.getLastAddedContract();
+	}
 
 }
