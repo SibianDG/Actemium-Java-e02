@@ -27,7 +27,7 @@
                 <ColumnConstraints percentWidth="14.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints maxHeight="-Infinity" percentHeight="100.0" prefHeight="100.0" />
+                <RowConstraints maxHeight="-Infinity" percentHeight="100.0" prefHeight="101.0" />
             </rowConstraints>
             <children>
                 <HBox alignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
