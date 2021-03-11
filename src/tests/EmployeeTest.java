@@ -26,7 +26,9 @@ public class EmployeeTest {
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "9/99999-99", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress 94521 bus 10", "9999999999", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR),
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress 94521 bus 10", "9999999999", "stu_dent@student.hogent.be", EmployeeRole.ADMINISTRATOR),
-                Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress 94521 bus 10", "9999999999", "stu.dent@student.hogent.be", EmployeeRole.ADMINISTRATOR)
+				Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress 94521 bus 10", "9999999999", "stu.dent@student.hogent.be", EmployeeRole.ADMINISTRATOR),
+				Arguments.of("Tester123", "Passwd 123&", "Jan", "Jannsens", "Hogent Adress 94521 bus 10", "9999999999", "stu.dent@student.hogent.be", EmployeeRole.ADMINISTRATOR),
+				Arguments.of("Tester123", "Passwd123& ", "Jan", "Jannsens", "Hogent Adress 94521 bus 10", "9999999999", "stu.dent@student.hogent.be", EmployeeRole.ADMINISTRATOR)
         		);
     }
 
