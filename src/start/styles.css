@@ -110,23 +110,33 @@
     -fx-alignment: center;
     -fx-border-color: transparent;
     -fx-padding: 2 0 2 10px;
-
 }
 
-.table-row-cell:odd{
+.table-row-cell:odd,  #list-view.list-cell:odd{
     -fx-background-color: transparent;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
 }
-.table-row-cell:even{
+.table-row-cell:even, #list-view.list-cell:even{
     -fx-background-color: rgba(192, 204, 15, 0.05);
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
 }
 
-.table-row-cell:hover, .table-row-cell:selected {
+.table-row-cell:hover, .table-row-cell:selected, #list-view.list-cell:filled:selected:focused, #list-view.list-cell:filled:selected,#list-view.list-cell:hover {
     -fx-background-color: #1D3D78;
     -fx-text-background-color: #ffffff;
+}
+
+#list-view {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+    -fx-font-size: 14;
+    -fx-font-family: "Arial";
+    -fx-alignment: center;
+    -fx-border-width: 1px;
+    -fx-border-color: #c0cc0f;
 }
 
 .menuButton {

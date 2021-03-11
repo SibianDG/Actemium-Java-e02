@@ -6,6 +6,7 @@ import java.util.*;
 
 import domain.ActemiumEmployee;
 import domain.Customer;
+import domain.Employee;
 import domain.enums.ContractStatus;
 import domain.enums.ContractTypeStatus;
 import domain.enums.EmployeeRole;
@@ -28,11 +29,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -533,10 +530,25 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             node = makeComboBox(o);
         } else if (o instanceof Boolean) {
             node = makeComboBox(o);
+        } else if (o instanceof ObservableList) {
+            node = makeListView(o);
         }
         if (node != null)
             node.setDisable(disable);
         return node;
+    }
+
+    private <T> Node makeListView(Object o) {
+
+        ObservableList<Employee> technicians = (ObservableList<Employee>) o;
+        ObservableList<String> stringsList = FXCollections.observableArrayList();
+        technicians.forEach(tech -> stringsList.add(tech.getFirstName() + " " + tech.getLastName()));
+        ListView<String> listView = new ListView<>(stringsList);
+        listView.setMaxHeight(technicians.size()*25+25);
+        listView.getStylesheets().add("file:src/start/styles.css");
+        listView.setId("list-view");
+        listView.setSelectionModel(null);
+        return listView;
     }
 
     private ComboBox makeComboBox(Object o){

@@ -352,12 +352,5 @@ public class UserFacade implements Facade {
 
 	public ObservableList<Employee> giveActemiumEmployees() {
 		return actemium.giveActemiumEmployees();
-	}
-
-    public ObservableList<Employee> giveTechniciansForTicket(Ticket ticket) {
-		return actemium.giveActemiumEmployees()
-				.stream()
-				.filter(e -> e.getRoleAsEnum().equals(EmployeeRole.TECHNICIAN))
-				.filter(e -> )
     }
 }

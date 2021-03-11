@@ -19,7 +19,7 @@ public class TicketViewModel extends ViewModel {
 
     private GUIEnum currentState;
     private Ticket selectedTicket;
-    private ObservableList<Employee> techniciansForTicket;
+    //private ObservableList<Employee> techniciansForTicket;
     private final TicketFacade ticketFacade;
     //private final UserFacade userFacade;
 
@@ -51,7 +51,7 @@ public class TicketViewModel extends ViewModel {
         if (ticket != null){
         	// substring(8) to remove ACTEMIUM
             setCurrentState(GUIEnum.valueOf(ticket.getClass().getSimpleName().substring(8).toUpperCase()));
-            techniciansForTicket = ticket.giveTechnicians();
+            //techniciansForTicket = ticket.giveTechnicians();
         }
         fireInvalidationEvent();
     }   
@@ -70,7 +70,7 @@ public class TicketViewModel extends ViewModel {
         details.put("Status", Collections.singletonMap(true, ticket.getStatusAsEnum()));
         details.put("Description", Collections.singletonMap(true, ticket.getDescription()));
         details.put("Customer/Company", Collections.singletonMap(false, ticket.giveCustomer().giveCompany().getName()));
-        //details.put("Technician", ticket.getTechnicians().toString());
+        details.put("Technicians", Collections.singletonMap(true, ticket.giveTechnicians()));
         details.put("Remarks", Collections.singletonMap(true, ticket.getRemarks()));
         details.put("Attachments", Collections.singletonMap(true, ticket.getAttachments()));
         
