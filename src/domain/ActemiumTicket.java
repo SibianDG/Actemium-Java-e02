@@ -20,8 +20,11 @@ import javax.persistence.Transient;
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
+import javafx.beans.Observable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import languages.LanguageResource;
 
 @Entity
@@ -215,8 +218,8 @@ public class ActemiumTicket implements Ticket, Serializable {
 	}
 
 	@Override
-	public List<Employee> giveTechnicians() {
-		return (List<Employee>) (Object) technicians;
+	public ObservableList<Employee> giveTechnicians() {
+		return FXCollections.observableArrayList((List<Employee>) (Object) technicians);
 	}
 	
 	public void setTechnicians(List<ActemiumEmployee> technicians) {

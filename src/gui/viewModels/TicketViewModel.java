@@ -4,23 +4,29 @@ import java.util.*;
 
 import domain.ActemiumEmployee;
 import domain.ActemiumTicket;
+import domain.Employee;
 import domain.Ticket;
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import domain.facades.TicketFacade;
+import domain.facades.UserFacade;
 import gui.GUIEnum;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class TicketViewModel extends ViewModel {
 
     private GUIEnum currentState;
     private Ticket selectedTicket;
+    private ObservableList<Employee> techniciansForTicket;
     private final TicketFacade ticketFacade;
+    //private final UserFacade userFacade;
 
     public TicketViewModel(TicketFacade ticketFacade) {
         super();
         this.ticketFacade = ticketFacade;
+        //his.userFacade = userFacade;
         setCurrentState(GUIEnum.TICKET);
     }
 
@@ -45,6 +51,7 @@ public class TicketViewModel extends ViewModel {
         if (ticket != null){
         	// substring(8) to remove ACTEMIUM
             setCurrentState(GUIEnum.valueOf(ticket.getClass().getSimpleName().substring(8).toUpperCase()));
+            techniciansForTicket = ticket.giveTechnicians();
         }
         fireInvalidationEvent();
     }   

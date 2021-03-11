@@ -6,7 +6,9 @@ import java.util.List;
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
+import javafx.beans.Observable;
 import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableList;
 
 public interface Ticket {
 
@@ -39,7 +41,7 @@ public interface Ticket {
 
 	public String getAttachments();
 	
-	public List<Employee> giveTechnicians();
+	public ObservableList<Employee> giveTechnicians();
 	
 	public String getSolution();
 
