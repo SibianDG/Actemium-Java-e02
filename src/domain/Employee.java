@@ -26,7 +26,7 @@ public interface Employee extends User {
 
 	public EmployeeRole getRoleAsEnum();
 
-	public List<ActemiumTicket> getTickets();
+	public List<Ticket> getTickets();
 	
 	public StringProperty roleProperty();
 

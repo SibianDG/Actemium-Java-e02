@@ -1,14 +1,12 @@
 package domain;
 
-import java.util.List;
-
 import domain.enums.UserStatus;
 import javafx.beans.property.StringProperty;
 
 public interface User {
 
 	// getters
-	public List<LoginAttempt> getLoginAttempts();
+//	public List<LoginAttempt> getLoginAttempts();
 
 	public long getUserId();
 

@@ -6,7 +6,7 @@ import domain.enums.ContractStatus;
 
 public interface Contract {
 	
-	public ActemiumContractType getContractType();
+	public ContractType getContractType();
 
 	public ContractStatus getStatus();
 

@@ -2,6 +2,8 @@ package domain;
 
 import java.time.LocalDate;
 
+import javafx.beans.property.StringProperty;
+
 public interface Company {
 
 	// getters
@@ -13,4 +15,6 @@ public interface Company {
 	public String getPhoneNumber();
 
 	public LocalDate getRegistrationDate();
+
+	public StringProperty nameProperty();
 }

@@ -8,7 +8,7 @@ public interface Customer extends User {
 
 	public int getCustomerNr();
 	
-	public ActemiumCompany getCompany();
+	public Company getCompany();
 
 	public LocalDate getRegistrationDate();
 	

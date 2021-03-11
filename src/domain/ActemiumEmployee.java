@@ -131,8 +131,8 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 		this.roleProperty().set(role.toString());
 	}
 
-	public List<ActemiumTicket> getTickets() {
-		return tickets;
+	public List<Ticket> getTickets() {
+		return (List<Ticket>) (Object) tickets;
 	}
 
 	public void setTickets(List<ActemiumTicket> tickets) {
