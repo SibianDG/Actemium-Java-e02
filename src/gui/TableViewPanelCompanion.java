@@ -1,12 +1,25 @@
 package gui;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import domain.*;
+import domain.Contract;
+import domain.ContractType;
+import domain.Customer;
+import domain.Employee;
+import domain.Ticket;
+import domain.User;
 import domain.enums.ContractStatus;
 import domain.enums.ContractTypeStatus;
 import domain.enums.EmployeeRole;
@@ -16,6 +29,7 @@ import domain.enums.TicketType;
 import domain.enums.Timestamp;
 import domain.enums.UserStatus;
 import gui.viewModels.ContractTypeViewModel;
+import gui.viewModels.ContractViewModel;
 import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
@@ -25,15 +39,19 @@ import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -122,6 +140,14 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 				propertyMap.put("Priority", item -> ((Ticket) item).priorityProperty());
 				propertyMap.put("Title", item -> ((Ticket) item).titleProperty());
 				propertyMap.put("Status", item -> ((Ticket) item).statusProperty());
+			}
+			case CONTRACT -> {
+				this.mainData = (ObservableList<T>) ((ContractViewModel) viewModel).giveContracts();
+				this.tableViewData = new FilteredList<>(mainData);
+				propertyMap.put("Nr", item -> ((Contract) item).contractNrProperty());
+				propertyMap.put("Company", item -> ((Contract) item).giveCustomer().giveCompany().nameProperty());
+				propertyMap.put("Type", item -> ((Contract) item).contractTypeNameProperty());
+				propertyMap.put("Status", item -> ((Contract) item).contractStatusProperty());
 			}
 			case CONTRACTTYPE -> {
 				this.mainData = (ObservableList<T>) ((ContractTypeViewModel) viewModel).giveContractTypes();

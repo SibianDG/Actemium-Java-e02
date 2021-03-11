@@ -25,13 +25,13 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 
 	//@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int customerNr;
-//	@OneToMany
-//	private List<Contract> contracts;
+	
+	@OneToMany(mappedBy = "customer",
+			   cascade = CascadeType.PERSIST)
+	private List<ActemiumContract> contracts = new ArrayList<>();;
+	
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	private ActemiumCompany company;
-//	@ManyToMany(mappedBy = "customers",
-//				cascade = CascadeType.PERSIST)
-//	private List<Employee> contactPersons = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "customer",
 			   cascade = CascadeType.PERSIST)
@@ -47,7 +47,6 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 		super(username, password, firstName, lastName);
 		setCompany(company);
 		setRegistrationDate(LocalDate.now());
-//		this.contracts = new ArrayList<>();
 	}
 
 
@@ -58,15 +57,18 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	public void setCustomerNr(int customerNr) {
 		this.customerNr = customerNr;
 	}
-
 	
-//	public List<Contract> getContracts() {
-//		return contracts;
-//	}
-//
-//	public void setContracts(List<Contract> contracts) {
-//		this.contracts = contracts;
-//	}
+	public List<ActemiumContract> getContracts() {
+		return contracts;
+	}
+
+	public List<Contract> giveContracts() {
+		return (List<Contract>) (Object) contracts;
+	}
+
+	public void setContracts(List<ActemiumContract> contracts) {
+		this.contracts = contracts;
+	}
 
 	public ActemiumCompany getCompany() {
 		return company;
@@ -87,9 +89,13 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	public void setRegistrationDate(LocalDate registrationDate) {
 		this.registrationDate = registrationDate;
 	}
-		
+	
 	public void addTicket(ActemiumTicket ticket) {
 		tickets.add(ticket);
+	}
+
+	public void addContract(ActemiumContract contract) {
+		contracts.add(contract);
 	}
 
 	@Override

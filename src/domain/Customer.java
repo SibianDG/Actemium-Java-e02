@@ -1,6 +1,7 @@
 package domain;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface Customer extends User {
 	
@@ -9,6 +10,8 @@ public interface Customer extends User {
 	public int getCustomerNr();
 	
 	public Company giveCompany();
+	
+	public List<Contract> giveContracts();
 
 	public LocalDate getRegistrationDate();
 	

@@ -394,6 +394,12 @@ public class Actemium {
 	}
 
 	////////-CONTRACTFACADE-////////
+	
+	public void modifyContract(ActemiumContract contract) {
+		contractDaoJpa.startTransaction();
+		contractDaoJpa.update(contract);
+		contractDaoJpa.commitTransaction();
+	}
 
 	public Contract getLastAddedContract() {
 		return actemiumContracts.get(actemiumContracts.size()-1);

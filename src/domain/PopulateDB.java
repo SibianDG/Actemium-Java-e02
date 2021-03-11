@@ -5,9 +5,8 @@ import repository.GenericDao;
 import repository.UserDaoJpa;
 
 import java.security.SecureRandom;
+import java.time.LocalDate;
 import java.util.ArrayList;
-
-import org.junit.jupiter.params.provider.Arguments;
 
 public class PopulateDB {
     public void run(UserDaoJpa userDao, GenericDao<ActemiumContractType> contractTypeDao) {
@@ -16,6 +15,9 @@ public class PopulateDB {
         
         ActemiumCompany theWhiteHouse = new ActemiumCompany("The White House", "America 420", "911");
         ActemiumCustomer barak = new ActemiumCustomer("cust01Barak", "Passwd123&", "Barak", "Obama", theWhiteHouse);
+        ActemiumContractType bCtype = new ActemiumContractType("BasicEmailSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
+        ActemiumContract bContract = new ActemiumContract(bCtype, barak, LocalDate.now().plusYears(1));
+        barak.addContract(bContract);
         ActemiumCustomer barak2 = new ActemiumCustomer("cust02Barak", "Passwd123&", "Barak", "Obama", theWhiteHouse);
         ActemiumCustomer barak3 = new ActemiumCustomer("cust03Barak", "Passwd123&", "Barak", "Obama", theWhiteHouse);
         ActemiumCustomer barak4 = new ActemiumCustomer("cust04Barak", "Passwd123&", "Barak", "Obama", theWhiteHouse);
