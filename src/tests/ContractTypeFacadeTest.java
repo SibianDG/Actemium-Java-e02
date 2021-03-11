@@ -24,7 +24,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.spy;
 
 @ExtendWith(MockitoExtension.class)
-public class ContractTypeFacade {
+public class ContractTypeFacadeTest {
 
     @Mock
     private GenericDao<ActemiumContractType> contractTypeDaoJpa;
