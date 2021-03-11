@@ -6,11 +6,22 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
-import domain.*;
+import domain.ActemiumContract;
+import domain.ActemiumContractType;
+import domain.ActemiumCustomer;
+import domain.ActemiumEmployee;
+import domain.ActemiumTicket;
+import domain.Contract;
+import domain.ContractType;
+import domain.Customer;
+import domain.Employee;
+import domain.LoginAttempt;
+import domain.Ticket;
+import domain.UserModel;
+import domain.enums.EmployeeRole;
 import domain.enums.LoginStatus;
 import domain.enums.TicketStatus;
 import domain.enums.UserStatus;
-import domain.facades.ContractTypeFacade;
 import exceptions.BlockedUserException;
 import exceptions.PasswordException;
 import javafx.collections.FXCollections;
@@ -199,6 +210,21 @@ public class Actemium {
 		}
 		return "Customer";
 	}
+	
+	// necessary for signedInUser right permissions check
+	public EmployeeRole giveUserRoleAsEnum() {
+		if (signedInUser instanceof Employee) {
+			return ((Employee) signedInUser).getRoleAsEnum();
+		}
+		return null;
+	}
+	
+	// signedInUser right permissions check
+	public void checkPermision(EmployeeRole role) {
+		if (!giveUserRoleAsEnum().equals(role)) {
+			throw new IllegalArgumentException("You need to be an administrator to do this!");
+		}
+	}
 
 	public String giveUsername() {
 		return signedInUser.getUsername();
@@ -240,25 +266,15 @@ public class Actemium {
 	}
 
 	public void modifyCustomer(ActemiumCustomer modifiedCustomer) {
-//		int index = actemiumCustomers.indexOf(modifiedCustomer);
-
 		userDaoJpa.startTransaction();
 		userDaoJpa.update(modifiedCustomer);
 		userDaoJpa.commitTransaction();
-
-//		actemiumCustomers.add(index, modifiedCustomer);
-//		actemiumCustomers.remove(index + 1);
 	}
 
 	public void modifyEmployee(ActemiumEmployee modifiedEmployee) {
-//		int index = actemiumEmployees.indexOf(modifiedEmployee);
-
 		userDaoJpa.startTransaction();
 		userDaoJpa.update(modifiedEmployee);
 		userDaoJpa.commitTransaction();
-
-//		actemiumEmployees.add(index, modifiedEmployee);
-//		actemiumEmployees.remove(index + 1);
 	}
 
 	/*
@@ -298,20 +314,10 @@ public class Actemium {
 		}
 	}
 	
-	public void modifyTicket(ActemiumTicket ticket) {
-		//TODO
-		// it seems like it works without it
-		// so can we leave this code out
-		// or am I missing something?
-		// This should be changed in the other modify methods as well
-//		int index = actemiumTickets.indexOf(ticket);
-		
+	public void modifyTicket(ActemiumTicket ticket) {		
 		ticketDaoJpa.startTransaction();
 		ticketDaoJpa.update(ticket);
 		ticketDaoJpa.commitTransaction();
-
-//		actemiumTickets.add(index, ticket);
-//		actemiumTickets.remove(index + 1);
 		
 		// change ticket to completed, it will move to resolved tickets
 		if (TicketStatus.isOutstanding() &&
@@ -372,15 +378,9 @@ public class Actemium {
 	}
 
 	public void modifyContractType(ActemiumContractType contractType) {
-//		int index = actemiumContractTypes.indexOf(contractType);
-
 		contractTypeDaoJpa.startTransaction();
 		contractTypeDaoJpa.update(contractType);
 		contractTypeDaoJpa.commitTransaction();
-//		actemiumContractTypes.add(contractType);
-//
-//		actemiumContractTypes.add(index, contractType);
-//		actemiumContractTypes.remove(index + 1);
 	}
 
 	/*
@@ -421,6 +421,5 @@ public class Actemium {
 	public ObservableList<Contract> giveActemiumContracts() {
 		return FXCollections.unmodifiableObservableList(actemiumContracts);
 	}
-
 
 }

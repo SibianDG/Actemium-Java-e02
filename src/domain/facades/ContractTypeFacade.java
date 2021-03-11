@@ -3,6 +3,7 @@ package domain.facades;
 import domain.ActemiumContractType;
 import domain.ContractType;
 import domain.enums.ContractTypeStatus;
+import domain.enums.EmployeeRole;
 import domain.enums.Timestamp;
 import domain.manager.Actemium;
 import javafx.collections.ObservableList;
@@ -17,13 +18,17 @@ public class ContractTypeFacade implements Facade{
 
     public void registerContractType(String name, ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone,
                                      boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) {
-        ActemiumContractType contractType = new ActemiumContractType(name, contractTypeStatus, hasEmail, hasPhone, hasApplication, timestamp, maxHandlingTime, minThroughputTime, price);
+		// check to see if signed in user is Support Manager
+		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
+    	ActemiumContractType contractType = new ActemiumContractType(name, contractTypeStatus, hasEmail, hasPhone, hasApplication, timestamp, maxHandlingTime, minThroughputTime, price);
         actemium.registerContractType(contractType);
     }
 
     public void modifyContractType(ActemiumContractType contractType, String name, ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone,
                                    boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) {
-
+		// check to see if signed in user is Support Manager
+		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
+		
         contractType.setName(name);
         contractType.setContractTypeStatus(contractTypeStatus);
         contractType.setHasEmail(hasEmail);
@@ -38,7 +43,9 @@ public class ContractTypeFacade implements Facade{
     }
 
     public void delete(ActemiumContractType contractType) {
-        contractType.setContractTypeStatus(ContractTypeStatus.INACTIVE);
+		// check to see if signed in user is Support Manager
+		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
+    	contractType.setContractTypeStatus(ContractTypeStatus.INACTIVE);
         actemium.modifyContractType(contractType);
     }
 
@@ -49,6 +56,5 @@ public class ContractTypeFacade implements Facade{
     public ContractType getLastAddedContractType() {
         return actemium.getLastAddedContractType();
     }
-
 
 }
