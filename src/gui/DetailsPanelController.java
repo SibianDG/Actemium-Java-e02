@@ -2,11 +2,7 @@ package gui;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import domain.ActemiumContractType;
 import domain.ActemiumCustomer;
@@ -35,14 +31,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -567,15 +559,24 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         } else if (o instanceof Boolean) {
             node = makeComboBox(o);
         } else if (o instanceof ObservableList) {
-            node = makeListView(o);
+            node = makeViewTechnicians(o);
         }
         if (node != null)
             node.setDisable(disable);
         return node;
     }
 
-    private <T> Node makeListView(Object o) {
+    private <T> Node makeViewTechnicians(Object o) {
+        VBox vBox = new VBox();
 
+        //create dropdown with all possible employees
+        MenuButton menuButton = new MenuButton("Select technician");
+        ObservableList<Employee> allTechnicians = ((TicketViewModel) viewModel).getAllTechnicians();
+        List<CheckMenuItem> listTechicians = new ArrayList<>();
+        allTechnicians.forEach(item -> listTechicians.add(new CheckMenuItem(item.getFirstName() + " " + item.getLastName())));
+        menuButton.getItems().addAll(listTechicians);
+
+        //create Listview for technicians for ticket
         ObservableList<Employee> technicians = (ObservableList<Employee>) o;
         ObservableList<String> stringsList = FXCollections.observableArrayList();
         technicians.forEach(tech -> stringsList.add(tech.getFirstName() + " " + tech.getLastName()));
@@ -584,7 +585,12 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         listView.getStylesheets().add("file:src/start/styles.css");
         listView.setId("list-view");
         listView.setSelectionModel(null);
-        return listView;
+
+
+
+        vBox.getChildren().addAll(menuButton, listView);
+
+        return vBox;
     }
 
     private ComboBox makeComboBox(Object o){

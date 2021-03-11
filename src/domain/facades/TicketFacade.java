@@ -1,15 +1,15 @@
 package domain.facades;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-import domain.ActemiumCustomer;
-import domain.ActemiumEmployee;
-import domain.ActemiumTicket;
-import domain.Ticket;
+import domain.*;
+import domain.enums.EmployeeRole;
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import domain.manager.Actemium;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class TicketFacade implements Facade {
@@ -86,4 +86,11 @@ public class TicketFacade implements Facade {
 		ticket.setStatus(TicketStatus.CANCELLED);
 		actemium.modifyTicket(ticket);
     }
+
+	public ObservableList<Employee> getAllTechnicians() {
+		return FXCollections.observableArrayList(actemium.giveActemiumEmployees()
+				.stream()
+				.filter(t -> t.getRoleAsEnum() == EmployeeRole.TECHNICIAN)
+				.collect(Collectors.toList()));
+	}
 }

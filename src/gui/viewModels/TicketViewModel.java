@@ -107,4 +107,8 @@ public class TicketViewModel extends ViewModel {
     public void delete() {
         ticketFacade.delete((ActemiumTicket) selectedTicket);
     }
+
+    public ObservableList<Employee> getAllTechnicians() {
+        return ticketFacade.getAllTechnicians();
+    }
 }
