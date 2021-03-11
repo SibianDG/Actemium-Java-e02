@@ -48,7 +48,6 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 		setCompany(company);
 		setRegistrationDate(LocalDate.now());
 //		this.contracts = new ArrayList<>();
-//		this.contactPersons = new ArrayList<>();
 	}
 
 
@@ -72,19 +71,15 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	public ActemiumCompany getCompany() {
 		return company;
 	}
+	
+	public Company giveCompany() {
+		return (Company) company;
+	}
 
 	public void setCompany(ActemiumCompany company) {
 		this.company = company;
 	}
 
-//	public List<Employee> getContactPersons() {
-//		return contactPersons;
-//	}
-//
-//	public void setContactPersons(List<Employee> contactPersons) {
-//		this.contactPersons = contactPersons;
-//	}
-	
 	public LocalDate getRegistrationDate() {
 		return registrationDate;
 	}
@@ -92,11 +87,7 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	public void setRegistrationDate(LocalDate registrationDate) {
 		this.registrationDate = registrationDate;
 	}
-	
-//	public void addContactPerson(Employee contactPerson) {
-//		contactPersons.add(contactPerson);
-//	}
-	
+		
 	public void addTicket(ActemiumTicket ticket) {
 		tickets.add(ticket);
 	}

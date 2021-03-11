@@ -96,8 +96,8 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 			case CUSTOMER -> {
 				this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).giveCustomers();
 				this.tableViewData = new FilteredList<>(mainData);
-				tableViewData.sorted((Comparator<T>) Comparator.comparing(c -> ((Customer) c).getCompany().getName().toLowerCase()).thenComparing(c -> ((User) c).getFirstName().toLowerCase()).thenComparing(c -> ((User) c).getLastName().toLowerCase()));
-				propertyMap.put("Company", item -> ((Customer)item).getCompany().nameProperty());
+				tableViewData.sorted((Comparator<T>) Comparator.comparing(c -> ((Customer) c).giveCompany().getName().toLowerCase()).thenComparing(c -> ((User) c).getFirstName().toLowerCase()).thenComparing(c -> ((User) c).getLastName().toLowerCase()));
+				propertyMap.put("Company", item -> ((Customer)item).giveCompany().nameProperty());
 				propertyMap.put("Status", item -> ((Customer)item).statusProperty());
 				propertyMap.put("Firstname", item -> ((Customer)item).firstNameProperty());
 				propertyMap.put("Lastname", item -> ((Customer)item).lastNameProperty());
@@ -449,7 +449,7 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 				Predicate<Customer> newPredicate;
 				
 				switch (fieldName) {
-					case "Company" -> newPredicate = e -> e.getCompany().getName().toLowerCase().contains(filterText);
+					case "Company" -> newPredicate = e -> e.giveCompany().getName().toLowerCase().contains(filterText);
 					case "UserStatus" -> newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
 					case "Firstname" -> newPredicate = e -> e.getFirstName().toLowerCase().contains(filterText);
 					case "Lastname" -> newPredicate = e -> e.getLastName().toLowerCase().contains(filterText);
@@ -504,7 +504,7 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 				
 				//TODO change fieldnames
 				switch (fieldName) {
-					case "Type" -> newPredicate = e -> e.getContractType().equals(filterText);
+					case "Type" -> newPredicate = e -> e.giveContractType().equals(filterText);
 					case "Status" -> newPredicate = e -> e.getStatus().toString().toLowerCase().equals(filterText);
 					case "StartDate" -> newPredicate = e -> e.getStartDate().toString().contains(filterText);
 					case "EndDate" -> newPredicate = e -> e.getEndDate().toString().contains(filterText);

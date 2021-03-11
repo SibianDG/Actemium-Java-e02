@@ -62,7 +62,7 @@ public class TicketViewModel extends ViewModel {
         details.put("Type", Collections.singletonMap(true, ticket.getTicketTypeAsEnum()));
         details.put("Status", Collections.singletonMap(true, ticket.getStatusAsEnum()));
         details.put("Description", Collections.singletonMap(true, ticket.getDescription()));
-        details.put("Customer/Company", Collections.singletonMap(false, ticket.giveCustomer().getCompany().getName()));
+        details.put("Customer/Company", Collections.singletonMap(false, ticket.giveCustomer().giveCompany().getName()));
         //details.put("Technician", ticket.getTechnicians().toString());
         details.put("Remarks", Collections.singletonMap(true, ticket.getRemarks()));
         details.put("Attachments", Collections.singletonMap(true, ticket.getAttachments()));

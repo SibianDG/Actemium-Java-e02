@@ -8,7 +8,7 @@ public interface Customer extends User {
 
 	public int getCustomerNr();
 	
-	public Company getCompany();
+	public Company giveCompany();
 
 	public LocalDate getRegistrationDate();
 	

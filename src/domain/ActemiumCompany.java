@@ -106,6 +106,10 @@ public class ActemiumCompany implements Company, Serializable {
 	public List<ActemiumCustomer> getContactPersons() {
 		return contactPersons;
 	}
+	
+	public List<Customer> giveContactPersons() {
+		return (List<Customer>) (Object) contactPersons;
+	}	
 
 	public void addContactPerson(ActemiumCustomer contactPerson) {
 		this.contactPersons.add(contactPerson);
@@ -113,6 +117,10 @@ public class ActemiumCompany implements Company, Serializable {
 
 	public List<ActemiumTicket> getActemiumTickets() {
 		return actemiumTickets;
+	}
+	
+	public List<Ticket> giveTickets() {
+		return (List<Ticket>) (Object) actemiumTickets;
 	}
 
 	public void addActemiumTicket(ActemiumTicket ticket) {

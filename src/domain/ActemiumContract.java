@@ -62,6 +62,10 @@ public class ActemiumContract implements Contract, Serializable {
 	public ActemiumContractType getContractType() {
 		return contractType;
 	}
+	
+	public ContractType giveContractType() {
+		return (ContractType) contractType;
+	}
 
 	public void setContractType(ActemiumContractType contractType) {
 		this.contractType = contractType;

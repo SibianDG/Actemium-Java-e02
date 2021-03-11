@@ -1,6 +1,7 @@
 package domain;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javafx.beans.property.StringProperty;
 
@@ -12,9 +13,13 @@ public interface Company {
 
 	public String getAddress();
 
-	public String getPhoneNumber();
+	public String getPhoneNumber();	
 
 	public LocalDate getRegistrationDate();
 
 	public StringProperty nameProperty();
+	
+	public List<Customer> giveContactPersons();
+	
+	public List<Ticket> giveTickets();
 }

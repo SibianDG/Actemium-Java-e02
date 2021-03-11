@@ -75,9 +75,9 @@ public class UserViewModel extends ViewModel {
                 detailsMap.put("Password", Collections.singletonMap(true, customer.getPassword()));
 
                 detailsMap.put("Company", Collections.singletonMap(false, ""));
-                detailsMap.put("Name", Collections.singletonMap(true, customer.getCompany().getName()));
-                detailsMap.put("Address", Collections.singletonMap(true, customer.getCompany().getAddress()));
-                detailsMap.put("Phone Nr", Collections.singletonMap(true, customer.getCompany().getPhoneNumber()));
+                detailsMap.put("Name", Collections.singletonMap(true, customer.giveCompany().getName()));
+                detailsMap.put("Address", Collections.singletonMap(true, customer.giveCompany().getAddress()));
+                detailsMap.put("Phone Nr", Collections.singletonMap(true, customer.giveCompany().getPhoneNumber()));
                 // Here it's the name and email of the contactperson
                 detailsMap.put("Contact person", Collections.singletonMap(false, ""));
                 // here it's the name and firstname of the customer
