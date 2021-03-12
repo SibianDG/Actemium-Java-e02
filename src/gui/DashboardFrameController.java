@@ -152,11 +152,11 @@ public class DashboardFrameController <T> extends GuiController implements Obser
         switch (userFacade.giveUserRole().toUpperCase()) {
             case "ADMINISTRATOR" -> {
                 itemNames = new String[]{"manage employees", "manage customers"};
-                itemIcons = new String[]{"icon_manage", "icon_manage"};
+                itemIcons = new String[]{"icon_manage_user", "icon_manage_user"};
             }
             case "SUPPORT_MANAGER" -> {
                 itemNames = new String[]{"manage knowledge base", "outstanding tickets", "resolved tickets", "statistics", "manage contract types", "manage contracts"};
-                itemIcons = new String[]{"icon_manage", "icon_outstanding", "icon_resolved", "icon_statistics", "icon_manage", "icon_manage"};
+                itemIcons = new String[]{"icon_manage", "icon_outstanding", "icon_resolved", "icon_statistics", "icon_manage_contract_types", "icon_manage_contracts"};
             }
             case "TECHNICIAN" -> {
                 itemNames = new String[]{"consult knowledge base", "outstanding tickets", "resolved tickets", "statistics"};
