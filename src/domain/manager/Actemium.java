@@ -301,7 +301,7 @@ public class Actemium {
 		
 	////////-TICKETFACADE-////////
 	
-	public UserModel findById(long userId){
+	public UserModel findUserById(long userId){
 		return userDaoJpa.get(userId);
 	}
 	
@@ -404,11 +404,15 @@ public class Actemium {
 
 	////////-CONTRACTFACADE-////////
 	
-	//TODO verify correct persist
+	public ActemiumContractType findContractTypeById(String contractTypeId){
+		return contractTypeDaoJpa.get(contractTypeId);
+	}	
+	
 	public void registerContract(ActemiumContract contract) {
 		contractDaoJpa.startTransaction();
 		contractDaoJpa.insert(contract);
 		contractDaoJpa.commitTransaction();
+		actemiumContracts.add(contract);
 	}
 	
 	public void modifyContract(ActemiumContract contract) {

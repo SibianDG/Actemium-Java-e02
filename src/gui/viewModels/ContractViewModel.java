@@ -8,8 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import domain.ActemiumContract;
-import domain.ActemiumContractType;
-import domain.ActemiumCustomer;
 import domain.Contract;
 import domain.enums.ContractStatus;
 import domain.facades.ContractFacade;
@@ -46,20 +44,18 @@ public class ContractViewModel extends ViewModel {
     }
 
 	public ArrayList<String> getDetailsNewContract() {
-		return new ArrayList<String>(Arrays.asList("Contract Nr", "Type", "Status", "Start date", "End date"));
+		return new ArrayList<String>(Arrays.asList("Customer ID", "Contract Type Name", "Start date", "Duration (in years)"));
 	}
 
     public Map<String, Map<Boolean, Object>> getDetails() {
         Contract contract = selectedContract;
         Map<String,Map<Boolean, Object>> details = new LinkedHashMap<>();
         details.put("Contract Nr", Collections.singletonMap(false, contract.getContractNrString()));
-        details.put("Type", Collections.singletonMap(true, contract.giveContractType().getName()));
+        details.put("Company", Collections.singletonMap(false, contract.giveCustomer().giveCompany().getName()));
+        details.put("Type", Collections.singletonMap(false, contract.giveContractType().getName()));
         details.put("Status", Collections.singletonMap(true, contract.getStatusAsEnum()));
-        details.put("Start date", Collections.singletonMap(true, contract.getStartDate().toString()));
-        details.put("End date", Collections.singletonMap(true, contract.getEndDate().toString()));
-        //details.put("Amount open contracts", contractType);
-        //details.put("Amount resolved tickets", contractType);
-        //details.put("Percentage tickets resolved within agreed time", contractType);
+        details.put("Start date", Collections.singletonMap(false, contract.getStartDate().toString()));
+        details.put("End date", Collections.singletonMap(false, contract.getEndDate().toString()));
 
         return details;
     }
@@ -68,9 +64,9 @@ public class ContractViewModel extends ViewModel {
         contractFacade.modifyContract((ActemiumContract) selectedContract, status);
     }
     
-    public void registerContract(ActemiumContractType contractType, ActemiumCustomer customer, LocalDate startDate, LocalDate endDate) {
-    	contractFacade.registerContract(contractType, customer, startDate, endDate);
-    	 setSelectedContract(contractFacade.getLastAddedContract());
+    public void registerContract(Long customer, String contractTypeName, LocalDate startDate, int duration) {    	
+    	contractFacade.registerContract(customer, contractTypeName, startDate, duration);
+    	setSelectedContract(contractFacade.getLastAddedContract());
     }
 
     public GUIEnum getCurrentState() {

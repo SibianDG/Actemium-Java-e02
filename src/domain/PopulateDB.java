@@ -23,15 +23,15 @@ public class PopulateDB {
         
         ActemiumContractType bCtype = new ActemiumContractType("BasicSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
         ActemiumContractType bCtype02 = new ActemiumContractType("BasicEmailSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
-        ActemiumContractType cCtype = new ActemiumContractType("BasisAppSupport", ContractTypeStatus.ACTIVE, false, false, true, Timestamp.WORKINGHOURS, 5, 2, 1299.99);
+        ActemiumContractType cCtype = new ActemiumContractType("BasicAppSupport", ContractTypeStatus.ACTIVE, false, false, true, Timestamp.WORKINGHOURS, 5, 2, 1299.99);
         ActemiumContractType dCtype = new ActemiumContractType("FullEmailSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.ALWAYS, 4, 1, 1999.99);
         ActemiumContractType eCtype = new ActemiumContractType("FullPhoneSupport", ContractTypeStatus.ACTIVE, false, true, false, Timestamp.ALWAYS, 4, 1, 2999.99);
         ActemiumContractType fCtype = new ActemiumContractType("FullAppSupport", ContractTypeStatus.ACTIVE, false, false, true, Timestamp.ALWAYS, 4, 1, 2299.99);
-        ActemiumContractType gCtype = new ActemiumContractType("BasisAllSupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.WORKINGHOURS, 4, 2, 2999.99);
+        ActemiumContractType gCtype = new ActemiumContractType("BasicAllSupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.WORKINGHOURS, 4, 2, 2999.99);
         ActemiumContractType hCtype = new ActemiumContractType("FullAllSupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.ALWAYS, 3, 1, 3999.99);
         ActemiumContractType jCtype = new ActemiumContractType("AmazonSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
         ActemiumContractType jCtype02 = new ActemiumContractType("MonopolySupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.ALWAYS, 3, 1, 6969.69);
-        ActemiumContractType pCtype = new ActemiumContractType("BasisPhoneSupport", ContractTypeStatus.ACTIVE, false, true, false, Timestamp.WORKINGHOURS, 5, 2, 1999.99);
+        ActemiumContractType pCtype = new ActemiumContractType("BasicPhoneSupport", ContractTypeStatus.ACTIVE, false, true, false, Timestamp.WORKINGHOURS, 5, 2, 1999.99);
         
         ActemiumCustomer barak = new ActemiumCustomer("cust01Barak", "Passwd123&", "Barak", "Obama", theWhiteHouse);
         ActemiumCustomer jeff = new ActemiumCustomer("cust02Jeff", "Passwd123&", "Jeff", "Bezos", amazon);
