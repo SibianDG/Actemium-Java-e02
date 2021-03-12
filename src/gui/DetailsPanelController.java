@@ -2,10 +2,14 @@ package gui;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.*;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import domain.ActemiumContractType;
-import domain.ActemiumCustomer;
 import domain.ActemiumEmployee;
 import domain.Employee;
 import domain.enums.ContractStatus;
@@ -31,7 +35,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -41,6 +53,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import languages.LanguageResource;
 
 
@@ -255,18 +268,21 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                     if(viewModel.isFieldModified()){
                         ((ContractViewModel) viewModel).modifyContract(
                                 // Only the status can be modified in case a customer didnt pay his bills                        		
-                                ContractStatus.valueOf(getTextFromGridItem(2))
-                                
+                                ContractStatus.valueOf(getTextFromGridItem(3))                                
                         );
                         makePopUp(LanguageResource.getString("contractEdited"), LanguageResource.getString("contractEdited_succes"));
                     } else {
                         makePopUp(LanguageResource.getString("contractEdited_false"), LanguageResource.getString("unchangedMessage"));
                     }
                 } else {
-//                    ((ContractTypeViewModel) viewModel).registerContract(
-//                    		// contractType, customer, startDate, endDate
-//                            getTextFromGridItem(0)                            
-//                    );
+                	//TODO entering customerID should show corresponding company name
+                    ((ContractViewModel) viewModel).registerContract(                    		
+                    		// customerId, contractTypeName, startDate, duration
+                    		Long.parseLong(getTextFromGridItem(0))
+                            , getTextFromGridItem(1)
+                            , LocalDate.parse(getTextFromGridItem(2)) //startDate DatePicker
+                            , Integer.parseInt(getTextFromGridItem(3))                            
+                    );
                 }
             }
             editing = false;
@@ -287,6 +303,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
         if (node instanceof ComboBox){
             text = ((ComboBox)node).getSelectionModel().getSelectedItem().toString();
+        } else if(node instanceof DatePicker){
+            text = ((DatePicker)node).getValue().toString();
         } else if(node instanceof TextField){
             text = ((TextField)node).getText();
         } else {
@@ -377,6 +395,17 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             btnModify.setVisible(true);
             assert fields != null;
             addItemsToGridNewContractType(fields);
+        } else if (viewModel instanceof ContractViewModel) {
+            if (((ContractViewModel) viewModel).getCurrentState().equals(GUIEnum.CONTRACT)) {
+                fields = ((ContractViewModel) viewModel).getDetailsNewContract();
+                txtDetailsTitle.setText(LanguageResource.getString("addContract"));
+                btnModify.setText(LanguageResource.getString("addContract"));
+            } else {
+                fields = null;
+            }
+            btnModify.setVisible(true);
+            assert fields != null;
+            addItemsToGridNewContract(fields);
         } 
     }
 
@@ -507,6 +536,43 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             gridDetails.add(node, 1, i);
         }
     }
+    
+    private void addItemsToGridNewContract(ArrayList<String> fields){
+        gridDetails.getChildren().clear();
+        gridDetails.addColumn(0);
+        gridDetails.addColumn(1);
+
+        Map<Integer, String> randomValues = Map.of(
+                0, "006"
+                , 1, "BasicPhoneSupport"
+//                , 2, LocalDate.now().toString()
+                , 2, "3"
+        );
+
+        int randomValuesCounter = 0;
+
+        for (int i = 0; i < fields.size(); i++) {
+            String itemName = fields.get(i);
+
+            gridDetails.addRow(i);
+
+            gridDetails.add(makeNewLabel(itemName), 0, i);
+
+            itemName = itemName.toLowerCase();
+
+            Node node;
+            if (itemName.contains("start")) {
+                node = makeDatePicker(LocalDate.now());
+            } else {
+                TextField textField;
+                textField = new TextField(randomValues.get(randomValuesCounter++));
+                textField.setFont(Font.font("Arial", 14));
+                textField.setPromptText(fields.get(i));
+                node = textField;
+            }
+            gridDetails.add(node, 1, i);
+        }
+    }
 
     private Label makeNewLabel(String text){
         Label label = new Label(text+":");
@@ -568,6 +634,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             node = makeComboBox(o);
         } else if (o instanceof ObservableList) {
             node = makeViewTechnicians(o);
+        } else if (o instanceof LocalDate) {
+        	node = makeDatePicker(o);
         }
         if (node != null)
             node.setDisable(disable);
@@ -626,6 +694,51 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             viewModel.setFieldModified(true);
         });
         return c;
+    }
+    
+    private DatePicker makeDatePicker(Object o) {
+    	
+    	// Create the DatePicker.
+    	DatePicker datePicker = new DatePicker((LocalDate) o);
+
+    	String pattern = "yyyy-MM-dd";
+
+    	datePicker.setPromptText(pattern.toLowerCase());
+
+    	datePicker.setConverter(new StringConverter<LocalDate>() {
+    	     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+
+    	     @Override 
+    	     public String toString(LocalDate date) {
+    	         if (date != null) {
+    	             return dateFormatter.format(date);
+    	         } else {
+    	             return "";
+    	         }
+    	     }
+
+    	     @Override 
+    	     public LocalDate fromString(String string) {
+    	         if (string != null && !string.isEmpty()) {
+    	             return LocalDate.parse(string, dateFormatter);
+    	         } else {
+    	             return null;
+    	         }
+    	     }
+    	 });
+    	
+    	// Add some action (in Java 8 lambda syntax style).
+    	datePicker.setOnAction(event -> {
+    	    LocalDate date = datePicker.getValue();
+    	    System.out.println("Selected date: " + date);
+    	});
+
+    	// Add the DatePicker to the Stage.
+//    	StackPane root = new StackPane();
+//    	root.getChildren().add(datePicker);
+//    	stage.setScene(new Scene(root, 500, 650));
+//    	stage.show();
+		return datePicker;    	
     }
 
     private void makePopUp(String headerText, String text){

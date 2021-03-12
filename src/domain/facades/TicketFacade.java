@@ -28,7 +28,7 @@ public class TicketFacade implements Facade {
 							   String remarks, String attachments, long customerId) {
 		// check to see if signed in user is Support Manger
 		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
-		ActemiumCustomer customer = (ActemiumCustomer) actemium.findById(customerId);
+		ActemiumCustomer customer = (ActemiumCustomer) actemium.findUserById(customerId);
 		ActemiumTicket ticket = new ActemiumTicket(priority, ticketType, title, description, customer, remarks, attachments);
 		actemium.registerTicket(ticket, customer);
 	}
