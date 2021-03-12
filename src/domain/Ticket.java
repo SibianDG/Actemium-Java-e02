@@ -1,12 +1,11 @@
 package domain;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
 
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
-import javafx.beans.Observable;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 
@@ -30,6 +29,10 @@ public interface Ticket {
 	public TicketType getTicketTypeAsEnum();
 
 	public LocalDate getDateOfCreation();
+
+	public LocalDateTime getDateAndTimeOfCreation();
+
+	public LocalDateTime getDateAndTimeOfCompletion();
 
 	public String getTitle();
 

@@ -143,9 +143,12 @@ public class Actemium {
 		return userDaoJpa.findByUsername(username);
 	}
 
-//	public void signIn(UserModel user) {
 	public void signIn(String username, String password) {
 		UserModel user = findByUsername(username);
+		
+		if (user instanceof Customer) {
+			throw new IllegalArgumentException("Customers cannot sign in into the desktop application!");
+		}
 		
 		if (password.isBlank()) {
 			throw new PasswordException(LanguageResource.getString("password_blank"));

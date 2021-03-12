@@ -3,6 +3,7 @@ package domain;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +46,10 @@ public class ActemiumTicket implements Ticket, Serializable {
 	@Transient
 	private StringProperty priority = new SimpleStringProperty();
 	private LocalDate dateOfCreation;
+
+	// For statistics
+	private LocalDateTime dateAndTimeOfCreation;
+	private LocalDateTime dateAndTimeOfCompletion;
 
 	@Transient
 	private StringProperty title = new SimpleStringProperty();
@@ -90,11 +95,15 @@ public class ActemiumTicket implements Ticket, Serializable {
 		setTicketType(ticketType);
 		setPriority(ticketPriority);
 		setDateOfCreation(LocalDate.now());
+		setDateAndTimeOfCreation(LocalDateTime.now());
 		setTitle(title);
 		setDescription(description);
 		setCustomer(customer);
 		setRemarks(remarks);
 		setAttachments(attachments);
+		setSolution("(not filled in yet)");
+		setQuality("(not filled in yet)");
+		setSupportNeeded("(not filled in yet)");
 	}
 
 	// remarks and attachments are optional ( (none) is used so the field can be modified in gui)
@@ -119,6 +128,9 @@ public class ActemiumTicket implements Ticket, Serializable {
 	}
 
 	public void setStatus(TicketStatus ticketStatus) {
+		if (ticketStatus == TicketStatus.COMPLETED) {
+			setDateAndTimeOfCompletion(LocalDateTime.now());
+		}
 		this.status.set(ticketStatus.toString());
 	}
 
@@ -142,7 +154,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 		return TicketType.valueOf(ticketType.get());
 	}
 
-
 	public void setTicketType(TicketType ticketType) {
 		this.ticketType.set(String.valueOf(ticketType));
 	}
@@ -153,6 +164,22 @@ public class ActemiumTicket implements Ticket, Serializable {
 
 	public void setDateOfCreation(LocalDate dateOfCreation) {
 		this.dateOfCreation = dateOfCreation;
+	}
+
+	public LocalDateTime getDateAndTimeOfCreation() {
+		return dateAndTimeOfCreation;
+	}
+
+	public void setDateAndTimeOfCreation(LocalDateTime dateAndTimeOfCreation) {
+		this.dateAndTimeOfCreation = dateAndTimeOfCreation;
+	}
+
+	public LocalDateTime getDateAndTimeOfCompletion() {
+		return dateAndTimeOfCompletion;
+	}
+
+	public void setDateAndTimeOfCompletion(LocalDateTime dateAndTimeOfCompletion) {
+		this.dateAndTimeOfCompletion = dateAndTimeOfCompletion;
 	}
 
 	@Access(AccessType.PROPERTY)

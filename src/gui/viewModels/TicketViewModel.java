@@ -1,5 +1,6 @@
 package gui.viewModels;
 
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import domain.ActemiumEmployee;
@@ -10,9 +11,7 @@ import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import domain.facades.TicketFacade;
-import domain.facades.UserFacade;
 import gui.GUIEnum;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class TicketViewModel extends ViewModel {
@@ -64,7 +63,12 @@ public class TicketViewModel extends ViewModel {
         Ticket ticket = selectedTicket;
         Map<String, Map<Boolean, Object>> details = new LinkedHashMap<>();
         details.put("Title", Collections.singletonMap(true, ticket.getTitle()));
-        details.put("Creation date", Collections.singletonMap(false, ticket.getDateOfCreation().toString()));
+        details.put("Creation date", Collections.singletonMap(false, ticket.getDateOfCreation().format(DateTimeFormatter.ISO_DATE)));
+        details.put("Creation time", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_TIME)));
+        if (!TicketStatus.isOutstanding()) {
+	        details.put("Completion date", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_DATE)));
+	        details.put("Completion time", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_TIME)));
+        }
         details.put("Priority", Collections.singletonMap(true, ticket.getPriorityAsEnum()));
         details.put("Type", Collections.singletonMap(true, ticket.getTicketTypeAsEnum()));
         details.put("Status", Collections.singletonMap(true, ticket.getStatusAsEnum()));
@@ -73,6 +77,14 @@ public class TicketViewModel extends ViewModel {
         details.put("Technicians", Collections.singletonMap(true, ticket.giveTechnicians()));
         details.put("Remarks", Collections.singletonMap(true, ticket.getRemarks()));
         details.put("Attachments", Collections.singletonMap(true, ticket.getAttachments()));
+        if (!TicketStatus.isOutstanding()) {
+        	//TODO only the fields below should be editable in resloved tickets
+        	// this means all the above fields should be set to false, ...
+        	// How will we do this without using one big if/else block?
+	        details.put("Solution", Collections.singletonMap(true, ticket.getSolution()));
+	        details.put("Quality", Collections.singletonMap(true, ticket.getQuality()));
+	        details.put("Support Needed", Collections.singletonMap(true, ticket.getSupportNeeded()));
+        }
         
         return details;   
     }
@@ -89,11 +101,14 @@ public class TicketViewModel extends ViewModel {
 
     // TODO
     // Cannot modify customer of the ticket, needs to be unmodifiable field
-    // should become Company instead of customer
     public void modifyTicket(TicketPriority priority, TicketType ticketType, TicketStatus status, String title, String description,
                              String remarks, String attachments, List<ActemiumEmployee> technicians) {
         ticketFacade.modifyTicket((ActemiumTicket) selectedTicket, priority, ticketType, status, title, description, remarks, attachments, technicians);
     }
+
+	public void modifyTicketOutstanding(String solution, String quality, String supportNeeded) {
+        ticketFacade.modifyTicketOutstanding((ActemiumTicket) selectedTicket, solution, quality, supportNeeded);		
+	}
 
     public GUIEnum getCurrentState() {
         return currentState;
@@ -111,4 +126,5 @@ public class TicketViewModel extends ViewModel {
     public ObservableList<Employee> getAllTechnicians() {
         return ticketFacade.getAllTechnicians();
     }
+
 }

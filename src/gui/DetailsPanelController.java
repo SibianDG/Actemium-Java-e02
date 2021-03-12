@@ -178,17 +178,25 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                 // and click on add new ticket)
             } else if (viewModel instanceof TicketViewModel) {
                 if (editing) {
-                    if(viewModel.isFieldModified()){
+                    if(viewModel.isFieldModified() && TicketStatus.isOutstanding()){
                         ((TicketViewModel) viewModel).modifyTicket(
                                 // priority, ticketType, title, description, remarks, attachments, technicians
-                                TicketPriority.valueOf(getTextFromGridItem(2))
-                                , TicketType.valueOf(getTextFromGridItem(3))
-                                , TicketStatus.valueOf(getTextFromGridItem(4))
+                                TicketPriority.valueOf(getTextFromGridItem(3))
+                                , TicketType.valueOf(getTextFromGridItem(4))
+                                , TicketStatus.valueOf(getTextFromGridItem(5))
                                 , getTextFromGridItem(0)
-                                , getTextFromGridItem(5)
-                                , getTextFromGridItem(7)
-                                , getTextFromGridItem(8)
+                                , getTextFromGridItem(6)
+                                , getTextFromGridItem(9)
+                                , getTextFromGridItem(10)
                                 , new ArrayList<ActemiumEmployee>()
+                        );
+                        makePopUp(LanguageResource.getString("ticketEdited"), LanguageResource.getString("ticketEdited_succes"));
+                    } else if (viewModel.isFieldModified() && !TicketStatus.isOutstanding()){
+                    	((TicketViewModel) viewModel).modifyTicketOutstanding(
+                                // solution, quality, supportNeeded
+                                getTextFromGridItem(13)
+                                , getTextFromGridItem(14)
+                                , getTextFromGridItem(15)
                         );
                         makePopUp(LanguageResource.getString("ticketEdited"), LanguageResource.getString("ticketEdited_succes"));
                     } else {
@@ -543,7 +551,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             });
             detail.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
 
-            if (string.trim().equals("")){
+            if (string.equals("")){
                 detail.setVisible(false);
                 detail.setPadding(new Insets(15, 0, 0, 0));
             } else {

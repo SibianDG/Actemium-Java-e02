@@ -50,6 +50,15 @@ public class TicketFacade implements Facade {
 		actemium.modifyTicket(ticket);
 	}
 	
+	public void modifyTicketOutstanding(ActemiumTicket ticket, String solution, String quality, String supportNeeded) {
+		// check to see if signed in user is Support Manger
+		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
+		ticket.setSolution(solution);
+		ticket.setQuality(quality);
+		ticket.setSupportNeeded(supportNeeded);
+		actemium.modifyTicket(ticket);
+	}
+	
     public void delete(ActemiumTicket ticket) {
 		// check to see if signed in user is Support Manger
 		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
