@@ -102,6 +102,7 @@ public class LoginController extends GuiController {
                 txtErrorLogin.setOpacity(1);
             } else {
                 userFacade.signIn(txfUsername.getText(), pwfPassword.getText());
+                txtErrorLogin.setOpacity(0);
                 //DashboardFrameController dashboardController = new DashboardFrameController(userFacade, ticketFacade, contractTypeFacade, this);
                 dashboardFrameController = new DashboardFrameController(userFacade, ticketFacade, contractTypeFacade, contractFacade, this);
                 Scene scene = new Scene(dashboardFrameController);

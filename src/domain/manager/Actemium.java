@@ -22,6 +22,7 @@ import domain.enums.EmployeeRole;
 import domain.enums.LoginStatus;
 import domain.enums.TicketStatus;
 import domain.enums.UserStatus;
+import exceptions.AccessException;
 import exceptions.BlockedUserException;
 import exceptions.PasswordException;
 import javafx.collections.FXCollections;
@@ -147,7 +148,7 @@ public class Actemium {
 		UserModel user = findByUsername(username);
 		
 		if (user instanceof Customer) {
-			throw new IllegalArgumentException("Customers cannot sign in into the desktop application!");
+			throw new AccessException("Customers cannot sign in into the desktop application!");
 		}
 		
 		if (password.isBlank()) {
@@ -225,7 +226,10 @@ public class Actemium {
 	// signedInUser right permissions check
 	public void checkPermision(EmployeeRole role) {
 		if (!giveUserRoleAsEnum().equals(role)) {
-			throw new IllegalArgumentException("You need to be an administrator to do this!");
+			throw new AccessException(
+					String.format("You need to be %s %s to do this!"
+							, role.equals(EmployeeRole.ADMINISTRATOR) ? "an" : "a"
+							, role.toString().toLowerCase()));
 		}
 	}
 
