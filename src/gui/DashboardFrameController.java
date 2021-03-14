@@ -45,7 +45,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import languages.LanguageResource;
 
-public class DashboardFrameController <T> extends GuiController implements Observable {
+public class DashboardFrameController <T> extends GuiController {
 	
 	// Facades
     private final UserFacade userFacade;
@@ -181,10 +181,9 @@ public class DashboardFrameController <T> extends GuiController implements Obser
             //gridMenu.getColumnConstraints().add(new ColumnConstraints(width, 100, -1, Priority.ALWAYS, HPos.CENTER, false));
             Button button = createMenuItemButton(text, itemNames.length);
             button.setOnMouseClicked(e -> {
-                fireInvalidationEvent();
-                if (enabled) {
+                tableViewPanelCompanion.alertChangesOnTabelView();
+                if (enabled)
                     buttonMenusClicked(text);
-                }
             });
             hboxMenu.getChildren().add(button);
         }
@@ -343,24 +342,6 @@ public class DashboardFrameController <T> extends GuiController implements Obser
         alert.getDialogPane().getStyleClass().add("alert");
         ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
         alert.showAndWait();
-    }
-
-    private ArrayList<InvalidationListener> listeners = new ArrayList<>();
-
-    @Override
-    public void addListener(InvalidationListener invalidationListener) {
-        listeners.add(invalidationListener);
-    }
-
-    @Override
-    public void removeListener(InvalidationListener invalidationListener) {
-        listeners.remove(invalidationListener);
-    }
-
-    protected void fireInvalidationEvent() {
-        for (InvalidationListener listener : listeners) {
-            listener.invalidated(this);
-        }
     }
 
     public void setEnabled(boolean enabled) {

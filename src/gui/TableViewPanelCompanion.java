@@ -61,7 +61,7 @@ import javafx.stage.Stage;
 import languages.LanguageResource;
 
 
-public class TableViewPanelCompanion<T> extends GridPane implements InvalidationListener {
+public class TableViewPanelCompanion<T> extends GridPane {
 
 	//private UserFacade userFacade;
 	private final DashboardFrameController dashboardFrameController;
@@ -89,7 +89,6 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 		this.dashboardFrameController = dashboardFrameController;
 		this.viewModel = viewModel;
 		this.currentState = currentState;
-		dashboardFrameController.addListener(this);
 
 		try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("TableViewPanel.fxml"));
@@ -562,10 +561,5 @@ public class TableViewPanelCompanion<T> extends GridPane implements Invalidation
 			resultPredicate = newPredicate;
 		}
 		tableViewData.setPredicate((Predicate<? super T>) resultPredicate);
-	}
-
-	@Override
-	public void invalidated(Observable observable) {
-		alertChangesOnTabelView();
 	}
 }

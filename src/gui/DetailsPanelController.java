@@ -350,6 +350,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         btnModify.setVisible(true);
         txtErrorMessage.setVisible(false);
         editing = true;
+
     }
 
     private void setupPaneNewObject(){
@@ -357,6 +358,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         ArrayList<String> fields = null;
 
         viewModel.setFieldModified(true);
+
 
         if (viewModel instanceof UserViewModel) {
             if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)) {
