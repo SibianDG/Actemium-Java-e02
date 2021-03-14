@@ -5,7 +5,9 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -18,9 +20,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import domain.enums.RequiredElement;
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
+import exceptions.InformationRequiredException;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -301,6 +305,49 @@ public class ActemiumTicket implements Ticket, Serializable {
 
 	public StringProperty ticketTypeProperty() {
 		return ticketType;
+	}
+
+	public static class TicketBuiler {
+
+		private TicketPriority ticketPriority;
+		private TicketType ticketType;
+		private String title;
+		private String description;
+		private ActemiumCustomer customer;
+		private Set<RequiredElement> requiredElements;
+
+		public TicketBuiler ticketPriority(TicketPriority priority){
+			this.ticketPriority = priority;
+			return this;
+		}
+
+		public TicketBuiler ticketType(TicketType ticketType){
+			this.ticketType = ticketType;
+			return this;
+		}
+		public TicketBuiler title(String title){
+			this.title = title;
+			return this;
+		}
+		public TicketBuiler description(String description){
+			this.description = description;
+			return this;
+		}
+		public TicketBuiler customer(ActemiumCustomer customer){
+			this.customer = customer;
+			return this;
+		}
+
+		public ActemiumTicket build() throws InformationRequiredException {
+			requiredElements = new HashSet<>();
+			//TODO
+			// domain rules here or in the main class?
+			//if()
+			return null;
+
+		}
+
+
 	}
 
 }
