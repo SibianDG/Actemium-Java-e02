@@ -368,7 +368,18 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		tableView.setItems(tableViewData);
 		
 		tableView.setOnMouseClicked((MouseEvent m) -> {
-			alertChangesOnTabelView();
+			if (alertChangesOnTabelView()) {
+				T data = tableView.getSelectionModel().selectedItemProperty().get();
+				if (data instanceof Employee || data instanceof Customer){
+					((UserViewModel) viewModel).setSelectedUser((User) data);
+				} else if (data instanceof Ticket) {
+					((TicketViewModel) viewModel).setSelectedTicket((Ticket) data);
+				} else if (data instanceof ContractType) {
+					((ContractTypeViewModel) viewModel).setSelectedContractType((ContractType) data);
+				} else if (data instanceof Contract) {
+					((ContractViewModel) viewModel).setSelectedContract((Contract) data);
+				}
+			}
 		});
 
 		/*tableView.setOnKeyPressed( keyEvent -> {
@@ -378,12 +389,11 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		});*/
 	}
 
-	public void alertChangesOnTabelView() {
+	public boolean alertChangesOnTabelView() {
 		boolean showNewObject = true;
 		if(viewModel.isFieldModified()) {
 			//popup
 			Alert alert = new Alert(AlertType.CONFIRMATION);
-
 
 			alert.setTitle(LanguageResource.getString("modifiedWithoutSaving"));
 			alert.setHeaderText(LanguageResource.getString("unsavedChanges"));
@@ -414,24 +424,13 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				dashboardFrameController.setEnabled(false);
 				showNewObject = false;
 			}
-		}
-		// using this if to avoid duplicate code
-		if (showNewObject) {
-			T data = tableView.getSelectionModel().selectedItemProperty().get();
-			if (data instanceof Employee || data instanceof Customer){
-				((UserViewModel) viewModel).setSelectedUser((User) data);
-			} else if (data instanceof Ticket) {
-				((TicketViewModel) viewModel).setSelectedTicket((Ticket) data);
-			} else if (data instanceof ContractType) {
-				((ContractTypeViewModel) viewModel).setSelectedContractType((ContractType) data);
-			} else if (data instanceof Contract) {
-				((ContractViewModel) viewModel).setSelectedContract((Contract) data);
-			}
-		}
+		}		
+		return showNewObject;		
 	}
 
 	@FXML
 	void addOnMouseClicked(MouseEvent event) {
+		if (alertChangesOnTabelView()) {
 		switch(currentState) {
 			case EMPLOYEE ->{
 				((UserViewModel) viewModel).setCurrentState(GUIEnum.EMPLOYEE);
@@ -457,7 +456,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				//tableView.getSelectionModel().clearSelection();
 //				((UserViewModel) viewModel).setSelectedUser(null);
 			}
-
+		}
 		}
 	}
 
