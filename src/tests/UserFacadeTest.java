@@ -134,7 +134,7 @@ public class UserFacadeTest {
     	trainDummy();
     	initUserFacadeAdmin();
 		assertDoesNotThrow(() -> userFacade.modifyEmployee((ActemiumEmployee) tech, USERNAMEAVAILABLE, PASSWORD, "John",
-				"Smith", "Address 78", "0458634795", "john.smith@student.hogent.be", EmployeeRole.ADMINISTRATOR,
+				"Smith", "Address 78", "0032458634795", "john.smith@student.hogent.be", EmployeeRole.ADMINISTRATOR,
 				UserStatus.ACTIVE));
 		Mockito.verify(userRepoDummy).findByUsername(ADMINUSERNAME);
     	Mockito.verify(userRepoDummy).findByUsername(USERNAMEAVAILABLE);

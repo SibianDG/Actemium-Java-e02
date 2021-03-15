@@ -129,8 +129,9 @@ public class ActemiumCompany implements Company, Serializable {
 		//TODO fix phoneNumberRegex
 //		String phoneNumberRegex = "[0-9 /-]+";
 //		if (phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches(phoneNumberRegex)) {
-//			throw new IllegalArgumentException(LanguageResource.getString("phonenumber_invalid"));
-//		}
+		if (phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches(".*\\d.*")) {
+			throw new IllegalArgumentException(LanguageResource.getString("phonenumber_invalid"));
+		}
 		this.phoneNumber = phoneNumber;
 	}
 

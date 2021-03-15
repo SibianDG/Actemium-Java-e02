@@ -40,8 +40,8 @@ public class ActemiumTest {
     			 WRONGUSERNAME = "usernameDoesNotExist"; //EntityNotFoundException()
     private final UserModel admin = new ActemiumEmployee("janJannsens123", "PassWd123&", "Jan", "Jannsens", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR);
     private final UserModel tech = new ActemiumEmployee("jooKlein123", "PassWd123&", "Joost", "Klein", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.TECHNICIAN);
-    private final ActemiumCompany theWhiteHouse = new ActemiumCompany("The White House", "America 420", "911");
-    private final UserModel cust = new ActemiumCustomer("customer123", "PassWd123&", "John", "Smith", theWhiteHouse);
+    private final ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
+    private final UserModel cust = new ActemiumCustomer("customer123", "PassWd123&", "John", "Smith", google);
 
     @Mock
     private UserDao userRepoDummy;

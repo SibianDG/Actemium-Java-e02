@@ -14,7 +14,7 @@ import domain.ActemiumCustomer;
 
 public class CustomerTest {
 
-	ActemiumCompany theWhiteHouse = new ActemiumCompany("The White House", "America 420", "911");
+	ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
 
     private static Stream<Arguments> validUserAttributes() {
         return Stream.of(
@@ -59,7 +59,7 @@ public class CustomerTest {
 	@ParameterizedTest
 	@MethodSource("validUserAttributes")
 	public void createCustomer_ValidAttributes_DoesNotThrowException(String username, String password, String firstName, String lastName) {
-		Assertions.assertDoesNotThrow(() -> new ActemiumCustomer(username, password, firstName, lastName, theWhiteHouse));
+		Assertions.assertDoesNotThrow(() -> new ActemiumCustomer(username, password, firstName, lastName, google));
 	}
 
 	@ParameterizedTest
@@ -67,12 +67,12 @@ public class CustomerTest {
 	public void createCustomer_InValidAttributes_ThrowsIllegalArgumentException(String username, String password,
 			String firstName, String lastName) {
 		Assertions.assertThrows(IllegalArgumentException.class,
-				() -> new ActemiumCustomer(username, password, firstName, lastName, theWhiteHouse));
+				() -> new ActemiumCustomer(username, password, firstName, lastName, google));
 	}
     
     @Test
     public void giveEmployeeSeniroity_returns_valid() {
-		ActemiumCustomer customer = new ActemiumCustomer("Tester123", "Passwd123&", "Jan", "Jannsens", theWhiteHouse);
+		ActemiumCustomer customer = new ActemiumCustomer("Tester123", "Passwd123&", "Jan", "Jannsens", google);
     	customer.setRegistrationDate(LocalDate.now().minusYears(10));
         Assertions.assertEquals(10, customer.giveSeniority());
     }

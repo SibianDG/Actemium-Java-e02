@@ -20,73 +20,82 @@ public class CompanyTest implements Attributes {
     private static Stream<Arguments> validCompanyAttributes() {
         return Stream.of(
                 //names
-                Arguments.of("Actemium", "Mainway 99", "0470099874"),
-                Arguments.of("Microsoft1", "Mainway 99", "0470099874"),
-                Arguments.of("Google_", "Mainway 99", "0470099874"),
-                Arguments.of("Apple_123", "Mainway 99", "0470099874"),
+                Arguments.of("The White House", "United States", "Washington, D.C. 20500", "1600 Pennsylvania Avenue NW", "+1-202-456-1111"),
+                Arguments.of("Microsoft", "United States", "Redmond, WA 98052", "1 Microsoft Way", "+1-425-882-8080"),
+                Arguments.of("M1-cr0s_ft", "United States", "Redmond, WA 98052", "1 Microsoft Way", "+1-425-882-8080"),
+                Arguments.of("Tesla, Inc.", "United States", "Palo Alto, CA 94304", "3500 Deer Creek Road", "+31 20 365 0008"),
 
                 //addresses
-                Arguments.of("Actemium", "Mainway99", "0470099874"),
-                Arguments.of("Actemium", "Mainwayù99", "0470099874"),
-                Arguments.of("Actemium", "Mainwayé99", "0470099874"),
-                Arguments.of("Actemium", "Mainway", "0470099874"),
+                Arguments.of("The White House", "United States", "Washington, D.C. 20500", "1600 Pennsylvania Avenue NW", "+1-202-456-1111"),
+                Arguments.of("Microsoft", "United States", "Redmond, WA 98052", "1 Microsoft Way", "+1-425-882-8080"),
+                Arguments.of("Construct Willy Naessens", "Belgium", "9700 Oudenaarde", "Bedrijvenpark Coupure 15", "055 61 98 19"),
+                Arguments.of("Tesla, Inc.", "United States", "Palo Alto, CA 94304", "3500 Deer Creek Road", "+31 20 365 0008"),
 
                 //phonenumber
-                Arguments.of("Actemium", "Mainway", "047009987"),
-                Arguments.of("Actemium", "Mainway", "047009987400"),
-                Arguments.of("Actemium", "Mainway", "04/700-99-874"),
-                Arguments.of("Actemium", "Mainway", "047 0099 874")
+                Arguments.of("The White House", "United States", "Washington, D.C. 20500", "1600 Pennsylvania Avenue NW", "+1-202-456-1111"),
+                Arguments.of("Microsoft", "United States", "Redmond, WA 98052", "1 Microsoft Way", "+1-425-882-8080"),
+                Arguments.of("Construct Willy Naessens", "Belgium", "9700 Oudenaarde", "Bedrijvenpark Coupure 15", "055 61 98 19"),
+                Arguments.of("Tesla, Inc.", "United States", "Palo Alto, CA 94304", "3500 Deer Creek Road", "+31 20 365 0008")
         );
     }
 
     private static Stream<Arguments> invalidCompanyAttributes() {
         return Stream.of(
                 //null
-                Arguments.of(null, "Mainway 99", "0470099874"),
-                Arguments.of("Actemium", null, "0470099874"),
-                Arguments.of("Actemium", "Mainway 99", null),
+        		Arguments.of(null, "United States", "Washington, D.C. 20500", "1600 Pennsylvania Avenue NW", "+1-202-456-1111"),
+                Arguments.of("Microsoft", null, "Redmond, WA 98052", "1 Microsoft Way", "+1-425-882-8080"),
+                Arguments.of("Construct Willy Naessens", "Belgium", null, "Bedrijvenpark Coupure 15", "055 61 98 19"),
+                Arguments.of("Tesla, Inc.", "United States", "Palo Alto, CA 94304", null, "+31 20 365 0008"),
+                Arguments.of("The White House", "United States", "Washington, D.C. 20500", "1600 Pennsylvania Avenue NW", null),
 
                 //empty
-                Arguments.of("", "Mainway 99", "0470099874"),
-                Arguments.of("Actemium", "", "0470099874"),
-                Arguments.of("Actemium", "Mainway 99", ""),
+                Arguments.of("", "United States", "Washington, D.C. 20500", "1600 Pennsylvania Avenue NW", "+1-202-456-1111"),
+                Arguments.of("Microsoft", "", "Redmond, WA 98052", "1 Microsoft Way", "+1-425-882-8080"),
+                Arguments.of("Construct Willy Naessens", "Belgium", "", "Bedrijvenpark Coupure 15", "055 61 98 19"),
+                Arguments.of("Tesla, Inc.", "United States", "Palo Alto, CA 94304", "", "+31 20 365 0008"),
+                Arguments.of("The White House", "United States", "Washington, D.C. 20500", "1600 Pennsylvania Avenue NW", ""),
 
                 //blank
-                Arguments.of("   ", "Mainway 99", "0470099874"),
-                Arguments.of("Actemium", "   ", "0470099874"),
-                Arguments.of("Actemium", "Mainway 99", "   "),
+                Arguments.of("   ", "United States", "Washington, D.C. 20500", "1600 Pennsylvania Avenue NW", "+1-202-456-1111"),
+                Arguments.of("Microsoft", "    ", "Redmond, WA 98052", "1 Microsoft Way", "+1-425-882-8080"),
+                Arguments.of("Construct Willy Naessens", "Belgium", "    ", "Bedrijvenpark Coupure 15", "055 61 98 19"),
+                Arguments.of("Tesla, Inc.", "United States", "Palo Alto, CA 94304", "      ", "+31 20 365 0008"),
+                Arguments.of("The White House", "United States", "Washington, D.C. 20500", "1600 Pennsylvania Avenue NW", "  "),
 
+                //TODO
                 //bad phonenumber
-                Arguments.of("Actemium", "Mainway", "04°7009987"),
-                Arguments.of("Actemium", "Mainway", "04\"7009987"),
-                Arguments.of("Actemium", "Mainway", "047af009987"),
-                Arguments.of("Actemium", "Mainway", "047009(&)987")
+                Arguments.of("The White House", "United States", "Washington, D.C. 20500", "1600 Pennsylvania Avenue NW", "phoneNumber"),
+                Arguments.of("Microsoft", "United States", "Redmond, WA 98052", "1 Microsoft Way", "phoneNumber"),
+                Arguments.of("Construct Willy Naessens", "Belgium", "9700 Oudenaarde", "Bedrijvenpark Coupure 15", "phoneNumber"),
+                Arguments.of("Tesla, Inc.", "United States", "Palo Alto, CA 94304", "3500 Deer Creek Road", "phoneNumber")
         );
     }
 
     @ParameterizedTest
     @MethodSource("validCompanyAttributes")
-    public void createCompany_ValidCompanyAttributes_DoesNotThrowException(String companyName, String address, String phonenumber) {
-        Assertions.assertDoesNotThrow(() -> new ActemiumCompany(companyName, address, phonenumber));
+    public void createCompany_ValidCompanyAttributes_DoesNotThrowException(String companyName,
+			String companyCountry, String companyCity, String companyAddress, String companyPhone) {
+        Assertions.assertDoesNotThrow(() -> new ActemiumCompany(companyName, companyCountry, companyCity, companyAddress, companyPhone));
     }
 
     @ParameterizedTest
     @MethodSource("invalidCompanyAttributes")
-    public void createActemiumTicket_InValidAttributes04_ThrowsIllegalArgumentException(String companyName, String address, String phonenumber) {
+    public void createActemiumTicket_InValidAttributes04_ThrowsIllegalArgumentException(String companyName,
+			String companyCountry, String companyCity, String companyAddress, String companyPhone) {
         Assertions.assertThrows(IllegalArgumentException.class,
-                () -> new ActemiumCompany(companyName, address, phonenumber));
+                () -> new ActemiumCompany(companyName, companyCountry, companyCity, companyAddress, companyPhone));
     }
 
     @Test
     public void createCompany_correctdateOfCreation() {
-        Assertions.assertEquals(LocalDate.now(), company.getRegistrationDate());
+        Assertions.assertEquals(LocalDate.now(), google.getRegistrationDate());
     }
 
     @Test
     public void addActemiumTicket_CompanyContainsTicket() {
-    	ActemiumCompany company = new ActemiumCompany("Actemium", "Mainway 99", "0470099874");
-    	company.addActemiumTicket(actemiumTicket);
-    	Assertions.assertEquals(actemiumTicket, company.getActemiumTickets().get(0));
+    	ActemiumCompany facebook = new ActemiumCompany("Facebook", "United States", "Menlo Park, CA 94025", "1 Hacker Way", "+1-650-308-7300");
+    	facebook.addActemiumTicket(actemiumTicket);
+    	Assertions.assertEquals(actemiumTicket, facebook.getActemiumTickets().get(0));
     	// cannot use static company, this does not reset before each test
     	// you will not get the right ActemiumTicket
 //    	company.addActemiumTicket(actemiumTicket);
@@ -97,9 +106,9 @@ public class CompanyTest implements Attributes {
     public void addActemiumTicket_CompanyContainsMultipleTickets() {
         for (int i = 0; i < MAX_NUMBER; i++) {
             ActemiumTicket ticket = new ActemiumTicket(TicketPriority.P1, TicketType.SOFTWARE,"Ticket"+i, "Cannot print labels", customer);
-            company.addActemiumTicket(ticket);
+            google.addActemiumTicket(ticket);
         }
-        Assertions.assertEquals(MAX_NUMBER, company.getActemiumTickets().size());
+        Assertions.assertEquals(MAX_NUMBER, google.getActemiumTickets().size());
     }
 
     // Customer is the contactPerson of a company
@@ -108,18 +117,18 @@ public class CompanyTest implements Attributes {
     // Could be changed if we realy have to
     @Test
     public void addContactPerson_CompanyContainsContactPerson() {
-    	ActemiumCompany company = new ActemiumCompany("Actemium", "Mainway 99", "0470099874");
-        company.addContactPerson(customer);
-        Assertions.assertEquals(customer, company.getContactPersons().get(0));
+    	ActemiumCompany facebook = new ActemiumCompany("Facebook", "United States", "Menlo Park, CA 94025", "1 Hacker Way", "+1-650-308-7300");
+    	facebook.addContactPerson(customer);
+        Assertions.assertEquals(customer, facebook.getContactPersons().get(0));
     }
 
     @Test
     public void addContactPerson_CompanyContainsMultipleContactPerson() {
         for (int i = 0; i < MAX_NUMBER; i++) {
-        	ActemiumCustomer contactPerson = new ActemiumCustomer("customer"+i, "PassWd123&", "John", "Smith", company);
-            company.addContactPerson(contactPerson);
+        	ActemiumCustomer contactPerson = new ActemiumCustomer("customer"+i, "PassWd123&", "John", "Smith", google);
+        	google.addContactPerson(contactPerson);
         }
-        Assertions.assertEquals(MAX_NUMBER, company.getContactPersons().size());
+        Assertions.assertEquals(MAX_NUMBER, google.getContactPersons().size());
     }
 
 }

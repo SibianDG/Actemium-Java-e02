@@ -42,7 +42,7 @@ public class ContractTest {
     private static final ActemiumContractType contractType01 = new ActemiumContractType("BasisEmailSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
     private static final ActemiumContractType contractType02 = new ActemiumContractType("FullAllSupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.ALWAYS, 3, 1, 3999.99);
 
-    private static final ActemiumCompany facebook = new ActemiumCompany("Facebook", "America 420", "039234181");
+    private static final ActemiumCompany facebook = new ActemiumCompany("Facebook", "United States", "Menlo Park, CA 94025", "1 Hacker Way", "+1-650-308-7300");
     private static final ActemiumCustomer mark = new ActemiumCustomer("cust03Mark", "Passwd123&", "Mark", "Zuckerberg", facebook);
     
     private static Stream<Arguments> validContractAttributes02() {

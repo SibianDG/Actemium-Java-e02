@@ -1,17 +1,18 @@
 package tests;
 
-import domain.ActemiumTicket;
-import domain.enums.TicketPriority;
-import domain.enums.TicketType;
-import domain.facades.TicketFacade;
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import repository.GenericDao;
 
-import java.util.ArrayList;
+import domain.ActemiumTicket;
+import domain.enums.TicketPriority;
+import domain.enums.TicketType;
+import domain.facades.TicketFacade;
+import repository.GenericDao;
 
 @ExtendWith(MockitoExtension.class)
 public class TicketFacadeTest implements Attributes {
