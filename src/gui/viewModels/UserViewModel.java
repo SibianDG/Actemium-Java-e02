@@ -40,11 +40,11 @@ public class UserViewModel extends ViewModel {
     }
 
     public ArrayList<String> getDetailsNewEmployee(){
-        return new ArrayList<String>(Arrays.asList("Username", "Lastname", "Firstname", "Address", "Email address", "Phone nr", "Employee role"));
+        return new ArrayList<String>(Arrays.asList("Username", "Firstname", "Lastname", "Address", "Email address", "Phone nr", "Employee role"));
     }
     
     public ArrayList<String> getDetailsNewCustomer(){
-        return new ArrayList<String>(Arrays.asList("Username", "Lastname", "Firstname", "Company name", "Company Address", "Company Phone number"));
+        return new ArrayList<String>(Arrays.asList("Username", "Firstname", "Lastname", "Company Name", "Company Country", "Company City", "Company Address", "Company Phone number"));
     }
 
     public Map<String, Map<Boolean, Object>> getDetails(){
@@ -80,9 +80,8 @@ public class UserViewModel extends ViewModel {
                 detailsMap.put("City", Collections.singletonMap(true, customer.giveCompany().getCity()));
                 detailsMap.put("Address", Collections.singletonMap(true, customer.giveCompany().getAddress()));
                 detailsMap.put("Phone Nr", Collections.singletonMap(true, customer.giveCompany().getPhoneNumber()));
-                // Here it's the name and email of the contactperson
-                detailsMap.put("Contact person", Collections.singletonMap(false, ""));
-                // here it's the name and firstname of the customer
+                
+                detailsMap.put("Contact Person", Collections.singletonMap(false, ""));
                 detailsMap.put("Firstname", Collections.singletonMap(true, customer.getFirstName()));
                 detailsMap.put("Lastname", Collections.singletonMap(true, customer.getLastName()));
                 detailsMap.put("Seniority", Collections.singletonMap(true, String.valueOf(customer.giveSeniority())));
