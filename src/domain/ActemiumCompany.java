@@ -28,11 +28,25 @@ public class ActemiumCompany implements Company, Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int companyId;
+	private long companyId;
 
 	@Transient
 	private StringProperty name = new SimpleStringProperty();
+	
+	// Country
+	// e.g. "United States"
+	private String country;
+	// (Postalcode (opt.)) + City
+	// || City + State + zipCode
+	// e.g. "9700 Oudenaarde"
+	// e.g. "Mountain View, CA 94043"
+	private String city;
+	// Street + Nr. 
+	// || Nr. + Street
+	// e.g. "Bedrijvenpark Coupure 15"
+	// e.g. "1600 Amphitheatre Parkway"
 	private String address;
+	
 	private String phoneNumber;
 	private LocalDate registrationDate;
 
@@ -49,8 +63,10 @@ public class ActemiumCompany implements Company, Serializable {
 		super();
 	}
 	
-	public ActemiumCompany(String name, String address, String phoneNumber) {
+	public ActemiumCompany(String name, String country, String city, String address, String phoneNumber) {
 		setName(name);
+		setCountry(country);
+		setCity(city);
 		setAddress(address);
 		setPhoneNumber(phoneNumber);
 		setRegistrationDate(LocalDate.now());
@@ -71,7 +87,29 @@ public class ActemiumCompany implements Company, Serializable {
 		}
 		this.name.set(name);
 	}
+	
+	public String getCountry() {
+		return country;
+	}
 
+	public void setCountry(String country) {
+		if (country == null || country.isBlank()) {
+			throw new IllegalArgumentException(LanguageResource.getString("empty_country"));
+		}
+		this.country = country;
+	}
+	
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		if (city == null || city.isBlank()) {
+			throw new IllegalArgumentException(LanguageResource.getString("empty_city"));
+		}
+		this.city = city;
+	}
+	
 	public String getAddress() {
 		return address;
 	}
@@ -88,10 +126,11 @@ public class ActemiumCompany implements Company, Serializable {
 	}
 
 	public void setPhoneNumber(String phoneNumber) {
-		String usernameRegex = "[0-9 /-]+";
-		if (phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches(usernameRegex)) {
-			throw new IllegalArgumentException(LanguageResource.getString("phonenumber_invalid"));
-		}
+		//TODO fix phoneNumberRegex
+//		String phoneNumberRegex = "[0-9 /-]+";
+//		if (phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches(phoneNumberRegex)) {
+//			throw new IllegalArgumentException(LanguageResource.getString("phonenumber_invalid"));
+//		}
 		this.phoneNumber = phoneNumber;
 	}
 

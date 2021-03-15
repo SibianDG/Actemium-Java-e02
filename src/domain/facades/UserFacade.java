@@ -54,10 +54,24 @@ public class UserFacade implements Facade {
 		return actemium.giveUserLastName();
 	}
 
-	public void registerCustomer(String username, String password, String firstName, String lastName, ActemiumCompany company) {
+	public void registerCustomer(String username, String password, String firstName, String lastName, String companyName,
+			String companyCountry, String companyCity, String companyAddress, String companyPhone) {
 		// check to see if signed in user is Admin
 		actemium.checkPermision(EmployeeRole.ADMINISTRATOR);
-		actemium.existingUsername(username);	
+		actemium.existingUsername(username);
+		ActemiumCompany company = new ActemiumCompany(companyName, companyCountry, companyCity, companyAddress,	companyPhone);
+		ActemiumCustomer newCustomer = new ActemiumCustomer(username, password, firstName, lastName, company);
+		actemium.registerCustomer(newCustomer);
+	}
+	
+	// TODO
+	// companyName vs companyId vs ... ?
+	// how will we select an existing company when creating a new contactperson for it
+	public void registerCustomerUsingExistingCompany(String username, String password, String firstName, String lastName, Long companyId) {
+		// check to see if signed in user is Admin
+		actemium.checkPermision(EmployeeRole.ADMINISTRATOR);
+		actemium.existingUsername(username);
+		ActemiumCompany company = actemium.findCompanyById(companyId);
 		ActemiumCustomer newCustomer = new ActemiumCustomer(username, password, firstName, lastName, company);
 		actemium.registerCustomer(newCustomer);
 	}
@@ -71,9 +85,18 @@ public class UserFacade implements Facade {
 		actemium.registerEmployee(newEmployee);
 	}
 
-	public void modifyCustomer(ActemiumCustomer customer, String username, String password, String firstName, String lastName, ActemiumCompany company, UserStatus status) {
+	public void modifyCustomer(ActemiumCustomer customer, String username, String password, String firstName, String lastName, UserStatus status, String companyName, String companyCountry, String companyCity, String companyAddress, String companyPhone) {
 		// check to see if signed in user is Admin
 		actemium.checkPermision(EmployeeRole.ADMINISTRATOR);
+		
+		// Changes to company of the contactPerson (=Customer)
+		ActemiumCompany company = customer.getCompany();
+		company.setName(companyName);
+		company.setCountry(companyCountry);
+		company.setCity(companyCity);
+		company.setAddress(companyAddress);
+		company.setPhoneNumber(companyPhone);
+		
 		// only needs to be checked if you changed the username 
 		if (!customer.getUsername().equals(username)) {
 			actemium.existingUsername(username);
@@ -86,7 +109,8 @@ public class UserFacade implements Facade {
 		
 		customer.setFirstName(firstName);
 		customer.setLastName(lastName);
-		customer.setCompany(company);
+		// JPA automatically updates the company
+//		customer.setCompany(company);
 		customer.setStatus(status);
 		
 		actemium.modifyCustomer(customer);		

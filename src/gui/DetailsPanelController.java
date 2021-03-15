@@ -144,17 +144,18 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                     , UserStatus.valueOf(getTextFromGridItem(10))
                             );
                         } else if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.CUSTOMER)){
-
-                            //String username, String password, String firstName, String lastName, String status, String companyName, String companyPhone, String companyAddress
+// username, password, firstName, lastName, status, companyName, companyCountry, companyCity, companyAddress, companyPhone
                             ((UserViewModel) viewModel).modifyCustomer(
                                     getTextFromGridItem(1)
                                     , getTextFromGridItem(2)
-                                    , getTextFromGridItem(8)
-                                    , getTextFromGridItem(9)
+                                    , getTextFromGridItem(10)
                                     , getTextFromGridItem(11)
+                                    , getTextFromGridItem(13)
                                     , getTextFromGridItem(4)
-                                    , getTextFromGridItem(6)
-                                    , getTextFromGridItem(5)
+                                    , getTextFromGridItem(5)  
+                                    , getTextFromGridItem(6) 
+                                    , getTextFromGridItem(7) 
+                                    , getTextFromGridItem(8) 
                             );
                         }
                         makePopUp("User edited", "You have successfully edited the user.");
@@ -181,6 +182,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 , getTextFromGridItem(3)
                                 , getTextFromGridItem(4)
                                 , getTextFromGridItem(5)
+                                , getTextFromGridItem(6)
+                                , getTextFromGridItem(7)
                         );
                     }
                 }

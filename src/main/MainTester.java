@@ -12,6 +12,7 @@ public class MainTester {
         System.out.println("This class tests the same as the follow test in DomainTest:");
         System.out.println("loginAttempt_4InValidAdmin_3InValidTech_1InValidAdmin_AdminUserBlocked_1ValidTech_TechUserLoginSuccess_1ValidAdmin_AdminUserStillBlocked()\n");
         UserDaoJpa userDaoJpa = new UserDaoJpa();
+        GenericDaoJpa<ActemiumCompany> companyDaoJpa = new GenericDaoJpa<>(ActemiumCompany.class);
         GenericDaoJpa<ActemiumTicket> ticketDaoJpa = new GenericDaoJpa<>(ActemiumTicket.class);
         GenericDaoJpa<ActemiumContractType> contractTypeDaoJpa = new GenericDaoJpa<>(ActemiumContractType.class);
         GenericDaoJpa<ActemiumContract> contractDaoJpa = new GenericDaoJpa<>(ActemiumContract.class);
@@ -19,12 +20,7 @@ public class MainTester {
         populateDB.run(userDaoJpa, contractTypeDaoJpa);
         System.out.println("populateDB successful");
         
-//        UserModel a = new Administrator("Admin123", "PassWd123&","Jan", "A");
-//        UserModel t = new Technician("Tech123", "PassWd123&","Pol", "T");
-        
-        //TODO or do we have to do something like this?
-        //GenericDao genericDao = new GenericDaoJpa(UserModel.class);
-        Actemium actemium = new Actemium(userDaoJpa, ticketDaoJpa, contractTypeDaoJpa, contractDaoJpa);
+        Actemium actemium = new Actemium(userDaoJpa, companyDaoJpa, ticketDaoJpa, contractTypeDaoJpa, contractDaoJpa);
         UserFacade dc = new UserFacade(actemium);
 
         // 4 failed login attempts for Admin123
@@ -74,11 +70,11 @@ public class MainTester {
 			System.out.println(e.getMessage());
 		}
 
-        ActemiumCompany theWhiteHouse = new ActemiumCompany("The White House", "America 420", "911");
+        ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
         // Can't register if username is already taken
         try {
         	System.out.println("\ndc.registerCustomer(\"Admin123\", \"Passwd123&\", \"Thierry\", \"Kempens\")");
-        	dc.registerCustomer("Admin123", "Passwd123&", "Thierry", "Kempens", theWhiteHouse);
+        	dc.registerCustomer("Admin123", "Passwd123&", "Thierry", "Kempens", "Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
 		} catch (Exception e) {
 //          e.printStackTrace();
 			System.out.println(e.getMessage());
@@ -88,7 +84,7 @@ public class MainTester {
         
         System.out.printf("%nCustomer before modifyCustomer:%nFirst name: %s%nLast name: %s%n", customer.getFirstName(), customer.getLastName());
         
-        dc.modifyCustomer(customer, "cust01Barak", "Passwd123&", "Thierry", "Kempens", theWhiteHouse, UserStatus.ACTIVE);
+        dc.modifyCustomer(customer, "cust01Barak", "Passwd123&", "Thierry", "Kempens", UserStatus.ACTIVE, "Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
         
         System.out.printf("%nCustomer after modifyCustomer:%nFirst name: %s%nLast name: %s%n%n", customer.getFirstName(), customer.getLastName());
         

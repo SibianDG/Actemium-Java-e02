@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
+import domain.ActemiumCompany;
 import domain.ActemiumContract;
 import domain.ActemiumContractType;
 import domain.ActemiumCustomer;
@@ -39,10 +40,9 @@ public class Actemium {
 	// The class is statefull, meaning it keeps al the data from the DB in lists
 
 	// All the Dao classes
-	// Generic version, no Type given
-	private GenericDao genericDaoJpa;
-	private GenericDao<ActemiumTicket> ticketDaoJpa;
 	private UserDao userDaoJpa;
+	private GenericDao<ActemiumCompany> companyDaoJpa;
+	private GenericDao<ActemiumTicket> ticketDaoJpa;
 	private GenericDao<ActemiumContractType> contractTypeDaoJpa;
 	private GenericDao<ActemiumContract> contractDaoJpa;
 
@@ -61,18 +61,17 @@ public class Actemium {
 	
 	// Contrutor for domainTest
 	// will change in the future
-	public Actemium(GenericDao genericDaoJpa, UserDao userDaoJpa) {
-		//TODO What type should we give to GenericDaoJpa?
-		this.genericDaoJpa = genericDaoJpa;
+	public Actemium(UserDao userDaoJpa) {
 		this.userDaoJpa = userDaoJpa; 
 		
 		// Fill up ObservableLists
 		fillInUserLists();
 	}
 	
-	public Actemium(UserDao userDaoJpa, GenericDao<ActemiumTicket> ticketRepo, GenericDao<ActemiumContractType> contactTypeRepo, GenericDao<ActemiumContract> contractRepo) {
+	public Actemium(UserDao userDaoJpa, GenericDao<ActemiumCompany> companyRepo, GenericDao<ActemiumTicket> ticketRepo, GenericDao<ActemiumContractType> contactTypeRepo, GenericDao<ActemiumContract> contractRepo) {
 		
-		this.userDaoJpa = userDaoJpa; 
+		this.userDaoJpa = userDaoJpa;
+		this.companyDaoJpa = companyRepo;
 		this.ticketDaoJpa = ticketRepo;
 		this.contractTypeDaoJpa = contactTypeRepo;
 		this.contractDaoJpa = contractRepo;
@@ -128,7 +127,7 @@ public class Actemium {
 	//TODO constructor vs setter injection?
 	public Actemium() {
 		//TODO What type should we give to GenericDaoJpa?
-		this(new GenericDaoJpa(UserModel.class), new UserDaoJpa());
+		this(new UserDaoJpa());
 //		setUserRepo(new UserDaoJpa());
 	}
 
@@ -257,6 +256,10 @@ public class Actemium {
 	}	
 
 	////////-USERFACADE-////////
+	
+	public ActemiumCompany findCompanyById(Long companyId){
+		return companyDaoJpa.get(companyId);
+	}	
 
 	public void registerCustomer(ActemiumCustomer newCustomer) {
 		userDaoJpa.startTransaction();

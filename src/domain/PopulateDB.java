@@ -1,25 +1,30 @@
 package domain;
 
-import domain.enums.*;
-import repository.GenericDao;
-import repository.UserDaoJpa;
-
 import java.security.SecureRandom;
 import java.time.LocalDate;
-import java.util.ArrayList;
+
+import domain.enums.ContractTypeStatus;
+import domain.enums.EmployeeRole;
+import domain.enums.TicketPriority;
+import domain.enums.TicketStatus;
+import domain.enums.TicketType;
+import domain.enums.Timestamp;
+import domain.enums.UserStatus;
+import repository.GenericDao;
+import repository.UserDaoJpa;
 
 public class PopulateDB {
     public void run(UserDaoJpa userDao, GenericDao<ActemiumContractType> contractTypeDao) {
     	System.out.println("DBTester - creating and persisting multiple user objects");        
         userDao.startTransaction();
         
-        ActemiumCompany theWhiteHouse = new ActemiumCompany("The White House", "America 420", "911");
-        ActemiumCompany naessensNV = new ActemiumCompany("Construct Willy Naessens", "Bedrijvenpark Coupure 15, 9700 Oudenaarde", "911");
-        ActemiumCompany google = new ActemiumCompany("Google", "1600 Amphitheatre Parkway, Mountain View, California, United States", "240217996");
-        ActemiumCompany microsoft = new ActemiumCompany("Microsoft", "America 420", "411048476");
-        ActemiumCompany facebook = new ActemiumCompany("Facebook", "America 420", "039234181");
-        ActemiumCompany amazon = new ActemiumCompany("Amazon", "America 420", "475116936");
-        ActemiumCompany tesla = new ActemiumCompany("Tesla", "America 420", "892645557");
+        ActemiumCompany theWhiteHouse = new ActemiumCompany("The White House", "United States", "Washington, D.C. 20500", "1600 Pennsylvania Avenue NW", "+1-202-456-1111");
+        ActemiumCompany naessensNV = new ActemiumCompany("Construct Willy Naessens", "Belgium", "9700 Oudenaarde", "Bedrijvenpark Coupure 15", "055 61 98 19");
+        ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
+        ActemiumCompany microsoft = new ActemiumCompany("Microsoft", "United States", "Redmond, WA 98052", "1 Microsoft Way", "+1-425-882-8080");
+        ActemiumCompany facebook = new ActemiumCompany("Facebook", "United States", "Menlo Park, CA 94025", "1 Hacker Way", "+1-650-308-7300");
+        ActemiumCompany amazon = new ActemiumCompany("Amazon", "United States", "Seattle, WA 98109-5210", "3500 Deer Creek Road", "+1-206-266-1000");
+        ActemiumCompany tesla = new ActemiumCompany("Tesla", "United States", "Palo Alto, CA 94304", "3500 Deer Creek Road", "+31 20 365 0008");
         
         ActemiumContractType bCtype = new ActemiumContractType("BasicSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
         ActemiumContractType bCtype02 = new ActemiumContractType("BasicEmailSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
@@ -114,15 +119,15 @@ public class PopulateDB {
         userDao.insert(barak);
         userDao.insert(jeff);
         userDao.insert(mark);
-        userDao.insert(bill);
+//        userDao.insert(bill);
         userDao.insert(larry);
         userDao.insert(elon);
         userDao.insert(new ActemiumCustomer("cust02Johan", "Passwd123&", "Willy", "Naessens", naessensNV));
         userDao.insert(new ActemiumEmployee("tech01Donald", "Passwd123&", "Donald", "Trump", "Stationstraat 56", "092548736", "donald.trump@hogent.be", EmployeeRole.TECHNICIAN));
         userDao.insert(new ActemiumEmployee("supman01John", "Passwd123&", "John", "Smiths", "Stationstraat 34", "093504816", "john.smiths@hogent.be", EmployeeRole.SUPPORT_MANAGER));
 
-        ActemiumCompany vatican = new ActemiumCompany("Vatican", "00120 Vatican City", "666");
-        ActemiumCustomer pope = new ActemiumCustomer("PopeFrancis", "Passwd123&", "Jorge Mario", "Bergoglio", vatican);
+//        ActemiumCompany vatican = new ActemiumCompany("Vatican", "00120 Vatican City", "666");
+//        ActemiumCustomer pope = new ActemiumCustomer("PopeFrancis", "Passwd123&", "Jorge Mario", "Bergoglio", vatican);
         SecureRandom randomGen = new SecureRandom();
         TicketPriority[] prios = TicketPriority.values();
         TicketType[] types = TicketType.values() ;
@@ -130,17 +135,16 @@ public class PopulateDB {
         TicketStatus[] status = TicketStatus.values();
         
         for (int i = 0; i < 20; i++) {
-            ActemiumTicket t = new ActemiumTicket(prios[randomGen.nextInt(3)], types[randomGen.nextInt(types.length)], "Title"+i, "Description"+i, pope, "Remark"+i, "screenshot"+i+".png");
+            ActemiumTicket t = new ActemiumTicket(prios[randomGen.nextInt(3)], types[randomGen.nextInt(types.length)], "Title"+i, "Description"+i, bill, "Remark"+i, "screenshot"+i+".png");
             t.setStatus(status[randomGen.nextInt(status.length)]);
-            pope.addTicket(t);
+            mark.addTicket(t);
         }
-        userDao.insert(pope);
+        userDao.insert(bill);
         userDao.commitTransaction();
 
         contractTypeDao.startTransaction();
         contractTypeDao.insert(new ActemiumContractType("ExperimentalSupport", ContractTypeStatus.INACTIVE, true, false, true, Timestamp.ALWAYS, 4, 1, 2999.99));
 		contractTypeDao.commitTransaction();
-
     }
 
 }

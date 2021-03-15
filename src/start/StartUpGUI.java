@@ -1,5 +1,6 @@
 package start;
 
+import domain.ActemiumCompany;
 import domain.ActemiumContract;
 import domain.ActemiumContractType;
 import domain.ActemiumTicket;
@@ -31,13 +32,14 @@ public class StartUpGUI extends Application {
 
         try {
             UserDaoJpa userDaoJpa= new UserDaoJpa();
+            GenericDaoJpa<ActemiumCompany> companyDaoJpa = new GenericDaoJpa<>(ActemiumCompany.class);
             GenericDaoJpa<ActemiumTicket> ticketDaoJpa = new GenericDaoJpa<>(ActemiumTicket.class);
             GenericDaoJpa<ActemiumContractType> contractTypeDaoJpa = new GenericDaoJpa<>(ActemiumContractType.class);
             GenericDaoJpa<ActemiumContract> contractDaoJpa = new GenericDaoJpa<>(ActemiumContract.class);
             PopulateDB populateDB = new PopulateDB();
             populateDB.run(userDaoJpa,contractTypeDaoJpa);
 
-            Actemium actemium = new Actemium(userDaoJpa, ticketDaoJpa, contractTypeDaoJpa, contractDaoJpa);
+            Actemium actemium = new Actemium(userDaoJpa, companyDaoJpa, ticketDaoJpa, contractTypeDaoJpa, contractDaoJpa);
             UserFacade userFacade = new UserFacade(actemium);
             TicketFacade ticketFacade = new TicketFacade(actemium);
             ContractTypeFacade contractTypeFacade = new ContractTypeFacade(actemium);

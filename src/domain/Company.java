@@ -11,6 +11,10 @@ public interface Company {
 
 	public String getName();
 
+	public String getCountry();
+
+	public String getCity();
+
 	public String getAddress();
 
 	public String getPhoneNumber();	

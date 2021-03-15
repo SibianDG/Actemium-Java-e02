@@ -32,7 +32,7 @@ public class UserViewModel extends ViewModel {
         this.selectedUser = user;
         if (user != null){
         	// How can the type still be ActemiumEmployee when we casted it to Employee?
-        	System.out.println(user.getClass().getSimpleName().toUpperCase());
+//        	System.out.println(user.getClass().getSimpleName().toUpperCase());
         	// substring(8) to remove ACTEMIUM
             setCurrentState(GUIEnum.valueOf(user.getClass().getSimpleName().substring(8).toUpperCase()));
         }
@@ -76,6 +76,8 @@ public class UserViewModel extends ViewModel {
 
                 detailsMap.put("Company", Collections.singletonMap(false, ""));
                 detailsMap.put("Name", Collections.singletonMap(true, customer.giveCompany().getName()));
+                detailsMap.put("Country", Collections.singletonMap(true, customer.giveCompany().getCountry()));
+                detailsMap.put("City", Collections.singletonMap(true, customer.giveCompany().getCity()));
                 detailsMap.put("Address", Collections.singletonMap(true, customer.giveCompany().getAddress()));
                 detailsMap.put("Phone Nr", Collections.singletonMap(true, customer.giveCompany().getPhoneNumber()));
                 // Here it's the name and email of the contactperson
@@ -111,19 +113,15 @@ public class UserViewModel extends ViewModel {
 	}
 
 	public void registerCustomer(String username, String firstName, String lastName, String companyName,
-			String companyAddress, String companyPhone) {
-		ActemiumCompany company = new ActemiumCompany(companyName, companyAddress, companyPhone);
-		userFacade.registerCustomer(username, "Passwd123&", firstName, lastName, company);
+			String companyCountry, String companyCity, String companyAddress, String companyPhone) {
+		userFacade.registerCustomer(username, "Passwd123&", firstName, lastName, companyName, companyCountry, companyCity, companyAddress,	companyPhone);
 		setSelectedUser(userFacade.getLastAddedCustomer());
 	}
 
-	public void modifyCustomer(String username, String password, String firstName, String lastName, String status, String companyName, String companyPhone, String companyAddress) {
-        ActemiumCompany company = ((ActemiumCustomer) selectedUser).getCompany();
-        company.setName(companyName);
-        company.setPhoneNumber(companyPhone);
-        company.setAddress(companyAddress);
+	public void modifyCustomer(String username, String password, String firstName, String lastName, String status,
+			String companyName, String companyCountry, String companyCity, String companyAddress, String companyPhone) {		
 		userFacade.modifyCustomer((ActemiumCustomer) this.selectedUser, username, password, firstName, lastName,
-				company, UserStatus.valueOf(status));
+				UserStatus.valueOf(status), companyName, companyCountry, companyCity, companyAddress, companyPhone);
 	}
 
 	@Override

@@ -30,8 +30,8 @@ public class UserFacadeTest {
     			 USERNAMEAVAILABLE = "usernameAvailable";
     private final UserModel admin = new ActemiumEmployee("janJannsens123", "PassWd123&", "Jan", "Jannsens", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR);
     private final UserModel tech = new ActemiumEmployee("jooKlein123", "PassWd123&", "Joost", "Klein", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.TECHNICIAN);
-    private final ActemiumCompany theWhiteHouse = new ActemiumCompany("The White House", "America 420", "911");
-    private final UserModel cust = new ActemiumCustomer("customer123", "PassWd123&", "John", "Smith", theWhiteHouse);
+    private final ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
+    private final UserModel cust = new ActemiumCustomer("customer123", "PassWd123&", "John", "Smith", google);
 
     private UserFacade userFacade;
     
@@ -56,20 +56,24 @@ public class UserFacadeTest {
     userFacade.signIn(ADMINUSERNAME, PASSWORD);
     }
     
-    @Test
-    public void createCustomer_UsernameAlreadyExists_ThrowsIllegalArgumentException() {
-    	trainDummy();
-    	initUserFacadeAdmin();
-    	assertThrows(IllegalArgumentException.class, () -> userFacade.registerCustomer(ADMINUSERNAME, PASSWORD, "John", "Smith", theWhiteHouse)); 
-    	Mockito.verify(userRepoDummy, Mockito.times(2)).findByUsername(ADMINUSERNAME);
-    }
-    
+	@Test
+	public void createCustomer_UsernameAlreadyExists_ThrowsIllegalArgumentException() {
+		trainDummy();
+		initUserFacadeAdmin();
+		assertThrows(IllegalArgumentException.class,
+				() -> userFacade.registerCustomer(ADMINUSERNAME, PASSWORD, "John", "Smith", "Google", "United States",
+						"Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000"));
+		Mockito.verify(userRepoDummy, Mockito.times(2)).findByUsername(ADMINUSERNAME);
+	}
+
     @Test
     public void modifyCustomer_UsernameAlreadyExists_ThrowsIllegalArgumentException() {
     	trainDummy();
     	initUserFacadeAdmin();
-		assertThrows(IllegalArgumentException.class, () -> userFacade.modifyCustomer((ActemiumCustomer) cust, ADMINUSERNAME, PASSWORD, "John",
-				"Smith", theWhiteHouse, UserStatus.ACTIVE));
+		assertThrows(IllegalArgumentException.class,
+				() -> userFacade.modifyCustomer((ActemiumCustomer) cust, ADMINUSERNAME, PASSWORD, "John", "Smith",
+						UserStatus.ACTIVE, "Google", "United States", "Mountain View, CA 94043",
+						"1600 Amphitheatre Parkway", "+1-650-253-0000"));
 		Mockito.verify(userRepoDummy, Mockito.times(2)).findByUsername(ADMINUSERNAME);
     }
     
@@ -77,8 +81,8 @@ public class UserFacadeTest {
     public void createEmployee_UsernameAlreadyExists_ThrowsIllegalArgumentException() {
     	trainDummy();
     	initUserFacadeAdmin();
-		assertThrows(IllegalArgumentException.class, () -> userFacade.registerEmployee(ADMINUSERNAME, PASSWORD, "John", "Smith",
-				"Address 78", "0458634795", "john.smith@student.hogent.be", EmployeeRole.ADMINISTRATOR));
+		assertThrows(IllegalArgumentException.class, () -> userFacade.registerEmployee(ADMINUSERNAME, PASSWORD, "John",
+				"Smith", "Address 78", "0458634795", "john.smith@student.hogent.be", EmployeeRole.ADMINISTRATOR));
 		Mockito.verify(userRepoDummy, Mockito.times(2)).findByUsername(ADMINUSERNAME);
     }
 
@@ -87,8 +91,9 @@ public class UserFacadeTest {
     	trainDummy();
     	initUserFacadeAdmin();
 		assertThrows(IllegalArgumentException.class,
-				() -> userFacade.modifyEmployee((ActemiumEmployee) tech, ADMINUSERNAME, PASSWORD, "John", "Smith", "Address 78", "0458634795",
-						"john.smith@student.hogent.be", EmployeeRole.ADMINISTRATOR, UserStatus.ACTIVE));
+				() -> userFacade.modifyEmployee((ActemiumEmployee) tech, ADMINUSERNAME, PASSWORD, "John", "Smith",
+						"Address 78", "0458634795", "john.smith@student.hogent.be", EmployeeRole.ADMINISTRATOR,
+						UserStatus.ACTIVE));
 		Mockito.verify(userRepoDummy, Mockito.times(2)).findByUsername(ADMINUSERNAME);
      }
     
@@ -97,8 +102,9 @@ public class UserFacadeTest {
     public void createCustomer_UsernameAvailable_DoesNotThrowException() {
     	trainDummy();
     	initUserFacadeAdmin();
-    	assertDoesNotThrow(() -> userFacade.registerCustomer(USERNAMEAVAILABLE, PASSWORD, "John", "Smith", theWhiteHouse)); 
-    	Mockito.verify(userRepoDummy).findByUsername(ADMINUSERNAME);
+		assertDoesNotThrow(() -> userFacade.registerCustomer(USERNAMEAVAILABLE, PASSWORD, "John", "Smith", "Google",
+				"United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000"));
+		Mockito.verify(userRepoDummy).findByUsername(ADMINUSERNAME);
     	Mockito.verify(userRepoDummy).findByUsername(USERNAMEAVAILABLE);
     }
     
@@ -106,9 +112,10 @@ public class UserFacadeTest {
     public void modifyCustomer_UsernameAvailable_DoesNotThrowException() {
     	trainDummy();
     	initUserFacadeAdmin();
-    	assertDoesNotThrow(() -> userFacade.modifyCustomer((ActemiumCustomer) cust, USERNAMEAVAILABLE, PASSWORD, "John",
-    			"Smith", theWhiteHouse, UserStatus.ACTIVE));
-    	Mockito.verify(userRepoDummy).findByUsername(ADMINUSERNAME);
+		assertDoesNotThrow(() -> userFacade.modifyCustomer((ActemiumCustomer) cust, USERNAMEAVAILABLE, PASSWORD, "John",
+				"Smith", UserStatus.ACTIVE, "Google", "United States", "Mountain View, CA 94043",
+				"1600 Amphitheatre Parkway", "+1-650-253-0000"));
+		Mockito.verify(userRepoDummy).findByUsername(ADMINUSERNAME);
     	Mockito.verify(userRepoDummy).findByUsername(USERNAMEAVAILABLE);
     }
     
@@ -126,10 +133,10 @@ public class UserFacadeTest {
     public void modifyEmployee_UsernameAvailable_DoesNotThrowException() {
     	trainDummy();
     	initUserFacadeAdmin();
-    	assertDoesNotThrow(
-    			() -> userFacade.modifyEmployee((ActemiumEmployee) tech, USERNAMEAVAILABLE, PASSWORD, "John", "Smith", "Address 78", "0458634795",
-    					"john.smith@student.hogent.be", EmployeeRole.ADMINISTRATOR, UserStatus.ACTIVE));
-    	Mockito.verify(userRepoDummy).findByUsername(ADMINUSERNAME);
+		assertDoesNotThrow(() -> userFacade.modifyEmployee((ActemiumEmployee) tech, USERNAMEAVAILABLE, PASSWORD, "John",
+				"Smith", "Address 78", "0458634795", "john.smith@student.hogent.be", EmployeeRole.ADMINISTRATOR,
+				UserStatus.ACTIVE));
+		Mockito.verify(userRepoDummy).findByUsername(ADMINUSERNAME);
     	Mockito.verify(userRepoDummy).findByUsername(USERNAMEAVAILABLE);
     }    
     
