@@ -27,7 +27,9 @@ public interface Contract {
 	public IntegerProperty contractIdProperty();
 	
 	public StringProperty contractTypeNameProperty();
-	
+
 	public StringProperty contractStatusProperty();
-	
+	public StringProperty contractStartDateProperty();
+	public StringProperty contractEndDateProperty();
+
 }

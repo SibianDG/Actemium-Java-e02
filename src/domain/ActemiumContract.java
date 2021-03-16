@@ -43,9 +43,13 @@ public class ActemiumContract implements Contract, Serializable {
 
 	@Transient
 	private StringProperty status = new SimpleStringProperty();
-	
-	private LocalDate startDate;
-	private LocalDate endDate;
+
+	@Transient
+	private StringProperty startDate = new SimpleStringProperty();
+	@Transient
+	private StringProperty endDate = new SimpleStringProperty();
+	//private LocalDate startDate;
+	//private LocalDate endDate;
 
 	public ActemiumContract() {
 		super();
@@ -130,6 +134,10 @@ public class ActemiumContract implements Contract, Serializable {
 	}
 
 	public LocalDate getStartDate() {
+		return LocalDate.parse(startDate.get());
+	}
+
+	public StringProperty contractStartDateProperty() {
 		return startDate;
 	}
 
@@ -137,23 +145,29 @@ public class ActemiumContract implements Contract, Serializable {
 		if(startDate.isBefore(LocalDate.now())) {
 			throw new IllegalArgumentException(LanguageResource.getString("startDate_invalid"));
 		}
-		this.startDate = startDate;
+		this.startDate.set(String.valueOf(startDate));
 	}
 
 	public LocalDate getEndDate() {
+		return LocalDate.parse(endDate.get());
+	}
+
+	public StringProperty contractEndDateProperty() {
 		return endDate;
 	}
 
 	public void setEndDate(LocalDate endDate) {
-		if(endDate.isBefore(startDate)) {
+		LocalDate starDate = getStartDate();
+
+		if(endDate.isBefore(starDate)) {
 			throw new IllegalArgumentException(LanguageResource.getString("endDate_invalid1"));
 		}
-		if(!(endDate.minusYears(1).equals(startDate) 
-				|| endDate.minusYears(2).equals(startDate) 
-				|| endDate.minusYears(3).equals(startDate))) {
+		if(!(endDate.minusYears(1).equals(starDate)
+				|| endDate.minusYears(2).equals(starDate)
+				|| endDate.minusYears(3).equals(starDate))) {
 			throw new IllegalArgumentException(LanguageResource.getString("endDate_invalid2"));
 		}
-		this.endDate = endDate;
+		this.endDate.set(String.valueOf(endDate));
 	}
 
 	@Override
@@ -175,6 +189,6 @@ public class ActemiumContract implements Contract, Serializable {
 
 	@Override
 	public String toString() {
-		return String.format("%s %s %s %s %s", this.getContractIdString(), this.contractType.getName(), this.getStatus(), this.getStartDate().toString(), this.getEndDate().toString());
-		}
+		return String.format("%s: %s %s %s until %s", this.getContractIdString(), this.contractType.getName(), this.getStatus(), this.getStartDate().toString(), this.getEndDate().toString());
+	}
 }

@@ -6,8 +6,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import domain.ActemiumContract;
-import domain.ActemiumEmployee;
 import domain.Contract;
 import domain.Employee;
 import domain.enums.ContractStatus;
@@ -34,16 +32,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -54,6 +45,8 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import languages.LanguageResource;
+
+import static javafx.scene.paint.Color.BLACK;
 
 
 public class DetailsPanelController extends GridPane implements InvalidationListener {
@@ -353,7 +346,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     }
 
     private void setDetailOnModifying(){
-        gridDetails.getChildren().clear();
+        initGridDetails();
+
         if (viewModel instanceof UserViewModel) {
             addGridDetails(((UserViewModel) viewModel).getDetails());
             txtDetailsTitle.setText("Details of " + ((UserViewModel) viewModel).getNameOfSelectedUser());
@@ -446,6 +440,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     //todo alles in 1 methode brengen
     private void addNewItemToGrid(ArrayList<String> fields){
         gridDetails.getChildren().clear();
+        gridDetails.getColumnConstraints().clear();
         gridDetails.addColumn(0);
         gridDetails.addColumn(1);
 
@@ -454,9 +449,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     }
 
     private void addItemsToGridNewUser(ArrayList<String> fields){
-        gridDetails.getChildren().clear();
-        gridDetails.addColumn(0);
-        gridDetails.addColumn(1);
+        initGridDetails();
 
         Map<Integer, String> randomValues = Map.of(
                 0, "Username9999"
@@ -471,7 +464,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         for (int i = 0; i < fields.size(); i++) {
             gridDetails.addRow(i);
 
-            gridDetails.add(makeNewLabel(fields.get(i)), 0, i);
+            gridDetails.add(makeNewLabel(fields.get(i), true), 0, i);
 
             Node node;
             if (fields.get(i).toLowerCase().contains("role")){
@@ -492,9 +485,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     }
 
     private void addItemsToGridNewTicket(ArrayList<String> fields){
-        gridDetails.getChildren().clear();
-        gridDetails.addColumn(0);
-        gridDetails.addColumn(1);
+        initGridDetails();
 
         Map<Integer, String> randomValues = Map.of(
                 0, "WieldingRobot05 Defect"
@@ -510,7 +501,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         for (int i = 0; i < fields.size(); i++) {
             gridDetails.addRow(i);
 
-            gridDetails.add(makeNewLabel(fields.get(i)), 0, i);
+            gridDetails.add(makeNewLabel(fields.get(i), true), 0, i);
 
             Node node;
             if (fields.get(i).toLowerCase().contains("priority")) {
@@ -529,9 +520,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     }
 
     private void addItemsToGridNewContractType(ArrayList<String> fields){
-        gridDetails.getChildren().clear();
-        gridDetails.addColumn(0);
-        gridDetails.addColumn(1);
+        initGridDetails();
 
         Map<Integer, String> randomValues = Map.of(
                 0, "ContractTypeeeeee"
@@ -547,7 +536,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
             gridDetails.addRow(i);
 
-            gridDetails.add(makeNewLabel(itemName), 0, i);
+            gridDetails.add(makeNewLabel(itemName, true), 0, i);
 
             itemName = itemName.toLowerCase();
 
@@ -572,9 +561,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     }
 
     private void addItemsToGridNewContract(ArrayList<String> fields){
-        gridDetails.getChildren().clear();
-        gridDetails.addColumn(0);
-        gridDetails.addColumn(1);
+        initGridDetails();
 
         Map<Integer, String> randomValues = Map.of(
                 0, "006"
@@ -590,7 +577,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
             gridDetails.addRow(i);
 
-            gridDetails.add(makeNewLabel(itemName), 0, i);
+            gridDetails.add(makeNewLabel(itemName, true), 0, i);
 
             itemName = itemName.toLowerCase();
 
@@ -608,12 +595,16 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         }
     }
 
-    private Label makeNewLabel(String text){
-        Label label = new Label(text+":");
+    private Label makeNewLabel(String text, boolean withColon){
+        Label label = new Label(text+ (withColon ? ":" : ""));
         label.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         label.setAlignment(Pos.CENTER_RIGHT);
         label.setTextAlignment(TextAlignment.RIGHT);
-        label.setTextFill(Color.rgb(29, 61, 120));
+        if (withColon)
+            label.setTextFill(Color.rgb(29, 61, 120));
+        else {
+            label.setTextFill(BLACK);
+        }
         return label;
     }
 
@@ -622,11 +613,17 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         // Using LinkedHashSet so the order of the map values doesn't change
         Set<String> keys = new LinkedHashSet<String>(details.keySet());
         for (String key : keys) {
-            Label label = makeNewLabel(key);
+            Label label = makeNewLabel(key, true);
 
             Node detail = createElementDetailGridpane(details.get(key), key);
-            gridDetails.add(label, 0, i);
-            gridDetails.add(detail, 1, i);
+            if (key.toLowerCase().contains("contracts")){
+                gridDetails.add(label, 0, i);
+                gridDetails.add(detail, 0, i+1);
+                setColumnSpan(detail, 2);
+            } else {
+                gridDetails.add(label, 0, i);
+                gridDetails.add(detail, 1, i);
+            }
             i++;
         }
     }
@@ -668,13 +665,14 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             node = makeComboBox(o);
         } else if (o instanceof ObservableList) { 
         	if(((ObservableList) o).size() > 0) {
-        	System.out.println(((ObservableList) o).get(0));
-        	if(((ObservableList) o).get(0) instanceof Employee)
-        		node = makeViewTechnicians(o);
-        	else if(((ObservableList) o).get(0) instanceof Contract){
-        		node = makeListView(o);
-        	}
-        }
+                if(((ObservableList) o).get(0) instanceof Employee)
+                    node = makeViewTechnicians(o);
+                else if(((ObservableList) o).get(0) instanceof Contract){
+                    node = makeTableView(o);
+                }
+            } else {
+                node = makeNewLabel("No items available", false);
+            }
             
         } else if (o instanceof LocalDate) {
             node = makeDatePicker(o);
@@ -684,17 +682,36 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         return node;
     }
 
-    private <T> Node makeListView(Object o) {  	
-    	List<Contract> contracts = (ObservableList<Contract>) o;
-    	ObservableList<String> list = FXCollections.observableArrayList(contracts.stream().map(c -> c.toString()).collect(Collectors.toList()));
-    	ListView<String> listView = new ListView<>(list);
-    	
-    	 listView.setMaxHeight(list.size()*25+25);
-         listView.getStylesheets().add("file:src/start/styles.css");
-         listView.setId("list-view");
-         listView.setSelectionModel(null);
-         
-         return listView;
+    private <T> Node makeTableView(Object o) {
+        //ObservableList<String> list = FXCollections.observableArrayList(contracts.stream().map(c -> c.toString()).collect(Collectors.toList()));
+        ObservableList<Contract> list = (ObservableList<Contract>) o;
+        TableView<Contract> tableView = new TableView<>(list);
+
+//return String.format("%s: %s %s %s until %s", this.getContractIdString(), this.contractType.getName(), this.getStatus(), this.getStartDate().toString(), this.getEndDate().toString());
+
+        TableColumn<Contract, Number> columnID = new TableColumn<>("ID");
+        columnID.setCellValueFactory(cellData -> cellData.getValue().contractIdProperty());
+
+        TableColumn<Contract, String> columnName = new TableColumn<>("Name");
+        columnName.setCellValueFactory(cellData -> cellData.getValue().contractTypeNameProperty());
+
+        TableColumn<Contract, String> columnStatus = new TableColumn<>("Status");
+        columnStatus.setCellValueFactory(cellData -> cellData.getValue().contractStatusProperty());
+
+        TableColumn<Contract, String> columnStartDate = new TableColumn<>("Start Date");
+        columnStartDate.setCellValueFactory(cellData -> cellData.getValue().contractStartDateProperty());
+
+        TableColumn<Contract, String> columnEndDate = new TableColumn<>("End Date");
+        columnEndDate.setCellValueFactory(cellData -> cellData.getValue().contractEndDateProperty());
+
+        tableView.getColumns().add(columnID);
+        tableView.getColumns().add(columnName);
+        tableView.getColumns().add(columnStatus);
+        tableView.getColumns().add(columnStartDate);
+        tableView.getColumns().add(columnEndDate);
+
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        return tableView;
     }
     
     private <T> Node makeViewTechnicians(Object o) {
@@ -841,4 +858,16 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         alert.showAndWait();
     }
 
+
+    private void initGridDetails() {
+        gridDetails.getChildren().clear();
+        gridDetails.getColumnConstraints().clear();
+
+        ColumnConstraints col0 = new ColumnConstraints();
+        col0.setPercentWidth(30);
+        ColumnConstraints col1 = new ColumnConstraints();
+        col1.setPercentWidth(70);
+
+        gridDetails.getColumnConstraints().addAll(col0,col1);
+    }
 }

@@ -12,6 +12,9 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 // Customer is the contactPerson of a company
 // Company is the "real" Customer, but for ease of naming
 // we will use the name Customer for contactPerson
@@ -62,8 +65,8 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 		return contracts;
 	}
 
-	public List<Contract> giveContracts() {
-		return (List<Contract>) (Object) contracts;
+	public ObservableList<Contract> giveContracts() {
+		return (ObservableList<Contract>) (Object) FXCollections.observableList(contracts);
 	}
 
 	public void setContracts(List<ActemiumContract> contracts) {
