@@ -1,5 +1,6 @@
 package gui.viewModels;
 
+import exceptions.InformationRequiredException;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 
@@ -36,5 +37,5 @@ public abstract class ViewModel implements Observable {
 		this.fieldModified = fieldModified;
 	}
 
-    public abstract void delete();
+    public abstract void delete() throws InformationRequiredException;
 }

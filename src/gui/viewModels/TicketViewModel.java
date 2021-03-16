@@ -103,7 +103,7 @@ public class TicketViewModel extends ViewModel {
     // TODO
     // Cannot modify customer of the ticket, needs to be unmodifiable field
     public void modifyTicket(TicketPriority priority, TicketType ticketType, TicketStatus status, String title, String description,
-                             String remarks, String attachments, List<ActemiumEmployee> technicians) {
+                             String remarks, String attachments, List<ActemiumEmployee> technicians) throws InformationRequiredException {
         ticketFacade.modifyTicket((ActemiumTicket) selectedTicket, priority, ticketType, status, title, description, remarks, attachments, technicians);
     }
 
@@ -120,7 +120,7 @@ public class TicketViewModel extends ViewModel {
     }
 
     @Override
-    public void delete() {
+    public void delete() throws InformationRequiredException {
         ticketFacade.delete((ActemiumTicket) selectedTicket);
     }
 

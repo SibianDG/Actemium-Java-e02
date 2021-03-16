@@ -43,7 +43,7 @@ public class TicketFacade implements Facade {
 	}
 
 	public void modifyTicket(ActemiumTicket ticket, TicketPriority priority, TicketType ticketType, TicketStatus status, String title, String description,
-							 String remarks, String attachments, List<ActemiumEmployee> technicians) {
+							 String remarks, String attachments, List<ActemiumEmployee> technicians) throws InformationRequiredException {
 		// check to see if signed in user is Support Manger
 		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
 		
@@ -68,7 +68,7 @@ public class TicketFacade implements Facade {
 		actemium.modifyTicket(ticket);
 	}
 	
-    public void delete(ActemiumTicket ticket) {
+    public void delete(ActemiumTicket ticket) throws InformationRequiredException {
 		// check to see if signed in user is Support Manger
 		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
 		ticket.setStatus(TicketStatus.CANCELLED);

@@ -131,10 +131,11 @@ public class ActemiumTicket implements Ticket, Serializable {
 
 	 */
 
-	private ActemiumTicket(TicketBuiler builder){
-		setStatus(TicketStatus.CREATED);
+	private ActemiumTicket(TicketBuiler builder) throws InformationRequiredException {
+		this.status.set(TicketStatus.CREATED.toString());
 		this.priority.set(String.valueOf(builder.ticketPriority));
 		this.ticketType.set(String.valueOf(builder.ticketType));
+		//this.ticketType.set(String.valueOf());
 		this.dateOfCreation = builder.dateOfCreation;
 		this.dateAndTimeOfCreation = builder.dateAndTimeOfCreation;
 		this.dateAndTimeOfCompletion = builder.dateAndTimeOfCompletion;
@@ -168,11 +169,12 @@ public class ActemiumTicket implements Ticket, Serializable {
 		return TicketStatus.valueOf(status.get());
 	}
 
-	public void setStatus(TicketStatus ticketStatus) {
+	public void setStatus(TicketStatus ticketStatus) throws InformationRequiredException {
 		if (ticketStatus == TicketStatus.COMPLETED) {
 			setDateAndTimeOfCompletion(LocalDateTime.now());
 		}
 		this.status.set(ticketStatus.toString());
+		//checkAttributes();
 	}
 
 	public String getPriority() {
@@ -183,8 +185,10 @@ public class ActemiumTicket implements Ticket, Serializable {
 		return TicketPriority.valueOf(priority.get());
 	}
 
-	public void setPriority(TicketPriority priority) {
+	public void setPriority(TicketPriority priority) throws InformationRequiredException {
 		this.priority.set(String.valueOf(priority));
+
+		//checkAttributes();
 	}
 
 	public String getTicketType() {
@@ -195,8 +199,10 @@ public class ActemiumTicket implements Ticket, Serializable {
 		return TicketType.valueOf(ticketType.get());
 	}
 
-	public void setTicketType(TicketType ticketType) {
+	public void setTicketType(TicketType ticketType) throws InformationRequiredException {
 		this.ticketType.set(String.valueOf(ticketType));
+
+		//checkAttributes();
 	}
 
 	public LocalDate getDateOfCreation() {
@@ -228,22 +234,24 @@ public class ActemiumTicket implements Ticket, Serializable {
 		return title.get();
 	}
 
-	public void setTitle(String title) {
-		if (title == null || title.isBlank()) {
-			throw new IllegalArgumentException(LanguageResource.getString("ticketTitle_invalid"));
-		}
+	public void setTitle(String title) throws InformationRequiredException {
+		//if (title == null || title.isBlank()) {
+		//	throw new IllegalArgumentException(LanguageResource.getString("ticketTitle_invalid"));
+		//}
 		this.title.set(title);
+		//checkAttributes();
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
-		if (description == null || description.isBlank()) {
-			throw new IllegalArgumentException(LanguageResource.getString("description_invalid"));
-		}
+	public void setDescription(String description) throws InformationRequiredException {
+		//if (description == null || description.isBlank()) {
+		//	throw new IllegalArgumentException(LanguageResource.getString("description_invalid"));
+		//}
 		this.description = description;
+		//checkAttributes();
 	}
 
 	public ActemiumCustomer getCustomer() {
@@ -256,11 +264,12 @@ public class ActemiumTicket implements Ticket, Serializable {
 	}
 
 
-	public void setCustomer(ActemiumCustomer customer) {
-		if (customer == null) {
-			throw new IllegalArgumentException(LanguageResource.getString("customerAssigned_invalid"));
-		}
+	public void setCustomer(ActemiumCustomer customer) throws InformationRequiredException {
+		//if (customer == null) {
+		//	throw new IllegalArgumentException(LanguageResource.getString("customerAssigned_invalid"));
+		//}
 		this.customer = customer;
+		//checkAttributes();
 	}
 
 	public String getRemarks() {
@@ -295,9 +304,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 	}
 	
 	public void addTechnician(ActemiumEmployee technician) {
-		System.out.println("Add "+technician.getEmailAddress());
 		technicians.add(technician);
-		System.out.println("Added");
 	}
 
 	public String getSolution() {
@@ -345,6 +352,32 @@ public class ActemiumTicket implements Ticket, Serializable {
 	public StringProperty ticketTypeProperty() {
 		return ticketType;
 	}
+
+	//private void checkAttributes() throws InformationRequiredException {
+	//	//TODO: maybe not check all?
+	//	//if you make a new TicketBuilder with the current set attributes, it will throw exception.
+	//	// Ms. Malfait her idea
+	//	System.out.println("UIT NEN SET FZO?");
+	//	System.out.println(1);
+	//	System.out.println(getPriorityAsEnum());
+	//	new TicketBuiler()
+	//			.ticketPriority(getPriorityAsEnum())
+	//			.ticketStatus(getStatusAsEnum())
+	//			.ticketType(getTicketTypeAsEnum())
+	//			.title(this.title.get())
+	//			.description(this.description)
+	//			.customer(this.customer)
+	//			//.dateOfCreation(this.dateOfCreation)
+	//			//.dateAndTimeOfCreation(this.dateAndTimeOfCreation)
+	//			//.dateAndTimeOfCompletion(this.dateAndTimeOfCompletion)
+	//			//.remarks(this.remarks)
+	//			//.attachments(this.attachments)
+	//			//.solution(this.solution)
+	//			//.quality(this.quality)
+	//			//.supportNeeded(this.supportNeeded)
+	//			.build();
+//
+	//}
 
 	public static class TicketBuiler {
 		//private int ticketIdInt;
@@ -468,6 +501,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 				this.supportNeeded = "(not filled in yet)";
 
 			if (!requiredElements.isEmpty()) {
+				//requiredElements.forEach(element -> System.out.println(element));
 				throw new InformationRequiredException(requiredElements);
 			}
 		}

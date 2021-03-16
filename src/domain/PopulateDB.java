@@ -129,7 +129,10 @@ public class PopulateDB {
                 .build();
 
         ticket05.setStatus(TicketStatus.COMPLETED);
+
+
         barak.addTicket(ticket01);
+
         jeff.addTicket(ticket02);
         mark.addTicket(ticket03);
         bill.addTicket(ticket04);
@@ -158,15 +161,16 @@ public class PopulateDB {
         userDao.insert(barak);
         userDao.insert(jeff);
         userDao.insert(mark);
-//        userDao.insert(bill);
+        userDao.insert(bill);
         userDao.insert(larry);
         userDao.insert(elon);
         userDao.insert(new ActemiumCustomer("cust02Johan", "Passwd123&", "Willy", "Naessens", naessensNV));
         userDao.insert(new ActemiumEmployee("tech01Donald", "Passwd123&", "Donald", "Trump", "Stationstraat 56", "092548736", "donald.trump@hogent.be", EmployeeRole.TECHNICIAN));
         userDao.insert(new ActemiumEmployee("supman01John", "Passwd123&", "John", "Smiths", "Stationstraat 34", "093504816", "john.smiths@hogent.be", EmployeeRole.SUPPORT_MANAGER));
 
-//        ActemiumCompany vatican = new ActemiumCompany("Vatican", "00120 Vatican City", "666");
-//        ActemiumCustomer pope = new ActemiumCustomer("PopeFrancis", "Passwd123&", "Jorge Mario", "Bergoglio", vatican);
+        //String name, String country, String city, String address, String phoneNumber
+        ActemiumCompany vatican = new ActemiumCompany("Vatican", "Vatican", "Vatican City", "00120 Vatican City", "666");
+        ActemiumCustomer pope = new ActemiumCustomer("PopeFrancis", "Passwd123&", "Jorge Mario", "Bergoglio", vatican);
         SecureRandom randomGen = new SecureRandom();
         TicketPriority[] prios = TicketPriority.values();
         TicketType[] types = TicketType.values() ;
@@ -177,7 +181,7 @@ public class PopulateDB {
             ActemiumTicket t = new ActemiumTicket.TicketBuiler()
                                                     .ticketPriority(prios[randomGen.nextInt(3)])
                                                     .ticketType(types[randomGen.nextInt(types.length)])
-                                                    .title("Title"+i)
+                                                    .title("TitleRandom"+i)
                                                     .description("Description"+i)
                                                     .customer(bill)
                                                     .remarks("Remark"+i)
@@ -187,6 +191,7 @@ public class PopulateDB {
             mark.addTicket(t);
         }
         userDao.insert(bill);
+
         userDao.commitTransaction();
 
         contractTypeDao.startTransaction();

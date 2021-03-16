@@ -121,8 +121,19 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        viewModel.delete();
-        clearDetailPane();
+        try {
+            viewModel.delete();
+        } catch (InformationRequiredException ire) {
+            StringBuilder errorMessage = new StringBuilder();
+            ire.getInformationRequired().forEach(e -> {
+                System.out.println(e);
+                errorMessage.append(e).append("\n");
+
+            });
+            txtErrorMessage.setText(errorMessage.toString());
+            txtErrorMessage.setVisible(true);
+            clearDetailPane();
+        }
     }
 
     @FXML
