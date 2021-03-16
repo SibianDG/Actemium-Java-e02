@@ -203,6 +203,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 	public void setTicketType(TicketType ticketType) throws InformationRequiredException {
 		this.ticketType.set(String.valueOf(ticketType));
 
+		//@Transient
 		//checkAttributes();
 	}
 
@@ -270,7 +271,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 		//	throw new IllegalArgumentException(LanguageResource.getString("customerAssigned_invalid"));
 		//}
 		this.customer = customer;
-		//checkAttributes();
+		checkAttributes();
 	}
 
 	public String getRemarks() {
@@ -354,31 +355,31 @@ public class ActemiumTicket implements Ticket, Serializable {
 		return ticketType;
 	}
 
-	//private void checkAttributes() throws InformationRequiredException {
-	//	//TODO: maybe not check all?
-	//	//if you make a new TicketBuilder with the current set attributes, it will throw exception.
-	//	// Ms. Malfait her idea
-	//	System.out.println("UIT NEN SET FZO?");
-	//	System.out.println(1);
-	//	System.out.println(getPriorityAsEnum());
-	//	new TicketBuiler()
-	//			.ticketPriority(getPriorityAsEnum())
-	//			.ticketStatus(getStatusAsEnum())
-	//			.ticketType(getTicketTypeAsEnum())
-	//			.title(this.title.get())
-	//			.description(this.description)
-	//			.customer(this.customer)
-	//			//.dateOfCreation(this.dateOfCreation)
-	//			//.dateAndTimeOfCreation(this.dateAndTimeOfCreation)
-	//			//.dateAndTimeOfCompletion(this.dateAndTimeOfCompletion)
-	//			//.remarks(this.remarks)
-	//			//.attachments(this.attachments)
-	//			//.solution(this.solution)
-	//			//.quality(this.quality)
-	//			//.supportNeeded(this.supportNeeded)
-	//			.build();
-//
-	//}
+	public void checkAttributes() throws InformationRequiredException {
+		//TODO: maybe not check all?
+		//if you make a new TicketBuilder with the current set attributes, it will throw exception.
+		// Ms. Malfait her idea
+		System.out.println("UIT NEN SET FZO?");
+		System.out.println(1);
+		System.out.println(getPriorityAsEnum());
+		new TicketBuiler()
+				.ticketPriority(getPriorityAsEnum())
+				.ticketStatus(getStatusAsEnum())
+				.ticketType(getTicketTypeAsEnum())
+				.title(this.title.get())
+				.description(this.description)
+				.customer(this.customer)
+				//.dateOfCreation(this.dateOfCreation)
+				//.dateAndTimeOfCreation(this.dateAndTimeOfCreation)
+				//.dateAndTimeOfCompletion(this.dateAndTimeOfCompletion)
+				//.remarks(this.remarks)
+				//.attachments(this.attachments)
+				//.solution(this.solution)
+				//.quality(this.quality)
+				//.supportNeeded(this.supportNeeded)
+				.build();
+
+	}
 
 	public static class TicketBuiler {
 		//private int ticketIdInt;

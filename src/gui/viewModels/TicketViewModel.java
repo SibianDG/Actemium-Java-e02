@@ -110,7 +110,7 @@ public class TicketViewModel extends ViewModel {
         //techniciansAsignedToTicket = new ArrayList<>();
     }
 
-    public void modifyTicketOutstanding(String solution, String quality, String supportNeeded) {
+    public void modifyTicketOutstanding(String solution, String quality, String supportNeeded) throws InformationRequiredException {
         ticketFacade.modifyTicketOutstanding((ActemiumTicket) selectedTicket, solution, quality, supportNeeded);
     }
 

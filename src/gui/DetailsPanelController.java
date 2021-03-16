@@ -710,6 +710,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         tableView.getColumns().add(columnStartDate);
         tableView.getColumns().add(columnEndDate);
 
+        tableView.setSelectionModel(null);
+        tableView.getStyleClass().add("ignoreHover");
+
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         return tableView;
     }

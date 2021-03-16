@@ -56,17 +56,20 @@ public class TicketFacade implements Facade {
 		ticket.setRemarks(remarks);
 		ticket.setAttachments(attachments);
 		ticket.setTechnicians(new ArrayList<>());
+		ticket.checkAttributes();
 		technicians.forEach(ticket::addTechnician);
 
 		actemium.modifyTicket(ticket);
 	}
 	
-	public void modifyTicketOutstanding(ActemiumTicket ticket, String solution, String quality, String supportNeeded) {
+	public void modifyTicketOutstanding(ActemiumTicket ticket, String solution, String quality, String supportNeeded) throws InformationRequiredException {
 		// check to see if signed in user is Support Manger
 		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
 		ticket.setSolution(solution);
 		ticket.setQuality(quality);
 		ticket.setSupportNeeded(supportNeeded);
+		ticket.checkAttributes();
+
 		actemium.modifyTicket(ticket);
 	}
 	

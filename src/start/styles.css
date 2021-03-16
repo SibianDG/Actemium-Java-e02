@@ -128,6 +128,15 @@
     -fx-text-background-color: #ffffff;
 }
 
+.ignoreHover:row-selection .ignoreHover:filled:hover, .ignoreHover:focused .ignoreHover:filled:focused:selected:hover,
+    .ignoreHover.table-view:row-selection .table-row-cell:filled:hover, .ignoreHover.table-view:focused .table-row-cell:filled:focused:selected:hover,
+    .ignoreHover .table-view:row-selection .table-row-cell:filled:focused:hover,
+    .ignoreHover:row-selection .table-row-cell:filled:focused:hover, .ignoreHover:row-selection .table-row-cell:filled:focused:hover,
+    .ignoreHover .table-view:row-selection .table-row-cell:filled:hover, .ignoreHover .table-view:focused .table-row-cell:filled:focused:selected:hover{
+    -fx-background-color: #fff;
+    -fx-text-background-color: #292929;
+}
+
 #list-view {
     -fx-background-insets: 0;
     -fx-padding: 0;

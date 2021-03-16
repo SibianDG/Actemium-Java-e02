@@ -16,9 +16,9 @@ import repository.UserDaoJpa;
 
 public class PopulateDB {
     public void run(UserDaoJpa userDao, GenericDao<ActemiumContractType> contractTypeDao) throws InformationRequiredException {
-    	System.out.println("DBTester - creating and persisting multiple user objects");        
+    	System.out.println("DBTester - creating and persisting multiple user objects");
         userDao.startTransaction();
-        
+
         ActemiumCompany theWhiteHouse = new ActemiumCompany("The White House", "United States", "Washington, D.C. 20500", "1600 Pennsylvania Avenue NW", "+1-202-456-1111");
         ActemiumCompany naessensNV = new ActemiumCompany("Construct Willy Naessens", "Belgium", "9700 Oudenaarde", "Bedrijvenpark Coupure 15", "055 61 98 19");
         ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
@@ -26,7 +26,7 @@ public class PopulateDB {
         ActemiumCompany facebook = new ActemiumCompany("Facebook", "United States", "Menlo Park, CA 94025", "1 Hacker Way", "+1-650-308-7300");
         ActemiumCompany amazon = new ActemiumCompany("Amazon", "United States", "Seattle, WA 98109-5210", "410 Terry Avenue North", "+1-206-266-1000");
         ActemiumCompany tesla = new ActemiumCompany("Tesla", "United States", "Palo Alto, CA 94304", "3500 Deer Creek Road", "+31 20 365 0008");
-        
+
         ActemiumContractType bCtype = new ActemiumContractType("BasicSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
         ActemiumContractType bCtype02 = new ActemiumContractType("BasicEmailSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
         ActemiumContractType cCtype = new ActemiumContractType("BasicAppSupport", ContractTypeStatus.ACTIVE, false, false, true, Timestamp.WORKINGHOURS, 5, 2, 1299.99);
@@ -38,14 +38,14 @@ public class PopulateDB {
         ActemiumContractType jCtype = new ActemiumContractType("AmazonSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
         ActemiumContractType jCtype02 = new ActemiumContractType("MonopolySupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.ALWAYS, 3, 1, 6969.69);
         ActemiumContractType pCtype = new ActemiumContractType("BasicPhoneSupport", ContractTypeStatus.ACTIVE, false, true, false, Timestamp.WORKINGHOURS, 5, 2, 1999.99);
-        
+
         ActemiumCustomer barak = new ActemiumCustomer("cust01Barak", "Passwd123&", "Barak", "Obama", theWhiteHouse);
         ActemiumCustomer jeff = new ActemiumCustomer("cust02Jeff", "Passwd123&", "Jeff", "Bezos", amazon);
         ActemiumCustomer mark = new ActemiumCustomer("cust03Mark", "Passwd123&", "Mark", "Zuckerberg", facebook);
         ActemiumCustomer bill = new ActemiumCustomer("cust04Bill", "Passwd123&", "Bill", "Gates", microsoft);
         ActemiumCustomer larry = new ActemiumCustomer("cust05Larry", "Passwd123&", "Larry", "Page", google);
-        ActemiumCustomer elon = new ActemiumCustomer("cust06Elon", "Passwd123&", "Elon", "Musk", tesla);        
-        
+        ActemiumCustomer elon = new ActemiumCustomer("cust06Elon", "Passwd123&", "Elon", "Musk", tesla);
+
         ActemiumContract bContract = new ActemiumContract(bCtype, barak, LocalDate.now().plusYears(1));
         ActemiumContract bContract02 = new ActemiumContract(bCtype02, barak, LocalDate.now().plusYears(1));
         ActemiumContract jContract = new ActemiumContract(jCtype, jeff, LocalDate.now().plusYears(3));
@@ -57,26 +57,26 @@ public class PopulateDB {
         ActemiumContract lContract = new ActemiumContract(eCtype, larry, LocalDate.now().plusYears(3));
         ActemiumContract lContract02 = new ActemiumContract(hCtype, larry, LocalDate.now().plusYears(3));
         ActemiumContract eContract = new ActemiumContract(fCtype, elon, LocalDate.now().plusYears(2));
-        ActemiumContract eContract02 = new ActemiumContract(pCtype, elon, LocalDate.now().plusYears(2));        
-        
+        ActemiumContract eContract02 = new ActemiumContract(pCtype, elon, LocalDate.now().plusYears(2));
+
         barak.addContract(bContract);
         barak.addContract(bContract02);
-        
+
         jeff.addContract(jContract);
         jeff.addContract(jContract02);
-        
+
         mark.addContract(mContract);
         mark.addContract(mContract02);
-        
+
         bill.addContract(gContract);
         bill.addContract(gContract02);
-        
+
         larry.addContract(lContract);
         larry.addContract(lContract02);
-        
+
         elon.addContract(eContract);
         elon.addContract(eContract02);
-        
+
         mark.setStatus(UserStatus.BLOCKED);
         larry.setStatus(UserStatus.INACTIVE);
         ActemiumEmployee tech = new ActemiumEmployee("Technician", "Passwd123&", "Joe", "Biden","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.TECHNICIAN);
@@ -174,9 +174,9 @@ public class PopulateDB {
         SecureRandom randomGen = new SecureRandom();
         TicketPriority[] prios = TicketPriority.values();
         TicketType[] types = TicketType.values() ;
-        
+
         TicketStatus[] status = TicketStatus.values();
-        
+
         for (int i = 0; i < 20; i++) {
             ActemiumTicket t = new ActemiumTicket.TicketBuiler()
                                                     .ticketPriority(prios[randomGen.nextInt(3)])
