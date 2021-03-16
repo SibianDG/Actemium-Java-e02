@@ -12,11 +12,12 @@
         <class>domain.ActemiumCompany</class>
         <class>domain.ActemiumContractType</class>
 
-        <properties>
-            <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=ticketsysteme02;Trusted_Connection=True;"/>
-            <!--<property name="javax.persistence.jdbc.user" value="HoGent_SQLLogin_1"/>
-            <property name="javax.persistence.jdbc.password" value="c5d8zsol7z"/>-->
+        <properties>          
+        	<property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=ticketsysteme02;integratedSecurity=true;"/>
+      		<property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+            <!-- <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>-->          
+            <!--<property name="javax.persistence.jdbc.user" value="HoGent_SQLLogin_1"/>-->
+            <!--<property name="javax.persistence.jdbc.password" value="c5d8zsol7z"/>-->
             <!--<property name="javax.persistence.schema-generation.database.action" value="create"/>-->
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
         </properties>
