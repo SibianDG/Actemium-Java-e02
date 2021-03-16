@@ -23,7 +23,7 @@ public class PopulateDB {
         ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
         ActemiumCompany microsoft = new ActemiumCompany("Microsoft", "United States", "Redmond, WA 98052", "1 Microsoft Way", "+1-425-882-8080");
         ActemiumCompany facebook = new ActemiumCompany("Facebook", "United States", "Menlo Park, CA 94025", "1 Hacker Way", "+1-650-308-7300");
-        ActemiumCompany amazon = new ActemiumCompany("Amazon", "United States", "Seattle, WA 98109-5210", "3500 Deer Creek Road", "+1-206-266-1000");
+        ActemiumCompany amazon = new ActemiumCompany("Amazon", "United States", "Seattle, WA 98109-5210", "410 Terry Avenue North", "+1-206-266-1000");
         ActemiumCompany tesla = new ActemiumCompany("Tesla", "United States", "Palo Alto, CA 94304", "3500 Deer Creek Road", "+31 20 365 0008");
         
         ActemiumContractType bCtype = new ActemiumContractType("BasicSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);

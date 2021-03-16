@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -33,12 +32,11 @@ import gui.viewModels.ContractViewModel;
 import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -84,6 +82,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 
 	private ObservableList<T> mainData;
 	private FilteredList<T> tableViewData;
+	private SortedList<T> tableViewDataSorted;
 	
 	public TableViewPanelCompanion(DashboardFrameController dashboardFrameController, ViewModel viewModel, GUIEnum currentState) {
 		this.dashboardFrameController = dashboardFrameController;
@@ -103,7 +102,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			case EMPLOYEE -> {
 				this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).giveEmployees();
 				this.tableViewData = new FilteredList<>(mainData);
-				tableViewData.sorted((Comparator<T>) Comparator.comparing(c -> ((User) c).getFirstName().toLowerCase()).thenComparing(c -> ((User) c).getLastName().toLowerCase()));
+//				tableViewDataSorted = tableViewData.sorted((Comparator<T>) Comparator.comparing(c -> ((User) c).getFirstName().toLowerCase()).thenComparing(c -> ((User) c).getLastName().toLowerCase()));
 				propertyMap.put("Firstname", item -> ((Employee)item).firstNameProperty());
 				propertyMap.put("Lastname", item -> ((Employee)item).lastNameProperty());
 //				propertyMap.put("Username", item -> ((Employee)item).usernameProperty());
@@ -113,7 +112,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			case CUSTOMER -> {
 				this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).giveCustomers();
 				this.tableViewData = new FilteredList<>(mainData);
-				tableViewData.sorted((Comparator<T>) Comparator.comparing(c -> ((Customer) c).giveCompany().getName().toLowerCase()).thenComparing(c -> ((User) c).getFirstName().toLowerCase()).thenComparing(c -> ((User) c).getLastName().toLowerCase()));
+//				tableViewData.sorted((Comparator<T>) Comparator.comparing(c -> ((Customer) c).giveCompany().getName().toLowerCase()).thenComparing(c -> ((User) c).getFirstName().toLowerCase()).thenComparing(c -> ((User) c).getLastName().toLowerCase()));
 				propertyMap.put("Company", item -> ((Customer)item).giveCompany().nameProperty());
 				propertyMap.put("Status", item -> ((Customer)item).statusProperty());
 				propertyMap.put("Firstname", item -> ((Customer)item).firstNameProperty());
@@ -365,7 +364,10 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			tableView.getColumns().add(c);
 		});
 
-		tableView.setItems(tableViewData);
+		tableViewDataSorted = tableViewData.sorted();
+		tableViewDataSorted.comparatorProperty().bind(tableView.comparatorProperty());
+		
+		tableView.setItems(tableViewDataSorted);
 		
 		tableView.setOnMouseClicked((MouseEvent m) -> {
 			if (alertChangesOnTabelView()) {
@@ -512,14 +514,10 @@ public class TableViewPanelCompanion<T> extends GridPane {
 			}
 		} else if (currentState.equals(GUIEnum.CONTRACTTYPE)){
 			
-			System.out.println("IN FILTER CONTRACTTYPE");
-			System.out.println("filterText " + filterText);
-			//TODO
 			if (fieldName.length() > 0 && !filterText.contains("select")){
 
 				Predicate<ContractType> newPredicate;
 
-				//TODO change fieldnames
 				switch (fieldName) {
 					case "Name" -> newPredicate = e -> e.getName().toLowerCase().contains(filterText);
 					case "Timestamp" -> newPredicate = e -> e.getTimestamp().toString().toLowerCase().equals(filterText);
@@ -529,13 +527,12 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				return newPredicate;				
 			}
 		} else if (currentState.equals(GUIEnum.CONTRACT)){
-			//TODO
+
 			if (fieldName.length() > 0 && !filterText.contains("select")){
 				System.out.println("filterText " + filterText);
 
 				Predicate<Contract> newPredicate;
 				
-				//TODO change fieldnames
 				switch (fieldName) {
 					case "ContractNr" -> newPredicate = e -> e.getContractNrString().equals(filterText);
 					case "CompanyName" -> newPredicate = e -> e.giveCustomer().giveCompany().getName().toLowerCase().contains(filterText);
