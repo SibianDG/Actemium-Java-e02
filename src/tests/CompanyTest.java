@@ -3,6 +3,7 @@ package tests;
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
+import exceptions.InformationRequiredException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -92,10 +93,10 @@ public class CompanyTest implements Attributes {
     }
 
     @Test
-    public void addActemiumTicket_CompanyContainsTicket() {
+    public void addActemiumTicket_CompanyContainsTicket() throws InformationRequiredException {
     	ActemiumCompany facebook = new ActemiumCompany("Facebook", "United States", "Menlo Park, CA 94025", "1 Hacker Way", "+1-650-308-7300");
-    	facebook.addActemiumTicket(actemiumTicket);
-    	Assertions.assertEquals(actemiumTicket, facebook.getActemiumTickets().get(0));
+    	facebook.addActemiumTicket(getActemiumTicket());
+    	Assertions.assertEquals(getActemiumTicket(), facebook.getActemiumTickets().get(0));
     	// cannot use static company, this does not reset before each test
     	// you will not get the right ActemiumTicket
 //    	company.addActemiumTicket(actemiumTicket);
@@ -103,9 +104,15 @@ public class CompanyTest implements Attributes {
     }
 
     @Test
-    public void addActemiumTicket_CompanyContainsMultipleTickets() {
+    public void addActemiumTicket_CompanyContainsMultipleTickets() throws InformationRequiredException {
         for (int i = 0; i < MAX_NUMBER; i++) {
-            ActemiumTicket ticket = new ActemiumTicket(TicketPriority.P1, TicketType.SOFTWARE,"Ticket"+i, "Cannot print labels", customer);
+            ActemiumTicket ticket = new ActemiumTicket.TicketBuiler()
+                    .ticketPriority(TicketPriority.P1)
+                    .ticketType(TicketType.SOFTWARE)
+                    .title("Ticket"+i)
+                    .description("Cannot print labels")
+                    .customer(customer)
+                    .build();
             google.addActemiumTicket(ticket);
         }
         Assertions.assertEquals(MAX_NUMBER, google.getActemiumTickets().size());
@@ -131,4 +138,14 @@ public class CompanyTest implements Attributes {
         Assertions.assertEquals(MAX_NUMBER, google.getContactPersons().size());
     }
 
+    @Override
+    public ActemiumTicket getActemiumTicket() throws InformationRequiredException {
+        return new ActemiumTicket.TicketBuiler()
+                .ticketPriority(TicketPriority.P1)
+                .ticketType(TicketType.SOFTWARE)
+                .title("Printer Broken")
+                .description("Cannot print labels")
+                .customer(customer)
+                .build();
+    }
 }

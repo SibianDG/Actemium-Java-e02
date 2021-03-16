@@ -4,11 +4,12 @@ import domain.*;
 import domain.enums.UserStatus;
 import domain.facades.UserFacade;
 import domain.manager.Actemium;
+import exceptions.InformationRequiredException;
 import repository.GenericDaoJpa;
 import repository.UserDaoJpa;
 
 public class MainTester {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InformationRequiredException {
         System.out.println("This class tests the same as the follow test in DomainTest:");
         System.out.println("loginAttempt_4InValidAdmin_3InValidTech_1InValidAdmin_AdminUserBlocked_1ValidTech_TechUserLoginSuccess_1ValidAdmin_AdminUserStillBlocked()\n");
         UserDaoJpa userDaoJpa = new UserDaoJpa();

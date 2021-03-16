@@ -2,6 +2,7 @@ package tests;
 
 import java.util.stream.Stream;
 
+import exceptions.InformationRequiredException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,14 +17,16 @@ import domain.enums.EmployeeRole;
 import domain.enums.TicketPriority;
 import domain.enums.TicketType;
 
-public class ActemiumTicketTest {
+public class ActemiumTicketTest implements Attributes {
 	
 	private final ActemiumEmployee technician = new ActemiumEmployee("jooKlein123", "PassWd123&", "Joost", "Klein", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.TECHNICIAN);
     private static final ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
     private static final ActemiumCustomer customer = new ActemiumCustomer("customer123", "PassWd123&", "John", "Smith", google);
-	private final ActemiumTicket ticket01 = new ActemiumTicket(TicketPriority.P1, TicketType.SOFTWARE ,"Printer Broken", "Cannot print labels", customer);
-	
-    private static Stream<Arguments> validActemiumTicketAttributes04() {
+
+	public ActemiumTicketTest() throws InformationRequiredException {
+	}
+
+	private static Stream<Arguments> validActemiumTicketAttributes04() {
         return Stream.of(
                 Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer),
                 Arguments.of(TicketPriority.P2, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer),
@@ -84,15 +87,28 @@ public class ActemiumTicketTest {
 	@MethodSource("validActemiumTicketAttributes04")
 	public void createActemiumTicket_ValidAttributes04_DoesNotThrowException(TicketPriority ticketPriority, TicketType ticketType,
 			String title, String description, ActemiumCustomer customer) {
-		Assertions.assertDoesNotThrow(() -> new ActemiumTicket(ticketPriority, ticketType, title, description, customer));
+		Assertions.assertDoesNotThrow(() -> new ActemiumTicket.TicketBuiler()
+																.ticketPriority(ticketPriority)
+																.ticketType(ticketType)
+																.title(title)
+																.description(description)
+																.customer(customer)
+																.build());
+
 	}
 
 	@ParameterizedTest
 	@MethodSource("invalidActemiumTicketAttributes04")
 	public void createActemiumTicket_InValidAttributes04_ThrowsIllegalArgumentException(TicketPriority ticketPriority, TicketType ticketType,
 			String title, String description, ActemiumCustomer customer) {
-		Assertions.assertThrows(IllegalArgumentException.class,
-				() -> new ActemiumTicket(ticketPriority, ticketType, title, description, customer));
+		Assertions.assertThrows(InformationRequiredException.class,
+				() -> new ActemiumTicket.TicketBuiler()
+										.ticketPriority(ticketPriority)
+										.ticketType(ticketType)
+										.title(title)
+										.description(description)
+										.customer(customer)
+										.build());
 	}
 
 	@ParameterizedTest
@@ -100,24 +116,48 @@ public class ActemiumTicketTest {
 	public void createActemiumTicket_ValidAttributes06_DoesNotThrowException(TicketPriority ticketPriority, TicketType ticketType,
 			String title, String description, ActemiumCustomer customer, String remarks, String attachments) {
 		Assertions.assertDoesNotThrow(
-				() -> new ActemiumTicket(ticketPriority, ticketType, title, description, customer, remarks, attachments));
+				() -> new ActemiumTicket.TicketBuiler()
+										.ticketPriority(ticketPriority)
+										.ticketType(ticketType)
+										.title(title)
+										.description(description)
+										.customer(customer)
+										.build());
 	}
 
 	@ParameterizedTest
 	@MethodSource("invalidActemiumTicketAttributes06")
 	public void createActemiumTicket_InValidAttributes06_ThrowsIllegalArgumentException(TicketPriority ticketPriority, TicketType ticketType,
 			String title, String description, ActemiumCustomer customer, String remarks, String attachments) {
-		Assertions.assertThrows(IllegalArgumentException.class,
-				() -> new ActemiumTicket(ticketPriority, ticketType, title, description, customer, remarks, attachments));
+		Assertions.assertThrows(InformationRequiredException.class,
+				() -> new ActemiumTicket.TicketBuiler()
+										.ticketPriority(ticketPriority)
+										.ticketType(ticketType)
+										.title(title)
+										.description(description)
+										.customer(customer)
+										.build());
 	}
 
 	// TODO Should this method be tested seperately like it is now
 	// or will a constructor test be sufficient since the method is called in the
 	// constructor?
 	@Test
-	public void addTechnician_TechniciansContainsNewTechnician() {
-		ticket01.addTechnician(technician);
-		Assertions.assertEquals(technician, ticket01.getTechnicians().get(0));
+	public void addTechnician_TechniciansContainsNewTechnician() throws InformationRequiredException {
+		ActemiumTicket actemiumTicket = getActemiumTicket();
+		actemiumTicket.addTechnician(technician);
+		Assertions.assertEquals(technician, actemiumTicket.getTechnicians().get(0));
 	}
-    
+
+	@Override
+	public ActemiumTicket getActemiumTicket() throws InformationRequiredException {
+			return new ActemiumTicket.TicketBuiler()
+					.ticketPriority(TicketPriority.P1)
+					.ticketType(TicketType.SOFTWARE)
+					.title("Printer Broken")
+					.description("Cannot print labels")
+					.customer(customer)
+					.build();
+
+	}
 }

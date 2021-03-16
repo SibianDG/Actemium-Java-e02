@@ -2,6 +2,7 @@ package tests;
 
 import java.util.ArrayList;
 
+import exceptions.InformationRequiredException;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -23,14 +24,31 @@ public class TicketFacadeTest implements Attributes {
     @InjectMocks
     private TicketFacade tf;
 
-    private void trainDummy() {
+    private void trainDummy() throws InformationRequiredException {
         ArrayList<ActemiumTicket> tickets = new ArrayList<>();
         for (int i = 0; i < MAX_NUMBER; i++) {
-            ActemiumTicket ticket = new ActemiumTicket(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer);
+            ActemiumTicket ticket = new ActemiumTicket.TicketBuiler()
+                    .ticketPriority(TicketPriority.P1)
+                    .ticketType(TicketType.SOFTWARE)
+                    .title("Printer Broken")
+                    .description("Cannot print labels")
+                    .customer(customer)
+                    .build();
+
 
         }
         Mockito.lenient().when(ticketRepoDummy.findAll()).thenReturn(tickets);
 
     }
 
+    @Override
+    public ActemiumTicket getActemiumTicket() throws InformationRequiredException {
+        return new ActemiumTicket.TicketBuiler()
+                .ticketPriority(TicketPriority.P1)
+                .ticketType(TicketType.SOFTWARE)
+                .title("Printer Broken")
+                .description("Cannot print labels")
+                .customer(customer)
+                .build();
+    }
 }

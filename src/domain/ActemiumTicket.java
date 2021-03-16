@@ -100,6 +100,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 
 	//TODO:
 	//remove CTOR & setters
+	/*
 	public ActemiumTicket(TicketPriority ticketPriority, TicketType ticketType, String title, String description, ActemiumCustomer customer,
 			String remarks, String attachments) {
 		super();
@@ -118,13 +119,17 @@ public class ActemiumTicket implements Ticket, Serializable {
 		setQuality("(not filled in yet)");
 		setSupportNeeded("(not filled in yet)");
 	}
+	 */
 
 	//TODO:
 	//remove CTOR & setters
 	// remarks and attachments are optional ( (none) is used so the field can be modified in gui)
+	/*
 	public ActemiumTicket(TicketPriority ticketPriority, TicketType ticketType, String title, String description, ActemiumCustomer customer) {
 		this(ticketPriority, ticketType, title, description, customer, "(none)", "(none)");
 	}
+
+	 */
 
 	private ActemiumTicket(TicketBuiler builder){
 		setStatus(TicketStatus.CREATED);
@@ -140,6 +145,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 		this.solution = builder.solution;
 		this.quality = builder.quality;
 		this.supportNeeded = builder.supportNeeded;
+		this.technicians = builder.technicians;
 	}
 	
 	public String getTicketIdString() {
@@ -289,7 +295,9 @@ public class ActemiumTicket implements Ticket, Serializable {
 	}
 	
 	public void addTechnician(ActemiumEmployee technician) {
+		System.out.println("Add "+technician.getEmailAddress());
 		technicians.add(technician);
+		System.out.println("Added");
 	}
 
 	public String getSolution() {
@@ -339,6 +347,10 @@ public class ActemiumTicket implements Ticket, Serializable {
 	}
 
 	public static class TicketBuiler {
+		//private int ticketIdInt;
+		//private ActemiumCompany company;
+
+
 		private TicketStatus ticketStatus;
 		private TicketPriority ticketPriority;
 		private TicketType ticketType;
@@ -353,9 +365,11 @@ public class ActemiumTicket implements Ticket, Serializable {
 		private String solution;
 		private String quality;
 		private String supportNeeded;
+		private List<ActemiumEmployee> technicians = new ArrayList<>();
 
 
 		private Set<RequiredElement> requiredElements;
+
 
 		public TicketBuiler ticketPriority(TicketPriority priority){
 			this.ticketPriority = priority;
@@ -415,19 +429,28 @@ public class ActemiumTicket implements Ticket, Serializable {
 			this.supportNeeded = supportNeeded;
 			return this;
 		}
+		public TicketBuiler technicians(List<ActemiumEmployee> technicians){
+			this.technicians = technicians;
+			return this;
+		}
 
 		public ActemiumTicket build() throws InformationRequiredException {
 			requiredElements = new HashSet<>();
 
 			ActemiumTicket ticket = new ActemiumTicket(this);
+			checkAttributesTicketBuiler();
+			return ticket;
+		}
+
+		public void checkAttributesTicketBuiler() throws InformationRequiredException {
 
 			if (ticketPriority == null)
 				requiredElements.add(RequiredElement.TicketPriorityRequired);
 			if (ticketType == null)
 				requiredElements.add(RequiredElement.TicketTypeRequired);
-			if (title == null || title.isEmpty())
+			if (title == null || title.isBlank())
 				requiredElements.add(RequiredElement.TicketTitleRequired);
-			if (description == null || description.isEmpty())
+			if (description == null || description.isBlank())
 				requiredElements.add(RequiredElement.TicketDescriptionRequired);
 			if (customer == null)
 				requiredElements.add(RequiredElement.TicketCustomerIDRequired);
@@ -447,8 +470,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 			if (!requiredElements.isEmpty()) {
 				throw new InformationRequiredException(requiredElements);
 			}
-			return null;
-
 		}
 
 	}

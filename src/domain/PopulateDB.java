@@ -10,11 +10,12 @@ import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import domain.enums.Timestamp;
 import domain.enums.UserStatus;
+import exceptions.InformationRequiredException;
 import repository.GenericDao;
 import repository.UserDaoJpa;
 
 public class PopulateDB {
-    public void run(UserDaoJpa userDao, GenericDao<ActemiumContractType> contractTypeDao) {
+    public void run(UserDaoJpa userDao, GenericDao<ActemiumContractType> contractTypeDao) throws InformationRequiredException {
     	System.out.println("DBTester - creating and persisting multiple user objects");        
         userDao.startTransaction();
         
@@ -83,12 +84,50 @@ public class PopulateDB {
 
         userDao.insert(tech);
         userDao.insert(tech2);
-        ActemiumTicket ticket01 = new ActemiumTicket(TicketPriority.P1,TicketType.DATABASE, "Ticket1", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", barak);
-        ActemiumTicket ticket02 = new ActemiumTicket(TicketPriority.P1, TicketType.HARDWARE,"Ticket2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", jeff);
-        ActemiumTicket ticket03 = new ActemiumTicket(TicketPriority.P1, TicketType.INFRASTRUCTURE, "BBQ grill stopt working", "I was smoking these meats with sweet baby rays saus and suddenly my BBQ stopped working", mark);
-        ActemiumTicket ticket04 = new ActemiumTicket(TicketPriority.P1, TicketType.NETWORK, "Microchips in vaccine not working", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", bill);
-        ActemiumTicket ticket05 = new ActemiumTicket(TicketPriority.P1, TicketType.SOFTWARE, "Ticket5", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", larry);
-        ActemiumTicket ticket06 = new ActemiumTicket(TicketPriority.P1, TicketType.SOFTWARE, "Ticket6", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", elon);
+        ActemiumTicket ticket01 = new ActemiumTicket.TicketBuiler()
+                                                    .ticketPriority(TicketPriority.P1)
+                                                    .ticketType(TicketType.DATABASE)
+                                                    .title("Ticket1")
+                                                    .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+                                                    .customer(barak)
+                                                    .build();
+
+        ActemiumTicket ticket02 = new ActemiumTicket.TicketBuiler()
+                .ticketPriority(TicketPriority.P1)
+                .ticketType(TicketType.HARDWARE)
+                .title("Ticket2")
+                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+                .customer(jeff)
+                .build();
+        ActemiumTicket ticket03 = new ActemiumTicket.TicketBuiler()
+                .ticketPriority(TicketPriority.P1)
+                .ticketType(TicketType.INFRASTRUCTURE)
+                .title("BBQ grill stopt working")
+                .description("I was smoking these meats with sweet baby rays saus and suddenly my BBQ stopped working")
+                .customer(mark)
+                .build();
+        ActemiumTicket ticket04 = new ActemiumTicket.TicketBuiler()
+                .ticketPriority(TicketPriority.P1)
+                .ticketType(TicketType.NETWORK)
+                .title("Microchips in vaccine not working")
+                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+                .customer(bill)
+                .build();
+        ActemiumTicket ticket05 = new ActemiumTicket.TicketBuiler()
+                .ticketPriority(TicketPriority.P1)
+                .ticketType(TicketType.SOFTWARE)
+                .title("Ticket5")
+                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+                .customer(larry)
+                .build();
+        ActemiumTicket ticket06 = new ActemiumTicket.TicketBuiler()
+                .ticketPriority(TicketPriority.P1)
+                .ticketType(TicketType.SOFTWARE)
+                .title("Ticket6")
+                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+                .customer(elon)
+                .build();
+
         ticket05.setStatus(TicketStatus.COMPLETED);
         barak.addTicket(ticket01);
         jeff.addTicket(ticket02);
@@ -135,7 +174,15 @@ public class PopulateDB {
         TicketStatus[] status = TicketStatus.values();
         
         for (int i = 0; i < 20; i++) {
-            ActemiumTicket t = new ActemiumTicket(prios[randomGen.nextInt(3)], types[randomGen.nextInt(types.length)], "Title"+i, "Description"+i, bill, "Remark"+i, "screenshot"+i+".png");
+            ActemiumTicket t = new ActemiumTicket.TicketBuiler()
+                                                    .ticketPriority(prios[randomGen.nextInt(3)])
+                                                    .ticketType(types[randomGen.nextInt(types.length)])
+                                                    .title("Title"+i)
+                                                    .description("Description"+i)
+                                                    .customer(bill)
+                                                    .remarks("Remark"+i)
+                                                    .attachments("screenshot"+i+".png")
+                                                    .build();
             t.setStatus(status[randomGen.nextInt(status.length)]);
             mark.addTicket(t);
         }
