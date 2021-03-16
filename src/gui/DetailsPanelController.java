@@ -20,6 +20,7 @@ import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import domain.enums.Timestamp;
 import domain.enums.UserStatus;
+import exceptions.InformationRequiredException;
 import gui.viewModels.ContractTypeViewModel;
 import gui.viewModels.ContractViewModel;
 import gui.viewModels.TicketViewModel;
@@ -293,7 +294,22 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             setDetailOnModifying();
 
             //TODO: handle the correct error messages, not just all
-        } catch (Exception e){
+        } catch (InformationRequiredException ire) {
+            System.out.println("IRE!!");
+
+            StringBuilder errorMessage = new StringBuilder();
+            ire.getInformationRequired().forEach(e -> {
+                System.out.println(e);
+                errorMessage.append(e).append("\n");
+
+            });
+            txtErrorMessage.setText(errorMessage.toString());
+            txtErrorMessage.setVisible(true);
+        } catch (NumberFormatException nfe) {
+            txtErrorMessage.setText(LanguageResource.getString("ticketCustomerID_invalid"));
+            txtErrorMessage.setVisible(true);
+        }
+        catch (Exception e){
             System.out.println(Arrays.toString(e.getStackTrace()));
             txtErrorMessage.setText(e.getMessage());
             txtErrorMessage.setVisible(true);

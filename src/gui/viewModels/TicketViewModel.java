@@ -11,6 +11,7 @@ import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import domain.facades.TicketFacade;
+import exceptions.InformationRequiredException;
 import gui.GUIEnum;
 import javafx.collections.ObservableList;
 
@@ -94,7 +95,7 @@ public class TicketViewModel extends ViewModel {
     }
 
     public void registerTicket(TicketPriority priority, TicketType ticketType, String title, String description,
-                               String remarks, String attachments, long customerId) {
+                               String remarks, String attachments, long customerId) throws InformationRequiredException {
         ticketFacade.registerTicket(priority, ticketType, title, description, remarks, attachments, customerId);
         setSelectedTicket(ticketFacade.getLastAddedTicket());
     }

@@ -13,6 +13,7 @@ import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import domain.manager.Actemium;
+import exceptions.InformationRequiredException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -25,11 +26,19 @@ public class TicketFacade implements Facade {
 	}
 
 	public void registerTicket(TicketPriority priority, TicketType ticketType, String title, String description,
-							   String remarks, String attachments, long customerId) {
+							   String remarks, String attachments, long customerId) throws InformationRequiredException {
 		// check to see if signed in user is Support Manger
 		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
 		ActemiumCustomer customer = (ActemiumCustomer) actemium.findUserById(customerId);
-		ActemiumTicket ticket = new ActemiumTicket(priority, ticketType, title, description, customer, remarks, attachments);
+//		ActemiumTicket ticket = new ActemiumTicket(priority, ticketType, title, description, customer, remarks, attachments);
+		ActemiumTicket ticket = new ActemiumTicket.TicketBuiler()
+							.ticketPriority(priority)
+							.ticketType(ticketType)
+							.description(description)
+							.customer(customer)
+							.remarks(remarks)
+							.attachments(attachments)
+							.build();
 		actemium.registerTicket(ticket, customer);
 	}
 

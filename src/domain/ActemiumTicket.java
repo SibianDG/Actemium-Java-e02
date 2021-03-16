@@ -34,6 +34,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import languages.LanguageResource;
 
+
+
 @Entity
 @Access(AccessType.FIELD)
 public class ActemiumTicket implements Ticket, Serializable {
@@ -95,6 +97,9 @@ public class ActemiumTicket implements Ticket, Serializable {
 		super();
 	}
 
+
+	//TODO:
+	//remove CTOR & setters
 	public ActemiumTicket(TicketPriority ticketPriority, TicketType ticketType, String title, String description, ActemiumCustomer customer,
 			String remarks, String attachments) {
 		super();
@@ -114,9 +119,27 @@ public class ActemiumTicket implements Ticket, Serializable {
 		setSupportNeeded("(not filled in yet)");
 	}
 
+	//TODO:
+	//remove CTOR & setters
 	// remarks and attachments are optional ( (none) is used so the field can be modified in gui)
 	public ActemiumTicket(TicketPriority ticketPriority, TicketType ticketType, String title, String description, ActemiumCustomer customer) {
 		this(ticketPriority, ticketType, title, description, customer, "(none)", "(none)");
+	}
+
+	private ActemiumTicket(TicketBuiler builder){
+		setStatus(TicketStatus.CREATED);
+		this.priority.set(String.valueOf(builder.ticketPriority));
+		this.ticketType.set(String.valueOf(builder.ticketType));
+		this.dateOfCreation = builder.dateOfCreation;
+		this.dateAndTimeOfCreation = builder.dateAndTimeOfCreation;
+		this.dateAndTimeOfCompletion = builder.dateAndTimeOfCompletion;
+		this.title.set(builder.title);
+		this.description = builder.description;
+		this.customer = builder.customer;
+		this.remarks = builder.remarks;
+		this.solution = builder.solution;
+		this.quality = builder.quality;
+		this.supportNeeded = builder.supportNeeded;
 	}
 	
 	public String getTicketIdString() {
@@ -316,12 +339,22 @@ public class ActemiumTicket implements Ticket, Serializable {
 	}
 
 	public static class TicketBuiler {
-
+		private TicketStatus ticketStatus;
 		private TicketPriority ticketPriority;
 		private TicketType ticketType;
+		private LocalDate dateOfCreation;
+		private LocalDateTime dateAndTimeOfCreation;
+		private LocalDateTime dateAndTimeOfCompletion;
 		private String title;
 		private String description;
 		private ActemiumCustomer customer;
+		private String remarks;
+		private String attachments;
+		private String solution;
+		private String quality;
+		private String supportNeeded;
+
+
 		private Set<RequiredElement> requiredElements;
 
 		public TicketBuiler ticketPriority(TicketPriority priority){
@@ -345,16 +378,78 @@ public class ActemiumTicket implements Ticket, Serializable {
 			this.customer = customer;
 			return this;
 		}
+		public TicketBuiler ticketStatus(TicketStatus ticketStatus){
+			this.ticketStatus = ticketStatus;
+			return this;
+		}
+
+		public TicketBuiler dateOfCreation(LocalDate dateOfCreation){
+			this.dateOfCreation = dateOfCreation;
+			return this;
+		}
+		public TicketBuiler dateAndTimeOfCreation(LocalDateTime dateAndTimeOfCreation){
+			this.dateAndTimeOfCreation = dateAndTimeOfCreation;
+			return this;
+		}
+		public TicketBuiler dateAndTimeOfCompletion(LocalDateTime dateAndTimeOfCompletion){
+			this.dateAndTimeOfCompletion = dateAndTimeOfCompletion;
+			return this;
+		}
+		public TicketBuiler remarks(String remarks){
+			this.remarks = remarks;
+			return this;
+		}
+		public TicketBuiler attachments(String attachments){
+			this.attachments = attachments;
+			return this;
+		}
+		public TicketBuiler solution(String solution){
+			this.solution = solution;
+			return this;
+		}
+		public TicketBuiler quality(String quality){
+			this.quality = quality;
+			return this;
+		}
+		public TicketBuiler supportNeeded(String supportNeeded){
+			this.supportNeeded = supportNeeded;
+			return this;
+		}
 
 		public ActemiumTicket build() throws InformationRequiredException {
 			requiredElements = new HashSet<>();
-			//TODO
-			// domain rules here or in the main class?
-			//if()
+
+			ActemiumTicket ticket = new ActemiumTicket(this);
+
+			if (ticketPriority == null)
+				requiredElements.add(RequiredElement.TicketPriorityRequired);
+			if (ticketType == null)
+				requiredElements.add(RequiredElement.TicketTypeRequired);
+			if (title == null || title.isEmpty())
+				requiredElements.add(RequiredElement.TicketTitleRequired);
+			if (description == null || description.isEmpty())
+				requiredElements.add(RequiredElement.TicketDescriptionRequired);
+			if (customer == null)
+				requiredElements.add(RequiredElement.TicketCustomerIDRequired);
+			if (ticketStatus == null)
+				this.ticketStatus = TicketStatus.CREATED;
+			if (dateOfCreation == null)
+				this.dateOfCreation = LocalDate.now();
+			if (dateAndTimeOfCreation == null)
+				this.dateAndTimeOfCreation = LocalDateTime.now();
+			if (solution == null)
+				this.solution = "(not filled in yet)";
+			if (quality == null)
+				this.quality = "(not filled in yet)";
+			if (supportNeeded == null)
+				this.supportNeeded = "(not filled in yet)";
+
+			if (!requiredElements.isEmpty()) {
+				throw new InformationRequiredException(requiredElements);
+			}
 			return null;
 
 		}
-
 
 	}
 

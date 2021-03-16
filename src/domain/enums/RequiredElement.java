@@ -66,6 +66,18 @@ public enum RequiredElement {
         }
     }
 
+    , TicketPriorityRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("ticketPriority_invalid");
+        }
+    }
+    , TicketTypeRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("ticketType_invalid");
+        }
+    }
     , TicketTitleRequired {
         @Override
         public String toString() {

@@ -39,7 +39,7 @@
             </GridPane>
             <HBox alignment="CENTER">
                <children>
-                  <Text fx:id="txtErrorMessage" fill="#c90808" strokeType="OUTSIDE" strokeWidth="0.0" text="Error Messages" textAlignment="RIGHT">
+                  <Text fx:id="txtErrorMessage" fill="#c90808" strokeType="OUTSIDE" strokeWidth="0.0" text="Error Messages" textAlignment="CENTER">
                      <font>
                         <Font name="Arial" size="16.0" />
                      </font>
