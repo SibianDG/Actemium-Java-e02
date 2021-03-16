@@ -173,4 +173,8 @@ public class ActemiumContract implements Contract, Serializable {
 		return status;
 	}
 
+	@Override
+	public String toString() {
+		return String.format("%s %s %s %s %s", this.getContractIdString(), this.contractType.getName(), this.getStatus(), this.getStartDate().toString(), this.getEndDate().toString());
+		}
 }

@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
+import domain.ActemiumContract;
 import domain.ActemiumEmployee;
+import domain.Contract;
 import domain.Employee;
 import domain.enums.ContractStatus;
 import domain.enums.ContractTypeStatus;
@@ -663,8 +666,16 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             node = makeComboBox(o);
         } else if (o instanceof Boolean) {
             node = makeComboBox(o);
-        } else if (o instanceof ObservableList) {
-            node = makeViewTechnicians(o);
+        } else if (o instanceof ObservableList) { 
+        	if(((ObservableList) o).size() > 0) {
+        	System.out.println(((ObservableList) o).get(0));
+        	if(((ObservableList) o).get(0) instanceof Employee)
+        		node = makeViewTechnicians(o);
+        	else if(((ObservableList) o).get(0) instanceof Contract){
+        		node = makeListView(o);
+        	}
+        }
+            
         } else if (o instanceof LocalDate) {
             node = makeDatePicker(o);
         }
@@ -673,6 +684,19 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         return node;
     }
 
+    private <T> Node makeListView(Object o) {  	
+    	List<Contract> contracts = (ObservableList<Contract>) o;
+    	ObservableList<String> list = FXCollections.observableArrayList(contracts.stream().map(c -> c.toString()).collect(Collectors.toList()));
+    	ListView<String> listView = new ListView<>(list);
+    	
+    	 listView.setMaxHeight(list.size()*25+25);
+         listView.getStylesheets().add("file:src/start/styles.css");
+         listView.setId("list-view");
+         listView.setSelectionModel(null);
+         
+         return listView;
+    }
+    
     private <T> Node makeViewTechnicians(Object o) {
         VBox vBox = new VBox();
         ObservableList<Employee> technicians = (ObservableList<Employee>) o;

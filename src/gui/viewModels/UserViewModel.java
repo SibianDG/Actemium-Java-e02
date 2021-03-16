@@ -89,6 +89,7 @@ public class UserViewModel extends ViewModel {
                 // how are we going to show all the contracts in the details pannel?
                 // they request it in the use case "Manage Users"
                 detailsMap.put("Status", Collections.singletonMap(true, customer.getStatusAsEnum()));
+                detailsMap.put("Contracts", Collections.singletonMap(true, customer.giveContracts()));
                 return detailsMap;
             } 
             default -> {return null;}

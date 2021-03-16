@@ -3,6 +3,8 @@ package domain;
 import java.time.LocalDate;
 import java.util.List;
 
+import javafx.collections.ObservableList;
+
 public interface Customer extends User {
 	
 	// getters
@@ -11,7 +13,7 @@ public interface Customer extends User {
 	
 	public Company giveCompany();
 	
-	public List<Contract> giveContracts();
+	public ObservableList<Contract> giveContracts();
 
 	public LocalDate getRegistrationDate();
 	
