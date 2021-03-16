@@ -652,6 +652,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
         //create dropdown with all possible employees
         MenuButton menuButton = new MenuButton("Select technician");
+        menuButton.setId("menu-bar");
         ObservableList<Employee> allTechnicians = ((TicketViewModel) viewModel).getAllTechnicians();
         List<CheckMenuItem> listTechicians = new ArrayList<>();
         allTechnicians.forEach(item -> listTechicians.add(new CheckMenuItem(item.getFirstName() + " " + item.getLastName())));
@@ -698,6 +699,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         c.valueProperty().addListener(e -> {
             viewModel.setFieldModified(true);
         });
+
         return c;
     }
     
