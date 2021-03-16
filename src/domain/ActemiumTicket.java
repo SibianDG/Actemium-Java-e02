@@ -147,6 +147,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 		this.quality = builder.quality;
 		this.supportNeeded = builder.supportNeeded;
 		this.technicians = builder.technicians;
+		this.attachments = builder.attachments;
 	}
 	
 	public String getTicketIdString() {
@@ -470,9 +471,9 @@ public class ActemiumTicket implements Ticket, Serializable {
 		public ActemiumTicket build() throws InformationRequiredException {
 			requiredElements = new HashSet<>();
 
-			ActemiumTicket ticket = new ActemiumTicket(this);
+			//ActemiumTicket ticket = ;
 			checkAttributesTicketBuiler();
-			return ticket;
+			return new ActemiumTicket(this);
 		}
 
 		public void checkAttributesTicketBuiler() throws InformationRequiredException {
@@ -499,7 +500,10 @@ public class ActemiumTicket implements Ticket, Serializable {
 				this.quality = "(not filled in yet)";
 			if (supportNeeded == null)
 				this.supportNeeded = "(not filled in yet)";
-
+			if (remarks == null)
+				this.remarks = "(none)";
+			if (attachments == null)
+				this.attachments = "(none)";
 			if (!requiredElements.isEmpty()) {
 				//requiredElements.forEach(element -> System.out.println(element));
 				throw new InformationRequiredException(requiredElements);

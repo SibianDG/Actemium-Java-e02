@@ -61,7 +61,6 @@ public class TicketViewModel extends ViewModel {
     }
     
     public Map<String, Map<Boolean, Object>> getDetails() {
-        System.out.println(selectedTicket);
         Ticket ticket = selectedTicket;
         Map<String, Map<Boolean, Object>> details = new LinkedHashMap<>();
         details.put("Title", Collections.singletonMap(true, ticket.getTitle()));

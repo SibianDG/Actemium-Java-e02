@@ -358,7 +358,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             btnDelete.setVisible(true);
         } else if (viewModel instanceof TicketViewModel) {
             System.out.println(1);
-            System.out.println(((TicketViewModel) viewModel).getDetails());
             System.out.println("swexrdctfvygbuhj");
             addGridDetails(((TicketViewModel) viewModel).getDetails());
             System.out.println(2);
