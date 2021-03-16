@@ -681,6 +681,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         List<CheckMenuItem> listTechicians = new ArrayList<>();
         Map<String, Employee> namesAndTechs = new HashMap<>();
 
+        ListView<String> listView = new ListView<>(stringsList);
+
         allTechnicians.forEach(item -> {
             listTechicians.add(new CheckMenuItem(item.getFirstName() + " " + item.getLastName()));
             namesAndTechs.put(item.getFirstName() + " " + item.getLastName(), item);
@@ -719,12 +721,12 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                     //add technician to ticket
                     ((TicketViewModel) viewModel).removeTechnician(namesAndTechs.get(tech.getText()));
                 }
+                listView.setMaxHeight(((TicketViewModel) viewModel).getTechniciansAsignedToTicket().size()*25+25);
             });
         }
 
         //create Listview for technicians for ticket
-        ListView<String> listView = new ListView<>(stringsList);
-        listView.setMaxHeight(technicians.size()*25+25);
+        listView.setMaxHeight(((TicketViewModel) viewModel).getTechniciansAsignedToTicket().size()*25+25);
         listView.getStylesheets().add("file:src/start/styles.css");
         listView.setId("list-view");
         listView.setSelectionModel(null);
