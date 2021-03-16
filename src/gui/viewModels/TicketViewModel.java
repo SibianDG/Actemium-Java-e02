@@ -61,6 +61,7 @@ public class TicketViewModel extends ViewModel {
     }
     
     public Map<String, Map<Boolean, Object>> getDetails() {
+        System.out.println(selectedTicket);
         Ticket ticket = selectedTicket;
         Map<String, Map<Boolean, Object>> details = new LinkedHashMap<>();
         details.put("Title", Collections.singletonMap(true, ticket.getTitle()));
@@ -86,8 +87,8 @@ public class TicketViewModel extends ViewModel {
 	        details.put("Quality", Collections.singletonMap(true, ticket.getQuality()));
 	        details.put("Support Needed", Collections.singletonMap(true, ticket.getSupportNeeded()));
         }
-        
-        return details;   
+        System.out.println(details.toString());
+        return details;
     }
     
     public String getIdSelectedTicket() {
@@ -124,8 +125,22 @@ public class TicketViewModel extends ViewModel {
         ticketFacade.delete((ActemiumTicket) selectedTicket);
     }
 
+    //TODO shouldn't be in here but in userViewModel
     public ObservableList<Employee> getAllTechnicians() {
         return ticketFacade.getAllTechnicians();
     }
 
+    private List<ActemiumEmployee> techniciansAsignedToTicket = new ArrayList<>();
+
+    public void addTechnicianToTicket(Employee tech){
+        techniciansAsignedToTicket.add((ActemiumEmployee) tech);
+    }
+
+    public void removeTechnician(Employee tech) {
+        techniciansAsignedToTicket.remove(tech);
+    }
+
+    public List<ActemiumEmployee> getTechniciansAsignedToTicket() {
+        return techniciansAsignedToTicket;
+    }
 }

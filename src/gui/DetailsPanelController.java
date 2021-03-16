@@ -3,12 +3,7 @@ package gui;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import domain.ActemiumEmployee;
 import domain.Employee;
@@ -216,7 +211,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 , getTextFromGridItem(6)
                                 , getTextFromGridItem(9)
                                 , getTextFromGridItem(10)
-                                , new ArrayList<ActemiumEmployee>()
+                                , ((TicketViewModel) viewModel).getTechniciansAsignedToTicket()
                         );
                         makePopUp(LanguageResource.getString("ticketEdited"), LanguageResource.getString("ticketEdited_succes"));
                     } else if (viewModel.isFieldModified() && !TicketStatus.isOutstanding()){
@@ -362,8 +357,13 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             btnModify.setText("Modify " + ((UserViewModel) viewModel).getCurrentState().toString().toLowerCase());
             btnDelete.setVisible(true);
         } else if (viewModel instanceof TicketViewModel) {
+            System.out.println(1);
+            System.out.println(((TicketViewModel) viewModel).getDetails());
+            System.out.println("swexrdctfvygbuhj");
             addGridDetails(((TicketViewModel) viewModel).getDetails());
+            System.out.println(2);
             txtDetailsTitle.setText("Details of ticket: " + ((TicketViewModel) viewModel).getIdSelectedTicket());
+            System.out.println(3);
             btnModify.setText("Modify Ticket");
             btnDelete.setVisible(true);
         } else if (viewModel instanceof ContractTypeViewModel) {
@@ -676,27 +676,59 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     private <T> Node makeViewTechnicians(Object o) {
         VBox vBox = new VBox();
+        ObservableList<Employee> technicians = (ObservableList<Employee>) o;
+        ObservableList<String> stringsList = FXCollections.observableArrayList();
+        ObservableList<Employee> allTechnicians = ((TicketViewModel) viewModel).getAllTechnicians();
+        List<CheckMenuItem> listTechicians = new ArrayList<>();
+        Map<String, Employee> namesAndTechs = new HashMap<>();
+
+        allTechnicians.forEach(item -> {
+            listTechicians.add(new CheckMenuItem(item.getFirstName() + " " + item.getLastName()));
+            namesAndTechs.put(item.getFirstName() + " " + item.getLastName(), item);
+        });
+
+
+        //set the technicians already asigned to ticket marked
+        for (Employee tech: technicians) {
+            String name = tech.getFirstName() + " " + tech.getLastName();
+            listTechicians.forEach(item ->  {
+                if (item.getText().equals(name)) {
+                    item.setSelected(true);
+                    stringsList.add(name);
+                    ((TicketViewModel) viewModel).addTechnicianToTicket(tech);
+                }
+            });
+        }
 
         //create dropdown with all possible employees
         MenuButton menuButton = new MenuButton("Select technician");
         menuButton.setId("menu-bar");
-        ObservableList<Employee> allTechnicians = ((TicketViewModel) viewModel).getAllTechnicians();
-        List<CheckMenuItem> listTechicians = new ArrayList<>();
-        allTechnicians.forEach(item -> listTechicians.add(new CheckMenuItem(item.getFirstName() + " " + item.getLastName())));
         menuButton.getItems().addAll(listTechicians);
 
+        for (final CheckMenuItem tech : listTechicians) {
+            tech.selectedProperty().addListener((observableValue, oldValue, newValue) -> {
+                if (newValue) {
+                    //technicians.add(((TicketViewModel) viewModel).getEmployeeByName(tech.getText()));
+                    stringsList.add(tech.getText());
+                    viewModel.setFieldModified(true);
+                    //add technician to ticket
+                    ((TicketViewModel) viewModel).addTechnicianToTicket(namesAndTechs.get(tech.getText()));
+                } else {
+                    //technicians.remove(((TicketViewModel) viewModel).getEmployeeByName(tech.getText()));
+                    stringsList.remove(tech.getText());
+                    viewModel.setFieldModified(true);
+                    //add technician to ticket
+                    ((TicketViewModel) viewModel).removeTechnician(namesAndTechs.get(tech.getText()));
+                }
+            });
+        }
+
         //create Listview for technicians for ticket
-        ObservableList<Employee> technicians = (ObservableList<Employee>) o;
-        ObservableList<String> stringsList = FXCollections.observableArrayList();
-        technicians.forEach(tech -> stringsList.add(tech.getFirstName() + " " + tech.getLastName()));
         ListView<String> listView = new ListView<>(stringsList);
         listView.setMaxHeight(technicians.size()*25+25);
         listView.getStylesheets().add("file:src/start/styles.css");
         listView.setId("list-view");
         listView.setSelectionModel(null);
-
-
-
         vBox.getChildren().addAll(menuButton, listView);
 
         return vBox;

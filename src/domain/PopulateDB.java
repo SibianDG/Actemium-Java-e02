@@ -145,9 +145,9 @@ public class PopulateDB {
         ticket05.addTechnician(tech2);
         ticket06.addTechnician(tech);
         ticket06.addTechnician(tech2);
-        userDao.insert(new ActemiumEmployee("Admin123", "Passwd123&", "Johan", "Van Schoor","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.ADMINISTRATOR));
-        userDao.insert(new ActemiumEmployee("Sup123", "Passwd123&", "Johan", "Van Schoor","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.SUPPORT_MANAGER));
-        userDao.insert(new ActemiumEmployee("Tech123", "Passwd123&", "Johan", "Van Schoor","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.TECHNICIAN));
+        userDao.insert(new ActemiumEmployee("Admin123", "Passwd123&", "Admin", "Administrator","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.ADMINISTRATOR));
+        userDao.insert(new ActemiumEmployee("Sup123", "Passwd123&", "Sup", "Support manager","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.SUPPORT_MANAGER));
+        userDao.insert(new ActemiumEmployee("Tech123", "Passwd123&", "tech", "technician","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.TECHNICIAN));
         userDao.insert(new ActemiumEmployee("thomas123", "Passwd123&", "Thomas", "Dirven","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.ADMINISTRATOR));
         userDao.insert(new ActemiumEmployee("isaac123", "Passwd123&", "Isaac", "Bauters","Kerstraat 71","094812384","isaac.bauters@hogent.be", EmployeeRole.ADMINISTRATOR));
         userDao.insert(new ActemiumEmployee("florian123", "Passwd123&", "Florian", "Goossens","Groensstraat 103","096248753","florian.goossens@hogent.be", EmployeeRole.ADMINISTRATOR));
@@ -165,7 +165,7 @@ public class PopulateDB {
         userDao.insert(larry);
         userDao.insert(elon);
         userDao.insert(new ActemiumCustomer("cust02Johan", "Passwd123&", "Willy", "Naessens", naessensNV));
-        userDao.insert(new ActemiumEmployee("tech01Donald", "Passwd123&", "Donald", "Trump", "Stationstraat 56", "092548736", "donald.trump@hogent.be", EmployeeRole.TECHNICIAN));
+        userDao.insert(new ActemiumEmployee("tech01Donald", "Passwd123&", "Bob", "The Builder", "Stationstraat 56", "092548736", "donald.trump@hogent.be", EmployeeRole.TECHNICIAN));
         userDao.insert(new ActemiumEmployee("supman01John", "Passwd123&", "John", "Smiths", "Stationstraat 34", "093504816", "john.smiths@hogent.be", EmployeeRole.SUPPORT_MANAGER));
 
         //String name, String country, String city, String address, String phoneNumber

@@ -181,7 +181,8 @@ public class DashboardFrameController <T,E> extends GuiController {
             //gridMenu.getColumnConstraints().add(new ColumnConstraints(width, 100, -1, Priority.ALWAYS, HPos.CENTER, false));
             Button button = createMenuItemButton(text, itemNames.length);
             button.setOnMouseClicked(e -> {
-                tableViewPanelCompanion.alertChangesOnTabelView();
+                if(tableViewPanelCompanion != null)
+                    tableViewPanelCompanion.alertChangesOnTabelView();
                 if (enabled)
                     buttonMenusClicked(text);
             });
