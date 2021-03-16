@@ -45,7 +45,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import languages.LanguageResource;
 
-public class DashboardFrameController <T> extends GuiController {
+public class DashboardFrameController <T,E> extends GuiController {
 	
 	// Facades
     private final UserFacade userFacade;
@@ -94,7 +94,7 @@ public class DashboardFrameController <T> extends GuiController {
 
     private Set<DashboardTile> dashboardTiles = new HashSet<>();
 
-    private TableViewPanelCompanion<T> tableViewPanelCompanion;
+    private TableViewPanelCompanion<T,E> tableViewPanelCompanion;
     private DetailsPanelController detailsPanelController;
 
 //    public DashboardFrameController(Actemium actemium, UserFacade userFacade) throws FileNotFoundException {
@@ -269,7 +269,7 @@ public class DashboardFrameController <T> extends GuiController {
         }
     }
 
-	private void switchToManageScreen(String name, TableViewPanelCompanion<T> tableViewPanelCompanion, ViewModel viewModel) {
+	private void switchToManageScreen(String name, TableViewPanelCompanion<T,E> tableViewPanelCompanion, ViewModel viewModel) {
 		//txtTitle.setText(name);
 		resetGridpane(gridContent);
 		

@@ -26,6 +26,8 @@ import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import exceptions.InformationRequiredException;
 import javafx.beans.Observable;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -40,10 +42,12 @@ public class ActemiumTicket implements Ticket, Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int ticketId;
+	private long ticketId;
 	
+//	@Transient
+//	private StringProperty ticketIdString = new SimpleStringProperty();
 	@Transient
-	private StringProperty ticketIdString = new SimpleStringProperty();
+	private IntegerProperty ticketIdInt = new SimpleIntegerProperty();
 
 	@Transient
 	private StringProperty status = new SimpleStringProperty();
@@ -119,8 +123,12 @@ public class ActemiumTicket implements Ticket, Serializable {
 		return String.valueOf(ticketId);
 	}
 	
-	public void setTicketIdString() {
-		this.ticketIdString.set(String.valueOf(ticketId));
+	public int getTicketIdInt() {
+		return (int) ticketId;
+	}
+	
+	public void setTicketIdInt() {
+		this.ticketIdInt.set((int) ticketId);
 	}
 
 	public String getStatus() {
@@ -297,10 +305,10 @@ public class ActemiumTicket implements Ticket, Serializable {
 		return status;
 	}
 	
-	public StringProperty ticketIdProperty() {
+	public IntegerProperty ticketIdProperty() {
 		// must be set right before requesting the ticketIdProperty
-		setTicketIdString();
-		return ticketIdString;
+		setTicketIdInt();
+		return ticketIdInt;
 	}
 
 	public StringProperty ticketTypeProperty() {

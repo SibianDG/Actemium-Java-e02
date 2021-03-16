@@ -3,11 +3,13 @@ package domain;
 import java.time.LocalDate;
 
 import domain.enums.ContractStatus;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 
 public interface Contract {
 	
-	public String getContractNrString();
+	public String getContractIdString();
+//	public int getContractIdInt();
 	
 	public ContractType giveContractType();
 	
@@ -21,7 +23,8 @@ public interface Contract {
 
 	public LocalDate getEndDate();
 	
-	public StringProperty contractNrProperty();
+//	public StringProperty contractIdProperty();
+	public IntegerProperty contractIdProperty();
 	
 	public StringProperty contractTypeNameProperty();
 	

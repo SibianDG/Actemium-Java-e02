@@ -89,7 +89,7 @@ public class TicketViewModel extends ViewModel {
         return details;   
     }
     
-    public String getIdOfSelectedTicket() {
+    public String getIdSelectedTicket() {
         return selectedTicket.getTicketIdString();
     }
 

@@ -6,26 +6,25 @@ import java.time.LocalDateTime;
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 
 public interface Ticket {
 
 	public String getTicketIdString();	
+//	public int getTicketIdInt();	
 
 	public String getStatus();
 	
-	// probably not needed
 	public TicketStatus getStatusAsEnum();
 
 	public String getPriority();
 	
-	// probably not needed
 	public TicketPriority getPriorityAsEnum();
 
 	public String getTicketType();
 
-	// probably not needed
 	public TicketType getTicketTypeAsEnum();
 
 	public LocalDate getDateOfCreation();
@@ -58,7 +57,8 @@ public interface Ticket {
 	
 	public StringProperty statusProperty();
 	
-	public StringProperty ticketIdProperty();
+//	public StringProperty ticketIdProperty();
+	public IntegerProperty ticketIdProperty();
 
 	public StringProperty ticketTypeProperty();
 	

@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 import domain.enums.ContractStatus;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import languages.LanguageResource;
@@ -24,10 +26,12 @@ public class ActemiumContract implements Contract, Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int contractNr;	
+	private long contractId;	
 
 	@Transient
-	private StringProperty contractNrString = new SimpleStringProperty();
+	private IntegerProperty contractIdInt = new SimpleIntegerProperty();
+//	@Transient
+//	private StringProperty contractIdString = new SimpleStringProperty();
 	
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	private ActemiumContractType contractType;
@@ -73,12 +77,16 @@ public class ActemiumContract implements Contract, Serializable {
 		this(contractType, customer, LocalDate.now(), endDate);		
 	}
 
-	public String getContractNrString() {
-		return String.valueOf(contractNr);
+	public String getContractIdString() {
+		return String.valueOf(contractId);
 	}
 	
-	public void setContractNrString() {
-		this.contractNrString.set(String.valueOf(contractNr));
+	public int getContractIdInt() {
+		return (int) contractId;
+	}
+	
+	public void setContractIdInt() {
+		this.contractIdInt.set((int) contractId);
 	}
 
 	public ActemiumContractType getContractType() {
@@ -149,9 +157,9 @@ public class ActemiumContract implements Contract, Serializable {
 	}
 
 	@Override
-	public StringProperty contractNrProperty() {
-		setContractNrString();
-		return contractNrString;
+	public IntegerProperty contractIdProperty() {
+		setContractIdInt();
+		return contractIdInt;
 	}
 
 	@Override

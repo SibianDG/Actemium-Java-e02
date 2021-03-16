@@ -336,7 +336,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             btnDelete.setVisible(true);
         } else if (viewModel instanceof TicketViewModel) {
             addGridDetails(((TicketViewModel) viewModel).getDetails());
-            txtDetailsTitle.setText("Details of ticket: " + ((TicketViewModel) viewModel).getIdOfSelectedTicket());
+            txtDetailsTitle.setText("Details of ticket: " + ((TicketViewModel) viewModel).getIdSelectedTicket());
             btnModify.setText("Modify Ticket");
             btnDelete.setVisible(true);
         } else if (viewModel instanceof ContractTypeViewModel) {
@@ -346,7 +346,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             btnDelete.setVisible(true);
         } else if (viewModel instanceof ContractViewModel) {
             addGridDetails(((ContractViewModel) viewModel).getDetails());
-            txtDetailsTitle.setText("Details of Contract: " + ((ContractViewModel) viewModel).getNrSelectedContract());
+            txtDetailsTitle.setText("Details of Contract: " + ((ContractViewModel) viewModel).getIdSelectedContract());
             btnModify.setText("Modify Contract");
             btnDelete.setVisible(false);
         }

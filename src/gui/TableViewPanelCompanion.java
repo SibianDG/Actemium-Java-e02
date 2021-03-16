@@ -59,7 +59,7 @@ import javafx.stage.Stage;
 import languages.LanguageResource;
 
 
-public class TableViewPanelCompanion<T> extends GridPane {
+public class TableViewPanelCompanion<T,E> extends GridPane {
 
 	//private UserFacade userFacade;
 	private final DashboardFrameController dashboardFrameController;
@@ -78,7 +78,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
     @FXML
     private TableView<T> tableView;
     
-	private Map<String, Function<T, Property<String>>> propertyMap = new LinkedHashMap<>();
+	private Map<String, Function<T, Property<E>>> propertyMap = new LinkedHashMap<>();
 
 	private ObservableList<T> mainData;
 	private FilteredList<T> tableViewData;
@@ -103,20 +103,20 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).giveEmployees();
 				this.tableViewData = new FilteredList<>(mainData);
 //				tableViewDataSorted = tableViewData.sorted((Comparator<T>) Comparator.comparing(c -> ((User) c).getFirstName().toLowerCase()).thenComparing(c -> ((User) c).getLastName().toLowerCase()));
-				propertyMap.put("Firstname", item -> ((Employee)item).firstNameProperty());
-				propertyMap.put("Lastname", item -> ((Employee)item).lastNameProperty());
+				propertyMap.put("Firstname", item -> (Property<E>)((Employee)item).firstNameProperty());
+				propertyMap.put("Lastname", item -> (Property<E>)((Employee)item).lastNameProperty());
 //				propertyMap.put("Username", item -> ((Employee)item).usernameProperty());
-				propertyMap.put("Role", item -> ((Employee)item).roleProperty());
-				propertyMap.put("Status", item -> ((Employee)item).statusProperty());
+				propertyMap.put("Role", item -> (Property<E>)((Employee)item).roleProperty());
+				propertyMap.put("Status", item -> (Property<E>)((Employee)item).statusProperty());
 			}
 			case CUSTOMER -> {
 				this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).giveCustomers();
 				this.tableViewData = new FilteredList<>(mainData);
 //				tableViewData.sorted((Comparator<T>) Comparator.comparing(c -> ((Customer) c).giveCompany().getName().toLowerCase()).thenComparing(c -> ((User) c).getFirstName().toLowerCase()).thenComparing(c -> ((User) c).getLastName().toLowerCase()));
-				propertyMap.put("Company", item -> ((Customer)item).giveCompany().nameProperty());
-				propertyMap.put("Status", item -> ((Customer)item).statusProperty());
-				propertyMap.put("Firstname", item -> ((Customer)item).firstNameProperty());
-				propertyMap.put("Lastname", item -> ((Customer)item).lastNameProperty());
+				propertyMap.put("Company", item -> (Property<E>)((Customer)item).giveCompany().nameProperty());
+				propertyMap.put("Status", item -> (Property<E>)((Customer)item).statusProperty());
+				propertyMap.put("Firstname", item -> (Property<E>)((Customer)item).firstNameProperty());
+				propertyMap.put("Lastname", item -> (Property<E>)((Customer)item).lastNameProperty());
 //				propertyMap.put("Username", item -> ((Customer)item).usernameProperty());
 			}
 			case TICKET -> {
@@ -133,26 +133,26 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				//this.tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 				this.tableViewData = new FilteredList<>(mainData);
 				//propertyMap.put("Number", item -> ((ActemiumTicket) item).numberProperty());
-				propertyMap.put("ID", item -> ((Ticket) item).ticketIdProperty());
-				propertyMap.put("Type", item -> ((Ticket) item).ticketTypeProperty());
-				propertyMap.put("Priority", item -> ((Ticket) item).priorityProperty());
-				propertyMap.put("Title", item -> ((Ticket) item).titleProperty());
-				propertyMap.put("Status", item -> ((Ticket) item).statusProperty());
+				propertyMap.put("ID", item -> (Property<E>)((Ticket) item).ticketIdProperty()); // IntegerProperty
+				propertyMap.put("Type", item -> (Property<E>)((Ticket) item).ticketTypeProperty());
+				propertyMap.put("Priority", item -> (Property<E>)((Ticket) item).priorityProperty());
+				propertyMap.put("Title", item -> (Property<E>)((Ticket) item).titleProperty());
+				propertyMap.put("Status", item -> (Property<E>)((Ticket) item).statusProperty());
 			}
 			case CONTRACT -> {
 				this.mainData = (ObservableList<T>) ((ContractViewModel) viewModel).giveContracts();
 				this.tableViewData = new FilteredList<>(mainData);
-				propertyMap.put("Nr", item -> ((Contract) item).contractNrProperty());
-				propertyMap.put("Company", item -> ((Contract) item).giveCustomer().giveCompany().nameProperty());
-				propertyMap.put("Type", item -> ((Contract) item).contractTypeNameProperty());
-				propertyMap.put("Status", item -> ((Contract) item).contractStatusProperty());
+				propertyMap.put("ID", item -> (Property<E>)((Contract) item).contractIdProperty()); // IntegerProperty
+				propertyMap.put("Company", item -> (Property<E>)((Contract) item).giveCustomer().giveCompany().nameProperty());
+				propertyMap.put("Type", item -> (Property<E>)((Contract) item).contractTypeNameProperty());
+				propertyMap.put("Status", item -> (Property<E>)((Contract) item).contractStatusProperty());
 			}
 			case CONTRACTTYPE -> {
 				this.mainData = (ObservableList<T>) ((ContractTypeViewModel) viewModel).giveContractTypes();
 				this.tableViewData = new FilteredList<>(mainData);
-				propertyMap.put("Name", item -> ((ContractType) item).contractTypeNameProperty());
-				propertyMap.put("Timestamp", item -> ((ContractType) item).contractTypestampProperty());
-				propertyMap.put("Status", item -> ((ContractType) item).contractTypeStatusProperty());
+				propertyMap.put("Name", item -> (Property<E>)((ContractType) item).contractTypeNameProperty());
+				propertyMap.put("Timestamp", item -> (Property<E>)((ContractType) item).contractTypestampProperty());
+				propertyMap.put("Status", item -> (Property<E>)((ContractType) item).contractTypeStatusProperty());
 				//propertyMap.put("Number Active Contracts", item -> ((ContractType) item));
 			}
 		}
@@ -162,9 +162,9 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		initializeTableView();
 	}
 	
-	private <T> TableColumn<T, String> createColumn(String title, Function<T, Property<String>> prop) {
+	private <T> TableColumn<T, E> createColumn(String title, Function<T, Property<E>> prop) {
 		
-		TableColumn<T, String> column = new TableColumn<>(title);
+		TableColumn<T, E> column = new TableColumn<>(title);
 		column.setCellValueFactory(cellData -> prop.apply(cellData.getValue()));
 		// Resize policy for Title column in Tickets TableView
 		if(title.equals("Title")) {
@@ -180,7 +180,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 		filterMap.put(GUIEnum.CUSTOMER, new ArrayList<>(Arrays.asList("Company", UserStatus.ACTIVE, "Firstname", "Lastname")));
 		filterMap.put(GUIEnum.TICKET, new ArrayList<>(Arrays.asList("ID", TicketType.SOFTWARE, TicketPriority.P1, "Title", TicketStatus.CREATED)));
 		filterMap.put(GUIEnum.CONTRACTTYPE, new ArrayList<>(Arrays.asList("Name", Timestamp.WORKINGHOURS, ContractTypeStatus.ACTIVE)));
-		filterMap.put(GUIEnum.CONTRACT, new ArrayList<>(Arrays.asList("ContractNr", "CompanyName", "ContractTypeName", ContractStatus.CURRENT)));
+		filterMap.put(GUIEnum.CONTRACT, new ArrayList<>(Arrays.asList("ContractId", "CompanyName", "ContractTypeName", ContractStatus.CURRENT)));
 
 		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createElementDetailGridpane(o)));
 	}
@@ -360,7 +360,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 
 	private void initializeTableView() {
 		propertyMap.forEach((key, prop) -> {
-			TableColumn<T, String> c = createColumn(key, prop);
+			TableColumn<T, E> c = createColumn(key, prop);
 			tableView.getColumns().add(c);
 		});
 
@@ -534,7 +534,7 @@ public class TableViewPanelCompanion<T> extends GridPane {
 				Predicate<Contract> newPredicate;
 				
 				switch (fieldName) {
-					case "ContractNr" -> newPredicate = e -> e.getContractNrString().equals(filterText);
+					case "ContractId" -> newPredicate = e -> e.getContractIdString().equals(filterText);
 					case "CompanyName" -> newPredicate = e -> e.giveCustomer().giveCompany().getName().toLowerCase().contains(filterText);
 					case "ContractTypeName" -> newPredicate = e -> e.giveContractType().getName().toLowerCase().contains(filterText);
 					case "ContractStatus" -> newPredicate = e -> e.getStatus().toString().toLowerCase().equals(filterText);

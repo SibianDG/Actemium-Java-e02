@@ -50,7 +50,7 @@ public class ContractViewModel extends ViewModel {
     public Map<String, Map<Boolean, Object>> getDetails() {
         Contract contract = selectedContract;
         Map<String,Map<Boolean, Object>> details = new LinkedHashMap<>();
-        details.put("Contract Nr", Collections.singletonMap(false, contract.getContractNrString()));
+        details.put("Contract ID", Collections.singletonMap(false, contract.getContractIdString()));
         details.put("Company", Collections.singletonMap(false, contract.giveCustomer().giveCompany().getName()));
         details.put("Type", Collections.singletonMap(false, contract.giveContractType().getName()));
         details.put("Status", Collections.singletonMap(true, contract.getStatusAsEnum()));
@@ -77,8 +77,8 @@ public class ContractViewModel extends ViewModel {
         this.currentState = currentState;
     }
     
-    public String getNrSelectedContract() {
-        return selectedContract.getContractNrString();
+    public String getIdSelectedContract() {
+        return selectedContract.getContractIdString();
     }
 
 	@Override
