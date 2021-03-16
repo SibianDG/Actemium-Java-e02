@@ -1,5 +1,6 @@
 package domain.manager;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -324,11 +325,19 @@ public class Actemium {
 		}
 	}
 	
-	public void modifyTicket(ActemiumTicket ticket) {		
+	public void modifyTicket(ActemiumTicket ticket) {
+		ObservableList<Employee> technicansAsignedToTicket = ticket.giveTechnicians();
+		ticket.setTechnicians(new ArrayList<>());
+
 		ticketDaoJpa.startTransaction();
 		ticketDaoJpa.update(ticket);
 		ticketDaoJpa.commitTransaction();
-		
+
+		technicansAsignedToTicket.forEach(t -> ticket.addTechnician((ActemiumEmployee) t));
+
+		ticketDaoJpa.startTransaction();
+		ticketDaoJpa.update(ticket);
+		ticketDaoJpa.commitTransaction();
 		// change ticket to completed, it will move to resolved tickets
 		if (TicketStatus.isOutstanding() &&
 				(ticket.getStatusAsEnum().equals(TicketStatus.COMPLETED)
@@ -435,5 +444,4 @@ public class Actemium {
 	public ObservableList<Contract> giveActemiumContracts() {
 		return FXCollections.unmodifiableObservableList(actemiumContracts);
 	}
-
 }

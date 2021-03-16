@@ -1,5 +1,6 @@
 package domain.facades;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,6 +55,7 @@ public class TicketFacade implements Facade {
 		ticket.setDescription(description);
 		ticket.setRemarks(remarks);
 		ticket.setAttachments(attachments);
+		ticket.setTechnicians(new ArrayList<>());
 		technicians.forEach(ticket::addTechnician);
 
 		actemium.modifyTicket(ticket);
@@ -97,5 +99,4 @@ public class TicketFacade implements Facade {
 				.filter(t -> t.getRoleAsEnum() == EmployeeRole.TECHNICIAN)
 				.collect(Collectors.toList()));
 	}
-
 }

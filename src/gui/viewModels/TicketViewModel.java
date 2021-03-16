@@ -23,6 +23,8 @@ public class TicketViewModel extends ViewModel {
     private final TicketFacade ticketFacade;
     //private final UserFacade userFacade;
 
+    private List<ActemiumEmployee> techniciansAsignedToTicket = new ArrayList<>();
+
     public TicketViewModel(TicketFacade ticketFacade) {
         super();
         this.ticketFacade = ticketFacade;
@@ -30,17 +32,17 @@ public class TicketViewModel extends ViewModel {
         setCurrentState(GUIEnum.TICKET);
     }
 
-	public ObservableList<Ticket> giveTickets() {
-		return ticketFacade.giveActemiumTickets();
-	}
+    public ObservableList<Ticket> giveTickets() {
+        return ticketFacade.giveActemiumTickets();
+    }
 
-	public ObservableList<Ticket> giveTicketsOutstanding() {
-		return ticketFacade.giveActemiumTicketsOutstanding();
-	}
+    public ObservableList<Ticket> giveTicketsOutstanding() {
+        return ticketFacade.giveActemiumTicketsOutstanding();
+    }
 
-	public ObservableList<Ticket> giveTicketsResolved() {
-		return ticketFacade.giveActemiumTicketsResolved();
-	}
+    public ObservableList<Ticket> giveTicketsResolved() {
+        return ticketFacade.giveActemiumTicketsResolved();
+    }
 
     public Ticket getSelectedTicket() {
         return selectedTicket;
@@ -49,17 +51,17 @@ public class TicketViewModel extends ViewModel {
     public void setSelectedTicket(Ticket ticket) {
         this.selectedTicket = ticket;
         if (ticket != null){
-        	// substring(8) to remove ACTEMIUM
+            // substring(8) to remove ACTEMIUM
             setCurrentState(GUIEnum.valueOf(ticket.getClass().getSimpleName().substring(8).toUpperCase()));
             //techniciansForTicket = ticket.giveTechnicians();
         }
         fireInvalidationEvent();
-    }   
-    
+    }
+
     public ArrayList<String> getDetailsNewTicket(){
         return new ArrayList<String>(Arrays.asList("Title", "Creation date", "Priority", "Type", "Customer ID", "Description", "Remarks", "Attachments"));
     }
-    
+
     public Map<String, Map<Boolean, Object>> getDetails() {
         Ticket ticket = selectedTicket;
         Map<String, Map<Boolean, Object>> details = new LinkedHashMap<>();
@@ -67,8 +69,8 @@ public class TicketViewModel extends ViewModel {
         details.put("Creation date", Collections.singletonMap(false, ticket.getDateOfCreation().format(DateTimeFormatter.ISO_DATE)));
         details.put("Creation time", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_TIME)));
         if (!TicketStatus.isOutstanding()) {
-	        details.put("Completion date", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_DATE)));
-	        details.put("Completion time", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_TIME)));
+            details.put("Completion date", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_DATE)));
+            details.put("Completion time", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_TIME)));
         }
         details.put("Priority", Collections.singletonMap(true, ticket.getPriorityAsEnum()));
         details.put("Type", Collections.singletonMap(true, ticket.getTicketTypeAsEnum()));
@@ -79,17 +81,17 @@ public class TicketViewModel extends ViewModel {
         details.put("Remarks", Collections.singletonMap(true, ticket.getRemarks()));
         details.put("Attachments", Collections.singletonMap(true, ticket.getAttachments()));
         if (!TicketStatus.isOutstanding()) {
-        	//TODO only the fields below should be editable in resloved tickets
-        	// this means all the above fields should be set to false, ...
-        	// How will we do this without using one big if/else block?
-	        details.put("Solution", Collections.singletonMap(true, ticket.getSolution()));
-	        details.put("Quality", Collections.singletonMap(true, ticket.getQuality()));
-	        details.put("Support Needed", Collections.singletonMap(true, ticket.getSupportNeeded()));
+            //TODO only the fields below should be editable in resloved tickets
+            // this means all the above fields should be set to false, ...
+            // How will we do this without using one big if/else block?
+            details.put("Solution", Collections.singletonMap(true, ticket.getSolution()));
+            details.put("Quality", Collections.singletonMap(true, ticket.getQuality()));
+            details.put("Support Needed", Collections.singletonMap(true, ticket.getSupportNeeded()));
         }
         System.out.println(details.toString());
         return details;
     }
-    
+
     public String getIdSelectedTicket() {
         return selectedTicket.getTicketIdString();
     }
@@ -105,11 +107,12 @@ public class TicketViewModel extends ViewModel {
     public void modifyTicket(TicketPriority priority, TicketType ticketType, TicketStatus status, String title, String description,
                              String remarks, String attachments, List<ActemiumEmployee> technicians) throws InformationRequiredException {
         ticketFacade.modifyTicket((ActemiumTicket) selectedTicket, priority, ticketType, status, title, description, remarks, attachments, technicians);
+        //techniciansAsignedToTicket = new ArrayList<>();
     }
 
-	public void modifyTicketOutstanding(String solution, String quality, String supportNeeded) {
-        ticketFacade.modifyTicketOutstanding((ActemiumTicket) selectedTicket, solution, quality, supportNeeded);		
-	}
+    public void modifyTicketOutstanding(String solution, String quality, String supportNeeded) {
+        ticketFacade.modifyTicketOutstanding((ActemiumTicket) selectedTicket, solution, quality, supportNeeded);
+    }
 
     public GUIEnum getCurrentState() {
         return currentState;
@@ -129,10 +132,9 @@ public class TicketViewModel extends ViewModel {
         return ticketFacade.getAllTechnicians();
     }
 
-    private List<ActemiumEmployee> techniciansAsignedToTicket = new ArrayList<>();
-
     public void addTechnicianToTicket(Employee tech){
-        techniciansAsignedToTicket.add((ActemiumEmployee) tech);
+        if(!techniciansAsignedToTicket.contains(tech))
+            techniciansAsignedToTicket.add((ActemiumEmployee) tech);
     }
 
     public void removeTechnician(Employee tech) {

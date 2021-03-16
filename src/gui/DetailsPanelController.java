@@ -159,10 +159,10 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                     , getTextFromGridItem(11)
                                     , getTextFromGridItem(13)
                                     , getTextFromGridItem(4)
-                                    , getTextFromGridItem(5)  
-                                    , getTextFromGridItem(6) 
-                                    , getTextFromGridItem(7) 
-                                    , getTextFromGridItem(8) 
+                                    , getTextFromGridItem(5)
+                                    , getTextFromGridItem(6)
+                                    , getTextFromGridItem(7)
+                                    , getTextFromGridItem(8)
                             );
                         }
                         makePopUp("User edited", "You have successfully edited the user.");
@@ -215,7 +215,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                         );
                         makePopUp(LanguageResource.getString("ticketEdited"), LanguageResource.getString("ticketEdited_succes"));
                     } else if (viewModel.isFieldModified() && !TicketStatus.isOutstanding()){
-                    	((TicketViewModel) viewModel).modifyTicketOutstanding(
+                        ((TicketViewModel) viewModel).modifyTicketOutstanding(
                                 // solution, quality, supportNeeded
                                 getTextFromGridItem(13)
                                 , getTextFromGridItem(14)
@@ -278,20 +278,20 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                     if(viewModel.isFieldModified()){
                         ((ContractViewModel) viewModel).modifyContract(
                                 // Only the status can be modified in case a customer didnt pay his bills                        		
-                                ContractStatus.valueOf(getTextFromGridItem(3))                                
+                                ContractStatus.valueOf(getTextFromGridItem(3))
                         );
                         makePopUp(LanguageResource.getString("contractEdited"), LanguageResource.getString("contractEdited_succes"));
                     } else {
                         makePopUp(LanguageResource.getString("contractEdited_false"), LanguageResource.getString("unchangedMessage"));
                     }
                 } else {
-                	//TODO entering customerID should show corresponding company name
-                    ((ContractViewModel) viewModel).registerContract(                    		
-                    		// customerId, contractTypeName, startDate, duration
-                    		Long.parseLong(getTextFromGridItem(0))
+                    //TODO entering customerID should show corresponding company name
+                    ((ContractViewModel) viewModel).registerContract(
+                            // customerId, contractTypeName, startDate, duration
+                            Long.parseLong(getTextFromGridItem(0))
                             , getTextFromGridItem(1)
                             , LocalDate.parse(getTextFromGridItem(2)) //startDate DatePicker
-                            , Integer.parseInt(getTextFromGridItem(3))                            
+                            , Integer.parseInt(getTextFromGridItem(3))
                     );
                 }
             }
@@ -437,7 +437,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             btnModify.setVisible(true);
             assert fields != null;
             addItemsToGridNewContract(fields);
-        } 
+        }
     }
 
     //todo alles in 1 methode brengen
@@ -567,7 +567,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             gridDetails.add(node, 1, i);
         }
     }
-    
+
     private void addItemsToGridNewContract(ArrayList<String> fields){
         gridDetails.getChildren().clear();
         gridDetails.addColumn(0);
@@ -666,7 +666,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         } else if (o instanceof ObservableList) {
             node = makeViewTechnicians(o);
         } else if (o instanceof LocalDate) {
-        	node = makeDatePicker(o);
+            node = makeDatePicker(o);
         }
         if (node != null)
             node.setDisable(disable);
@@ -760,50 +760,50 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
         return c;
     }
-    
+
     private DatePicker makeDatePicker(Object o) {
-    	
-    	// Create the DatePicker.
-    	DatePicker datePicker = new DatePicker((LocalDate) o);
 
-    	String pattern = "yyyy-MM-dd";
+        // Create the DatePicker.
+        DatePicker datePicker = new DatePicker((LocalDate) o);
 
-    	datePicker.setPromptText(pattern.toLowerCase());
+        String pattern = "yyyy-MM-dd";
 
-    	datePicker.setConverter(new StringConverter<LocalDate>() {
-    	     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+        datePicker.setPromptText(pattern.toLowerCase());
 
-    	     @Override 
-    	     public String toString(LocalDate date) {
-    	         if (date != null) {
-    	             return dateFormatter.format(date);
-    	         } else {
-    	             return "";
-    	         }
-    	     }
+        datePicker.setConverter(new StringConverter<LocalDate>() {
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
 
-    	     @Override 
-    	     public LocalDate fromString(String string) {
-    	         if (string != null && !string.isEmpty()) {
-    	             return LocalDate.parse(string, dateFormatter);
-    	         } else {
-    	             return null;
-    	         }
-    	     }
-    	 });
-    	
-    	// Add some action (in Java 8 lambda syntax style).
-    	datePicker.setOnAction(event -> {
-    	    LocalDate date = datePicker.getValue();
-    	    System.out.println("Selected date: " + date);
-    	});
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
 
-    	// Add the DatePicker to the Stage.
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+        });
+
+        // Add some action (in Java 8 lambda syntax style).
+        datePicker.setOnAction(event -> {
+            LocalDate date = datePicker.getValue();
+            System.out.println("Selected date: " + date);
+        });
+
+        // Add the DatePicker to the Stage.
 //    	StackPane root = new StackPane();
 //    	root.getChildren().add(datePicker);
 //    	stage.setScene(new Scene(root, 500, 650));
 //    	stage.show();
-		return datePicker;    	
+        return datePicker;
     }
 
     private void makePopUp(String headerText, String text){
