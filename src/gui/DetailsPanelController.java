@@ -223,7 +223,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             } else if (viewModel instanceof TicketViewModel) {
                 if (editing) {
                     if(viewModel.isFieldModified() && TicketStatus.isOutstanding()){
-                        ((TicketViewModel) viewModel).modifyTicket(
+                        ((TicketViewModel) viewModel).modifyTicketOutstanding(
                                 // priority, ticketType, title, description, remarks, attachments, technicians
                                 TicketPriority.valueOf(getTextFromGridItem(3))
                                 , TicketType.valueOf(getTextFromGridItem(4))
@@ -237,7 +237,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 //                        makePopUp(LanguageResource.getString("ticketEdited"), LanguageResource.getString("ticketEdited_succes"));
 						showPopupMessage("popupSuccess", LanguageResource.getString("ticketEdited_succes"));
                     } else if (viewModel.isFieldModified() && !TicketStatus.isOutstanding()){
-                        ((TicketViewModel) viewModel).modifyTicketOutstanding(
+                        ((TicketViewModel) viewModel).modifyTicketResolved(
                                 // solution, quality, supportNeeded
                                 getTextFromGridItem(13)
                                 , getTextFromGridItem(14)
@@ -386,7 +386,11 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             btnModify.setText("Modify " + ((UserViewModel) viewModel).getCurrentState().toString().toLowerCase());
             btnDelete.setVisible(true);
         } else if (viewModel instanceof TicketViewModel) {
-            addGridDetails(((TicketViewModel) viewModel).getDetails());
+            if (TicketStatus.isOutstanding()) {
+                addGridDetails(((TicketViewModel) viewModel).getDetailsOutstanding());
+            } else {
+                addGridDetails(((TicketViewModel) viewModel).getDetailsResolved());
+            }
             txtDetailsTitle.setText("Details of ticket: " + ((TicketViewModel) viewModel).getIdSelectedTicket());
             btnModify.setText("Modify Ticket");
             btnDelete.setVisible(true);
