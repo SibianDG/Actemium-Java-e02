@@ -56,24 +56,37 @@ public class UserFacade implements Facade {
 	}
 
 	public void registerCustomer(String username, String password, String firstName, String lastName, String companyName,
-			String companyCountry, String companyCity, String companyAddress, String companyPhone) {
+			String companyCountry, String companyCity, String companyAddress, String companyPhone) throws InformationRequiredException {
 		// check to see if signed in user is Admin
 		actemium.checkPermision(EmployeeRole.ADMINISTRATOR);
 		actemium.existingUsername(username);
 		ActemiumCompany company = new ActemiumCompany(companyName, companyCountry, companyCity, companyAddress,	companyPhone);
-		ActemiumCustomer newCustomer = new ActemiumCustomer(username, password, firstName, lastName, company);
+		ActemiumCustomer newCustomer = new ActemiumCustomer.CustomerBuilder()
+				.username(username)
+				.password(password)
+				.firstName(firstName)
+				.lastName(lastName)
+				.company(company)
+				.build();
 		actemium.registerCustomer(newCustomer);
 	}
 	
 	// TODO
 	// companyName vs companyId vs ... ?
 	// how will we select an existing company when creating a new contactperson for it
-	public void registerCustomerUsingExistingCompany(String username, String password, String firstName, String lastName, Long companyId) {
+	public void registerCustomerUsingExistingCompany(String username, String password, String firstName, String lastName, Long companyId) throws InformationRequiredException {
 		// check to see if signed in user is Admin
 		actemium.checkPermision(EmployeeRole.ADMINISTRATOR);
 		actemium.existingUsername(username);
 		ActemiumCompany company = actemium.findCompanyById(companyId);
-		ActemiumCustomer newCustomer = new ActemiumCustomer(username, password, firstName, lastName, company);
+		ActemiumCustomer newCustomer = new ActemiumCustomer.CustomerBuilder()
+				.username(username)
+				.password(password)
+				.firstName(firstName)
+				.lastName(lastName)
+				.company(company)
+				.build();
+
 		actemium.registerCustomer(newCustomer);
 	}
 

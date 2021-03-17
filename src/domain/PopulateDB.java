@@ -39,12 +39,50 @@ public class PopulateDB {
         ActemiumContractType jCtype02 = new ActemiumContractType("MonopolySupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.ALWAYS, 3, 1, 6969.69);
         ActemiumContractType pCtype = new ActemiumContractType("BasicPhoneSupport", ContractTypeStatus.ACTIVE, false, true, false, Timestamp.WORKINGHOURS, 5, 2, 1999.99);
 
-        ActemiumCustomer barak = new ActemiumCustomer("cust01Barak", "Passwd123&", "Barak", "Obama", theWhiteHouse);
-        ActemiumCustomer jeff = new ActemiumCustomer("cust02Jeff", "Passwd123&", "Jeff", "Bezos", amazon);
-        ActemiumCustomer mark = new ActemiumCustomer("cust03Mark", "Passwd123&", "Mark", "Zuckerberg", facebook);
-        ActemiumCustomer bill = new ActemiumCustomer("cust04Bill", "Passwd123&", "Bill", "Gates", microsoft);
-        ActemiumCustomer larry = new ActemiumCustomer("cust05Larry", "Passwd123&", "Larry", "Page", google);
-        ActemiumCustomer elon = new ActemiumCustomer("cust06Elon", "Passwd123&", "Elon", "Musk", tesla);
+
+
+        ActemiumCustomer barak = new ActemiumCustomer.CustomerBuilder()
+                .username("cust01Barak")
+                .password("Passwd123&")
+                .firstName("Barak")
+                .lastName("Obama")
+                .company(theWhiteHouse)
+                .build();
+        ActemiumCustomer jeff = new ActemiumCustomer.CustomerBuilder()
+                .username("cust02Jeff")
+                .password("Passwd123&")
+                .firstName("Jeff")
+                .lastName("Bezos")
+                .company(amazon)
+                .build();
+        ActemiumCustomer mark = new ActemiumCustomer.CustomerBuilder()
+                .username("cust03Mark")
+                .password("Passwd123&")
+                .firstName("Mark")
+                .lastName("Zuckerberg")
+                .company(facebook)
+                .build();
+        ActemiumCustomer bill = new ActemiumCustomer.CustomerBuilder()
+                .username("cust04Bill")
+                .password("Passwd123&")
+                .firstName("Bill")
+                .lastName("Gates")
+                .company(microsoft)
+                .build();
+        ActemiumCustomer larry = new ActemiumCustomer.CustomerBuilder()
+                .username("cust05Larry")
+                .password("Passwd123&")
+                .firstName("Larry")
+                .lastName("Page")
+                .company(google)
+                .build();
+        ActemiumCustomer elon = new ActemiumCustomer.CustomerBuilder()
+                .username("cust06Elon")
+                .password("Passwd123&")
+                .firstName("Elon")
+                .lastName("Musk")
+                .company(tesla)
+                .build();
 
         ActemiumContract bContract = new ActemiumContract(bCtype, barak, LocalDate.now().plusYears(1));
         ActemiumContract bContract02 = new ActemiumContract(bCtype02, barak, LocalDate.now().plusYears(1));
@@ -275,7 +313,14 @@ public class PopulateDB {
         userDao.insert(bill);
         userDao.insert(larry);
         userDao.insert(elon);
-        userDao.insert(new ActemiumCustomer("cust02Johan", "Passwd123&", "Willy", "Naessens", naessensNV));
+
+        userDao.insert(new ActemiumCustomer.CustomerBuilder()
+                .username("cust02Johan")
+                .password("Passwd123&")
+                .firstName("Willy")
+                .lastName("Naessens")
+                .company(naessensNV)
+                .build());
         userDao.insert(
                 new ActemiumEmployee.EmployeeBuilder()
                         .username("tech01Donald")
@@ -303,7 +348,17 @@ public class PopulateDB {
 
         //String name, String country, String city, String address, String phoneNumber
         ActemiumCompany vatican = new ActemiumCompany("Vatican", "Vatican", "Vatican City", "00120 Vatican City", "666");
-        ActemiumCustomer pope = new ActemiumCustomer("PopeFrancis", "Passwd123&", "Jorge Mario", "Bergoglio", vatican);
+
+
+        ActemiumCustomer pope = new ActemiumCustomer.CustomerBuilder()
+                .username("PopeFrancis")
+                .password("Passwd123&")
+                .firstName("Jorge")
+                .lastName("Bergoglio")
+                .company(vatican)
+                .build();
+        userDao.insert(pope);
+
         SecureRandom randomGen = new SecureRandom();
         TicketPriority[] prios = TicketPriority.values();
         TicketType[] types = TicketType.values() ;

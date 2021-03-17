@@ -3,6 +3,7 @@ package tests;
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
+import exceptions.InformationRequiredException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -43,9 +44,23 @@ public class ContractTest {
     private static final ActemiumContractType contractType02 = new ActemiumContractType("FullAllSupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.ALWAYS, 3, 1, 3999.99);
 
     private static final ActemiumCompany facebook = new ActemiumCompany("Facebook", "United States", "Menlo Park, CA 94025", "1 Hacker Way", "+1-650-308-7300");
-    private static final ActemiumCustomer mark = new ActemiumCustomer("cust03Mark", "Passwd123&", "Mark", "Zuckerberg", facebook);
-    
-    private static Stream<Arguments> validContractAttributes02() {
+    private static ActemiumCustomer mark;
+
+	static {
+		try {
+			mark = new ActemiumCustomer.CustomerBuilder()
+					.username("cust03Mark")
+							.password("Passwd123&")
+							.firstName("Mark")
+							.lastName("Zuckerberg")
+							.company(facebook)
+							.build();
+		} catch (InformationRequiredException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static Stream<Arguments> validContractAttributes02() {
         return Stream.of(
                 Arguments.of(contractType01, mark, nextYear),
                 Arguments.of(contractType02, mark, nextYear),

@@ -3,6 +3,7 @@ package tests;
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
+import exceptions.InformationRequiredException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -58,21 +59,41 @@ public class CustomerTest {
 
 	@ParameterizedTest
 	@MethodSource("validUserAttributes")
-	public void createCustomer_ValidAttributes_DoesNotThrowException(String username, String password, String firstName, String lastName) {
-		Assertions.assertDoesNotThrow(() -> new ActemiumCustomer(username, password, firstName, lastName, google));
+	public void createCustomer_ValidAttributes_DoesNotThrowException(String username, String password, String firstName, String lastName) throws InformationRequiredException {
+
+		Assertions.assertDoesNotThrow(() -> new ActemiumCustomer.CustomerBuilder()
+				.username(username)
+				.password(password)
+				.firstName(firstName)
+				.lastName(lastName)
+				.company(google)
+				.build());
 	}
 
 	@ParameterizedTest
 	@MethodSource("invalidUserAttributes")
 	public void createCustomer_InValidAttributes_ThrowsIllegalArgumentException(String username, String password,
 			String firstName, String lastName) {
-		Assertions.assertThrows(IllegalArgumentException.class,
-				() -> new ActemiumCustomer(username, password, firstName, lastName, google));
+		Assertions.assertThrows(InformationRequiredException.class,
+				() -> new ActemiumCustomer.CustomerBuilder()
+						.username(username)
+						.password(password)
+						.firstName(firstName)
+						.lastName(lastName)
+						.company(google)
+						.build());
 	}
     
     @Test
-    public void giveEmployeeSeniroity_returns_valid() {
-		ActemiumCustomer customer = new ActemiumCustomer("Tester123", "Passwd123&", "Jan", "Jannsens", google);
+    public void giveEmployeeSeniroity_returns_valid() throws InformationRequiredException {
+
+		ActemiumCustomer customer = new ActemiumCustomer.CustomerBuilder()
+				.username("Tester123")
+				.password("Passwd123&")
+				.firstName("Jan")
+				.lastName("Jannsens")
+				.company(google)
+				.build();
     	customer.setRegistrationDate(LocalDate.now().minusYears(10));
         Assertions.assertEquals(10, customer.giveSeniority());
     }

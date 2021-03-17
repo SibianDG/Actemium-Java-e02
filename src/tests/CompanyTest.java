@@ -3,6 +3,7 @@ package tests;
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
+import domain.UserModel;
 import exceptions.InformationRequiredException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,17 @@ import domain.enums.TicketPriority;
 import domain.enums.TicketType;
 
 public class CompanyTest implements Attributes {
+
+    private final ActemiumCustomer cust = new ActemiumCustomer.CustomerBuilder()
+            .username("customer123")
+            .password("PassWd123&")
+            .firstName("John")
+            .lastName("Smith")
+            .company(google)
+            .build();
+
+    public CompanyTest() throws InformationRequiredException {
+    }
 
     private static Stream<Arguments> validCompanyAttributes() {
         return Stream.of(
@@ -111,7 +123,7 @@ public class CompanyTest implements Attributes {
                     .ticketType(TicketType.SOFTWARE)
                     .title("Ticket"+i)
                     .description("Cannot print labels")
-                    .customer(customer)
+                    .customer(cust)
                     .build();
             google.addActemiumTicket(ticket);
         }
@@ -125,14 +137,21 @@ public class CompanyTest implements Attributes {
     @Test
     public void addContactPerson_CompanyContainsContactPerson() {
     	ActemiumCompany facebook = new ActemiumCompany("Facebook", "United States", "Menlo Park, CA 94025", "1 Hacker Way", "+1-650-308-7300");
-    	facebook.addContactPerson(customer);
-        Assertions.assertEquals(customer, facebook.getContactPersons().get(0));
+    	facebook.addContactPerson(cust);
+        Assertions.assertEquals(cust, facebook.getContactPersons().get(0));
     }
 
     @Test
-    public void addContactPerson_CompanyContainsMultipleContactPerson() {
+    public void addContactPerson_CompanyContainsMultipleContactPerson() throws InformationRequiredException {
         for (int i = 0; i < MAX_NUMBER; i++) {
-        	ActemiumCustomer contactPerson = new ActemiumCustomer("customer"+i, "PassWd123&", "John", "Smith", google);
+
+        	ActemiumCustomer contactPerson = new ActemiumCustomer.CustomerBuilder()
+                    .username("customer"+i)
+                    .password("PassWd123&")
+                    .firstName("John")
+                    .lastName("Smith")
+                    .company(google)
+                    .build();
         	google.addContactPerson(contactPerson);
         }
         Assertions.assertEquals(MAX_NUMBER, google.getContactPersons().size());
@@ -145,7 +164,7 @@ public class CompanyTest implements Attributes {
                 .ticketType(TicketType.SOFTWARE)
                 .title("Printer Broken")
                 .description("Cannot print labels")
-                .customer(customer)
+                .customer(cust)
                 .build();
     }
 }

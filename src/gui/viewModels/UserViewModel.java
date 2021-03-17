@@ -114,7 +114,7 @@ public class UserViewModel extends ViewModel {
 	}
 
 	public void registerCustomer(String username, String firstName, String lastName, String companyName,
-			String companyCountry, String companyCity, String companyAddress, String companyPhone) {
+			String companyCountry, String companyCity, String companyAddress, String companyPhone) throws InformationRequiredException {
 		userFacade.registerCustomer(username, "Passwd123&", firstName, lastName, companyName, companyCountry, companyCity, companyAddress,	companyPhone);
 		setSelectedUser(userFacade.getLastAddedCustomer());
 	}

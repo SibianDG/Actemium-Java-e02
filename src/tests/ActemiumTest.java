@@ -61,7 +61,14 @@ public class ActemiumTest {
             .role(EmployeeRole.TECHNICIAN)
             .build();
     private final ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
-    private final UserModel cust = new ActemiumCustomer("customer123", "PassWd123&", "John", "Smith", google);
+
+    private final UserModel cust = new ActemiumCustomer.CustomerBuilder()
+            .username("customer123")
+            .password("PassWd123&")
+            .firstName("John")
+            .lastName("Smith")
+            .company(google)
+            .build();
 
     @Mock
     private UserDao userRepoDummy;

@@ -30,7 +30,22 @@ public class ActemiumTicketTest implements Attributes {
 			.role(EmployeeRole.TECHNICIAN)
 			.build();
 	private static final ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
-    private static final ActemiumCustomer customer = new ActemiumCustomer("customer123", "PassWd123&", "John", "Smith", google);
+
+    private static ActemiumCustomer customer;
+
+	static {
+		try {
+			customer = new ActemiumCustomer.CustomerBuilder()
+					.username("customer123")
+					.password("PassWd123&")
+					.firstName("John")
+					.lastName("Smith")
+					.company(google)
+					.build();
+		} catch (InformationRequiredException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public ActemiumTicketTest() throws InformationRequiredException {
 	}

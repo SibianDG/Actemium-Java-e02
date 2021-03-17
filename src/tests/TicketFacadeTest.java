@@ -2,6 +2,7 @@ package tests;
 
 import java.util.ArrayList;
 
+import domain.ActemiumCustomer;
 import exceptions.InformationRequiredException;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,11 +19,22 @@ import repository.GenericDao;
 @ExtendWith(MockitoExtension.class)
 public class TicketFacadeTest implements Attributes {
 
+    private final ActemiumCustomer cust = new ActemiumCustomer.CustomerBuilder()
+            .username("customer123")
+            .password("PassWd123&")
+            .firstName("John")
+            .lastName("Smith")
+            .company(google)
+            .build();
+
     @Mock
     private GenericDao<ActemiumTicket> ticketRepoDummy;
 
     @InjectMocks
     private TicketFacade tf;
+
+    public TicketFacadeTest() throws InformationRequiredException {
+    }
 
     private void trainDummy() throws InformationRequiredException {
         ArrayList<ActemiumTicket> tickets = new ArrayList<>();
@@ -32,7 +44,7 @@ public class TicketFacadeTest implements Attributes {
                     .ticketType(TicketType.SOFTWARE)
                     .title("Printer Broken")
                     .description("Cannot print labels")
-                    .customer(customer)
+                    .customer(cust)
                     .build();
 
 
@@ -48,7 +60,7 @@ public class TicketFacadeTest implements Attributes {
                 .ticketType(TicketType.SOFTWARE)
                 .title("Printer Broken")
                 .description("Cannot print labels")
-                .customer(customer)
+                .customer(cust)
                 .build();
     }
 }
