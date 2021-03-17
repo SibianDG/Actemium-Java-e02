@@ -911,22 +911,18 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     //TODO fix positioning
     // Can it be relative to a button such as btnModify or btnAdd
-	public void showPopupMessage(final String popupType/* , final Stage stage */, String message) {
+    // Temp fix
+	public void showPopupMessage(final String popupType, String message) {
         final Popup popup = createPopup(message, popupType);
-//        final TextField textPopup = new TextField(message);
         final Stage stage = (Stage) gridDetails.getScene().getWindow();
         popup.setOnShown(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent e) {
-//            	double x = hBoxModify.getChildren().get(0).getBoundsInParent().getCenterX();
-//            	double y = hBoxModify.getChildren().get(0).getBoundsInParent().getCenterY();              	
-//            	System.out.println(x + y);
-				popup.setX(-780 + stage.getWidth()/2 - popup.getWidth()/2);
-				popup.setY(-580 + stage.getHeight()/2 - popup.getHeight()/2);
+				popup.setX(1300 - popup.getWidth()/2);
+				popup.setY(260 + hBoxModify.getLayoutY() - popup.getHeight()/2);
             }
         });
         popup.show(stage);
-//        hBoxModify.getChildren().add(textPopup);
     }
 
     private void initGridDetails() {
