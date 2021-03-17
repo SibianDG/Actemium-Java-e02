@@ -663,17 +663,15 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             node = makeComboBox(o);
         } else if (o instanceof Boolean) {
             node = makeComboBox(o);
-        } else if (o instanceof ObservableList) { 
-        	if(((ObservableList) o).size() > 0) {
-                if(((ObservableList) o).get(0) instanceof Employee)
-                    node = makeViewTechnicians(o);
-                else if(((ObservableList) o).get(0) instanceof Contract){
+        } else if (o instanceof ObservableList) {
+            if(viewModel instanceof TicketViewModel)
+                node = makeViewTechnicians(o);
+            else if(viewModel instanceof UserViewModel){
+                if(((ObservableList) o).size() > 0)
                     node = makeTableView(o);
-                }
-            } else {
-                node = makeNewLabel("No items available", false);
+                else
+                    node = makeNewLabel("No items available", false);
             }
-            
         } else if (o instanceof LocalDate) {
             node = makeDatePicker(o);
         }
