@@ -5,7 +5,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public class GenericDaoJpa<T> implements GenericDao<T> {
+public class GenericDaoJpa<T> implements GenericDao<T>, AutoCloseable{
 	
     private static final String PU_NAME = "ticketlocal1";
     
@@ -66,7 +66,10 @@ public class GenericDaoJpa<T> implements GenericDao<T> {
     public <U> boolean exists(U id) {
         T entity = em.find(type, id);
         return entity != null;
-    } 
-    
-    
+    }
+
+    @Override
+    public void close() {
+        closePersistency();
+    }
 }
