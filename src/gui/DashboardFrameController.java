@@ -3,7 +3,6 @@ package gui;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,8 +17,6 @@ import gui.viewModels.ContractViewModel;
 import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
@@ -30,6 +27,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -38,6 +36,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -328,7 +327,36 @@ public class DashboardFrameController <T,E> extends GuiController {
 
     @FXML
     void btnProfileAction(MouseEvent event) {
-        makePopUp("Profile");
+        //makePopUp("Profile");
+    	resetGridpane(gridContent);
+    	initializeGridPane(1, 1, 300, 300);
+    	
+//    	GridPane gridProfile = new GridPane();
+//    	
+//    	Label lbUsername = new Label("Username:");
+//    	Text txtUsername = new Text("username");   	
+//    	gridProfile.add(lbUsername, 0, 0);
+//    	gridProfile.add(txtUsername, 1, 0);
+//    	
+//    	Label lbFirstName = new Label("Firstname:");
+//    	Text txtFirstName = new Text(userFacade.giveUserFirstName());	
+//    	Label lbLastName = new Label("Lastname:");
+//    	Text txtLastName = new Text(userFacade.giveUserLastName());
+//    	gridProfile.add(lbFirstName, 0, 1);
+//    	gridProfile.add(txtFirstName, 1, 1);
+//    	gridProfile.add(lbLastName, 0, 2);
+//    	gridProfile.add(txtLastName, 1, 2);
+//    	 	
+//    	Label lblEmail = new Label("Email:");
+//    	Text txtEmail = new Text("email");
+//    	gridProfile.add(lblEmail, 0, 3);
+//    	gridProfile.add(txtEmail, 1, 3);
+    	
+    	 	
+//    	vbProfile.getChildren().addAll(gridProfile);
+    	
+    	gridContent.add(new ProfilePanelController(userFacade), 0, 0);
+    	
     }
 
     @FXML
