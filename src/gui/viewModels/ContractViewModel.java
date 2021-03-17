@@ -11,6 +11,7 @@ import domain.ActemiumContract;
 import domain.Contract;
 import domain.enums.ContractStatus;
 import domain.facades.ContractFacade;
+import exceptions.InformationRequiredException;
 import gui.GUIEnum;
 import javafx.collections.ObservableList;
 
@@ -60,11 +61,11 @@ public class ContractViewModel extends ViewModel {
         return details;
     }
 
-    public void modifyContract(ContractStatus status) {
+    public void modifyContract(ContractStatus status) throws InformationRequiredException {
         contractFacade.modifyContract((ActemiumContract) selectedContract, status);
     }
     
-    public void registerContract(Long customer, String contractTypeName, LocalDate startDate, int duration) {    	
+    public void registerContract(Long customer, String contractTypeName, LocalDate startDate, int duration) throws InformationRequiredException {
     	contractFacade.registerContract(customer, contractTypeName, startDate, duration);
     	setSelectedContract(contractFacade.getLastAddedContract());
     }

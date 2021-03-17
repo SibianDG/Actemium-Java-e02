@@ -53,6 +53,7 @@ public class TicketViewModel extends ViewModel {
         if (ticket != null){
             // substring(8) to remove ACTEMIUM
             setCurrentState(GUIEnum.valueOf(ticket.getClass().getSimpleName().substring(8).toUpperCase()));
+            setTechniciansAsignedToTicketEmpty();
             //techniciansForTicket = ticket.giveTechnicians();
         }
         fireInvalidationEvent();
@@ -62,7 +63,7 @@ public class TicketViewModel extends ViewModel {
         return new ArrayList<String>(Arrays.asList("Title", "Creation date", "Priority", "Type", "Customer ID", "Description", "Remarks", "Attachments"));
     }
 
-    public Map<String, Map<Boolean, Object>> getDetails() {
+    public Map<String, Map<Boolean, Object>> getDetailsOutstanding() {
         Ticket ticket = selectedTicket;
         Map<String, Map<Boolean, Object>> details = new LinkedHashMap<>();
         details.put("Title", Collections.singletonMap(true, ticket.getTitle()));
@@ -80,15 +81,33 @@ public class TicketViewModel extends ViewModel {
         details.put("Technicians", Collections.singletonMap(true, ticket.giveTechnicians()));
         details.put("Remarks", Collections.singletonMap(true, ticket.getRemarks()));
         details.put("Attachments", Collections.singletonMap(true, ticket.getAttachments()));
+        return details;
+    }
+
+    public Map<String, Map<Boolean, Object>> getDetailsResolved() {
+        Ticket ticket = selectedTicket;
+        Map<String, Map<Boolean, Object>> details = new LinkedHashMap<>();
+        details.put("Title", Collections.singletonMap(false, ticket.getTitle()));
+        details.put("Creation date", Collections.singletonMap(false, ticket.getDateOfCreation().format(DateTimeFormatter.ISO_DATE)));
+        details.put("Creation time", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_TIME)));
         if (!TicketStatus.isOutstanding()) {
-            //TODO only the fields below should be editable in resloved tickets
-            // this means all the above fields should be set to false, ...
-            // How will we do this without using one big if/else block?
-            details.put("Solution", Collections.singletonMap(true, ticket.getSolution()));
-            details.put("Quality", Collections.singletonMap(true, ticket.getQuality()));
-            details.put("Support Needed", Collections.singletonMap(true, ticket.getSupportNeeded()));
+            details.put("Completion date", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_DATE)));
+            details.put("Completion time", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_TIME)));
         }
-        System.out.println(details.toString());
+        details.put("Priority", Collections.singletonMap(false, ticket.getPriorityAsEnum()));
+        details.put("Type", Collections.singletonMap(false, ticket.getTicketTypeAsEnum()));
+        details.put("Status", Collections.singletonMap(false, ticket.getStatusAsEnum()));
+        details.put("Description", Collections.singletonMap(false, ticket.getDescription()));
+        details.put("Customer/Company", Collections.singletonMap(false, ticket.giveCustomer().giveCompany().getName()));
+        details.put("Technicians", Collections.singletonMap(false, ticket.giveTechnicians()));
+        details.put("Remarks", Collections.singletonMap(false, ticket.getRemarks()));
+        details.put("Attachments", Collections.singletonMap(false, ticket.getAttachments()));
+        //TODO only the fields below should be editable in resloved tickets
+        // this means all the above fields should be set to false, ...
+        // How will we do this without using one big if/else block?
+        details.put("Solution", Collections.singletonMap(true, ticket.getSolution()));
+        details.put("Quality", Collections.singletonMap(true, ticket.getQuality()));
+        details.put("Support Needed", Collections.singletonMap(true, ticket.getSupportNeeded()));
         return details;
     }
 
@@ -104,13 +123,12 @@ public class TicketViewModel extends ViewModel {
 
     // TODO
     // Cannot modify customer of the ticket, needs to be unmodifiable field
-    public void modifyTicket(TicketPriority priority, TicketType ticketType, TicketStatus status, String title, String description,
-                             String remarks, String attachments, List<ActemiumEmployee> technicians) throws InformationRequiredException {
+    public void modifyTicketOutstanding(TicketPriority priority, TicketType ticketType, TicketStatus status, String title, String description,
+                                     String remarks, String attachments, List<ActemiumEmployee> technicians) throws InformationRequiredException {
         ticketFacade.modifyTicket((ActemiumTicket) selectedTicket, priority, ticketType, status, title, description, remarks, attachments, technicians);
-        //techniciansAsignedToTicket = new ArrayList<>();
     }
 
-    public void modifyTicketOutstanding(String solution, String quality, String supportNeeded) throws InformationRequiredException {
+    public void modifyTicketResolved(String solution, String quality, String supportNeeded) throws InformationRequiredException {
         ticketFacade.modifyTicketOutstanding((ActemiumTicket) selectedTicket, solution, quality, supportNeeded);
     }
 
@@ -143,5 +161,9 @@ public class TicketViewModel extends ViewModel {
 
     public List<ActemiumEmployee> getTechniciansAsignedToTicket() {
         return techniciansAsignedToTicket;
+    }
+
+    public void setTechniciansAsignedToTicketEmpty() {
+        this.techniciansAsignedToTicket = new ArrayList<>();
     }
 }

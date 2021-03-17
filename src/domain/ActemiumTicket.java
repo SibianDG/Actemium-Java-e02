@@ -359,9 +359,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 		//TODO: maybe not check all?
 		//if you make a new TicketBuilder with the current set attributes, it will throw exception.
 		// Ms. Malfait her idea
-		System.out.println("UIT NEN SET FZO?");
-		System.out.println(1);
-		System.out.println(getPriorityAsEnum());
 		new TicketBuiler()
 				.ticketPriority(getPriorityAsEnum())
 				.ticketStatus(getStatusAsEnum())
@@ -401,7 +398,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 		private String quality;
 		private String supportNeeded;
 		private List<ActemiumEmployee> technicians = new ArrayList<>();
-
 
 		private Set<RequiredElement> requiredElements;
 
@@ -511,6 +507,30 @@ public class ActemiumTicket implements Ticket, Serializable {
 			}
 		}
 
+	}
+
+	public ActemiumTicket clone() throws CloneNotSupportedException {
+
+		ActemiumTicket cloned = null;
+		try {
+			cloned = new TicketBuiler()
+					.ticketStatus(this.getStatusAsEnum())
+					.ticketPriority(this.getPriorityAsEnum())
+					.ticketType(this.getTicketTypeAsEnum())
+					.title(this.getTitle())
+					.description(this.getDescription())
+					.customer(this.getCustomer())
+					.remarks(this.getRemarks())
+					.attachments(this.getAttachments())
+					.solution(this.getSolution())
+					.quality(this.getQuality())
+					.supportNeeded(this.getSupportNeeded())
+					.build();
+		} catch (InformationRequiredException e) {
+			//this should be a good Employee
+			e.printStackTrace();
+		}
+		return cloned;
 	}
 
 }

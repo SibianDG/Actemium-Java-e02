@@ -71,7 +71,13 @@ public class MainTester {
 			System.out.println(e.getMessage());
 		}
 
-        ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
+        ActemiumCompany google = new ActemiumCompany.CompanyBuilder()
+                .name("Google")
+                .country("United States")
+                .city("Mountain View, CA 94043")
+                .address("1600 Amphitheatre Parkway")
+                .phoneNumber("+1-650-253-0000")
+                .build();
         // Can't register if username is already taken
         try {
         	System.out.println("\ndc.registerCustomer(\"Admin123\", \"Passwd123&\", \"Thierry\", \"Kempens\")");

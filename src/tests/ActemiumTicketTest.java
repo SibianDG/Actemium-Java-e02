@@ -19,9 +19,48 @@ import domain.enums.TicketType;
 
 public class ActemiumTicketTest implements Attributes {
 	
-	private final ActemiumEmployee technician = new ActemiumEmployee("jooKlein123", "PassWd123&", "Joost", "Klein", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.TECHNICIAN);
-    private static final ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
-    private static final ActemiumCustomer customer = new ActemiumCustomer("customer123", "PassWd123&", "John", "Smith", google);
+	private final ActemiumEmployee technician = new ActemiumEmployee.EmployeeBuilder()
+			.username("jooKlein123")
+			.password("Passwd123&")
+			.firstName("Joost")
+			.lastName("Klein")
+			.address("Adress")
+			.phoneNumber("0470099874")
+			.emailAddress("student@student.hogent.be")
+			.role(EmployeeRole.TECHNICIAN)
+			.build();
+
+	private static ActemiumCompany google;
+
+	static {
+		try {
+			google = new ActemiumCompany.CompanyBuilder()
+					.name("Google")
+					.country("United States")
+					.city("Mountain View, CA 94043")
+					.address("1600 Amphitheatre Parkway")
+					.phoneNumber("+1-650-253-0000")
+					.build();
+		} catch (InformationRequiredException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static ActemiumCustomer customer;
+
+	static {
+		try {
+			customer = new ActemiumCustomer.CustomerBuilder()
+					.username("customer123")
+					.password("PassWd123&")
+					.firstName("John")
+					.lastName("Smith")
+					.company(google)
+					.build();
+		} catch (InformationRequiredException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public ActemiumTicketTest() throws InformationRequiredException {
 	}

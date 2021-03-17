@@ -3,6 +3,7 @@ package tests;
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
+import exceptions.InformationRequiredException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,9 +15,18 @@ import domain.ActemiumCustomer;
 
 public class CustomerTest {
 
-	ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
+	private ActemiumCompany google = new ActemiumCompany.CompanyBuilder()
+			.name("Facebook")
+			.country("United States")
+			.city("Menlo Park, CA 94025")
+			.address("1 Hacker Way")
+			.phoneNumber("+1-650-308-7300")
+			.build();
 
-    private static Stream<Arguments> validUserAttributes() {
+	public CustomerTest() throws InformationRequiredException {
+	}
+
+	private static Stream<Arguments> validUserAttributes() {
         return Stream.of(
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens"),
                 Arguments.of("A", "AaBbCc&1", "A", "A"),
@@ -58,21 +68,41 @@ public class CustomerTest {
 
 	@ParameterizedTest
 	@MethodSource("validUserAttributes")
-	public void createCustomer_ValidAttributes_DoesNotThrowException(String username, String password, String firstName, String lastName) {
-		Assertions.assertDoesNotThrow(() -> new ActemiumCustomer(username, password, firstName, lastName, google));
+	public void createCustomer_ValidAttributes_DoesNotThrowException(String username, String password, String firstName, String lastName) throws InformationRequiredException {
+
+		Assertions.assertDoesNotThrow(() -> new ActemiumCustomer.CustomerBuilder()
+				.username(username)
+				.password(password)
+				.firstName(firstName)
+				.lastName(lastName)
+				.company(google)
+				.build());
 	}
 
 	@ParameterizedTest
 	@MethodSource("invalidUserAttributes")
 	public void createCustomer_InValidAttributes_ThrowsIllegalArgumentException(String username, String password,
 			String firstName, String lastName) {
-		Assertions.assertThrows(IllegalArgumentException.class,
-				() -> new ActemiumCustomer(username, password, firstName, lastName, google));
+		Assertions.assertThrows(InformationRequiredException.class,
+				() -> new ActemiumCustomer.CustomerBuilder()
+						.username(username)
+						.password(password)
+						.firstName(firstName)
+						.lastName(lastName)
+						.company(google)
+						.build());
 	}
     
     @Test
-    public void giveEmployeeSeniroity_returns_valid() {
-		ActemiumCustomer customer = new ActemiumCustomer("Tester123", "Passwd123&", "Jan", "Jannsens", google);
+    public void giveEmployeeSeniroity_returns_valid() throws InformationRequiredException {
+
+		ActemiumCustomer customer = new ActemiumCustomer.CustomerBuilder()
+				.username("Tester123")
+				.password("Passwd123&")
+				.firstName("Jan")
+				.lastName("Jannsens")
+				.company(google)
+				.build();
     	customer.setRegistrationDate(LocalDate.now().minusYears(10));
         Assertions.assertEquals(10, customer.giveSeniority());
     }

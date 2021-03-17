@@ -298,7 +298,6 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 				ComboBox comboBox = (ComboBox) object;
 
 				if (comboBox.getSelectionModel().getSelectedItem() != null &&  !comboBox.getSelectionModel().getSelectedItem().toString().contains("SELECT")) {
-					System.out.println("Check filters after check: "+comboBox.getSelectionModel().getSelectedItem().toString());
 
 					ArrayList<UserStatus> userStatusArrayList = new ArrayList<>(Arrays.asList(UserStatus.values()));
 					List<String> userStatusStringArray = userStatusArrayList.stream().map(UserStatus::toString).collect(Collectors.toList());
@@ -529,7 +528,6 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 		} else if (currentState.equals(GUIEnum.CONTRACT)){
 
 			if (fieldName.length() > 0 && !filterText.contains("select")){
-				System.out.println("filterText " + filterText);
 
 				Predicate<Contract> newPredicate;
 				

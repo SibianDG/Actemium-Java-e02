@@ -19,45 +19,308 @@ public class PopulateDB {
     	System.out.println("DBTester - creating and persisting multiple user objects");
         userDao.startTransaction();
 
-        ActemiumCompany theWhiteHouse = new ActemiumCompany("The White House", "United States", "Washington, D.C. 20500", "1600 Pennsylvania Avenue NW", "+1-202-456-1111");
-        ActemiumCompany naessensNV = new ActemiumCompany("Construct Willy Naessens", "Belgium", "9700 Oudenaarde", "Bedrijvenpark Coupure 15", "055 61 98 19");
-        ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
-        ActemiumCompany microsoft = new ActemiumCompany("Microsoft", "United States", "Redmond, WA 98052", "1 Microsoft Way", "+1-425-882-8080");
-        ActemiumCompany facebook = new ActemiumCompany("Facebook", "United States", "Menlo Park, CA 94025", "1 Hacker Way", "+1-650-308-7300");
-        ActemiumCompany amazon = new ActemiumCompany("Amazon", "United States", "Seattle, WA 98109-5210", "410 Terry Avenue North", "+1-206-266-1000");
-        ActemiumCompany tesla = new ActemiumCompany("Tesla", "United States", "Palo Alto, CA 94304", "3500 Deer Creek Road", "+31 20 365 0008");
 
-        ActemiumContractType bCtype = new ActemiumContractType("BasicSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
-        ActemiumContractType bCtype02 = new ActemiumContractType("BasicEmailSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
-        ActemiumContractType cCtype = new ActemiumContractType("BasicAppSupport", ContractTypeStatus.ACTIVE, false, false, true, Timestamp.WORKINGHOURS, 5, 2, 1299.99);
-        ActemiumContractType dCtype = new ActemiumContractType("FullEmailSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.ALWAYS, 4, 1, 1999.99);
-        ActemiumContractType eCtype = new ActemiumContractType("FullPhoneSupport", ContractTypeStatus.ACTIVE, false, true, false, Timestamp.ALWAYS, 4, 1, 2999.99);
-        ActemiumContractType fCtype = new ActemiumContractType("FullAppSupport", ContractTypeStatus.ACTIVE, false, false, true, Timestamp.ALWAYS, 4, 1, 2299.99);
-        ActemiumContractType gCtype = new ActemiumContractType("BasicAllSupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.WORKINGHOURS, 4, 2, 2999.99);
-        ActemiumContractType hCtype = new ActemiumContractType("FullAllSupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.ALWAYS, 3, 1, 3999.99);
-        ActemiumContractType jCtype = new ActemiumContractType("AmazonSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
-        ActemiumContractType jCtype02 = new ActemiumContractType("MonopolySupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.ALWAYS, 3, 1, 6969.69);
-        ActemiumContractType pCtype = new ActemiumContractType("BasicPhoneSupport", ContractTypeStatus.ACTIVE, false, true, false, Timestamp.WORKINGHOURS, 5, 2, 1999.99);
+        ActemiumCompany theWhiteHouse = new ActemiumCompany.CompanyBuilder()
+                .name("The White House")
+                .country("United States")
+                .city("Washington, D.C. 20500")
+                .address("1600 Pennsylvania Avenue NW")
+                .phoneNumber("+1-202-456-1111")
+                .build();
 
-        ActemiumCustomer barak = new ActemiumCustomer("cust01Barak", "Passwd123&", "Barak", "Obama", theWhiteHouse);
-        ActemiumCustomer jeff = new ActemiumCustomer("cust02Jeff", "Passwd123&", "Jeff", "Bezos", amazon);
-        ActemiumCustomer mark = new ActemiumCustomer("cust03Mark", "Passwd123&", "Mark", "Zuckerberg", facebook);
-        ActemiumCustomer bill = new ActemiumCustomer("cust04Bill", "Passwd123&", "Bill", "Gates", microsoft);
-        ActemiumCustomer larry = new ActemiumCustomer("cust05Larry", "Passwd123&", "Larry", "Page", google);
-        ActemiumCustomer elon = new ActemiumCustomer("cust06Elon", "Passwd123&", "Elon", "Musk", tesla);
 
-        ActemiumContract bContract = new ActemiumContract(bCtype, barak, LocalDate.now().plusYears(1));
-        ActemiumContract bContract02 = new ActemiumContract(bCtype02, barak, LocalDate.now().plusYears(1));
-        ActemiumContract jContract = new ActemiumContract(jCtype, jeff, LocalDate.now().plusYears(3));
-        ActemiumContract jContract02 = new ActemiumContract(jCtype02, jeff, LocalDate.now().plusYears(2));
-        ActemiumContract mContract = new ActemiumContract(cCtype, mark, LocalDate.now().plusYears(1));
-        ActemiumContract mContract02 = new ActemiumContract(gCtype, mark, LocalDate.now().plusYears(1));
-        ActemiumContract gContract = new ActemiumContract(dCtype, bill, LocalDate.now().plusYears(1));
-        ActemiumContract gContract02 = new ActemiumContract(dCtype, bill, LocalDate.now().plusYears(1));
-        ActemiumContract lContract = new ActemiumContract(eCtype, larry, LocalDate.now().plusYears(3));
-        ActemiumContract lContract02 = new ActemiumContract(hCtype, larry, LocalDate.now().plusYears(3));
-        ActemiumContract eContract = new ActemiumContract(fCtype, elon, LocalDate.now().plusYears(2));
-        ActemiumContract eContract02 = new ActemiumContract(pCtype, elon, LocalDate.now().plusYears(2));
+        ActemiumCompany naessensNV = new ActemiumCompany.CompanyBuilder()
+                .name("Construct Willy Naessens")
+                .country("Belgium")
+                .city("9700 Oudenaarde")
+                .address("Bedrijvenpark Coupure 15")
+                .phoneNumber("055 61 98 19")
+                .build();
+
+        ActemiumCompany google = new ActemiumCompany.CompanyBuilder()
+                .name("Google")
+                .country("United States")
+                .city("Mountain View, CA 94043")
+                .address("1600 Amphitheatre Parkway")
+                .phoneNumber("+1-650-253-0000")
+                .build();
+
+        ActemiumCompany microsoft = new ActemiumCompany.CompanyBuilder()
+                .name("Microsoft")
+                .country("United States")
+                .city("Redmond, WA 98052")
+                .address("1 Microsoft Way")
+                .phoneNumber("+1-425-882-8080")
+                .build();
+
+        ActemiumCompany facebook = new ActemiumCompany.CompanyBuilder()
+                .name("Facebook")
+                .country("United States")
+                .city("Menlo Park, CA 94025")
+                .address("1 Hacker Way")
+                .phoneNumber("+1-650-308-7300")
+                .build();
+        new ActemiumCompany.CompanyBuilder()
+                .name("Amazon")
+                .country("United States")
+                .city("Seattle, WA 98109-5210")
+                .address("410 Terry Avenue North")
+                .phoneNumber("+1-206-266-1000")
+                .build();
+        ActemiumCompany amazon = new ActemiumCompany.CompanyBuilder()
+                .name("Amazon")
+                .country("United States")
+                .city("Seattle, WA 98109-5210")
+                .address("410 Terry Avenue North")
+                .phoneNumber("+1-206-266-1000")
+                .build();
+        ActemiumCompany tesla = new ActemiumCompany.CompanyBuilder()
+                .name("Tesla")
+                .country("United States")
+                .city("Palo Alto, CA 94304")
+                .address("3500 Deer Creek Road")
+                .phoneNumber("+31 20 365 0008")
+                .build();
+
+        ActemiumContractType bCtype = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("BasicSupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(true)
+                .hasPhone(false)
+                .hasApplication(false)
+                .timestamp(Timestamp.WORKINGHOURS)
+                .maxHandlingTime(5)
+                .minThroughputTime(2)
+                .price(999.99)
+                .build();
+
+        ActemiumContractType bCtype02 = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("BasicEmailSupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(true)
+                .hasPhone(false)
+                .hasApplication(false)
+                .timestamp(Timestamp.WORKINGHOURS)
+                .maxHandlingTime(5)
+                .minThroughputTime(2)
+                .price(999.99)
+                .build();
+        ActemiumContractType cCtype = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("BasicAppSupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(false)
+                .hasPhone(false)
+                .hasApplication(true)
+                .timestamp(Timestamp.WORKINGHOURS)
+                .maxHandlingTime(5)
+                .minThroughputTime(2)
+                .price(1299.99)
+                .build();
+
+        ActemiumContractType dCtype = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("FullEmailSupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(true)
+                .hasPhone(false)
+                .hasApplication(false)
+                .timestamp(Timestamp.ALWAYS)
+                .maxHandlingTime(4)
+                .minThroughputTime(1)
+                .price(1999.99)
+                .build();
+        ActemiumContractType eCtype = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("FullPhoneSupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(false)
+                .hasPhone(true)
+                .hasApplication(false)
+                .timestamp(Timestamp.ALWAYS)
+                .maxHandlingTime(4)
+                .minThroughputTime(1)
+                .price(2999.99)
+                .build();
+
+        ActemiumContractType fCtype = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("FullAppSupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(false)
+                .hasPhone(false)
+                .hasApplication(true)
+                .timestamp(Timestamp.ALWAYS)
+                .maxHandlingTime(4)
+                .minThroughputTime(1)
+                .price(2299.99)
+                .build();
+
+        ActemiumContractType gCtype = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("BasicAllSupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(true)
+                .hasPhone(true)
+                .hasApplication(true)
+                .timestamp(Timestamp.WORKINGHOURS)
+                .maxHandlingTime(4)
+                .minThroughputTime(2)
+                .price(2999.99)
+                .build();
+
+        ActemiumContractType hCtype = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("FullAllSupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(true)
+                .hasPhone(true)
+                .hasApplication(true)
+                .timestamp(Timestamp.ALWAYS)
+                .maxHandlingTime(4)
+                .minThroughputTime(2)
+                .price(3999.99)
+                .build();
+
+        ActemiumContractType jCtype = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("AmazonSupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(true)
+                .hasPhone(false)
+                .hasApplication(false)
+                .timestamp(Timestamp.WORKINGHOURS)
+                .maxHandlingTime(5)
+                .minThroughputTime(2)
+                .price(999.99)
+                .build();
+
+        ActemiumContractType jCtype02 = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("MonopolySupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(true)
+                .hasPhone(true)
+                .hasApplication(true)
+                .timestamp(Timestamp.ALWAYS)
+                .maxHandlingTime(3)
+                .minThroughputTime(1)
+                .price(6969.69)
+                .build();
+
+        ActemiumContractType pCtype = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("BasicPhoneSupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(false)
+                .hasPhone(true)
+                .hasApplication(false)
+                .timestamp(Timestamp.WORKINGHOURS)
+                .maxHandlingTime(5)
+                .minThroughputTime(2)
+                .price(1999.99)
+                .build();
+
+
+
+        ActemiumCustomer barak = new ActemiumCustomer.CustomerBuilder()
+                .username("cust01Barak")
+                .password("Passwd123&")
+                .firstName("Barak")
+                .lastName("Obama")
+                .company(theWhiteHouse)
+                .build();
+        ActemiumCustomer jeff = new ActemiumCustomer.CustomerBuilder()
+                .username("cust02Jeff")
+                .password("Passwd123&")
+                .firstName("Jeff")
+                .lastName("Bezos")
+                .company(amazon)
+                .build();
+        ActemiumCustomer mark = new ActemiumCustomer.CustomerBuilder()
+                .username("cust03Mark")
+                .password("Passwd123&")
+                .firstName("Mark")
+                .lastName("Zuckerberg")
+                .company(facebook)
+                .build();
+        ActemiumCustomer bill = new ActemiumCustomer.CustomerBuilder()
+                .username("cust04Bill")
+                .password("Passwd123&")
+                .firstName("Bill")
+                .lastName("Gates")
+                .company(microsoft)
+                .build();
+        ActemiumCustomer larry = new ActemiumCustomer.CustomerBuilder()
+                .username("cust05Larry")
+                .password("Passwd123&")
+                .firstName("Larry")
+                .lastName("Page")
+                .company(google)
+                .build();
+        ActemiumCustomer elon = new ActemiumCustomer.CustomerBuilder()
+                .username("cust06Elon")
+                .password("Passwd123&")
+                .firstName("Elon")
+                .lastName("Musk")
+                .company(tesla)
+                .build();
+
+        ActemiumContract bContract = new ActemiumContract.ContractBuilder()
+                                                            .contractType(bCtype)
+                                                            .customer(barak)
+                                                            .endDate(LocalDate.now().plusYears(1))
+                                                            .build();
+
+        ActemiumContract bContract02 = new ActemiumContract.ContractBuilder()
+                .contractType(bCtype02)
+                .customer(barak)
+                .endDate(LocalDate.now().plusYears(1))
+                .build();
+        ActemiumContract jContract = new ActemiumContract.ContractBuilder()
+                .contractType(jCtype)
+                .customer(jeff)
+                .endDate(LocalDate.now().plusYears(3))
+                .build();
+        ActemiumContract jContract02 = new ActemiumContract.ContractBuilder()
+                .contractType(jCtype02)
+                .customer(jeff)
+                .endDate(LocalDate.now().plusYears(3))
+                .build();
+
+        ActemiumContract mContract = new ActemiumContract.ContractBuilder()
+                .contractType(cCtype)
+                .customer(mark)
+                .endDate(LocalDate.now().plusYears(1))
+                .build();
+        ActemiumContract mContract02 = new ActemiumContract.ContractBuilder()
+                .contractType(gCtype)
+                .customer(mark)
+                .endDate(LocalDate.now().plusYears(1))
+                .build();
+        ActemiumContract gContract = new ActemiumContract.ContractBuilder()
+                .contractType(dCtype)
+                .customer(bill)
+                .endDate(LocalDate.now().plusYears(1))
+                .build();
+
+        ActemiumContract gContract02 = new ActemiumContract.ContractBuilder()
+                .contractType(dCtype)
+                .customer(bill)
+                .endDate(LocalDate.now().plusYears(1))
+                .build();
+        ActemiumContract lContract = new ActemiumContract.ContractBuilder()
+                .contractType(eCtype)
+                .customer(bill)
+                .endDate(LocalDate.now().plusYears(3))
+                .build();
+        ActemiumContract lContract02 = new ActemiumContract.ContractBuilder()
+                .contractType(eCtype)
+                .customer(larry)
+                .endDate(LocalDate.now().plusYears(3))
+                .build();
+
+        ActemiumContract eContract = new ActemiumContract.ContractBuilder()
+                .contractType(fCtype)
+                .customer(elon)
+                .endDate(LocalDate.now().plusYears(2))
+                .build();
+        ActemiumContract eContract02 = new ActemiumContract.ContractBuilder()
+                .contractType(pCtype)
+                .customer(elon)
+                .endDate(LocalDate.now().plusYears(2))
+                .build();
 
         barak.addContract(bContract);
         barak.addContract(bContract02);
@@ -79,8 +342,29 @@ public class PopulateDB {
 
         mark.setStatus(UserStatus.BLOCKED);
         larry.setStatus(UserStatus.INACTIVE);
-        ActemiumEmployee tech = new ActemiumEmployee("Technician", "Passwd123&", "Joe", "Biden","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.TECHNICIAN);
-        ActemiumEmployee tech2 = new ActemiumEmployee("Technician", "Passwd123&", "Donald", "Trump","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.TECHNICIAN);
+        ActemiumEmployee tech = new ActemiumEmployee.EmployeeBuilder()
+                .username("Technician")
+                .password("Passwd123&")
+                .firstName("Joe")
+                .lastName("Biden")
+                .address("Overwale 42")
+                .phoneNumber("091354864")
+                .emailAddress("thomas.dirven@hogent.be")
+                .role(EmployeeRole.TECHNICIAN)
+                .build();
+
+        //("Technician", "Passwd123&", "Joe", "Biden","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.TECHNICIAN);
+        ActemiumEmployee tech2 = new ActemiumEmployee.EmployeeBuilder()
+                .username("Technician")
+                .password("Passwd123&")
+                .firstName("Donald")
+                .lastName("Trump")
+                .address("Overwale 42")
+                .phoneNumber("091354864")
+                .emailAddress("thomas.dirven@hogent.be")
+                .role(EmployeeRole.TECHNICIAN)
+                .build();
+        //ActemiumEmployee tech2 = new ActemiumEmployee("Technician", "Passwd123&", "Donald", "Trump","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.TECHNICIAN);
 
         userDao.insert(tech);
         userDao.insert(tech2);
@@ -145,15 +429,105 @@ public class PopulateDB {
         ticket05.addTechnician(tech2);
         ticket06.addTechnician(tech);
         ticket06.addTechnician(tech2);
-        userDao.insert(new ActemiumEmployee("Admin123", "Passwd123&", "Admin", "Administrator","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.ADMINISTRATOR));
-        userDao.insert(new ActemiumEmployee("Sup123", "Passwd123&", "Sup", "Support manager","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.SUPPORT_MANAGER));
-        userDao.insert(new ActemiumEmployee("Tech123", "Passwd123&", "tech", "technician","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.TECHNICIAN));
-        userDao.insert(new ActemiumEmployee("thomas123", "Passwd123&", "Thomas", "Dirven","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.ADMINISTRATOR));
-        userDao.insert(new ActemiumEmployee("isaac123", "Passwd123&", "Isaac", "Bauters","Kerstraat 71","094812384","isaac.bauters@hogent.be", EmployeeRole.ADMINISTRATOR));
-        userDao.insert(new ActemiumEmployee("florian123", "Passwd123&", "Florian", "Goossens","Groensstraat 103","096248753","florian.goossens@hogent.be", EmployeeRole.ADMINISTRATOR));
-        userDao.insert(new ActemiumEmployee("sibianDG", "Passwd123&", "Sibian", "De Gussem","Hoogstraat 89","092564812","sibian.degussem@hogent.be", EmployeeRole.ADMINISTRATOR));
-        ActemiumEmployee badguy = new ActemiumEmployee("badGuy", "Passwd123&", "bad", "guy","Hoogstraat 89","092564812","bad.guy@hogent.be", EmployeeRole.SUPPORT_MANAGER);
-        ActemiumEmployee inactive = new ActemiumEmployee("fired", "Passwd123&", "bad", "guy","Hoogstraat 89","092564812","bad.guy@hogent.be", EmployeeRole.SUPPORT_MANAGER);
+        userDao.insert( new ActemiumEmployee.EmployeeBuilder()
+                .username("Admin123")
+                .password("Passwd123&")
+                .firstName("Admin")
+                .lastName("Administrator")
+                .address("Overwale 42")
+                .phoneNumber("091354864")
+                .emailAddress("thomas.dirven@hogent.be")
+                .role(EmployeeRole.ADMINISTRATOR)
+                .build());
+        userDao.insert( new ActemiumEmployee.EmployeeBuilder()
+                .username("Sup123")
+                .password("Passwd123&")
+                .firstName("Sup")
+                .lastName("Support manager")
+                .address("Overwale 42")
+                .phoneNumber("091354864")
+                .emailAddress("thomas.dirven@hogent.be")
+                .role(EmployeeRole.SUPPORT_MANAGER)
+                .build());
+        userDao.insert( new ActemiumEmployee.EmployeeBuilder()
+                .username("Tech123")
+                .password("Passwd123&")
+                .firstName("tech")
+                .lastName("technician")
+                .address("Overwale 42")
+                .phoneNumber("091354864")
+                .emailAddress("thomas.dirven@hogent.be")
+                .role(EmployeeRole.TECHNICIAN)
+                .build());
+        userDao.insert( new ActemiumEmployee.EmployeeBuilder()
+                .username("thomas123")
+                .password("Passwd123&")
+                .firstName("Thomas")
+                .lastName("Dirven")
+                .address("Overwale 42")
+                .phoneNumber("091354864")
+                .emailAddress("thomas.dirven@hogent.be")
+                .role(EmployeeRole.ADMINISTRATOR)
+                .build());
+
+        userDao.insert( new ActemiumEmployee.EmployeeBuilder()
+                .username("isaac123")
+                .password("Passwd123&")
+                .firstName("Isaac")
+                .lastName("Bauters")
+                .address("Kerstraat 71")
+                .phoneNumber("091354864")
+                .emailAddress("isaac.bauters@hogent.be")
+                .role(EmployeeRole.ADMINISTRATOR)
+                .build());
+        userDao.insert( new ActemiumEmployee.EmployeeBuilder()
+                .username("florian123")
+                .password("Passwd123&")
+                .firstName("Florian")
+                .lastName("Goossens")
+                .address("Groensstraat 103")
+                .phoneNumber("091354864")
+                .emailAddress("florian.goossens@hogent.be")
+                .role(EmployeeRole.ADMINISTRATOR)
+                .build());
+        userDao.insert( new ActemiumEmployee.EmployeeBuilder()
+                .username("SibianDG")
+                .password("Passwd123&")
+                .firstName("Sibian")
+                .lastName("De Gussem")
+                .address("Hoogstraat 89")
+                .phoneNumber("091354864")
+                .emailAddress("sibian.degussem@hogent.be")
+                .role(EmployeeRole.ADMINISTRATOR)
+                .build());
+
+        //userDao.insert(new ActemiumEmployee("Admin123", "Passwd123&", "Admin", "Administrator","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.ADMINISTRATOR));
+        //userDao.insert(new ActemiumEmployee("Sup123", "Passwd123&", "Sup", "Support manager","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.SUPPORT_MANAGER));
+        //userDao.insert(new ActemiumEmployee("Tech123", "Passwd123&", "tech", "technician","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.TECHNICIAN));
+        //userDao.insert(new ActemiumEmployee("thomas123", "Passwd123&", "Thomas", "Dirven","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.ADMINISTRATOR));
+        //userDao.insert(new ActemiumEmployee("isaac123", "Passwd123&", "Isaac", "Bauters","Kerstraat 71","094812384","isaac.bauters@hogent.be", EmployeeRole.ADMINISTRATOR));
+        //userDao.insert(new ActemiumEmployee("florian123", "Passwd123&", "Florian", "Goossens","Groensstraat 103","096248753","florian.goossens@hogent.be", EmployeeRole.ADMINISTRATOR));
+        //userDao.insert(new ActemiumEmployee("sibianDG", "Passwd123&", "Sibian", "De Gussem","Hoogstraat 89","092564812","sibian.degussem@hogent.be", EmployeeRole.ADMINISTRATOR));
+        ActemiumEmployee badguy = new ActemiumEmployee.EmployeeBuilder()
+                .username("badGuy")
+                .password("Passwd123&")
+                .firstName("bad")
+                .lastName("guy")
+                .address("Hoogstraat 89")
+                .phoneNumber("091354864")
+                .emailAddress("bad.guy@hogent.be")
+                .role(EmployeeRole.SUPPORT_MANAGER)
+                .build();
+        ActemiumEmployee inactive = new ActemiumEmployee.EmployeeBuilder()
+                .username("fired")
+                .password("Passwd123&")
+                .firstName("bad")
+                .lastName("guy")
+                .address("Hoogstraat 89")
+                .phoneNumber("091354864")
+                .emailAddress("bad.guy@hogent.be")
+                .role(EmployeeRole.SUPPORT_MANAGER)
+                .build();
         badguy.setStatus(UserStatus.BLOCKED);
         inactive.setStatus(UserStatus.INACTIVE);
         userDao.insert(badguy);
@@ -164,13 +538,58 @@ public class PopulateDB {
         userDao.insert(bill);
         userDao.insert(larry);
         userDao.insert(elon);
-        userDao.insert(new ActemiumCustomer("cust02Johan", "Passwd123&", "Willy", "Naessens", naessensNV));
-        userDao.insert(new ActemiumEmployee("tech01Donald", "Passwd123&", "Bob", "The Builder", "Stationstraat 56", "092548736", "donald.trump@hogent.be", EmployeeRole.TECHNICIAN));
-        userDao.insert(new ActemiumEmployee("supman01John", "Passwd123&", "John", "Smiths", "Stationstraat 34", "093504816", "john.smiths@hogent.be", EmployeeRole.SUPPORT_MANAGER));
+
+        userDao.insert(new ActemiumCustomer.CustomerBuilder()
+                .username("cust02Johan")
+                .password("Passwd123&")
+                .firstName("Willy")
+                .lastName("Naessens")
+                .company(naessensNV)
+                .build());
+        userDao.insert(
+                new ActemiumEmployee.EmployeeBuilder()
+                        .username("tech01Donald")
+                        .password("Passwd123&")
+                        .firstName("Bob")
+                        .lastName("The Builder")
+                        .address("Stationstraat 56")
+                        .phoneNumber("092548736")
+                        .emailAddress("bob.thebuilder@hogent.be")
+                        .role(EmployeeRole.TECHNICIAN)
+                        .build());
+        userDao.insert(
+                new ActemiumEmployee.EmployeeBuilder()
+                        .username("supman01John")
+                        .password("Passwd123&")
+                        .firstName("John")
+                        .lastName("Smiths")
+                        .address("Stationstraat 34")
+                        .phoneNumber("09254875536")
+                        .emailAddress("john.smiths@hogent.be")
+                        .role(EmployeeRole.SUPPORT_MANAGER)
+                        .build());
+                //new ActemiumEmployee("tech01Donald", "Passwd123&", "Bob", "The Builder", "Stationstraat 56", "092548736", "donald.trump@hogent.be", EmployeeRole.TECHNICIAN));
+        //userDao.insert(new ActemiumEmployee("supman01John", "Passwd123&", "John", "Smiths", "Stationstraat 34", "093504816", "john.smiths@hogent.be", EmployeeRole.SUPPORT_MANAGER));
 
         //String name, String country, String city, String address, String phoneNumber
-        ActemiumCompany vatican = new ActemiumCompany("Vatican", "Vatican", "Vatican City", "00120 Vatican City", "666");
-        ActemiumCustomer pope = new ActemiumCustomer("PopeFrancis", "Passwd123&", "Jorge Mario", "Bergoglio", vatican);
+        ActemiumCompany vatican = new ActemiumCompany.CompanyBuilder()
+                .name("Vatican")
+                .country("Vatican")
+                .city("Vatican City")
+                .address("00120 Vatican City")
+                .phoneNumber("666")
+                .build();
+
+
+        ActemiumCustomer pope = new ActemiumCustomer.CustomerBuilder()
+                .username("PopeFrancis")
+                .password("Passwd123&")
+                .firstName("Jorge")
+                .lastName("Bergoglio")
+                .company(vatican)
+                .build();
+        userDao.insert(pope);
+
         SecureRandom randomGen = new SecureRandom();
         TicketPriority[] prios = TicketPriority.values();
         TicketType[] types = TicketType.values() ;
@@ -195,7 +614,18 @@ public class PopulateDB {
         userDao.commitTransaction();
 
         contractTypeDao.startTransaction();
-        contractTypeDao.insert(new ActemiumContractType("ExperimentalSupport", ContractTypeStatus.INACTIVE, true, false, true, Timestamp.ALWAYS, 4, 1, 2999.99));
+
+        contractTypeDao.insert(new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("ExperimentalSupport")
+                .contractTypeStatus(ContractTypeStatus.INACTIVE)
+                .hasEmail(true)
+                .hasPhone(true)
+                .hasApplication(true)
+                .timestamp(Timestamp.ALWAYS)
+                .maxHandlingTime(4)
+                .minThroughputTime(1)
+                .price(2999.99)
+                .build());
 		contractTypeDao.commitTransaction();
     }
 

@@ -139,9 +139,7 @@ public class DashboardFrameController <T,E> extends GuiController {
         
         gridDashboard.setPrefWidth(primScreenBounds.getWidth());
         gridDashboard.prefHeight(primScreenBounds.getHeight());
-        System.out.println(primScreenBounds.getWidth());
-        System.out.println(primScreenBounds.getHeight());
-    
+
         resetGridpane(gridContent);
         initializeGridPane(3, 2, 300, 300);
 

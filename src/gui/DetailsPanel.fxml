@@ -49,7 +49,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </HBox>
-            <HBox alignment="BOTTOM_RIGHT">
+            <HBox fx:id="hBoxModify" alignment="BOTTOM_RIGHT">
                <children>
                   <Button fx:id="btnDelete" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnDeleteOnAction" styleClass="btn-blue" text="Delete">
                      <font>

@@ -4,7 +4,9 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -16,6 +18,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import domain.enums.RequiredElement;
+import exceptions.InformationRequiredException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import languages.LanguageResource;
@@ -62,8 +66,18 @@ public class ActemiumCompany implements Company, Serializable {
 	public ActemiumCompany() {		
 		super();
 	}
+
+	public ActemiumCompany(CompanyBuilder builder) {
+		this.name.set(builder.name);
+		this.country = builder.country;
+		this.city = builder.city;
+		this.address = builder.address;
+		this.phoneNumber = builder.phoneNumber;
+		this.registrationDate = builder.registrationDate;
+	}
 	
-	public ActemiumCompany(String name, String country, String city, String address, String phoneNumber) {
+	/*public ActemiumCompany(String name, String country, String city,
+						   String address, String phoneNumber) {
 		setName(name);
 		setCountry(country);
 		setCity(city);
@@ -71,6 +85,8 @@ public class ActemiumCompany implements Company, Serializable {
 		setPhoneNumber(phoneNumber);
 		setRegistrationDate(LocalDate.now());
 	}
+
+	 */
 
 	@Access(AccessType.PROPERTY)
 	public String getName() {
@@ -82,9 +98,9 @@ public class ActemiumCompany implements Company, Serializable {
 	}
 
 	public void setName(String name) {
-		if (name == null || name.isBlank()) {
-			throw new IllegalArgumentException(LanguageResource.getString("companyName_invalid"));
-		}
+		//if (name == null || name.isBlank()) {
+		//	throw new IllegalArgumentException(LanguageResource.getString("companyName_invalid"));
+		//}
 		this.name.set(name);
 	}
 	
@@ -93,9 +109,9 @@ public class ActemiumCompany implements Company, Serializable {
 	}
 
 	public void setCountry(String country) {
-		if (country == null || country.isBlank()) {
-			throw new IllegalArgumentException(LanguageResource.getString("empty_country"));
-		}
+		//if (country == null || country.isBlank()) {
+		//	throw new IllegalArgumentException(LanguageResource.getString("empty_country"));
+		//}
 		this.country = country;
 	}
 	
@@ -104,9 +120,9 @@ public class ActemiumCompany implements Company, Serializable {
 	}
 
 	public void setCity(String city) {
-		if (city == null || city.isBlank()) {
-			throw new IllegalArgumentException(LanguageResource.getString("empty_city"));
-		}
+		//if (city == null || city.isBlank()) {
+		//	throw new IllegalArgumentException(LanguageResource.getString("empty_city"));
+		//}
 		this.city = city;
 	}
 	
@@ -115,9 +131,9 @@ public class ActemiumCompany implements Company, Serializable {
 	}
 
 	public void setAddress(String address) {
-		if (address == null || address.isBlank()) {
-			throw new IllegalArgumentException(LanguageResource.getString("empty_address"));
-		}
+		//if (address == null || address.isBlank()) {
+		//	throw new IllegalArgumentException(LanguageResource.getString("empty_address"));
+		//}
 		this.address = address;
 	}
 
@@ -129,9 +145,9 @@ public class ActemiumCompany implements Company, Serializable {
 		//TODO fix phoneNumberRegex
 //		String phoneNumberRegex = "[0-9 /-]+";
 //		if (phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches(phoneNumberRegex)) {
-		if (phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches(".*\\d.*")) {
-			throw new IllegalArgumentException(LanguageResource.getString("phonenumber_invalid"));
-		}
+		//if (phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches(".*\\d.*")) {
+		//	throw new IllegalArgumentException(LanguageResource.getString("phonenumber_invalid"));
+		//}
 		this.phoneNumber = phoneNumber;
 	}
 
@@ -165,5 +181,101 @@ public class ActemiumCompany implements Company, Serializable {
 
 	public void addActemiumTicket(ActemiumTicket ticket) {
 		this.actemiumTickets.add(ticket);
+	}
+
+	public void checkAttributes() throws InformationRequiredException {
+		// Ms. Malfait her idea
+		new ActemiumCompany.CompanyBuilder()
+				.name(this.getName())
+				.country(this.getCountry())
+				.city(this.getCity())
+				.address(this.getAddress())
+				.phoneNumber(this.getPhoneNumber())
+				.registrationDate(this.getRegistrationDate())
+				.build();
+	}
+
+	public static class CompanyBuilder {
+		private String name;
+		private String country;
+		private String city;
+		private String address;
+		private String phoneNumber;
+		private LocalDate registrationDate;
+
+		private Set<RequiredElement> requiredElements;
+
+		public CompanyBuilder name(String name){
+			this.name = name;
+			return this;
+		}
+		public CompanyBuilder country(String country){
+			this.country = country;
+			return this;
+		}
+		public CompanyBuilder city(String city){
+			this.city = city;
+			return this;
+		}
+		public CompanyBuilder address(String address){
+			this.address = address;
+			return this;
+		}
+		public CompanyBuilder phoneNumber(String phoneNumber){
+			this.phoneNumber = phoneNumber;
+			return this;
+		}
+		public CompanyBuilder registrationDate(LocalDate registrationDate){
+			this.registrationDate = registrationDate;
+			return this;
+		}
+
+		public ActemiumCompany build() throws InformationRequiredException {
+			requiredElements = new HashSet<>();
+			checkAttributesEmployeeBuiler();
+			return new ActemiumCompany(this);
+		}
+
+		private void checkAttributesEmployeeBuiler() throws InformationRequiredException {
+			System.out.println();
+			if (name == null || name.isBlank())
+				requiredElements.add(RequiredElement.CompanyNameRequired);
+			if (country == null || country.isBlank())
+				requiredElements.add(RequiredElement.CompanyCountryRequired);
+			if (city == null || city.isBlank())
+				requiredElements.add(RequiredElement.CompanyCirtyRequired);
+			if (address == null || address.isBlank())
+				requiredElements.add(RequiredElement.CompanyAddressRequired);
+			if (phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches("\\+?[0-9 /-]+"))
+				requiredElements.add(RequiredElement.CompanyPhoneRequired);
+			if (registrationDate == null)
+				registrationDate = LocalDate.now();
+
+			if (!requiredElements.isEmpty()) {
+				requiredElements.forEach(System.out::println);
+				throw new InformationRequiredException(requiredElements);
+			}
+		}
+
+
+	}
+
+	public ActemiumCompany clone() throws CloneNotSupportedException {
+
+		ActemiumCompany cloned = null;
+		try {
+			cloned = new ActemiumCompany.CompanyBuilder()
+					.name(this.getName())
+					.country(this.getCountry())
+					.city(this.getCity())
+					.address(this.getAddress())
+					.phoneNumber(this.getPhoneNumber())
+					.registrationDate(this.getRegistrationDate())
+					.build();
+		} catch (InformationRequiredException e) {
+			//this should be a good Employee
+			e.printStackTrace();
+		}
+		return cloned;
 	}
 }
