@@ -238,6 +238,26 @@
     -fx-font-family: "Andalus";
 }
 
+.popupWarning {
+    -fx-background-color: cornsilk;
+    -fx-background-radius: 10;
+    -fx-padding: 10;
+ /* -fx-border-color: black; 
+    -fx-border-width: 4;
+    -fx-border-radius: 10;
+ */ -fx-font-size: 16;
+}
+
+.popupSuccess {
+    -fx-background-color: lightgreen;
+    -fx-background-radius: 10;
+    -fx-padding: 10;
+ /* -fx-border-color: black; 
+    -fx-border-width: 4;
+    -fx-border-radius: 10;
+ */ -fx-font-size: 16;
+}
+
 /*
 .bg1 {
     -fx-background-image: url("../pictures/bg1.png");

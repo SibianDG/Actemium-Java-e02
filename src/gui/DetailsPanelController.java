@@ -1,10 +1,17 @@
 package gui;
 
+import static javafx.scene.paint.Color.BLACK;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import domain.Contract;
 import domain.Employee;
@@ -27,26 +34,39 @@ import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import languages.LanguageResource;
-
-import static javafx.scene.paint.Color.BLACK;
 
 
 public class DetailsPanelController extends GridPane implements InvalidationListener {
@@ -65,6 +85,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     @FXML
     private Button btnModify;
+    
+    @FXML
+    private HBox hBoxModify;
 
     @FXML
     private Text txtErrorMessage;
@@ -161,10 +184,12 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                     , getTextFromGridItem(8)
                             );
                         }
-                        makePopUp("User edited", "You have successfully edited the user.");
-                    } else {
-                        makePopUp("User not edited", "You haven't changed anything.");
-                    }
+//                      makePopUp("User edited", "You have successfully edited the user.");
+						showPopupMessage("popupSuccess", "You have successfully edited the user.");
+					} else {
+//                      makePopUp("User not edited", "You haven't changed anything.");
+						showPopupMessage("popupWarning", "You haven't changed anything.");
+					}
                 } else {
                     if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)){
 
@@ -209,7 +234,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 , getTextFromGridItem(10)
                                 , ((TicketViewModel) viewModel).getTechniciansAsignedToTicket()
                         );
-                        makePopUp(LanguageResource.getString("ticketEdited"), LanguageResource.getString("ticketEdited_succes"));
+//                        makePopUp(LanguageResource.getString("ticketEdited"), LanguageResource.getString("ticketEdited_succes"));
+						showPopupMessage("popupSuccess", LanguageResource.getString("ticketEdited_succes"));
                     } else if (viewModel.isFieldModified() && !TicketStatus.isOutstanding()){
                         ((TicketViewModel) viewModel).modifyTicketOutstanding(
                                 // solution, quality, supportNeeded
@@ -217,9 +243,11 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 , getTextFromGridItem(14)
                                 , getTextFromGridItem(15)
                         );
-                        makePopUp(LanguageResource.getString("ticketEdited"), LanguageResource.getString("ticketEdited_succes"));
+//                        makePopUp(LanguageResource.getString("ticketEdited"), LanguageResource.getString("ticketEdited_succes"));
+						showPopupMessage("popupSuccess", LanguageResource.getString("ticketEdited_succes"));
                     } else {
-                        makePopUp(LanguageResource.getString("ticketEdited_false"), LanguageResource.getString("unchangedMessage"));
+//                        makePopUp(LanguageResource.getString("ticketEdited_false"), LanguageResource.getString("unchangedMessage"));
+						showPopupMessage("popupWarning", LanguageResource.getString("unchangedMessage"));
                     }
                 } else {
                     ((TicketViewModel) viewModel).registerTicket(
@@ -250,10 +278,11 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 Integer.parseInt(getTextFromGridItem(7)), //min troughputtime contract
                                 Double.parseDouble(getTextFromGridItem(8).replace(",", ".")) //price contract
                         );
-                        System.out.println("Edited ContractTypeViewModel");
-                        makePopUp(LanguageResource.getString("contractTypeEdited"), LanguageResource.getString("contractTypeEdited_succes"));
+//                        makePopUp(LanguageResource.getString("contractTypeEdited"), LanguageResource.getString("contractTypeEdited_succes"));
+						showPopupMessage("popupSuccess", LanguageResource.getString("contractTypeEdited_succes"));
                     } else {
-                        makePopUp(LanguageResource.getString("contractTypeEdited_false"), LanguageResource.getString("unchangedMessage"));
+//                        makePopUp(LanguageResource.getString("contractTypeEdited_false"), LanguageResource.getString("unchangedMessage"));
+						showPopupMessage("popupWarning", LanguageResource.getString("unchangedMessage"));
                     }
                 } else {
                     ((ContractTypeViewModel) viewModel).registerContractType(
@@ -276,9 +305,11 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 // Only the status can be modified in case a customer didnt pay his bills                        		
                                 ContractStatus.valueOf(getTextFromGridItem(3))
                         );
-                        makePopUp(LanguageResource.getString("contractEdited"), LanguageResource.getString("contractEdited_succes"));
+//                        makePopUp(LanguageResource.getString("contractEdited"), LanguageResource.getString("contractEdited_succes"));
+						showPopupMessage("popupSuccess", LanguageResource.getString("contractEdited_succes"));
                     } else {
-                        makePopUp(LanguageResource.getString("contractEdited_false"), LanguageResource.getString("unchangedMessage"));
+//                        makePopUp(LanguageResource.getString("contractEdited_false"), LanguageResource.getString("unchangedMessage"));
+						showPopupMessage("popupWarning", LanguageResource.getString("unchangedMessage"));
                     }
                 } else {
                     //TODO entering customerID should show corresponding company name
@@ -850,6 +881,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         return datePicker;
     }
 
+    // replaced by showPopUpMessage
     private void makePopUp(String headerText, String text){
         Alert alert = new Alert(Alert.AlertType.INFORMATION, text);
         alert.setHeaderText(headerText);
@@ -858,7 +890,45 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
         alert.showAndWait();
     }
+    
+    public Popup createPopup(final String message, String popupType) {
+        final Popup popup = new Popup();
+        popup.setAutoFix(true);
+        popup.setAutoHide(true);
+        popup.setHideOnEscape(true);
+        Label label = new Label(message);
+        label.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                popup.hide();
+            }
+        });
+//        label.getStylesheets().add("/css/styles.css");
+        label.getStylesheets().add("file:src/start/styles.css");
+        label.getStyleClass().add(popupType);
+        popup.getContent().add(label);
+        return popup;
+    }
 
+    //TODO fix positioning
+    // Can it be relative to a button such as btnModify or btnAdd
+	public void showPopupMessage(final String popupType/* , final Stage stage */, String message) {
+        final Popup popup = createPopup(message, popupType);
+//        final TextField textPopup = new TextField(message);
+        final Stage stage = (Stage) gridDetails.getScene().getWindow();
+        popup.setOnShown(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent e) {
+//            	double x = hBoxModify.getChildren().get(0).getBoundsInParent().getCenterX();
+//            	double y = hBoxModify.getChildren().get(0).getBoundsInParent().getCenterY();              	
+//            	System.out.println(x + y);
+				popup.setX(-780 + stage.getWidth()/2 - popup.getWidth()/2);
+				popup.setY(-580 + stage.getHeight()/2 - popup.getHeight()/2);
+            }
+        });
+        popup.show(stage);
+//        hBoxModify.getChildren().add(textPopup);
+    }
 
     private void initGridDetails() {
         gridDetails.getChildren().clear();
@@ -871,4 +941,5 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
         gridDetails.getColumnConstraints().addAll(col0,col1);
     }
+    
 }
