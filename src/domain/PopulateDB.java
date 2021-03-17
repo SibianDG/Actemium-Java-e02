@@ -202,18 +202,70 @@ public class PopulateDB {
                 .company(tesla)
                 .build();
 
-        ActemiumContract bContract = new ActemiumContract(bCtype, barak, LocalDate.now().plusYears(1));
-        ActemiumContract bContract02 = new ActemiumContract(bCtype02, barak, LocalDate.now().plusYears(1));
-        ActemiumContract jContract = new ActemiumContract(jCtype, jeff, LocalDate.now().plusYears(3));
-        ActemiumContract jContract02 = new ActemiumContract(jCtype02, jeff, LocalDate.now().plusYears(2));
-        ActemiumContract mContract = new ActemiumContract(cCtype, mark, LocalDate.now().plusYears(1));
-        ActemiumContract mContract02 = new ActemiumContract(gCtype, mark, LocalDate.now().plusYears(1));
-        ActemiumContract gContract = new ActemiumContract(dCtype, bill, LocalDate.now().plusYears(1));
-        ActemiumContract gContract02 = new ActemiumContract(dCtype, bill, LocalDate.now().plusYears(1));
-        ActemiumContract lContract = new ActemiumContract(eCtype, larry, LocalDate.now().plusYears(3));
-        ActemiumContract lContract02 = new ActemiumContract(hCtype, larry, LocalDate.now().plusYears(3));
-        ActemiumContract eContract = new ActemiumContract(fCtype, elon, LocalDate.now().plusYears(2));
-        ActemiumContract eContract02 = new ActemiumContract(pCtype, elon, LocalDate.now().plusYears(2));
+        ActemiumContract bContract = new ActemiumContract.ContractBuilder()
+                                                            .contractType(bCtype)
+                                                            .customer(barak)
+                                                            .endDate(LocalDate.now().plusYears(1))
+                                                            .build();
+
+        ActemiumContract bContract02 = new ActemiumContract.ContractBuilder()
+                .contractType(bCtype02)
+                .customer(barak)
+                .endDate(LocalDate.now().plusYears(1))
+                .build();
+        ActemiumContract jContract = new ActemiumContract.ContractBuilder()
+                .contractType(jCtype)
+                .customer(jeff)
+                .endDate(LocalDate.now().plusYears(3))
+                .build();
+        ActemiumContract jContract02 = new ActemiumContract.ContractBuilder()
+                .contractType(jCtype02)
+                .customer(jeff)
+                .endDate(LocalDate.now().plusYears(3))
+                .build();
+
+        ActemiumContract mContract = new ActemiumContract.ContractBuilder()
+                .contractType(cCtype)
+                .customer(mark)
+                .endDate(LocalDate.now().plusYears(1))
+                .build();
+        ActemiumContract mContract02 = new ActemiumContract.ContractBuilder()
+                .contractType(gCtype)
+                .customer(mark)
+                .endDate(LocalDate.now().plusYears(1))
+                .build();
+        ActemiumContract gContract = new ActemiumContract.ContractBuilder()
+                .contractType(dCtype)
+                .customer(bill)
+                .endDate(LocalDate.now().plusYears(1))
+                .build();
+
+        ActemiumContract gContract02 = new ActemiumContract.ContractBuilder()
+                .contractType(dCtype)
+                .customer(bill)
+                .endDate(LocalDate.now().plusYears(1))
+                .build();
+        ActemiumContract lContract = new ActemiumContract.ContractBuilder()
+                .contractType(eCtype)
+                .customer(bill)
+                .endDate(LocalDate.now().plusYears(3))
+                .build();
+        ActemiumContract lContract02 = new ActemiumContract.ContractBuilder()
+                .contractType(eCtype)
+                .customer(larry)
+                .endDate(LocalDate.now().plusYears(3))
+                .build();
+
+        ActemiumContract eContract = new ActemiumContract.ContractBuilder()
+                .contractType(fCtype)
+                .customer(elon)
+                .endDate(LocalDate.now().plusYears(2))
+                .build();
+        ActemiumContract eContract02 = new ActemiumContract.ContractBuilder()
+                .contractType(pCtype)
+                .customer(elon)
+                .endDate(LocalDate.now().plusYears(2))
+                .build();
 
         barak.addContract(bContract);
         barak.addContract(bContract02);

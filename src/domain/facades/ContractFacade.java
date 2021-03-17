@@ -9,6 +9,7 @@ import domain.Contract;
 import domain.enums.ContractStatus;
 import domain.enums.EmployeeRole;
 import domain.manager.Actemium;
+import exceptions.InformationRequiredException;
 import javafx.collections.ObservableList;
 
 public class ContractFacade implements Facade {
@@ -19,15 +20,16 @@ public class ContractFacade implements Facade {
         this.actemium = actemium;
     }
 
-    public void modifyContract(ActemiumContract contract, ContractStatus status) {    	
+    public void modifyContract(ActemiumContract contract, ContractStatus status) throws InformationRequiredException {
 		// check to see if signed in user is Support Manager
 		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
     	contract.setStatus(status);
+    	contract.checkAttributes();
         actemium.modifyContract(contract);
     }
     
 	public void registerContract(Long customerId, String contractTypeName, LocalDate startDate,
-			int duration) {
+			int duration) throws InformationRequiredException {
 		// check to see if signed in user is Support Manager
 		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
 		ActemiumContractType contractType = (ActemiumContractType) actemium.findContractTypeById(contractTypeName);
@@ -39,7 +41,13 @@ public class ContractFacade implements Facade {
 			throw new IllegalArgumentException("You must provide the customer ID of an existing customer");
 		}
 		LocalDate endDate = startDate.plusYears(duration);
-		ActemiumContract contract = new ActemiumContract(contractType, customer, startDate, endDate);
+		ActemiumContract contract = new ActemiumContract.ContractBuilder()
+				.contractType(contractType)
+				.customer(customer)
+				.startDate(startDate)
+				.endDate(endDate)
+				.build();
+
 		actemium.registerContract(contract);
 	}
 

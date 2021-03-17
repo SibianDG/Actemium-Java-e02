@@ -109,6 +109,42 @@ public enum RequiredElement {
             return LanguageResource.getString("contractTypeTimestamp_invalid");
         }
     }
+    , ContractTypeRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("contractType_invalid");
+        }
+    }
+    , CustomerRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("customer_invalid");
+        }
+    }
+    , ContractStatusRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("contractStatus_invalid");
+        }
+    }
+    , ContractStartDateRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("startDate_invalid");
+        }
+    }
+    , ContractEndDateRequired1 {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("contractStatusRequired");
+        }
+    }
+    , ContractEndDateRequired2 {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("contractStatusRequired");
+        }
+    }
     , ContractTypeWayRequired {
         @Override
         public String toString() {
