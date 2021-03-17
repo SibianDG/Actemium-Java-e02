@@ -748,23 +748,48 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             if (key.equals("Password")){
                 string = "********";
             }
-            TextField detail = new TextField(string);
-            detail.textProperty().addListener((observable, oldValue, newValue) -> {
-                viewModel.setFieldModified(true);
-            });
-            detail.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+            
+            //TODO transform into generic method
+            if(key.equals("Text")
+            		|| key.equals("Description")) {
+            	TextArea detail = new TextArea(string);
+            	
+            	detail.textProperty().addListener((observable, oldValue, newValue) -> {
+                    viewModel.setFieldModified(true);
+                });
+                detail.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
 
-            if (string.equals("")){
-                detail.setVisible(false);
-                detail.setPadding(new Insets(15, 0, 0, 0));
+                if (string.equals("")){
+                    detail.setVisible(false);
+                    detail.setPadding(new Insets(15, 0, 0, 0));
+                } else {
+                    //detail.setPadding(new Insets(0, 0, 0, 15));
+                    detail.setId("textFieldWithPadding");
+                }
+                detail.setDisable(disable);
+                detail.setPromptText(key);
+
+	            node = detail;
             } else {
-                //detail.setPadding(new Insets(0, 0, 0, 15));
-                detail.setId("textFieldWithPadding");
-            }
-            detail.setDisable(disable);
-            detail.setPromptText(key);
-
-            node = detail;
+            	TextField detail = new TextField(string);
+	            
+	            detail.textProperty().addListener((observable, oldValue, newValue) -> {
+	                viewModel.setFieldModified(true);
+	            });
+	            detail.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+	
+	            if (string.equals("")){
+	                detail.setVisible(false);
+	                detail.setPadding(new Insets(15, 0, 0, 0));
+	            } else {
+	                //detail.setPadding(new Insets(0, 0, 0, 15));
+	                detail.setId("textFieldWithPadding");
+	            }
+	            detail.setDisable(disable);
+	            detail.setPromptText(key);
+	
+	            node = detail;
+	        }
         } else if (o instanceof Enum) {
             node = makeComboBox(o);
         } else if (o instanceof Boolean) {
