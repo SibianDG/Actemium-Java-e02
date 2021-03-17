@@ -53,6 +53,7 @@ public class TicketViewModel extends ViewModel {
         if (ticket != null){
             // substring(8) to remove ACTEMIUM
             setCurrentState(GUIEnum.valueOf(ticket.getClass().getSimpleName().substring(8).toUpperCase()));
+            setTechniciansAsignedToTicketEmpty();
             //techniciansForTicket = ticket.giveTechnicians();
         }
         fireInvalidationEvent();
@@ -107,7 +108,6 @@ public class TicketViewModel extends ViewModel {
     public void modifyTicket(TicketPriority priority, TicketType ticketType, TicketStatus status, String title, String description,
                              String remarks, String attachments, List<ActemiumEmployee> technicians) throws InformationRequiredException {
         ticketFacade.modifyTicket((ActemiumTicket) selectedTicket, priority, ticketType, status, title, description, remarks, attachments, technicians);
-        //techniciansAsignedToTicket = new ArrayList<>();
     }
 
     public void modifyTicketOutstanding(String solution, String quality, String supportNeeded) throws InformationRequiredException {
@@ -143,5 +143,9 @@ public class TicketViewModel extends ViewModel {
 
     public List<ActemiumEmployee> getTechniciansAsignedToTicket() {
         return techniciansAsignedToTicket;
+    }
+
+    public void setTechniciansAsignedToTicketEmpty() {
+        this.techniciansAsignedToTicket = new ArrayList<>();
     }
 }
