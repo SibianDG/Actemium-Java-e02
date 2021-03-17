@@ -509,4 +509,28 @@ public class ActemiumTicket implements Ticket, Serializable {
 
 	}
 
+	public ActemiumTicket clone() throws CloneNotSupportedException {
+
+		ActemiumTicket cloned = null;
+		try {
+			cloned = new TicketBuiler()
+					.ticketStatus(this.getStatusAsEnum())
+					.ticketPriority(this.getPriorityAsEnum())
+					.ticketType(this.getTicketTypeAsEnum())
+					.title(this.getTitle())
+					.description(this.getDescription())
+					.customer(this.getCustomer())
+					.remarks(this.getRemarks())
+					.attachments(this.getAttachments())
+					.solution(this.getSolution())
+					.quality(this.getQuality())
+					.supportNeeded(this.getSupportNeeded())
+					.build();
+		} catch (InformationRequiredException e) {
+			//this should be a good Employee
+			e.printStackTrace();
+		}
+		return cloned;
+	}
+
 }

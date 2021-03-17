@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import exceptions.InformationRequiredException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import languages.LanguageResource;
@@ -166,4 +167,27 @@ public class ActemiumCompany implements Company, Serializable {
 	public void addActemiumTicket(ActemiumTicket ticket) {
 		this.actemiumTickets.add(ticket);
 	}
+
+	/*public ActemiumCompany clone() throws CloneNotSupportedException {
+
+		ActemiumCompany cloned = null;
+		try {
+			cloned = new ActemiumCompany.Bui()
+					.username(this.usernameProperty().get())
+					.password(this.getPassword())
+					.firstName(this.firstNameProperty().get())
+					.lastName(this.lastNameProperty().get())
+					.address(this.getAddress())
+					.phoneNumber(this.getPhoneNumber())
+					.emailAddress(this.getEmailAddress())
+					.role(this.getRoleAsEnum())
+					.build();
+		} catch (InformationRequiredException e) {
+			//this should be a good Employee
+			e.printStackTrace();
+		}
+		return cloned;
+	}
+
+	 */
 }

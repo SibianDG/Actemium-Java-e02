@@ -120,7 +120,7 @@ public class UserViewModel extends ViewModel {
 	}
 
 	public void modifyCustomer(String username, String password, String firstName, String lastName, String status,
-			String companyName, String companyCountry, String companyCity, String companyAddress, String companyPhone) {		
+			String companyName, String companyCountry, String companyCity, String companyAddress, String companyPhone) throws InformationRequiredException {
 		userFacade.modifyCustomer((ActemiumCustomer) this.selectedUser, username, password, firstName, lastName,
 				UserStatus.valueOf(status), companyName, companyCountry, companyCity, companyAddress, companyPhone);
 	}

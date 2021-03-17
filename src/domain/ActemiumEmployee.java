@@ -259,5 +259,26 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 		}
 
 	}
+
+	public ActemiumEmployee clone() throws CloneNotSupportedException {
+
+		ActemiumEmployee cloned = null;
+		try {
+			cloned = new EmployeeBuilder()
+					.username(this.usernameProperty().get())
+					.password(this.getPassword())
+					.firstName(this.firstNameProperty().get())
+					.lastName(this.lastNameProperty().get())
+					.address(this.getAddress())
+					.phoneNumber(this.getPhoneNumber())
+					.emailAddress(this.getEmailAddress())
+					.role(this.getRoleAsEnum())
+					.build();
+		} catch (InformationRequiredException e) {
+			//this should be a good Employee
+			e.printStackTrace();
+		}
+		return cloned;
+	}
 	
 }

@@ -110,62 +110,106 @@ public class UserFacade implements Facade {
 		actemium.registerEmployee(newEmployee);
 	}
 
-	public void modifyCustomer(ActemiumCustomer customer, String username, String password, String firstName, String lastName, UserStatus status, String companyName, String companyCountry, String companyCity, String companyAddress, String companyPhone) {
-		// check to see if signed in user is Admin
-		actemium.checkPermision(EmployeeRole.ADMINISTRATOR);
-		
-		// Changes to company of the contactPerson (=Customer)
-		ActemiumCompany company = customer.getCompany();
-		company.setName(companyName);
-		company.setCountry(companyCountry);
-		company.setCity(companyCity);
-		company.setAddress(companyAddress);
-		company.setPhoneNumber(companyPhone);
-		
-		// only needs to be checked if you changed the username 
-		if (!customer.getUsername().equals(username)) {
-			actemium.existingUsername(username);
-			customer.setUsername(username);
+	public void modifyCustomer(ActemiumCustomer customer, String username,
+							   String password, String firstName, String lastName, UserStatus status,
+							   String companyName, String companyCountry, String companyCity,
+							   String companyAddress, String companyPhone) throws InformationRequiredException {
+		try {
+			ActemiumCustomer cloneCustomer = customer.clone();
+
+			// check to see if signed in user is Admin
+			actemium.checkPermision(EmployeeRole.ADMINISTRATOR);
+
+			// Changes to company of the contactPerson (=Customer)
+			//TODO clone
+			ActemiumCompany company = customer.getCompany();
+
+			//TODO
+			//cloneCustomer.setName(companyName);
+			//cloneCustomer.setCountry(companyCountry);
+			//cloneCustomer.setCity(companyCity);
+			//cloneCustomer.setAddress(companyAddress);
+			//cloneCustomer.setPhoneNumber(companyPhone);
+
+			// only needs to be checked if you changed the username
+			if (!cloneCustomer.getUsername().equals(username)) {
+				actemium.existingUsername(username);
+				customer.setUsername(username);
+			}
+
+			if (!(password.equals("********") || password.isBlank())) {
+				cloneCustomer.setPassword(password);
+			}
+
+			cloneCustomer.setFirstName(firstName);
+			cloneCustomer.setLastName(lastName);
+			// JPA automatically updates the company
+//		customer.setCompany(company);
+			cloneCustomer.setStatus(status);
+
+			cloneCustomer.checkAttributes();
+
+			customer.setUsername(cloneCustomer.getUsername());
+			customer.setPassword(cloneCustomer.getPassword());
+			customer.setFirstName(cloneCustomer.getFirstName());
+			customer.setLastName(cloneCustomer.getLastName());
+			customer.setStatus(cloneCustomer.getStatusAsEnum());
+			// JPA automatically updates the company
+//		customer.setCompany(company);
+
+			actemium.modifyCustomer(customer);
+		} catch (CloneNotSupportedException e) {
+			System.out.println("Can't clone object");
 		}
 
-		if (!(password.equals("********") || password.isBlank())) {
-			customer.setPassword(password);
-		}
-		
-		customer.setFirstName(firstName);
-		customer.setLastName(lastName);
-		// JPA automatically updates the company
-//		customer.setCompany(company);
-		customer.setStatus(status);
-		
-		actemium.modifyCustomer(customer);		
+
 	}
 
 	public void modifyEmployee(ActemiumEmployee employee, String username, String password, String firstName, String lastName, String address,
 							   String phoneNumber, String emailAddress, EmployeeRole role, UserStatus status) throws InformationRequiredException {
-		// check to see if signed in user is Admin
-		actemium.checkPermision(EmployeeRole.ADMINISTRATOR);
-		// only needs to be checked if you changed the username 
-		if (!employee.getUsername().equals(username)) {
-			actemium.existingUsername(username);
-			employee.setUsername(username);
+		try {
+			ActemiumEmployee cloneEmployee = employee.clone();
+
+			// check to see if signed in user is Admin
+			actemium.checkPermision(EmployeeRole.ADMINISTRATOR);
+			// only needs to be checked if you changed the username
+			if (!cloneEmployee.getUsername().equals(username)) {
+				actemium.existingUsername(username);
+				cloneEmployee.setUsername(username);
+
+			}
+
+			if (!(password.equals("********") || password.isBlank())) {
+				cloneEmployee.setPassword(password);
+			}
+
+			cloneEmployee.setFirstName(firstName);
+			cloneEmployee.setLastName(lastName);
+			cloneEmployee.setAddress(address);
+			cloneEmployee.setPhoneNumber(phoneNumber);
+			cloneEmployee.setEmailAddress(emailAddress);
+			cloneEmployee.setRole(role);
+			cloneEmployee.setStatus(status);
+
+			cloneEmployee.checkAttributes();
+
+			System.out.println("Hiervoorbij?");
+
+			employee.setUsername(cloneEmployee.getUsername());
+			employee.setPassword(cloneEmployee.getPassword());
+			employee.setFirstName(cloneEmployee.getFirstName());
+			employee.setLastName(cloneEmployee.getLastName());
+			employee.setAddress(cloneEmployee.getAddress());
+			employee.setPhoneNumber(cloneEmployee.getPhoneNumber());
+			employee.setEmailAddress(cloneEmployee.getEmailAddress());
+			employee.setRole(cloneEmployee.getRoleAsEnum());
+			employee.setStatus(cloneEmployee.getStatusAsEnum());
+
+			actemium.modifyEmployee(employee);
+		} catch (CloneNotSupportedException e){
+			System.out.println("Can't clone object");
 		}
 
-		if (!(password.equals("********") || password.isBlank())) {
-			employee.setPassword(password);
-		}
-		
-		employee.setFirstName(firstName);
-		employee.setLastName(lastName);
-		employee.setAddress(address);
-		employee.setPhoneNumber(phoneNumber);
-		employee.setEmailAddress(emailAddress);
-		employee.setRole(role);
-		employee.setStatus(status);
-
-		employee.checkAttributes();
-		
-		actemium.modifyEmployee(employee);
 	}
 
 	public void deleteUser(UserModel user) {

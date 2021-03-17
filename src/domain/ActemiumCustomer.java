@@ -194,5 +194,25 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 		}
 	}
 
+	public ActemiumCustomer clone() throws CloneNotSupportedException {
+
+		ActemiumCustomer cloned = null;
+		try {
+			cloned = new ActemiumCustomer.CustomerBuilder()
+					.username(this.usernameProperty().get())
+					.password(this.getPassword())
+					.firstName(this.firstNameProperty().get())
+					.lastName(this.lastNameProperty().get())
+					//TODO: clone company as well
+					.company(this.getCompany())
+					.build();
+		} catch (InformationRequiredException e) {
+			//this should be a good Employee
+			e.printStackTrace();
+		}
+		return cloned;
+	}
+
+
 
 }

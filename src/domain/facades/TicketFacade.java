@@ -45,23 +45,37 @@ public class TicketFacade implements Facade {
 
 	public void modifyTicket(ActemiumTicket ticket, TicketPriority priority, TicketType ticketType, TicketStatus status, String title, String description,
 							 String remarks, String attachments, List<ActemiumEmployee> technicians) throws InformationRequiredException {
-		// check to see if signed in user is Support Manger
-		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
-		
-		ticket.setPriority(priority);
-		ticket.setTicketType(ticketType);
-		ticket.setStatus(status);
-		ticket.setTitle(title);
-		ticket.setDescription(description);
-		ticket.setRemarks(remarks);
-		ticket.setAttachments(attachments);
-		ticket.setTechnicians(new ArrayList<>());
-		technicians.forEach(ticket::addTechnician);
+		try {
+			ActemiumTicket ticketClone = ticket.clone();
+			// check to see if signed in user is Support Manger
+			actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
 
-		ticket.checkAttributes();
+			ticketClone.setPriority(priority);
+			ticketClone.setTicketType(ticketType);
+			ticketClone.setStatus(status);
+			ticketClone.setTitle(title);
+			ticketClone.setDescription(description);
+			ticketClone.setRemarks(remarks);
+			ticketClone.setAttachments(attachments);
 
+			ticketClone.checkAttributes();
 
-		actemium.modifyTicket(ticket);
+			ticket.setPriority(ticketClone.getPriorityAsEnum());
+			ticket.setTicketType(ticketClone.getTicketTypeAsEnum());
+			ticket.setStatus(ticketClone.getStatusAsEnum());
+			ticket.setTitle(ticketClone.getTitle());
+			ticket.setDescription(ticketClone.getDescription());
+			ticket.setRemarks(ticketClone.getRemarks());
+			ticket.setAttachments(ticketClone.getAttachments());
+			ticket.setTechnicians(new ArrayList<>());
+			technicians.forEach(ticket::addTechnician);
+
+			actemium.modifyTicket(ticket);
+
+		} catch (CloneNotSupportedException e) {
+			System.out.println("Can't clone object");
+		}
+
 	}
 	
 	public void modifyTicketOutstanding(ActemiumTicket ticket, String solution, String quality, String supportNeeded) throws InformationRequiredException {

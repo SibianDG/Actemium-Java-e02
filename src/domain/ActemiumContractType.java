@@ -89,12 +89,12 @@ public class ActemiumContractType implements ContractType, Serializable {
 	}
 
 	public void setName(String name) {
-		//TODO no naming rules yet
-		if (name == null || name.isBlank()) {
-			throw new IllegalArgumentException(LanguageResource.getString("name_invalid"));
-		}
-		//TODO check if contractTypeName is not already taken,
-		// two contractTypes can't have the same name
+		////TODO no naming rules yet
+		//if (name == null || name.isBlank()) {
+		//	throw new IllegalArgumentException(LanguageResource.getString("name_invalid"));
+		//}
+		////TODO check if contractTypeName is not already taken,
+		//// two contractTypes can't have the same name
 		setContractTypeName();
 		this.name = name;
 	}
@@ -120,7 +120,7 @@ public class ActemiumContractType implements ContractType, Serializable {
 	}
 
 	public void setHasEmail(boolean hasEmail) {
-		verifyTicketCreationMethods(hasEmail, hasPhone, hasApplication);
+		//verifyTicketCreationMethods(hasEmail, hasPhone, hasApplication);
 		this.hasEmail = hasEmail;
 	}
 
@@ -129,7 +129,7 @@ public class ActemiumContractType implements ContractType, Serializable {
 	}
 
 	public void setHasPhone(boolean hasPhone) {
-		verifyTicketCreationMethods(hasEmail, hasPhone, hasApplication);
+		//verifyTicketCreationMethods(hasEmail, hasPhone, hasApplication);
 		this.hasPhone = hasPhone;
 	}
 
@@ -138,7 +138,7 @@ public class ActemiumContractType implements ContractType, Serializable {
 	}
 
 	public void setHasApplication(boolean hasApplication) {
-		verifyTicketCreationMethods(hasEmail, hasPhone, hasApplication);
+		//verifyTicketCreationMethods(hasEmail, hasPhone, hasApplication);
 		this.hasApplication = hasApplication;
 	}
 
@@ -316,6 +316,28 @@ public class ActemiumContractType implements ContractType, Serializable {
 			}
 
 		}
+	}
+
+	public ActemiumContractType clone() throws CloneNotSupportedException {
+
+		ActemiumContractType cloned = null;
+		try {
+			cloned = new ContractTypeBuilder()
+					.contractTypeName(this.contractTypeNameProperty().get())
+					.contractTypeStatus(this.getContractTypeStatusAsEnum())
+					.hasEmail(this.isHasEmail())
+					.hasPhone(this.isHasPhone())
+					.hasPhone(this.isHasPhone())
+					.timestamp(this.getTimestampAsEnum())
+					.maxHandlingTime(this.getMaxHandlingTime())
+					.minThroughputTime(this.getMinThroughputTime())
+					.price(this.getPrice())
+					.build();
+		} catch (InformationRequiredException e) {
+			//this should be a good Employee
+			e.printStackTrace();
+		}
+		return cloned;
 	}
 	
 }

@@ -37,22 +37,40 @@ public class ContractTypeFacade implements Facade{
 
     public void modifyContractType(ActemiumContractType contractType, String name, ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone,
                                    boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) throws InformationRequiredException {
-		// check to see if signed in user is Support Manager
-		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
-		
-        contractType.setName(name);
-        contractType.setContractTypeStatus(contractTypeStatus);
-        contractType.setHasEmail(hasEmail);
-        contractType.setHasPhone(hasPhone);
-        contractType.setHasApplication(hasApplication);
-        contractType.setTimestamp(timestamp);
-        contractType.setMaxHandlingTime(maxHandlingTime);
-        contractType.setMinThroughputTime(minThroughputTime);
-        contractType.setPrice(price);
 
-        contractType.checkAttributes();
+        try {
+            ActemiumContractType contractTypeClone = contractType.clone();
 
-        actemium.modifyContractType(contractType);
+            // check to see if signed in user is Support Manager
+            actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
+
+            contractTypeClone.setName(name);
+            contractTypeClone.setContractTypeStatus(contractTypeStatus);
+            contractTypeClone.setHasEmail(hasEmail);
+            contractTypeClone.setHasPhone(hasPhone);
+            contractTypeClone.setHasApplication(hasApplication);
+            contractTypeClone.setTimestamp(timestamp);
+            contractTypeClone.setMaxHandlingTime(maxHandlingTime);
+            contractTypeClone.setMinThroughputTime(minThroughputTime);
+            contractTypeClone.setPrice(price);
+
+            contractTypeClone.checkAttributes();
+
+            contractType.setName(contractType.getName());
+            contractType.setContractTypeStatus(contractType.getContractTypeStatusAsEnum());
+            contractType.setHasEmail(contractType.isHasEmail());
+            contractType.setHasPhone(contractType.isHasEmail());
+            contractType.setHasApplication(contractType.isHasApplication());
+            contractType.setTimestamp(contractType.getTimestampAsEnum());
+            contractType.setMaxHandlingTime(contractType.getMaxHandlingTime());
+            contractType.setMinThroughputTime(contractType.getMinThroughputTime());
+            contractType.setPrice(contractType.getPrice());
+
+            actemium.modifyContractType(contractType);
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void delete(ActemiumContractType contractType) {
