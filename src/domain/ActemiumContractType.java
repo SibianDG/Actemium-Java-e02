@@ -103,11 +103,13 @@ public class ActemiumContractType implements ContractType, Serializable {
 		this.contractTypeName.set(name);
 	}
 
-	public String getContractTypeStatus() {
+	public String getContractTypeStatusAsString() {
 		return contractTypeStatus.get();
 	}
 
-	public ContractTypeStatus getContractTypeStatusAsEnum() {
+	@Access(AccessType.PROPERTY)
+	@Enumerated(EnumType.STRING)
+	public ContractTypeStatus getContractTypeStatus() {
 		return ContractTypeStatus.valueOf(contractTypeStatus.get());
 	}
 
@@ -142,11 +144,13 @@ public class ActemiumContractType implements ContractType, Serializable {
 		this.hasApplication = hasApplication;
 	}
 
-	public String getTimestamp() {
+	public String getTimestampAsString() {
 		return timestamp.get();
 	}
-	
-	public Timestamp getTimestampAsEnum() {
+
+	@Access(AccessType.PROPERTY)
+	@Enumerated(EnumType.STRING)
+	public Timestamp getTimestamp() {
 		return Timestamp.valueOf(timestamp.get());
 	}
 
@@ -220,11 +224,11 @@ public class ActemiumContractType implements ContractType, Serializable {
 		// Ms. Malfait her idea
 		new ContractTypeBuilder()
 				.contractTypeName(this.contractTypeNameProperty().get())
-				.contractTypeStatus(this.getContractTypeStatusAsEnum())
+				.contractTypeStatus(this.getContractTypeStatus())
 				.hasEmail(this.hasEmail)
 				.hasPhone(this.hasPhone)
 				.hasApplication(this.isHasApplication())
-				.timestamp(this.getTimestampAsEnum())
+				.timestamp(this.getTimestamp())
 				.maxHandlingTime(this.getMaxHandlingTime())
 				.minThroughputTime(this.minThroughputTime)
 				.price(this.price)
@@ -324,11 +328,11 @@ public class ActemiumContractType implements ContractType, Serializable {
 		try {
 			cloned = new ContractTypeBuilder()
 					.contractTypeName(this.contractTypeNameProperty().get())
-					.contractTypeStatus(this.getContractTypeStatusAsEnum())
+					.contractTypeStatus(this.getContractTypeStatus())
 					.hasEmail(this.isHasEmail())
 					.hasPhone(this.isHasPhone())
 					.hasPhone(this.isHasPhone())
-					.timestamp(this.getTimestampAsEnum())
+					.timestamp(this.getTimestamp())
 					.maxHandlingTime(this.getMaxHandlingTime())
 					.minThroughputTime(this.getMinThroughputTime())
 					.price(this.getPrice())

@@ -264,7 +264,7 @@ public class PopulateDB {
                                                             .customer(barak)
                                                             .endDate(LocalDate.now().plusYears(1))
                                                             .build();
-
+        System.out.println("POPDB END"+bContract.getEndDate());
         ActemiumContract bContract02 = new ActemiumContract.ContractBuilder()
                 .contractType(bCtype02)
                 .customer(barak)

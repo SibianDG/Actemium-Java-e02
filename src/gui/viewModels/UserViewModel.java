@@ -63,8 +63,8 @@ public class UserViewModel extends ViewModel {
                 detailsMap.put("Phone number", Collections.singletonMap(true, employee.getPhoneNumber()));
                 detailsMap.put("Email", Collections.singletonMap(true, employee.getEmailAddress()));
                 detailsMap.put("Company Seniority", Collections.singletonMap(false, String.valueOf(employee.giveSeniority())));
-                detailsMap.put("Role", Collections.singletonMap(true, employee.getRoleAsEnum()));
-                detailsMap.put("Status", Collections.singletonMap(true, employee.getStatusAsEnum()));
+                detailsMap.put("Role", Collections.singletonMap(true, employee.getRole()));
+                detailsMap.put("Status", Collections.singletonMap(true, employee.getStatus()));
                 return detailsMap;
             }
             case "customer" -> {
@@ -89,7 +89,7 @@ public class UserViewModel extends ViewModel {
                 //TODO
                 // how are we going to show all the contracts in the details pannel?
                 // they request it in the use case "Manage Users"
-                detailsMap.put("Status", Collections.singletonMap(true, customer.getStatusAsEnum()));
+                detailsMap.put("Status", Collections.singletonMap(true, customer.getStatus()));
                 detailsMap.put("Contracts", Collections.singletonMap(true, customer.giveContracts()));
                 return detailsMap;
             } 

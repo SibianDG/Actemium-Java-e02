@@ -15,9 +15,9 @@ public interface Contract {
 	
 	public Customer giveCustomer();
 	
-	public String getStatus();
+	public String getStatusAsString();
 	
-	public ContractStatus getStatusAsEnum();
+	public ContractStatus getStatus();
 
 	public LocalDate getStartDate();
 

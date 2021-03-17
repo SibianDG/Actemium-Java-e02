@@ -22,9 +22,9 @@ public interface Employee extends User {
 
 	public LocalDate getRegistrationDate();
 
-	public String getRole();
+	public String getRoleAsString();
 
-	public EmployeeRole getRoleAsEnum();
+	public EmployeeRole getRole();
 
 	public List<Ticket> giveTickets();
 	

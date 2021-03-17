@@ -12,6 +12,8 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 
@@ -20,7 +22,6 @@ import domain.enums.RequiredElement;
 import exceptions.InformationRequiredException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import languages.LanguageResource;
 
 @Entity
 @Access(AccessType.FIELD)
@@ -129,11 +130,13 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 		this.registrationDate = registrationDate;
 	}
 
-	public String getRole() {
+	public String getRoleAsString() {
 		return role.get();
 	}
 
-	public EmployeeRole getRoleAsEnum() {
+	@Access(AccessType.PROPERTY)
+	@Enumerated(EnumType.STRING)
+	public EmployeeRole getRole() {
 		return EmployeeRole.valueOf(role.get());
 	}
 
@@ -170,7 +173,7 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 				.address(this.getAddress())
 				.phoneNumber(this.getPhoneNumber())
 				.emailAddress(this.getEmailAddress())
-				.role(this.getRoleAsEnum())
+				.role(this.getRole())
 				.registrationDate(this.getRegistrationDate())
 				.build();
 	}
@@ -272,7 +275,7 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 					.address(this.getAddress())
 					.phoneNumber(this.getPhoneNumber())
 					.emailAddress(this.getEmailAddress())
-					.role(this.getRoleAsEnum())
+					.role(this.getRole())
 					.build();
 		} catch (InformationRequiredException e) {
 			//this should be a good Employee

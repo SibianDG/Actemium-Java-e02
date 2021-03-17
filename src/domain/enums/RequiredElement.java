@@ -148,13 +148,13 @@ public enum RequiredElement {
     , ContractEndDateRequired1 {
         @Override
         public String toString() {
-            return LanguageResource.getString("contractStatusRequired");
+            return LanguageResource.getString("endDate_invalid1");
         }
     }
     , ContractEndDateRequired2 {
         @Override
         public String toString() {
-            return LanguageResource.getString("contractStatusRequired");
+            return LanguageResource.getString("endDate_invalid2");
         }
     }
     , ContractTypeWayRequired {

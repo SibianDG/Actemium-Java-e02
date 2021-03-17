@@ -15,17 +15,17 @@ public interface Ticket {
 	public String getTicketIdString();	
 //	public int getTicketIdInt();	
 
-	public String getStatus();
+	public String getStatusAsString();
 	
-	public TicketStatus getStatusAsEnum();
+	public TicketStatus getStatus();
 
-	public String getPriority();
+	public String getPriorityAsString();
 	
-	public TicketPriority getPriorityAsEnum();
+	public TicketPriority getPriority();
 
-	public String getTicketType();
+	public String getTicketTypeAsString();
 
-	public TicketType getTicketTypeAsEnum();
+	public TicketType getTicketType();
 
 	public LocalDate getDateOfCreation();
 

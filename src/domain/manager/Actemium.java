@@ -113,12 +113,12 @@ public class Actemium {
 		List<TicketStatus> outstanding = Arrays.asList(TicketStatus.CREATED, TicketStatus.IN_PROGRESS, TicketStatus.WAITING_ON_USER_INFORMATION, TicketStatus.USER_INFORMATION_RECEIVED, TicketStatus.IN_DEVELOPMENT);
         this.actemiumTicketsOutstanding = FXCollections.observableArrayList((List<Ticket>)(Object)ticketList
                 .stream()
-                .filter(t -> outstanding.contains(t.getStatusAsEnum()))
+                .filter(t -> outstanding.contains(t.getStatus()))
                 .collect(Collectors.toList()));
 		List<TicketStatus> resolved = Arrays.asList(TicketStatus.COMPLETED, TicketStatus.CANCELLED);
         this.actemiumTicketsResolved = FXCollections.observableArrayList((List<Ticket>)(Object)ticketList
                 .stream()
-                .filter(t -> resolved.contains(t.getStatusAsEnum()))
+                .filter(t -> resolved.contains(t.getStatus()))
                 .collect(Collectors.toList()));
 	}
 
@@ -170,7 +170,7 @@ public class Actemium {
 		userDaoJpa.startTransaction();
 		
 		// user account already blocked, only the failed login attempt needs to registered
-		if (user.getStatusAsEnum().equals(UserStatus.BLOCKED)) {
+		if (user.getStatus().equals(UserStatus.BLOCKED)) {
 			user.increaseFailedLoginAttempts();
 			LoginAttempt loginAttempt = new LoginAttempt(user, LoginStatus.FAILED);	
 			user.addLoginAttempt(loginAttempt);
@@ -222,7 +222,7 @@ public class Actemium {
 	// Dashboard signedInUser necessities
 	public String giveUserRole() {
 		if (signedInUser instanceof Employee) {
-			return ((Employee) signedInUser).getRole().toString();
+			return ((Employee) signedInUser).getRoleAsString().toString();
 		}
 		return "Customer";
 	}
@@ -230,7 +230,7 @@ public class Actemium {
 	// necessary for signedInUser right permissions check
 	public EmployeeRole giveUserRoleAsEnum() {
 		if (signedInUser instanceof Employee) {
-			return ((Employee) signedInUser).getRoleAsEnum();
+			return ((Employee) signedInUser).getRole();
 		}
 		return null;
 	}
@@ -246,7 +246,7 @@ public class Actemium {
 	}
 	
 	public String giveUserStatus() {
-		return signedInUser.getStatus();
+		return signedInUser.getStatusAsString();
 	}
 
 	public String giveUsername() {
@@ -380,15 +380,15 @@ public class Actemium {
 		ticketDaoJpa.commitTransaction();
 		// change ticket to completed, it will move to resolved tickets
 		if (TicketStatus.isOutstanding() &&
-				(ticket.getStatusAsEnum().equals(TicketStatus.COMPLETED)
-				|| ticket.getStatusAsEnum().equals(TicketStatus.CANCELLED))) {
+				(ticket.getStatus().equals(TicketStatus.COMPLETED)
+				|| ticket.getStatus().equals(TicketStatus.CANCELLED))) {
 			actemiumTicketsResolved.add(ticket);
 			actemiumTicketsOutstanding.remove(ticket);
 		}
 		// change ticket to not-completed, it will move to outstanding tickets
 		if (!TicketStatus.isOutstanding() &&
-				!(ticket.getStatusAsEnum().equals(TicketStatus.COMPLETED)
-						|| ticket.getStatusAsEnum().equals(TicketStatus.CANCELLED))) {
+				!(ticket.getStatus().equals(TicketStatus.COMPLETED)
+						|| ticket.getStatus().equals(TicketStatus.CANCELLED))) {
 			actemiumTicketsOutstanding.add(ticket);
 			actemiumTicketsResolved.remove(ticket);
 		}

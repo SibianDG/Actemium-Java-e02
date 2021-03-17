@@ -52,7 +52,7 @@ public class KnowledgeBaseViewModel extends ViewModel {
     	KbItem kbItem = selectedKbItem;
         Map<String,Map<Boolean, Object>> details = new LinkedHashMap<>();
         details.put("Title", Collections.singletonMap(false, kbItem.getTitle()));
-        details.put("Type", Collections.singletonMap(true, kbItem.getTypeAsEnum()));
+        details.put("Type", Collections.singletonMap(true, kbItem.getType()));
         details.put("Text", Collections.singletonMap(true, kbItem.getText()));
 
         return details;

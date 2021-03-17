@@ -13,6 +13,8 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,15 +27,12 @@ import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import exceptions.InformationRequiredException;
-import javafx.beans.Observable;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import languages.LanguageResource;
-
 
 
 @Entity
@@ -162,11 +161,13 @@ public class ActemiumTicket implements Ticket, Serializable {
 		this.ticketIdInt.set((int) ticketId);
 	}
 
-	public String getStatus() {
+	public String getStatusAsString() {
 		return status.get();
 	}
-	
-	public TicketStatus getStatusAsEnum() {
+
+	@Access(AccessType.PROPERTY)
+	@Enumerated(EnumType.STRING)
+	public TicketStatus getStatus() {
 		return TicketStatus.valueOf(status.get());
 	}
 
@@ -178,11 +179,13 @@ public class ActemiumTicket implements Ticket, Serializable {
 		//checkAttributes();
 	}
 
-	public String getPriority() {
+	public String getPriorityAsString() {
 		return priority.get();
 	}
-	
-	public TicketPriority getPriorityAsEnum() {
+
+	@Access(AccessType.PROPERTY)
+	@Enumerated(EnumType.STRING)
+	public TicketPriority getPriority() {
 		return TicketPriority.valueOf(priority.get());
 	}
 
@@ -192,11 +195,13 @@ public class ActemiumTicket implements Ticket, Serializable {
 		//checkAttributes();
 	}
 
-	public String getTicketType() {
+	public String getTicketTypeAsString() {
 		return ticketType.get();
 	}
 
-	public TicketType getTicketTypeAsEnum() {
+	@Access(AccessType.PROPERTY)
+	@Enumerated(EnumType.STRING)
+	public TicketType getTicketType() {
 		return TicketType.valueOf(ticketType.get());
 	}
 
@@ -360,9 +365,9 @@ public class ActemiumTicket implements Ticket, Serializable {
 		//if you make a new TicketBuilder with the current set attributes, it will throw exception.
 		// Ms. Malfait her idea
 		new TicketBuiler()
-				.ticketPriority(getPriorityAsEnum())
-				.ticketStatus(getStatusAsEnum())
-				.ticketType(getTicketTypeAsEnum())
+				.ticketPriority(getPriority())
+				.ticketStatus(getStatus())
+				.ticketType(getTicketType())
 				.title(this.title.get())
 				.description(this.description)
 				.customer(this.customer)
@@ -514,9 +519,9 @@ public class ActemiumTicket implements Ticket, Serializable {
 		ActemiumTicket cloned = null;
 		try {
 			cloned = new TicketBuiler()
-					.ticketStatus(this.getStatusAsEnum())
-					.ticketPriority(this.getPriorityAsEnum())
-					.ticketType(this.getTicketTypeAsEnum())
+					.ticketStatus(this.getStatus())
+					.ticketPriority(this.getPriority())
+					.ticketType(this.getTicketType())
 					.title(this.getTitle())
 					.description(this.getDescription())
 					.customer(this.getCustomer())

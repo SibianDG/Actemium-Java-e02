@@ -232,7 +232,7 @@ public class ContractTest {
 				.customer(mark)
 				.endDate(nextYear)
 				.build();
-        Assertions.assertEquals(ContractStatus.CURRENT, contract.getStatusAsEnum());
+        Assertions.assertEquals(ContractStatus.CURRENT, contract.getStatus());
     }
     
     @Test
@@ -243,7 +243,7 @@ public class ContractTest {
 				.startDate(today)
 				.endDate(nextYear)
 				.build();
-    	Assertions.assertEquals(ContractStatus.CURRENT, contract.getStatusAsEnum());
+    	Assertions.assertEquals(ContractStatus.CURRENT, contract.getStatus());
     }
     
     @Test
@@ -254,7 +254,7 @@ public class ContractTest {
 				.startDate(nextWeek)
 				.endDate(nextYearNextWeek)
 				.build();
-    	Assertions.assertEquals(ContractStatus.IN_REQUEST, contract.getStatusAsEnum());
+    	Assertions.assertEquals(ContractStatus.IN_REQUEST, contract.getStatus());
     }
     
 }

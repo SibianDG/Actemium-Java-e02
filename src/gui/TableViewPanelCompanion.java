@@ -471,8 +471,8 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 				switch (fieldName) {				
 					case "Firstname" -> newPredicate = e -> e.getFirstName().toLowerCase().contains(filterText);
 					case "Lastname" -> newPredicate = e -> e.getLastName().toLowerCase().contains(filterText);
-					case "UserStatus" -> newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
-					case "EmployeeRole" -> newPredicate = e -> e.getRole().toLowerCase().contains(filterText);
+					case "UserStatus" -> newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
+					case "EmployeeRole" -> newPredicate = e -> e.getRoleAsString().toLowerCase().contains(filterText);
 					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 				}				
 				return newPredicate;				
@@ -484,7 +484,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 				
 				switch (fieldName) {
 					case "Company" -> newPredicate = e -> e.giveCompany().getName().toLowerCase().contains(filterText);
-					case "UserStatus" -> newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
+					case "UserStatus" -> newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
 					case "Firstname" -> newPredicate = e -> e.getFirstName().toLowerCase().contains(filterText);
 					case "Lastname" -> newPredicate = e -> e.getLastName().toLowerCase().contains(filterText);
 					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
@@ -499,10 +499,10 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 				
 				switch (fieldName) {
 					case "ID" -> newPredicate = e -> e.getTicketIdString().equals(filterText);
-					case "TicketType" -> newPredicate = e -> e.getTicketType().toLowerCase().equals(filterText);
-					case "TicketPriority" -> newPredicate = e -> e.getPriority().toLowerCase().contains(filterText);
+					case "TicketType" -> newPredicate = e -> e.getTicketTypeAsString().toLowerCase().equals(filterText);
+					case "TicketPriority" -> newPredicate = e -> e.getPriorityAsString().toLowerCase().contains(filterText);
 					case "Title" -> newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);
-					case "TicketStatus" -> newPredicate = e -> e.getStatus().toLowerCase().equals(filterText);
+					case "TicketStatus" -> newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
 					//TODO how will we display Company name in our observableList?
 //					case "Company" -> {
 //						newPredicate = e -> e.getCustomer().getCompany().getName().toLowerCase().contains(filterText);
@@ -519,8 +519,8 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 
 				switch (fieldName) {
 					case "Name" -> newPredicate = e -> e.getName().toLowerCase().contains(filterText);
-					case "Timestamp" -> newPredicate = e -> e.getTimestamp().toString().toLowerCase().equals(filterText);
-					case "ContractTypeStatus" -> newPredicate = e -> e.getContractTypeStatus().toString().toLowerCase().equals(filterText);
+					case "Timestamp" -> newPredicate = e -> e.getTimestampAsString().toString().toLowerCase().equals(filterText);
+					case "ContractTypeStatus" -> newPredicate = e -> e.getContractTypeStatusAsString().toString().toLowerCase().equals(filterText);
 					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 				}				
 				return newPredicate;				
@@ -535,7 +535,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 					case "ContractId" -> newPredicate = e -> e.getContractIdString().equals(filterText);
 					case "CompanyName" -> newPredicate = e -> e.giveCustomer().giveCompany().getName().toLowerCase().contains(filterText);
 					case "ContractTypeName" -> newPredicate = e -> e.giveContractType().getName().toLowerCase().contains(filterText);
-					case "ContractStatus" -> newPredicate = e -> e.getStatus().toString().toLowerCase().equals(filterText);
+					case "ContractStatus" -> newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
 //					case "StartDate" -> newPredicate = e -> e.getStartDate().toString().contains(filterText);
 //					case "EndDate" -> newPredicate = e -> e.getEndDate().toString().contains(filterText);
 					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);

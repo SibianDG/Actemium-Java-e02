@@ -73,9 +73,9 @@ public class TicketViewModel extends ViewModel {
             details.put("Completion date", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_DATE)));
             details.put("Completion time", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_TIME)));
         }
-        details.put("Priority", Collections.singletonMap(true, ticket.getPriorityAsEnum()));
-        details.put("Type", Collections.singletonMap(true, ticket.getTicketTypeAsEnum()));
-        details.put("Status", Collections.singletonMap(true, ticket.getStatusAsEnum()));
+        details.put("Priority", Collections.singletonMap(true, ticket.getPriority()));
+        details.put("Type", Collections.singletonMap(true, ticket.getTicketType()));
+        details.put("Status", Collections.singletonMap(true, ticket.getStatus()));
         details.put("Description", Collections.singletonMap(true, ticket.getDescription()));
         details.put("Customer/Company", Collections.singletonMap(false, ticket.giveCustomer().giveCompany().getName()));
         details.put("Technicians", Collections.singletonMap(true, ticket.giveTechnicians()));
@@ -94,9 +94,9 @@ public class TicketViewModel extends ViewModel {
             details.put("Completion date", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_DATE)));
             details.put("Completion time", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_TIME)));
         }
-        details.put("Priority", Collections.singletonMap(false, ticket.getPriorityAsEnum()));
-        details.put("Type", Collections.singletonMap(false, ticket.getTicketTypeAsEnum()));
-        details.put("Status", Collections.singletonMap(false, ticket.getStatusAsEnum()));
+        details.put("Priority", Collections.singletonMap(false, ticket.getPriority()));
+        details.put("Type", Collections.singletonMap(false, ticket.getTicketType()));
+        details.put("Status", Collections.singletonMap(false, ticket.getStatus()));
         details.put("Description", Collections.singletonMap(false, ticket.getDescription()));
         details.put("Customer/Company", Collections.singletonMap(false, ticket.giveCustomer().giveCompany().getName()));
         details.put("Technicians", Collections.singletonMap(false, ticket.giveTechnicians()));

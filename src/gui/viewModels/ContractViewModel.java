@@ -54,7 +54,7 @@ public class ContractViewModel extends ViewModel {
         details.put("Contract ID", Collections.singletonMap(false, contract.getContractIdString()));
         details.put("Company", Collections.singletonMap(false, contract.giveCustomer().giveCompany().getName()));
         details.put("Type", Collections.singletonMap(false, contract.giveContractType().getName()));
-        details.put("Status", Collections.singletonMap(true, contract.getStatusAsEnum()));
+        details.put("Status", Collections.singletonMap(true, contract.getStatus()));
         details.put("Start date", Collections.singletonMap(false, contract.getStartDate().toString()));
         details.put("End date", Collections.singletonMap(false, contract.getEndDate().toString()));
 

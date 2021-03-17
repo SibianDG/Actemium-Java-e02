@@ -49,11 +49,11 @@ public class ContractTypeViewModel extends ViewModel {
         ContractType contractType = selectedContractType;
         Map<String,Map<Boolean, Object>> details = new LinkedHashMap<>();
         details.put("Name", Collections.singletonMap(false, contractType.getName()));
-        details.put("Status", Collections.singletonMap(true, contractType.getContractTypeStatusAsEnum()));
+        details.put("Status", Collections.singletonMap(true, contractType.getContractTypeStatus()));
         details.put("Email", Collections.singletonMap(true, (Boolean) contractType.isHasEmail()));
         details.put("Phone", Collections.singletonMap(true, (Boolean) contractType.isHasPhone()));
         details.put("Application", Collections.singletonMap(true, (Boolean) contractType.isHasApplication()));
-        details.put("Timestamp (support hours)", Collections.singletonMap(true, contractType.getTimestampAsEnum()));
+        details.put("Timestamp (support hours)", Collections.singletonMap(true, contractType.getTimestamp()));
         details.put("Max handling time", Collections.singletonMap(true, String.format("%d", contractType.getMaxHandlingTime())));
         details.put("Min throughput time contract", Collections.singletonMap(true, String.format("%d", contractType.getMinThroughputTime())));
         details.put("Price contract", Collections.singletonMap(true, String.format("%.2f", contractType.getPrice())));

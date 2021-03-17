@@ -20,9 +20,9 @@ public interface User {
 
 	public int getFailedLoginAttempts();
 
-	public String getStatus();
+	public String getStatusAsString();
 
-	public UserStatus getStatusAsEnum();
+	public UserStatus getStatus();
 	
 	public StringProperty usernameProperty();
 

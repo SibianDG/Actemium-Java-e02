@@ -22,11 +22,16 @@ public class ContractFacade implements Facade {
 
     public void modifyContract(ActemiumContract contract, ContractStatus status) throws InformationRequiredException {
 		try {
+			System.out.println("STATUS: "+status);
+			System.out.println("Start clone");
 			ActemiumContract contractClone = contract.clone();
-
+			System.out.println("End clone");
+			System.out.println(contractClone);
 			// check to see if signed in user is Support Manager
 			actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
 			contractClone.setStatus(status);
+
+			System.out.println("----------------"+status);
 			contractClone.checkAttributes();
 			contract.setStatus(status);
 			actemium.modifyContract(contract);

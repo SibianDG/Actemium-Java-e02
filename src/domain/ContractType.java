@@ -10,9 +10,9 @@ public interface ContractType {
 	
 	public String getName();
 
-	public ContractTypeStatus getContractTypeStatusAsEnum();
+	public ContractTypeStatus getContractTypeStatus();
 	
-	public String getContractTypeStatus();
+	public String getContractTypeStatusAsString();
 
 	public boolean isHasEmail();
 
@@ -20,9 +20,9 @@ public interface ContractType {
 
 	public boolean isHasApplication();
 
-	public Timestamp getTimestampAsEnum();
+	public Timestamp getTimestamp();
 	
-	public String getTimestamp();
+	public String getTimestampAsString();
 
 	public int getMaxHandlingTime();
 

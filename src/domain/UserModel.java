@@ -164,11 +164,13 @@ public abstract class UserModel implements User, Serializable {
 		this.failedLoginAttempts = failedLoginAttempts;
 	}
 
-	public String getStatus() {
+	public String getStatusAsString() {
 		return status.get();
 	}
 
-	public UserStatus getStatusAsEnum() {
+	@Access(AccessType.PROPERTY)
+	@Enumerated(EnumType.STRING)
+	public UserStatus getStatus() {
 		return UserStatus.valueOf(status.get());
 	}
 

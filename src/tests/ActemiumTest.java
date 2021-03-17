@@ -188,7 +188,7 @@ public class ActemiumTest {
         }
     	assertEquals(4, admin.getFailedLoginAttempts());
         assertThrows(BlockedUserException.class, () -> actemium.signIn(ADMINUSERNAME, WRONGPASSWORD));
-        assertEquals(UserStatus.BLOCKED, admin.getStatusAsEnum());
+        assertEquals(UserStatus.BLOCKED, admin.getStatus());
         assertEquals(5, admin.getFailedLoginAttempts());
 
 		Mockito.verify(userRepoDummy, Mockito.times(5)).findByUsername(ADMINUSERNAME);
@@ -226,18 +226,18 @@ public class ActemiumTest {
     	// 1 InValid login attempt for Administrator admin
     	// makes for a total of 5 InValid loginAttempts => admin blocked
     	assertEquals(4, admin.getFailedLoginAttempts());
-        assertEquals(UserStatus.ACTIVE, admin.getStatusAsEnum());
+        assertEquals(UserStatus.ACTIVE, admin.getStatus());
 		assertThrows(BlockedUserException.class, () -> actemium.signIn(ADMINUSERNAME, WRONGPASSWORD));
-        assertEquals(UserStatus.BLOCKED, admin.getStatusAsEnum());
+        assertEquals(UserStatus.BLOCKED, admin.getStatus());
 		// 1 Valid login attempt for Technician tech
     	actemium.signIn(TECHUSERNAME, PASSWORD);
-        assertEquals(UserStatus.ACTIVE, tech.getStatusAsEnum());
+        assertEquals(UserStatus.ACTIVE, tech.getStatus());
     	// failedLoginAttempts for tech has been reset after successful login
     	assertEquals(0, tech.getFailedLoginAttempts());
     	// even when using the correct password on a blocked user account 
     	// it will still be an invalid loginAttempt
 		assertThrows(BlockedUserException.class, () -> actemium.signIn(ADMINUSERNAME, PASSWORD));
-        assertEquals(UserStatus.BLOCKED, admin.getStatusAsEnum());
+        assertEquals(UserStatus.BLOCKED, admin.getStatus());
 		// failedLoginAttempts for admin keep counting up even after account has been blocked
     	assertEquals(6, admin.getFailedLoginAttempts());
 

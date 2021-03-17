@@ -8,6 +8,8 @@ import java.util.Set;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -56,11 +58,13 @@ public class ActemiumKbItem implements KbItem, Serializable {
 		this.title.set(title);
 	}
 
-	public String getTicketType() {
+	public String getTicketTypeAsString() {
 		return type.get();
 	}
-	
-	public KbItemType getTypeAsEnum() {
+
+	@Access(AccessType.PROPERTY)
+	@Enumerated(EnumType.STRING)
+	public KbItemType getType() {
 		return  KbItemType.valueOf(type.get());
 	}
 
@@ -87,7 +91,7 @@ public class ActemiumKbItem implements KbItem, Serializable {
 	public void checkAttributes() throws InformationRequiredException {
 		new KbItemBuilder()
 			.title(this.getTitle())
-			.type(this.getTypeAsEnum())
+			.type(this.getType())
 			.text(this.getText())
 			.build();
 	}
@@ -137,7 +141,7 @@ public class ActemiumKbItem implements KbItem, Serializable {
 		try {
 			cloned = new ActemiumKbItem.KbItemBuilder()
 					.title(this.getTitle())
-					.type(this.getTypeAsEnum())
+					.type(this.getType())
 					.text(this.getText())
 					.build();
 		} catch (InformationRequiredException e) {

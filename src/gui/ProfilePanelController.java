@@ -14,6 +14,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -76,23 +77,20 @@ public class ProfilePanelController extends GridPane  {
         return label;
     }
 	
-	private Text makeNewText(String text) {
-		Text txt = new Text(text);
-		txt.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
-		return txt;
+	private TextField makeNewText(String text, String promptText) {
+        TextField textField = new TextField(text);
+        textField.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+        textField.setPromptText(promptText);
+		return textField;
 		
 	}
 	
     private Map<String, String> getDetailsSignedInUser(){
-    	StringBuilder password = new StringBuilder();
-    	for(int i = 0; i < userFacade.giveUserPassword().length(); i++) {
-    		password.append("*");
-    	}
-    	
+
         Map<String, String> detailsMap = new LinkedHashMap<>();
         detailsMap.put("Employee nr:", userFacade.giveUserEmployeeId());
         detailsMap.put("Username:", userFacade.giveUserUsername());
-        detailsMap.put("Password:", password.toString());
+        detailsMap.put("Password:", "*".repeat(userFacade.giveUserPassword().length()));
         detailsMap.put("Firstname:", userFacade.giveUserFirstName());
         detailsMap.put("Lastname:", userFacade.giveUserLastName());
         detailsMap.put("Address:", userFacade.giveUserAddress());
@@ -111,7 +109,7 @@ public class ProfilePanelController extends GridPane  {
         for (String key : keys) {
             Label label = makeNewLabel(key);
 
-            Text detail = makeNewText(details.get(key));
+            TextField detail = makeNewText(details.get(key), key);
 
             if(label.getText().toLowerCase().contains("password")) {
             	gridProfile.add(label, 0, i);

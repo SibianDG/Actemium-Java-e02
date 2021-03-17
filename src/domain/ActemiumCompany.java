@@ -203,6 +203,7 @@ public class ActemiumCompany implements Company, Serializable {
 		private String phoneNumber;
 		private LocalDate registrationDate;
 
+
 		private Set<RequiredElement> requiredElements;
 
 		public CompanyBuilder name(String name){

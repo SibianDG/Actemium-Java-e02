@@ -125,7 +125,7 @@ public class TicketFacade implements Facade {
 	public ObservableList<Employee> getAllTechnicians() {
 		return FXCollections.observableArrayList(actemium.giveActemiumEmployees()
 				.stream()
-				.filter(t -> t.getRoleAsEnum() == EmployeeRole.TECHNICIAN)
+				.filter(t -> t.getRole() == EmployeeRole.TECHNICIAN)
 				.collect(Collectors.toList()));
 	}
 }

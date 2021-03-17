@@ -6,8 +6,12 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,9 +25,10 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import languages.LanguageResource;
+
 
 @Entity
+@Access(AccessType.FIELD)
 public class ActemiumContract implements Contract, Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
@@ -65,7 +70,7 @@ public class ActemiumContract implements Contract, Serializable {
 		this.contractTypeName.set(String.valueOf(builder.contractType));
 		this.customer = builder.customer;
 		this.startDate.set(String.valueOf(builder.startDate));
-		this.endDate.set(String.valueOf(builder.startDate));
+		this.endDate.set(String.valueOf(builder.endDate));
 	}
 
 	//TODO
@@ -135,11 +140,13 @@ public class ActemiumContract implements Contract, Serializable {
 		this.customer = customer;
 	}
 
-	public String getStatus() {
+	public String getStatusAsString() {
 		return status.get();
 	}
 
-	public ContractStatus getStatusAsEnum() {
+	@Access(AccessType.PROPERTY)
+	@Enumerated(EnumType.STRING)
+	public ContractStatus getStatus() {
 		return ContractStatus.valueOf(status.get());
 	}
 
@@ -147,6 +154,7 @@ public class ActemiumContract implements Contract, Serializable {
 		this.status.set(String.valueOf(status));
 	}
 
+	@Access(AccessType.PROPERTY)
 	public LocalDate getStartDate() {
 		return LocalDate.parse(startDate.get());
 	}
@@ -162,6 +170,7 @@ public class ActemiumContract implements Contract, Serializable {
 		this.startDate.set(String.valueOf(startDate));
 	}
 
+	@Access(AccessType.PROPERTY)
 	public LocalDate getEndDate() {
 		return LocalDate.parse(endDate.get());
 	}
@@ -202,7 +211,7 @@ public class ActemiumContract implements Contract, Serializable {
 
 	@Override
 	public String toString() {
-		return String.format("%s: %s %s %s until %s", this.getContractIdString(), this.contractType.getName(), this.getStatus(), this.getStartDate().toString(), this.getEndDate().toString());
+		return String.format("%s: %s %s %s until %s", this.getContractIdString(), this.contractType.getName(), this.getStatusAsString(), this.getStartDate().toString(), this.getEndDate().toString());
 	}
 
 	public void checkAttributes() throws InformationRequiredException {
@@ -210,7 +219,7 @@ public class ActemiumContract implements Contract, Serializable {
 		new ContractBuilder()
 				.contractType(this.getContractType())
 				.customer(this.getCustomer())
-				.status(this.getStatusAsEnum())
+				.status(this.getStatus())
 				.startDate(this.getStartDate())
 				.endDate(this.getEndDate())
 				.build();
@@ -247,16 +256,17 @@ public class ActemiumContract implements Contract, Serializable {
 
 		public ContractBuilder endDate(LocalDate endDate) {
 			this.endDate = endDate;
+			System.out.println("ENDDATE: "+endDate);
 			return this;
 		}
 
 		public ActemiumContract build() throws InformationRequiredException {
 			requiredElements = new HashSet<>();
-			checkAttributesEmployeeBuiler();
+			checkAttributesEmployeeBuilder();
 			return new ActemiumContract(this);
 		}
 
-		private void checkAttributesEmployeeBuiler() throws InformationRequiredException {
+		private void checkAttributesEmployeeBuilder() throws InformationRequiredException {
 			if (contractType == null)
 				requiredElements.add(RequiredElement.ContractTypeRequired);
 			if (customer == null)
@@ -275,11 +285,15 @@ public class ActemiumContract implements Contract, Serializable {
 
 			if (startDate == null)
 				startDate = LocalDate.now();
-			if (startDate.equals(LocalDate.now())) {
-				status = ContractStatus.CURRENT;
-			} else {
-				status = ContractStatus.IN_REQUEST;
+			if (status == null) {
+				if (startDate.equals(LocalDate.now())) {
+					status = ContractStatus.CURRENT;
+				} else {
+					status = ContractStatus.IN_REQUEST;
+				}
 			}
+
+			requiredElements.forEach(System.out::println);
 
 			if (!requiredElements.isEmpty()) {
 				throw new InformationRequiredException(requiredElements);
@@ -296,12 +310,12 @@ public class ActemiumContract implements Contract, Serializable {
 			cloned = new ContractBuilder()
 					.contractType(this.getContractType())
 					.customer(this.getCustomer())
-					.status(this.getStatusAsEnum())
+					.status(this.getStatus())
 					.startDate(this.getStartDate())
 					.endDate(this.getEndDate())
 					.build();
 		} catch (InformationRequiredException e) {
-			//this should be a good Employee
+			System.out.println("OEPS, foutje");
 			e.printStackTrace();
 		}
 		return cloned;

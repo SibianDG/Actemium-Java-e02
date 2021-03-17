@@ -716,7 +716,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         ObservableList<Contract> list = (ObservableList<Contract>) o;
         TableView<Contract> tableView = new TableView<>(list);
 
-//return String.format("%s: %s %s %s until %s", this.getContractIdString(), this.contractType.getName(), this.getStatus(), this.getStartDate().toString(), this.getEndDate().toString());
+//return String.format("%s: %s %s %s until %s", this.getContractIdString(), this.contractType.getName(), this.getStatusAsString(), this.getStartDate().toString(), this.getEndDate().toString());
 
         TableColumn<Contract, Number> columnID = new TableColumn<>("ID");
         columnID.setCellValueFactory(cellData -> cellData.getValue().contractIdProperty());
