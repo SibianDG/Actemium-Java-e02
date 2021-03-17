@@ -404,7 +404,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 					((ContractTypeViewModel) viewModel).setSelectedContractType((ContractType) data);
 				} else if (data instanceof Contract) {
 					((ContractViewModel) viewModel).setSelectedContract((Contract) data);
-				} else if (data instanceof Contract) {
+				} else if (data instanceof KbItem) {
 					((KnowledgeBaseViewModel) viewModel).setSelectedKbItem((KbItem) data);
 				}
 			}
