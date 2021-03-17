@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
+import exceptions.InformationRequiredException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -38,8 +39,27 @@ public class ActemiumTest {
     final String ADMINUSERNAME = "janJannsens123", PASSWORD = "PassWd123&", WRONGPASSWORD = "foutPas12&",
     			 TECHUSERNAME = "jooKlein123", CUSTOMERUSERNAME = "customer123",
     			 WRONGUSERNAME = "usernameDoesNotExist"; //EntityNotFoundException()
-    private final UserModel admin = new ActemiumEmployee("janJannsens123", "PassWd123&", "Jan", "Jannsens", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR);
-    private final UserModel tech = new ActemiumEmployee("jooKlein123", "PassWd123&", "Joost", "Klein", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.TECHNICIAN);
+
+    private final UserModel admin = new ActemiumEmployee.EmployeeBuilder()
+            .username("janJannsens123")
+            .password("PassWd123&")
+            .firstName("Jan")
+            .lastName("Jannsens")
+            .address("Adress")
+            .phoneNumber("0470099874")
+            .emailAddress("student@student.hogent.be")
+            .role(EmployeeRole.ADMINISTRATOR)
+            .build();
+    private final UserModel tech = new ActemiumEmployee.EmployeeBuilder()
+            .username("jooKlein123")
+            .password("PassWd123&")
+            .firstName("Joost")
+            .lastName("Klein")
+            .address("Adress")
+            .phoneNumber("0470099874")
+            .emailAddress("student@student.hogent.be")
+            .role(EmployeeRole.TECHNICIAN)
+            .build();
     private final ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
     private final UserModel cust = new ActemiumCustomer("customer123", "PassWd123&", "John", "Smith", google);
 
@@ -49,6 +69,9 @@ public class ActemiumTest {
     private GenericDao<UserModel> genericRepoDummy;
     @InjectMocks
     private Actemium actemium;
+
+    public ActemiumTest() throws InformationRequiredException {
+    }
 
     private void trainDummy() {
     	Mockito.lenient().when(userRepoDummy.findByUsername(ADMINUSERNAME)).thenReturn(admin);
@@ -151,7 +174,7 @@ public class ActemiumTest {
         }
     	assertEquals(4, admin.getFailedLoginAttempts());
         assertThrows(BlockedUserException.class, () -> actemium.signIn(ADMINUSERNAME, WRONGPASSWORD));
-        assertTrue(admin.getStatusAsEnum().equals(UserStatus.BLOCKED));
+        assertEquals(UserStatus.BLOCKED, admin.getStatusAsEnum());
         assertEquals(5, admin.getFailedLoginAttempts());
 
 		Mockito.verify(userRepoDummy, Mockito.times(5)).findByUsername(ADMINUSERNAME);
@@ -189,18 +212,18 @@ public class ActemiumTest {
     	// 1 InValid login attempt for Administrator admin
     	// makes for a total of 5 InValid loginAttempts => admin blocked
     	assertEquals(4, admin.getFailedLoginAttempts());
-        assertTrue(admin.getStatusAsEnum().equals(UserStatus.ACTIVE));
+        assertEquals(UserStatus.ACTIVE, admin.getStatusAsEnum());
 		assertThrows(BlockedUserException.class, () -> actemium.signIn(ADMINUSERNAME, WRONGPASSWORD));
-        assertTrue(admin.getStatusAsEnum().equals(UserStatus.BLOCKED));
+        assertEquals(UserStatus.BLOCKED, admin.getStatusAsEnum());
 		// 1 Valid login attempt for Technician tech
     	actemium.signIn(TECHUSERNAME, PASSWORD);
-        assertTrue(tech.getStatusAsEnum().equals(UserStatus.ACTIVE));
+        assertEquals(UserStatus.ACTIVE, tech.getStatusAsEnum());
     	// failedLoginAttempts for tech has been reset after successful login
     	assertEquals(0, tech.getFailedLoginAttempts());
     	// even when using the correct password on a blocked user account 
     	// it will still be an invalid loginAttempt
 		assertThrows(BlockedUserException.class, () -> actemium.signIn(ADMINUSERNAME, PASSWORD));
-        assertTrue(admin.getStatusAsEnum().equals(UserStatus.BLOCKED));
+        assertEquals(UserStatus.BLOCKED, admin.getStatusAsEnum());
 		// failedLoginAttempts for admin keep counting up even after account has been blocked
     	assertEquals(6, admin.getFailedLoginAttempts());
 

@@ -3,6 +3,7 @@ package tests;
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
+import exceptions.InformationRequiredException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -65,7 +66,16 @@ public class EmployeeTest {
 	public void createEmployee_ValidAttributes_DoesNotThrowException(String username, String password, String firstName,
 			String lastName, String address, String phoneNumber, String emailAddress, EmployeeRole role) {
 		Assertions.assertDoesNotThrow(
-				() -> new ActemiumEmployee(username, password, firstName, lastName, address, phoneNumber, emailAddress, role));
+				() -> new ActemiumEmployee.EmployeeBuilder()
+				.username(username)
+				.password(password)
+				.firstName(firstName)
+				.lastName(lastName)
+				.address(address)
+				.phoneNumber(phoneNumber)
+				.emailAddress(emailAddress)
+				.role(role)
+				.build());
 	}
 
 	@ParameterizedTest
@@ -73,14 +83,32 @@ public class EmployeeTest {
 	public void createEmployee_InValidAttributes_ThrowsIllegalArgumentException(String username, String password,
 			String firstName, String lastName, String address, String phoneNumber, String emailAddress,
 			EmployeeRole role) {
-		Assertions.assertThrows(IllegalArgumentException.class,
-				() -> new ActemiumEmployee(username, password, firstName, lastName, address, phoneNumber, emailAddress, role));
+		Assertions.assertThrows(InformationRequiredException.class,
+				() -> new ActemiumEmployee.EmployeeBuilder()
+						.username(username)
+						.password(password)
+						.firstName(firstName)
+						.lastName(lastName)
+						.address(address)
+						.phoneNumber(phoneNumber)
+						.emailAddress(emailAddress)
+						.role(role)
+						.build());
 	}
 
 	@Test
-	public void giveEmployeeSeniroity_returns_valid() {
-		ActemiumEmployee employee = new ActemiumEmployee("Tester123", "Passwd123&", "Jan", "Jannsens", "Hogent Adress", "0470099874",
-				"student@student.hogent.be", EmployeeRole.ADMINISTRATOR);
+	public void giveEmployeeSeniroity_returns_valid() throws InformationRequiredException {
+		ActemiumEmployee employee = new ActemiumEmployee.EmployeeBuilder()
+				.username("Tester123")
+				.password("Passwd123&")
+				.firstName("Jan")
+				.lastName("Jannsens")
+				.address("Hogent Adress")
+				.phoneNumber("0470099874")
+				.emailAddress("student@student.hogent.be")
+				.role(EmployeeRole.ADMINISTRATOR)
+				.build();
+
 		employee.setRegistrationDate(LocalDate.now().minusYears(10));
 		Assertions.assertEquals(10, employee.giveSeniority());
 	}

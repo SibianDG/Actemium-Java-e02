@@ -19,8 +19,17 @@ import domain.enums.TicketType;
 
 public class ActemiumTicketTest implements Attributes {
 	
-	private final ActemiumEmployee technician = new ActemiumEmployee("jooKlein123", "PassWd123&", "Joost", "Klein", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.TECHNICIAN);
-    private static final ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
+	private final ActemiumEmployee technician = new ActemiumEmployee.EmployeeBuilder()
+			.username("jooKlein123")
+			.password("Passwd123&")
+			.firstName("Joost")
+			.lastName("Klein")
+			.address("Adress")
+			.phoneNumber("0470099874")
+			.emailAddress("student@student.hogent.be")
+			.role(EmployeeRole.TECHNICIAN)
+			.build();
+	private static final ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
     private static final ActemiumCustomer customer = new ActemiumCustomer("customer123", "PassWd123&", "John", "Smith", google);
 
 	public ActemiumTicketTest() throws InformationRequiredException {

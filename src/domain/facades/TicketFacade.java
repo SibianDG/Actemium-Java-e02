@@ -56,8 +56,10 @@ public class TicketFacade implements Facade {
 		ticket.setRemarks(remarks);
 		ticket.setAttachments(attachments);
 		ticket.setTechnicians(new ArrayList<>());
-		ticket.checkAttributes();
 		technicians.forEach(ticket::addTechnician);
+
+		ticket.checkAttributes();
+
 
 		actemium.modifyTicket(ticket);
 	}

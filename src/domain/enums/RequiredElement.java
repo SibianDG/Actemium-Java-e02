@@ -100,7 +100,7 @@ public enum RequiredElement {
     , ContractTypeNameRequired {
         @Override
         public String toString() {
-            return LanguageResource.getString("username_invalid");
+            return LanguageResource.getString("contractTypeName_invalid");
         }
     }
     , ContractTypeWayRequired {
@@ -128,4 +128,17 @@ public enum RequiredElement {
             return LanguageResource.getString("price_invalid");
         }
     }
+    , EmployeeRoleRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("employeeRoleRequired");
+        }
+    }
+    , RegistrationDateRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("registrationDateRequired");
+        }
+    }
+
 }

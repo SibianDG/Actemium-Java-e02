@@ -297,7 +297,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
             //TODO: handle the correct error messages, not just all
         } catch (InformationRequiredException ire) {
-            System.out.println("IRE!!");
+
+            System.out.println("IRE!! "+ire.getInformationRequired().size());
 
             StringBuilder errorMessage = new StringBuilder();
             ire.getInformationRequired().forEach(e -> {
@@ -354,12 +355,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             btnModify.setText("Modify " + ((UserViewModel) viewModel).getCurrentState().toString().toLowerCase());
             btnDelete.setVisible(true);
         } else if (viewModel instanceof TicketViewModel) {
-            System.out.println(1);
-            System.out.println("swexrdctfvygbuhj");
             addGridDetails(((TicketViewModel) viewModel).getDetails());
-            System.out.println(2);
             txtDetailsTitle.setText("Details of ticket: " + ((TicketViewModel) viewModel).getIdSelectedTicket());
-            System.out.println(3);
             btnModify.setText("Modify Ticket");
             btnDelete.setVisible(true);
         } else if (viewModel instanceof ContractTypeViewModel) {
@@ -644,7 +641,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             TextField detail = new TextField(string);
             detail.textProperty().addListener((observable, oldValue, newValue) -> {
                 viewModel.setFieldModified(true);
-                System.out.println("textfield changed from " + oldValue + " to " + newValue);
             });
             detail.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
 
@@ -841,7 +837,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         // Add some action (in Java 8 lambda syntax style).
         datePicker.setOnAction(event -> {
             LocalDate date = datePicker.getValue();
-            System.out.println("Selected date: " + date);
         });
 
         // Add the DatePicker to the Stage.

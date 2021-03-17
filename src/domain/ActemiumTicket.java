@@ -359,9 +359,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 		//TODO: maybe not check all?
 		//if you make a new TicketBuilder with the current set attributes, it will throw exception.
 		// Ms. Malfait her idea
-		System.out.println("UIT NEN SET FZO?");
-		System.out.println(1);
-		System.out.println(getPriorityAsEnum());
 		new TicketBuiler()
 				.ticketPriority(getPriorityAsEnum())
 				.ticketStatus(getStatusAsEnum())
@@ -401,7 +398,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 		private String quality;
 		private String supportNeeded;
 		private List<ActemiumEmployee> technicians = new ArrayList<>();
-
 
 		private Set<RequiredElement> requiredElements;
 

@@ -79,8 +79,29 @@ public class PopulateDB {
 
         mark.setStatus(UserStatus.BLOCKED);
         larry.setStatus(UserStatus.INACTIVE);
-        ActemiumEmployee tech = new ActemiumEmployee("Technician", "Passwd123&", "Joe", "Biden","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.TECHNICIAN);
-        ActemiumEmployee tech2 = new ActemiumEmployee("Technician", "Passwd123&", "Donald", "Trump","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.TECHNICIAN);
+        ActemiumEmployee tech = new ActemiumEmployee.EmployeeBuilder()
+                .username("Technician")
+                .password("Passwd123&")
+                .firstName("Joe")
+                .lastName("Biden")
+                .address("Overwale 42")
+                .phoneNumber("091354864")
+                .emailAddress("thomas.dirven@hogent.be")
+                .role(EmployeeRole.TECHNICIAN)
+                .build();
+
+        //("Technician", "Passwd123&", "Joe", "Biden","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.TECHNICIAN);
+        ActemiumEmployee tech2 = new ActemiumEmployee.EmployeeBuilder()
+                .username("Technician")
+                .password("Passwd123&")
+                .firstName("Donald")
+                .lastName("Trump")
+                .address("Overwale 42")
+                .phoneNumber("091354864")
+                .emailAddress("thomas.dirven@hogent.be")
+                .role(EmployeeRole.TECHNICIAN)
+                .build();
+        //ActemiumEmployee tech2 = new ActemiumEmployee("Technician", "Passwd123&", "Donald", "Trump","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.TECHNICIAN);
 
         userDao.insert(tech);
         userDao.insert(tech2);
@@ -145,15 +166,105 @@ public class PopulateDB {
         ticket05.addTechnician(tech2);
         ticket06.addTechnician(tech);
         ticket06.addTechnician(tech2);
-        userDao.insert(new ActemiumEmployee("Admin123", "Passwd123&", "Admin", "Administrator","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.ADMINISTRATOR));
-        userDao.insert(new ActemiumEmployee("Sup123", "Passwd123&", "Sup", "Support manager","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.SUPPORT_MANAGER));
-        userDao.insert(new ActemiumEmployee("Tech123", "Passwd123&", "tech", "technician","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.TECHNICIAN));
-        userDao.insert(new ActemiumEmployee("thomas123", "Passwd123&", "Thomas", "Dirven","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.ADMINISTRATOR));
-        userDao.insert(new ActemiumEmployee("isaac123", "Passwd123&", "Isaac", "Bauters","Kerstraat 71","094812384","isaac.bauters@hogent.be", EmployeeRole.ADMINISTRATOR));
-        userDao.insert(new ActemiumEmployee("florian123", "Passwd123&", "Florian", "Goossens","Groensstraat 103","096248753","florian.goossens@hogent.be", EmployeeRole.ADMINISTRATOR));
-        userDao.insert(new ActemiumEmployee("sibianDG", "Passwd123&", "Sibian", "De Gussem","Hoogstraat 89","092564812","sibian.degussem@hogent.be", EmployeeRole.ADMINISTRATOR));
-        ActemiumEmployee badguy = new ActemiumEmployee("badGuy", "Passwd123&", "bad", "guy","Hoogstraat 89","092564812","bad.guy@hogent.be", EmployeeRole.SUPPORT_MANAGER);
-        ActemiumEmployee inactive = new ActemiumEmployee("fired", "Passwd123&", "bad", "guy","Hoogstraat 89","092564812","bad.guy@hogent.be", EmployeeRole.SUPPORT_MANAGER);
+        userDao.insert( new ActemiumEmployee.EmployeeBuilder()
+                .username("Admin123")
+                .password("Passwd123&")
+                .firstName("Admin")
+                .lastName("Administrator")
+                .address("Overwale 42")
+                .phoneNumber("091354864")
+                .emailAddress("thomas.dirven@hogent.be")
+                .role(EmployeeRole.ADMINISTRATOR)
+                .build());
+        userDao.insert( new ActemiumEmployee.EmployeeBuilder()
+                .username("Sup123")
+                .password("Passwd123&")
+                .firstName("Sup")
+                .lastName("Support manager")
+                .address("Overwale 42")
+                .phoneNumber("091354864")
+                .emailAddress("thomas.dirven@hogent.be")
+                .role(EmployeeRole.SUPPORT_MANAGER)
+                .build());
+        userDao.insert( new ActemiumEmployee.EmployeeBuilder()
+                .username("Tech123")
+                .password("Passwd123&")
+                .firstName("tech")
+                .lastName("technician")
+                .address("Overwale 42")
+                .phoneNumber("091354864")
+                .emailAddress("thomas.dirven@hogent.be")
+                .role(EmployeeRole.TECHNICIAN)
+                .build());
+        userDao.insert( new ActemiumEmployee.EmployeeBuilder()
+                .username("thomas123")
+                .password("Passwd123&")
+                .firstName("Thomas")
+                .lastName("Dirven")
+                .address("Overwale 42")
+                .phoneNumber("091354864")
+                .emailAddress("thomas.dirven@hogent.be")
+                .role(EmployeeRole.ADMINISTRATOR)
+                .build());
+
+        userDao.insert( new ActemiumEmployee.EmployeeBuilder()
+                .username("isaac123")
+                .password("Passwd123&")
+                .firstName("Isaac")
+                .lastName("Bauters")
+                .address("Kerstraat 71")
+                .phoneNumber("091354864")
+                .emailAddress("isaac.bauters@hogent.be")
+                .role(EmployeeRole.ADMINISTRATOR)
+                .build());
+        userDao.insert( new ActemiumEmployee.EmployeeBuilder()
+                .username("florian123")
+                .password("Passwd123&")
+                .firstName("Florian")
+                .lastName("Goossens")
+                .address("Groensstraat 103")
+                .phoneNumber("091354864")
+                .emailAddress("florian.goossens@hogent.be")
+                .role(EmployeeRole.ADMINISTRATOR)
+                .build());
+        userDao.insert( new ActemiumEmployee.EmployeeBuilder()
+                .username("SibianDG")
+                .password("Passwd123&")
+                .firstName("Sibian")
+                .lastName("De Gussem")
+                .address("Hoogstraat 89")
+                .phoneNumber("091354864")
+                .emailAddress("sibian.degussem@hogent.be")
+                .role(EmployeeRole.ADMINISTRATOR)
+                .build());
+
+        //userDao.insert(new ActemiumEmployee("Admin123", "Passwd123&", "Admin", "Administrator","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.ADMINISTRATOR));
+        //userDao.insert(new ActemiumEmployee("Sup123", "Passwd123&", "Sup", "Support manager","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.SUPPORT_MANAGER));
+        //userDao.insert(new ActemiumEmployee("Tech123", "Passwd123&", "tech", "technician","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.TECHNICIAN));
+        //userDao.insert(new ActemiumEmployee("thomas123", "Passwd123&", "Thomas", "Dirven","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.ADMINISTRATOR));
+        //userDao.insert(new ActemiumEmployee("isaac123", "Passwd123&", "Isaac", "Bauters","Kerstraat 71","094812384","isaac.bauters@hogent.be", EmployeeRole.ADMINISTRATOR));
+        //userDao.insert(new ActemiumEmployee("florian123", "Passwd123&", "Florian", "Goossens","Groensstraat 103","096248753","florian.goossens@hogent.be", EmployeeRole.ADMINISTRATOR));
+        //userDao.insert(new ActemiumEmployee("sibianDG", "Passwd123&", "Sibian", "De Gussem","Hoogstraat 89","092564812","sibian.degussem@hogent.be", EmployeeRole.ADMINISTRATOR));
+        ActemiumEmployee badguy = new ActemiumEmployee.EmployeeBuilder()
+                .username("badGuy")
+                .password("Passwd123&")
+                .firstName("bad")
+                .lastName("guy")
+                .address("Hoogstraat 89")
+                .phoneNumber("091354864")
+                .emailAddress("bad.guy@hogent.be")
+                .role(EmployeeRole.SUPPORT_MANAGER)
+                .build();
+        ActemiumEmployee inactive = new ActemiumEmployee.EmployeeBuilder()
+                .username("fired")
+                .password("Passwd123&")
+                .firstName("bad")
+                .lastName("guy")
+                .address("Hoogstraat 89")
+                .phoneNumber("091354864")
+                .emailAddress("bad.guy@hogent.be")
+                .role(EmployeeRole.SUPPORT_MANAGER)
+                .build();
         badguy.setStatus(UserStatus.BLOCKED);
         inactive.setStatus(UserStatus.INACTIVE);
         userDao.insert(badguy);
@@ -165,8 +276,30 @@ public class PopulateDB {
         userDao.insert(larry);
         userDao.insert(elon);
         userDao.insert(new ActemiumCustomer("cust02Johan", "Passwd123&", "Willy", "Naessens", naessensNV));
-        userDao.insert(new ActemiumEmployee("tech01Donald", "Passwd123&", "Bob", "The Builder", "Stationstraat 56", "092548736", "donald.trump@hogent.be", EmployeeRole.TECHNICIAN));
-        userDao.insert(new ActemiumEmployee("supman01John", "Passwd123&", "John", "Smiths", "Stationstraat 34", "093504816", "john.smiths@hogent.be", EmployeeRole.SUPPORT_MANAGER));
+        userDao.insert(
+                new ActemiumEmployee.EmployeeBuilder()
+                        .username("tech01Donald")
+                        .password("Passwd123&")
+                        .firstName("Bob")
+                        .lastName("The Builder")
+                        .address("Stationstraat 56")
+                        .phoneNumber("092548736")
+                        .emailAddress("bob.thebuilder@hogent.be")
+                        .role(EmployeeRole.TECHNICIAN)
+                        .build());
+        userDao.insert(
+                new ActemiumEmployee.EmployeeBuilder()
+                        .username("supman01John")
+                        .password("Passwd123&")
+                        .firstName("John")
+                        .lastName("Smiths")
+                        .address("Stationstraat 34")
+                        .phoneNumber("09254875536")
+                        .emailAddress("john.smiths@hogent.be")
+                        .role(EmployeeRole.SUPPORT_MANAGER)
+                        .build());
+                //new ActemiumEmployee("tech01Donald", "Passwd123&", "Bob", "The Builder", "Stationstraat 56", "092548736", "donald.trump@hogent.be", EmployeeRole.TECHNICIAN));
+        //userDao.insert(new ActemiumEmployee("supman01John", "Passwd123&", "John", "Smiths", "Stationstraat 34", "093504816", "john.smiths@hogent.be", EmployeeRole.SUPPORT_MANAGER));
 
         //String name, String country, String city, String address, String phoneNumber
         ActemiumCompany vatican = new ActemiumCompany("Vatican", "Vatican", "Vatican City", "00120 Vatican City", "666");

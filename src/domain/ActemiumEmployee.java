@@ -4,7 +4,9 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -14,6 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 
 import domain.enums.EmployeeRole;
+import domain.enums.RequiredElement;
+import exceptions.InformationRequiredException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import languages.LanguageResource;
@@ -43,7 +47,7 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 //	@ManyToMany
 //	private List<Customer> customers;
 
-	public ActemiumEmployee(String username, String password, String firstName, String lastName, String address,
+	/*public ActemiumEmployee(String username, String password, String firstName, String lastName, String address,
 			String phoneNumber, String emailAddress, EmployeeRole role) {
 		super(username, password, firstName, lastName);
 		setAddress(address);
@@ -51,6 +55,15 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 		setEmailAddress(emailAddress);
 		setRole(role);
 		setRegistrationDate(LocalDate.now());
+	}*/
+
+	public ActemiumEmployee(EmployeeBuilder builder){
+		super(builder.username, builder.password, builder.firstName, builder.lastName);
+		this.address = builder.address;
+		this.phoneNumber = builder.phoneNumber;
+		this.emailAddress = builder.emailAddress;
+		this.roleProperty().set(String.valueOf(builder.role));
+		this.registrationDate = builder.registrationDate;
 	}
 
 	public ActemiumEmployee() {
@@ -75,10 +88,10 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 	}
 
 	public void setAddress(String address) {
-		String usernameRegex = "[A-Za-z0-9 _-]+";
-		if (address == null || address.isBlank() || !address.matches(usernameRegex)) {
-			throw new IllegalArgumentException(LanguageResource.getString("address_invalid"));
-		}
+		//String usernameRegex = "[A-Za-z0-9 _-]+";
+		//if (address == null || address.isBlank() || !address.matches(usernameRegex)) {
+		//	throw new IllegalArgumentException(LanguageResource.getString("address_invalid"));
+		//}
 		this.address = address;
 	}
 
@@ -87,12 +100,12 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 	}
 
 	public void setEmailAddress(String emailAddress) {
-		String emailRegex = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+[.][a-zA-Z0-9-]{2,4}$";
-		//TODO the regex below doesn't work because we create employees with a false email according to this regex in PopulateDB
-		// "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
-		if (emailAddress == null || emailAddress.isBlank() || !emailAddress.matches(emailRegex)) {
-			throw new IllegalArgumentException(LanguageResource.getString("email_invalid"));
-		}
+		//String emailRegex = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+[.][a-zA-Z0-9-]{2,4}$";
+		////TODO the regex below doesn't work because we create employees with a false email according to this regex in PopulateDB
+		//// "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+		//if (emailAddress == null || emailAddress.isBlank() || !emailAddress.matches(emailRegex)) {
+		//	throw new IllegalArgumentException(LanguageResource.getString("email_invalid"));
+		//}
 		this.emailAddress = emailAddress;
 	}
 
@@ -101,10 +114,10 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 	}
 
 	public void setPhoneNumber(String phoneNumber) {
-		String usernameRegex = "[0-9 /-]+";
-		if (phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches(usernameRegex)) {
-			throw new IllegalArgumentException(LanguageResource.getString("phonenumber_invalid"));
-		}
+		//String usernameRegex = "[0-9 /-]+";
+		//if (phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches(usernameRegex)) {
+		//	throw new IllegalArgumentException(LanguageResource.getString("phonenumber_invalid"));
+		//}
 		this.phoneNumber = phoneNumber;
 	}
 
@@ -125,9 +138,9 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 	}
 
 	public void setRole(EmployeeRole role) {
-		if (role == null) {
-			throw new IllegalArgumentException(LanguageResource.getString("role_invalid"));
-		}
+		//if (role == null) {
+		//	throw new IllegalArgumentException(LanguageResource.getString("role_invalid"));
+		//}
 		this.roleProperty().set(role.toString());
 	}
 
@@ -145,6 +158,106 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 
 	public StringProperty roleProperty() {
 		return role;
+	}
+
+	public void checkAttributes() throws InformationRequiredException {
+		// Ms. Malfait her idea
+		new EmployeeBuilder()
+				.username(super.usernameProperty().get())
+				.password(super.getPassword())
+				.firstName(super.firstNameProperty().get())
+				.lastName(super.lastNameProperty().get())
+				.address(this.getAddress())
+				.phoneNumber(this.getPhoneNumber())
+				.emailAddress(this.getEmailAddress())
+				.role(this.getRoleAsEnum())
+				.registrationDate(this.getRegistrationDate())
+				.build();
+	}
+
+	public static class EmployeeBuilder {
+		private String username;
+		private String password;
+		private String firstName;
+		private String lastName;
+
+		private String address;
+		private String phoneNumber;
+		private String emailAddress;
+
+		private EmployeeRole role;
+		private LocalDate registrationDate;
+
+		private Set<RequiredElement> requiredElements;
+
+		public EmployeeBuilder username(String username) {
+			this.username = username;
+			return this;
+		}
+		public EmployeeBuilder password(String password) {
+			this.password = password;
+			return this;
+		}
+		public EmployeeBuilder firstName(String firstName) {
+			this.firstName = firstName;
+			return this;
+		}
+		public EmployeeBuilder lastName(String lastName) {
+			this.lastName = lastName;
+			return this;
+		}
+		public EmployeeBuilder address(String address) {
+			this.address = address;
+			return this;
+		}
+		public EmployeeBuilder phoneNumber(String phoneNumber) {
+			this.phoneNumber = phoneNumber;
+			return this;
+		}
+		public EmployeeBuilder emailAddress(String emailAddress) {
+			this.emailAddress = emailAddress;
+			return this;
+		}
+		public EmployeeBuilder role(EmployeeRole role) {
+			this.role = role;
+			return this;
+		}
+		public EmployeeBuilder registrationDate(LocalDate registrationDate) {
+			this.registrationDate = registrationDate;
+			return this;
+		}
+
+		public ActemiumEmployee build() throws InformationRequiredException {
+			requiredElements = new HashSet<>();
+			checkAttributesEmployeeBuiler();
+			return new ActemiumEmployee(this);
+		}
+
+		private void checkAttributesEmployeeBuiler() throws InformationRequiredException {
+			if (username == null || username.isBlank() || !username.matches("[A-Za-z0-9]+"))
+				requiredElements.add(RequiredElement.UsernameRequired);
+			if(password == null || password.isBlank() || !password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()â€“{}:;',.?/*~$^+=<>]).{8,}$"))
+				requiredElements.add(RequiredElement.PasswordRequired);
+			if(firstName == null || firstName.isBlank() || !firstName.matches("[^0-9]+"))
+				requiredElements.add(RequiredElement.FirstnameRequired);
+			if(lastName == null || lastName.isBlank() || !lastName.matches("[^0-9]+"))
+				requiredElements.add(RequiredElement.LastnameRequired);
+			if (address == null || address.isBlank() || !address.matches("[A-Za-z0-9 _-]+"))
+				requiredElements.add(RequiredElement.AddressRequired);
+			if (phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches("[0-9 /-]+"))
+				requiredElements.add(RequiredElement.PhoneRequired);
+			if (emailAddress == null || emailAddress.isBlank() || !emailAddress.matches("^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+[.][a-zA-Z0-9-]{2,4}$"))
+				requiredElements.add(RequiredElement.EmailRequired);
+			if (role == null)
+				requiredElements.add(RequiredElement.EmployeeRoleRequired);
+			if (registrationDate == null)
+				registrationDate = LocalDate.now();
+
+			if (!requiredElements.isEmpty()) {
+				throw new InformationRequiredException(requiredElements);
+			}
+		}
+
 	}
 	
 }

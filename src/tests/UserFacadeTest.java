@@ -3,6 +3,7 @@ package tests;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import exceptions.InformationRequiredException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,8 +29,26 @@ public class UserFacadeTest {
     			 TECHUSERNAME = "jooKlein123", CUSTOMERUSERNAME = "customer123",
     			 WRONGUSERNAME = "usernameDoesNotExist", //EntityNotFoundException()
     			 USERNAMEAVAILABLE = "usernameAvailable";
-    private final UserModel admin = new ActemiumEmployee("janJannsens123", "PassWd123&", "Jan", "Jannsens", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.ADMINISTRATOR);
-    private final UserModel tech = new ActemiumEmployee("jooKlein123", "PassWd123&", "Joost", "Klein", "Adress", "0470099874", "student@student.hogent.be", EmployeeRole.TECHNICIAN);
+    private final UserModel admin = new ActemiumEmployee.EmployeeBuilder()
+			.username("janJannsens123")
+			.password("PassWd123&")
+			.firstName("Jan")
+			.lastName("Jannsens")
+			.address("Adress")
+			.phoneNumber("0470099874")
+			.emailAddress("student@student.hogent.be")
+			.role(EmployeeRole.ADMINISTRATOR)
+			.build();
+    private final UserModel tech = new ActemiumEmployee.EmployeeBuilder()
+			.username("jooKlein123")
+			.password("PassWd123&")
+			.firstName("Joost")
+			.lastName("Klein")
+			.address("Adress")
+			.phoneNumber("0470099874")
+			.emailAddress("student@student.hogent.be")
+			.role(EmployeeRole.TECHNICIAN)
+			.build();
     private final ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
     private final UserModel cust = new ActemiumCustomer("customer123", "PassWd123&", "John", "Smith", google);
 
@@ -42,7 +61,10 @@ public class UserFacadeTest {
     @InjectMocks
     private Actemium actemium;
 
-    private void trainDummy() {
+	public UserFacadeTest() throws InformationRequiredException {
+	}
+
+	private void trainDummy() {
     	Mockito.lenient().when(userRepoDummy.findByUsername(ADMINUSERNAME)).thenReturn(admin);
     	Mockito.lenient().when(userRepoDummy.findByUsername(TECHUSERNAME)).thenReturn(tech);
     	Mockito.lenient().when(userRepoDummy.findByUsername(CUSTOMERUSERNAME)).thenReturn(cust);

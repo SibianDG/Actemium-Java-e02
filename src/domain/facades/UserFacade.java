@@ -4,6 +4,7 @@ import domain.*;
 import domain.enums.EmployeeRole;
 import domain.enums.UserStatus;
 import domain.manager.Actemium;
+import exceptions.InformationRequiredException;
 import javafx.collections.ObservableList;
 
 public class UserFacade implements Facade {
@@ -77,11 +78,22 @@ public class UserFacade implements Facade {
 	}
 
 	public void registerEmployee(String username, String password, String firstName, String lastName, String address,
-			String phoneNumber, String emailAddress, EmployeeRole role) {
+			String phoneNumber, String emailAddress, EmployeeRole role) throws InformationRequiredException {
 		// check to see if signed in user is Admin
 		actemium.checkPermision(EmployeeRole.ADMINISTRATOR);
 		actemium.existingUsername(username);
-		ActemiumEmployee newEmployee = new ActemiumEmployee(username, password, firstName, lastName, address, phoneNumber, emailAddress, role);
+		ActemiumEmployee newEmployee = new ActemiumEmployee.EmployeeBuilder()
+										.username(username)
+										.password(password)
+										.firstName(firstName)
+										.lastName(lastName)
+										.address(address)
+										.phoneNumber(phoneNumber)
+										.emailAddress(emailAddress)
+										.role(role)
+										.build();
+		//ActemiumEmployee newEmployee = new ActemiumEmployee(username, password, firstName, lastName, address, phoneNumber, emailAddress, role);
+
 		actemium.registerEmployee(newEmployee);
 	}
 
@@ -117,7 +129,7 @@ public class UserFacade implements Facade {
 	}
 
 	public void modifyEmployee(ActemiumEmployee employee, String username, String password, String firstName, String lastName, String address,
-							   String phoneNumber, String emailAddress, EmployeeRole role, UserStatus status) {
+							   String phoneNumber, String emailAddress, EmployeeRole role, UserStatus status) throws InformationRequiredException {
 		// check to see if signed in user is Admin
 		actemium.checkPermision(EmployeeRole.ADMINISTRATOR);
 		// only needs to be checked if you changed the username 
@@ -137,6 +149,8 @@ public class UserFacade implements Facade {
 		employee.setEmailAddress(emailAddress);
 		employee.setRole(role);
 		employee.setStatus(status);
+
+		employee.checkAttributes();
 		
 		actemium.modifyEmployee(employee);
 	}
