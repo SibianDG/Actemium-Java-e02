@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 import domain.enums.ContractTypeStatus;
 import domain.enums.EmployeeRole;
+import domain.enums.KbItemType;
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
@@ -15,7 +16,8 @@ import repository.GenericDao;
 import repository.UserDaoJpa;
 
 public class PopulateDB {
-    public void run(UserDaoJpa userDao, GenericDao<ActemiumContractType> contractTypeDao) throws InformationRequiredException {
+    public void run(UserDaoJpa userDao, GenericDao<ActemiumContractType> contractTypeDao,
+    		GenericDao<ActemiumKbItem> kbItemDao) throws InformationRequiredException {
     	System.out.println("DBTester - creating and persisting multiple user objects");
         userDao.startTransaction();
 
@@ -625,8 +627,20 @@ public class PopulateDB {
                 .maxHandlingTime(4)
                 .minThroughputTime(1)
                 .price(2999.99)
-                .build());
+                .build());        
+        
 		contractTypeDao.commitTransaction();
+		
+		kbItemDao.startTransaction();
+		
+		kbItemDao.insert(new ActemiumKbItem.KbItemBuilder()
+				.title("Test title")
+				.type(KbItemType.DATABASE)
+				.text("some sample text here")
+				.build());
+
+		kbItemDao.commitTransaction();
+		
     }
 
 }

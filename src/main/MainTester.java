@@ -19,7 +19,7 @@ public class MainTester {
         GenericDaoJpa<ActemiumContract> contractDaoJpa = new GenericDaoJpa<>(ActemiumContract.class);
         GenericDaoJpa<ActemiumKbItem> kbItemDaoJpa = new GenericDaoJpa<>(ActemiumKbItem.class);
         PopulateDB populateDB = new PopulateDB();
-        populateDB.run(userDaoJpa, contractTypeDaoJpa);
+        populateDB.run(userDaoJpa, contractTypeDaoJpa, kbItemDaoJpa);
         System.out.println("populateDB successful");
 
         Actemium actemium = new Actemium(userDaoJpa, companyDaoJpa, ticketDaoJpa, contractTypeDaoJpa, contractDaoJpa, kbItemDaoJpa);
