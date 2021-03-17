@@ -89,7 +89,6 @@ public class TicketViewModel extends ViewModel {
             details.put("Quality", Collections.singletonMap(true, ticket.getQuality()));
             details.put("Support Needed", Collections.singletonMap(true, ticket.getSupportNeeded()));
         }
-        System.out.println(details.toString());
         return details;
     }
 

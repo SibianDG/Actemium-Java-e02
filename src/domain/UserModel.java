@@ -111,10 +111,10 @@ public abstract class UserModel implements User, Serializable {
 	}
 
 	public void setUsername(String username) {
-		String usernameRegex = "[A-Za-z0-9]+";
-		if(username == null || username.isBlank() || !username.matches(usernameRegex)) {
-			throw new IllegalArgumentException(LanguageResource.getString("username_invalid"));
-		}
+		//String usernameRegex = "[A-Za-z0-9]+";
+		//if(username == null || username.isBlank() || !username.matches(usernameRegex)) {
+		//	throw new IllegalArgumentException(LanguageResource.getString("username_invalid"));
+		//}
 		this.username.set(username);
 	}
 
@@ -123,10 +123,10 @@ public abstract class UserModel implements User, Serializable {
 	}
 
 	public void setPassword(String password) {
-		String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()â€“{}:;',.?/*~$^+=<>]).{8,}$";
-		if(password == null || password.isBlank() || !password.matches(passwordRegex)){
-			throw new IllegalArgumentException(LanguageResource.getString("password_invalid"));
-		}
+		//String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()â€“{}:;',.?/*~$^+=<>]).{8,}$";
+		//if(password == null || password.isBlank() || !password.matches(passwordRegex)){
+		//	throw new IllegalArgumentException(LanguageResource.getString("password_invalid"));
+		//}
 		this.password = password;
 	}
 
@@ -136,10 +136,10 @@ public abstract class UserModel implements User, Serializable {
 	}
 
 	public void setFirstName(String firstName) {
-		String firstNameRegex = "[^0-9]+";
-		if(firstName == null || firstName.isBlank() || !firstName.matches(firstNameRegex)){
-			throw new IllegalArgumentException(LanguageResource.getString("firstname_invalid"));
-		}
+		//String firstNameRegex = "[^0-9]+";
+		//if(firstName == null || firstName.isBlank() || !firstName.matches(firstNameRegex)){
+		//	throw new IllegalArgumentException(LanguageResource.getString("firstname_invalid"));
+		//}
 		this.firstName.set(firstName);
 	}
 
@@ -149,10 +149,10 @@ public abstract class UserModel implements User, Serializable {
 	}
 
 	public void setLastName(String lastName) {
-		String lastNameRegex = "[^0-9]+";
-		if(lastName == null || lastName.isBlank() || !lastName.matches(lastNameRegex)){
-			throw new IllegalArgumentException(LanguageResource.getString("lastname_invalid"));
-		}
+		//String lastNameRegex = "[^0-9]+";
+		//if(lastName == null || lastName.isBlank() || !lastName.matches(lastNameRegex)){
+		//	throw new IllegalArgumentException(LanguageResource.getString("lastname_invalid"));
+		//}
 		this.lastName.set(lastName);
 	}
 

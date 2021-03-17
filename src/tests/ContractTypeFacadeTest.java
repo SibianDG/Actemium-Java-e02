@@ -43,11 +43,12 @@ public class ContractTypeFacadeTest {
 
 
     //todo and now?
-    @Test
+    /*@Test
     public void register_valid_ContractType() {
         //trainDummy();
         //assertDoesNotThrow(() -> userFacade.modifyCustomer((ActemiumCustomer) cust, "usernameAvailable", PASSWORD, "John",
         //        "Smith", theWhiteHouse, UserStatus.ACTIVE));
         //Mockito.verify(userRepoDummy).findByUsername(ADMINUSERNAME);
     }
+    */
 }

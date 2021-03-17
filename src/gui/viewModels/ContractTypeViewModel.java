@@ -7,6 +7,7 @@ import domain.ContractType;
 import domain.enums.ContractTypeStatus;
 import domain.enums.Timestamp;
 import domain.facades.ContractTypeFacade;
+import exceptions.InformationRequiredException;
 import gui.GUIEnum;
 import javafx.collections.ObservableList;
 
@@ -64,13 +65,13 @@ public class ContractTypeViewModel extends ViewModel {
     }
 
     public void registerContractType(String name, ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone,
-                                     boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) {
+                                     boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) throws InformationRequiredException {
         contractTypeFacade.registerContractType(name, contractTypeStatus, hasEmail, hasPhone, hasApplication, timestamp, maxHandlingTime, minThroughputTime, price);
         setSelectedContractType(contractTypeFacade.getLastAddedContractType());
     }
 
     public void modifyContractType(String name, ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone,
-                                   boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) {
+                                   boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) throws InformationRequiredException {
         //ActemiumContractType contractType, String name, ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone,
         //                                   boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) {
         contractTypeFacade.modifyContractType((ActemiumContractType) selectedContractType, name, contractTypeStatus, hasEmail, hasPhone, hasApplication, timestamp, maxHandlingTime, minThroughputTime, price );

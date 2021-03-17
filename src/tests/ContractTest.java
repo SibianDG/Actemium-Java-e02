@@ -3,6 +3,7 @@ package tests;
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
+import exceptions.InformationRequiredException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -38,14 +39,80 @@ public class ContractTest {
 	private static final LocalDate nextYearNextWeek = LocalDate.now().plusYears(1).plusWeeks(1);
 	private static final LocalDate inTwoYearsNextWeek = LocalDate.now().plusYears(2).plusWeeks(1);
 	private static final LocalDate inThreeYearsNextWeek = LocalDate.now().plusYears(3).plusWeeks(1);
-	
-    private static final ActemiumContractType contractType01 = new ActemiumContractType("BasisEmailSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
-    private static final ActemiumContractType contractType02 = new ActemiumContractType("FullAllSupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.ALWAYS, 3, 1, 3999.99);
 
-    private static final ActemiumCompany facebook = new ActemiumCompany("Facebook", "United States", "Menlo Park, CA 94025", "1 Hacker Way", "+1-650-308-7300");
-    private static final ActemiumCustomer mark = new ActemiumCustomer("cust03Mark", "Passwd123&", "Mark", "Zuckerberg", facebook);
-    
-    private static Stream<Arguments> validContractAttributes02() {
+    private static ActemiumContractType contractType01;
+
+	static {
+		try {
+			contractType01 = new ActemiumContractType.ContractTypeBuilder()
+					.contractTypeName("BasisEmailSupport")
+					.contractTypeStatus(ContractTypeStatus.ACTIVE)
+					.hasEmail(true)
+					.hasPhone(false)
+					.hasApplication(false)
+					.timestamp(Timestamp.WORKINGHOURS)
+					.maxHandlingTime(5)
+					.minThroughputTime(2)
+					.price(999.99)
+					.build();
+		} catch (InformationRequiredException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static ActemiumContractType contractType02;
+
+	static {
+		try {
+			contractType02 = new ActemiumContractType.ContractTypeBuilder()
+					.contractTypeName("FullAllSupport")
+					.contractTypeStatus(ContractTypeStatus.ACTIVE)
+					.hasEmail(true)
+					.hasPhone(true)
+					.hasApplication(true)
+					.timestamp(Timestamp.ALWAYS)
+					.maxHandlingTime(3)
+					.minThroughputTime(1)
+					.price(3999.99)
+					.build();
+		} catch (InformationRequiredException e) {
+			e.printStackTrace();
+		}
+	}
+	private static ActemiumCompany facebook;
+
+	static {
+		try {
+			facebook = new ActemiumCompany.CompanyBuilder()
+					.name("Facebook")
+					.country("United States")
+					.city("Menlo Park, CA 94025")
+					.address("1 Hacker Way")
+					.phoneNumber("+1-650-308-7300")
+					.build();
+		} catch (InformationRequiredException e) {
+			e.printStackTrace();
+		}
+	}
+
+	;
+    private static ActemiumCustomer mark;
+
+	static {
+		try {
+			mark = new ActemiumCustomer.CustomerBuilder()
+					.username("cust03Mark")
+							.password("Passwd123&")
+							.firstName("Mark")
+							.lastName("Zuckerberg")
+							.company(facebook)
+							.build();
+		} catch (InformationRequiredException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static Stream<Arguments> validContractAttributes02() {
         return Stream.of(
                 Arguments.of(contractType01, mark, nextYear),
                 Arguments.of(contractType02, mark, nextYear),
@@ -112,45 +179,81 @@ public class ContractTest {
 	@ParameterizedTest
 	@MethodSource("validContractAttributes02")
 	public void createContract_ValidAttributes02_DoesNotThrowException(ActemiumContractType contractType, ActemiumCustomer customer, LocalDate endDate) {
-		Assertions.assertDoesNotThrow(() -> new ActemiumContract(contractType, customer, endDate));
+		Assertions.assertDoesNotThrow(() -> new ActemiumContract.ContractBuilder()
+				.contractType(contractType)
+				.customer(customer)
+				.endDate(endDate)
+				.build());
 	}
 
     // Tests for consturctor with 2 parameters
 	@ParameterizedTest
 	@MethodSource("invalidContractAttributes02")
 	public void createContract_InValidAttributes02_ThrowsIllegalArgumentException(ActemiumContractType contractType, ActemiumCustomer customer, LocalDate endDate) {
-		Assertions.assertThrows(IllegalArgumentException.class, () -> new ActemiumContract(contractType, customer, endDate));
+
+		Assertions.assertThrows(InformationRequiredException.class, () -> new ActemiumContract.ContractBuilder()
+				.contractType(contractType)
+				.customer(customer)
+				.endDate(endDate)
+				.build());
 	}
 
     // Tests for consturctor with 3 parameters
 	@ParameterizedTest
 	@MethodSource("validContractAttributes03")
+
 	public void createContract_ValidAttributes03_DoesNotThrowException(ActemiumContractType contractType, ActemiumCustomer customer, LocalDate startDate, LocalDate endDate) {
-		Assertions.assertDoesNotThrow(() -> new ActemiumContract(contractType, customer, startDate, endDate));
+
+		Assertions.assertDoesNotThrow(() -> new ActemiumContract.ContractBuilder()
+				.contractType(contractType)
+				.customer(customer)
+				.startDate(startDate)
+				.endDate(endDate)
+				.build());
 	}
 
     // Tests for consturctor with 3 parameters
     @ParameterizedTest
     @MethodSource("invalidContractAttributes03")
     public void createContract_InValidAttributes03_ThrowsIllegalArgumentException(ActemiumContractType contractType, ActemiumCustomer customer, LocalDate startDate, LocalDate endDate) {
-    	Assertions.assertThrows(IllegalArgumentException.class, () -> new ActemiumContract(contractType, customer, startDate, endDate));
+    	Assertions.assertThrows(InformationRequiredException.class, () -> new ActemiumContract.ContractBuilder()
+				.contractType(contractType)
+				.customer(customer)
+				.startDate(startDate)
+				.endDate(endDate)
+				.build());
     }
     
     @Test
-    public void contractCreation_WithoutStartDate_HasContractStatusCURRENT() {
-    	ActemiumContract contract = new ActemiumContract(contractType01, mark, nextYear);
+    public void contractCreation_WithoutStartDate_HasContractStatusCURRENT() throws InformationRequiredException {
+
+    	ActemiumContract contract = new ActemiumContract.ContractBuilder()
+				.contractType(contractType01)
+				.customer(mark)
+				.endDate(nextYear)
+				.build();
         Assertions.assertEquals(ContractStatus.CURRENT, contract.getStatusAsEnum());
     }
     
     @Test
-    public void contractCreation_WithStartDateNow_HasContractStatusCURRENT() {
-    	ActemiumContract contract = new ActemiumContract(contractType01, mark, today, nextYear);
+    public void contractCreation_WithStartDateNow_HasContractStatusCURRENT() throws InformationRequiredException {
+    	ActemiumContract contract = new ActemiumContract.ContractBuilder()
+				.contractType(contractType01)
+				.customer(mark)
+				.startDate(today)
+				.endDate(nextYear)
+				.build();
     	Assertions.assertEquals(ContractStatus.CURRENT, contract.getStatusAsEnum());
     }
     
     @Test
-    public void contractCreation_WithStartDateInFuture_HasContractStatusIN_REQUEST() {
-    	ActemiumContract contract = new ActemiumContract(contractType01, mark, nextWeek, nextYearNextWeek);
+    public void contractCreation_WithStartDateInFuture_HasContractStatusIN_REQUEST() throws InformationRequiredException {
+    	ActemiumContract contract = new ActemiumContract.ContractBuilder()
+				.contractType(contractType01)
+				.customer(mark)
+				.startDate(nextWeek)
+				.endDate(nextYearNextWeek)
+				.build();
     	Assertions.assertEquals(ContractStatus.IN_REQUEST, contract.getStatusAsEnum());
     }
     

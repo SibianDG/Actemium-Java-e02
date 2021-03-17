@@ -53,6 +53,18 @@ public enum RequiredElement {
             return LanguageResource.getString("companyName_invalid");
         }
     }
+    , CompanyCountryRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("country_invalid");
+        }
+    }
+    , CompanyCirtyRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("city_invalid");
+        }
+    }
     , CompanyAddressRequired {
         @Override
         public String toString() {
@@ -100,7 +112,49 @@ public enum RequiredElement {
     , ContractTypeNameRequired {
         @Override
         public String toString() {
-            return LanguageResource.getString("username_invalid");
+            return LanguageResource.getString("contractTypeName_invalid");
+        }
+    }
+    , ContractTypeStatusRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("contractTypeTimestamp_invalid");
+        }
+    }
+    , ContractTypeRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("contractType_invalid");
+        }
+    }
+    , CustomerRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("customer_invalid");
+        }
+    }
+    , ContractStatusRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("contractStatus_invalid");
+        }
+    }
+    , ContractStartDateRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("startDate_invalid");
+        }
+    }
+    , ContractEndDateRequired1 {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("contractStatusRequired");
+        }
+    }
+    , ContractEndDateRequired2 {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("contractStatusRequired");
         }
     }
     , ContractTypeWayRequired {
@@ -116,7 +170,7 @@ public enum RequiredElement {
         }
     }
 
-    , ContractTypeLinTroughPutTimeRequired {
+    , ContractTypeMinTroughPutTimeRequired {
         @Override
         public String toString() {
             return LanguageResource.getString("minThroughputTime_invalid");
@@ -126,6 +180,18 @@ public enum RequiredElement {
         @Override
         public String toString() {
             return LanguageResource.getString("price_invalid");
+        }
+    }
+    , EmployeeRoleRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("employeeRoleRequired");
+        }
+    }
+    , RegistrationDateRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("registrationDateRequired");
         }
     }
 }

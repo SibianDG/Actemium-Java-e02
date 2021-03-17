@@ -1,13 +1,17 @@
 package domain;
 
 import domain.enums.ContractTypeStatus;
+import domain.enums.RequiredElement;
 import domain.enums.Timestamp;
+import exceptions.InformationRequiredException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import languages.LanguageResource;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -49,8 +53,21 @@ public class ActemiumContractType implements ContractType, Serializable {
 	public ActemiumContractType() {
 		super();
 	}
-	
-	public ActemiumContractType(String name, ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone,
+
+	public ActemiumContractType(ContractTypeBuilder builder){
+		this.contractTypeName.set(builder.contractTypeName);
+		this.name = (builder.contractTypeName);
+		this.contractTypeStatus.set(String.valueOf(builder.contractTypeStatus));
+		this.hasEmail = builder.hasEmail;
+		this.hasPhone = builder.hasPhone;
+		this.hasApplication = builder.hasApplication;
+		this.timestamp.set(String.valueOf(builder.timestamp));
+		this.maxHandlingTime = builder.maxHandlingTime;
+		this.minThroughputTime = builder.minThroughputTime;
+		this.price = builder.price;
+	}
+
+	/*public ActemiumContractType(String name, ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone,
 			boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) {
 		super();
 		verifyTicketCreationMethods(hasEmail, hasPhone, hasApplication);
@@ -65,19 +82,19 @@ public class ActemiumContractType implements ContractType, Serializable {
 		setMaxHandlingTime(maxHandlingTime);
 		setMinThroughputTime(minThroughputTime);
 		setPrice(price);
-	}
+	}*/
 
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
-		//TODO no naming rules yet
-		if (name == null || name.isBlank()) {
-			throw new IllegalArgumentException(LanguageResource.getString("name_invalid"));
-		}
-		//TODO check if contractTypeName is not already taken,
-		// two contractTypes can't have the same name
+		////TODO no naming rules yet
+		//if (name == null || name.isBlank()) {
+		//	throw new IllegalArgumentException(LanguageResource.getString("name_invalid"));
+		//}
+		////TODO check if contractTypeName is not already taken,
+		//// two contractTypes can't have the same name
 		setContractTypeName();
 		this.name = name;
 	}
@@ -103,7 +120,7 @@ public class ActemiumContractType implements ContractType, Serializable {
 	}
 
 	public void setHasEmail(boolean hasEmail) {
-		verifyTicketCreationMethods(hasEmail, hasPhone, hasApplication);
+		//verifyTicketCreationMethods(hasEmail, hasPhone, hasApplication);
 		this.hasEmail = hasEmail;
 	}
 
@@ -112,7 +129,7 @@ public class ActemiumContractType implements ContractType, Serializable {
 	}
 
 	public void setHasPhone(boolean hasPhone) {
-		verifyTicketCreationMethods(hasEmail, hasPhone, hasApplication);
+		//verifyTicketCreationMethods(hasEmail, hasPhone, hasApplication);
 		this.hasPhone = hasPhone;
 	}
 
@@ -121,7 +138,7 @@ public class ActemiumContractType implements ContractType, Serializable {
 	}
 
 	public void setHasApplication(boolean hasApplication) {
-		verifyTicketCreationMethods(hasEmail, hasPhone, hasApplication);
+		//verifyTicketCreationMethods(hasEmail, hasPhone, hasApplication);
 		this.hasApplication = hasApplication;
 	}
 
@@ -197,6 +214,130 @@ public class ActemiumContractType implements ContractType, Serializable {
 	
 	public StringProperty contractTypestampProperty() {
 		return timestamp;
+	}
+
+	public void checkAttributes() throws InformationRequiredException {
+		// Ms. Malfait her idea
+		new ContractTypeBuilder()
+				.contractTypeName(this.contractTypeNameProperty().get())
+				.contractTypeStatus(this.getContractTypeStatusAsEnum())
+				.hasEmail(this.hasEmail)
+				.hasPhone(this.hasPhone)
+				.hasApplication(this.isHasApplication())
+				.timestamp(this.getTimestampAsEnum())
+				.maxHandlingTime(this.getMaxHandlingTime())
+				.minThroughputTime(this.minThroughputTime)
+				.price(this.price)
+				.build();
+	}
+
+	public static class ContractTypeBuilder {
+		private String contractTypeName;
+		private ContractTypeStatus contractTypeStatus;
+		private boolean hasEmail;
+		private boolean hasPhone;
+		private boolean hasApplication;
+		private Timestamp timestamp;
+		private int maxHandlingTime;
+		private int minThroughputTime;
+		private double price;
+
+		private Set<RequiredElement> requiredElements;
+
+		public ContractTypeBuilder contractTypeName(String contractTypeName) {
+			this.contractTypeName = contractTypeName;
+			return this;
+		}
+
+		public ContractTypeBuilder contractTypeStatus(ContractTypeStatus contractTypeStatus) {
+			this.contractTypeStatus = contractTypeStatus;
+			return this;
+		}
+
+		public ContractTypeBuilder hasEmail(boolean hasEmail) {
+			this.hasEmail = hasEmail;
+			return this;
+		}
+
+		public ContractTypeBuilder hasPhone(boolean hasPhone) {
+			this.hasPhone = hasPhone;
+			return this;
+		}
+
+		public ContractTypeBuilder hasApplication(boolean hasApplication) {
+			this.hasApplication = hasApplication;
+			return this;
+		}
+
+		public ContractTypeBuilder timestamp(Timestamp timestamp) {
+			this.timestamp = timestamp;
+			return this;
+		}
+
+		public ContractTypeBuilder maxHandlingTime(int maxHandlingTime) {
+			this.maxHandlingTime = maxHandlingTime;
+			return this;
+		}
+
+		public ContractTypeBuilder minThroughputTime(int minThroughputTime) {
+			this.minThroughputTime = minThroughputTime;
+			return this;
+		}
+
+		public ContractTypeBuilder price(double price) {
+			this.price = price;
+			return this;
+		}
+
+		public ActemiumContractType build() throws InformationRequiredException {
+			requiredElements = new HashSet<>();
+			checkAttributesEmployeeBuiler();
+			return new ActemiumContractType(this);
+		}
+
+		private void checkAttributesEmployeeBuiler() throws InformationRequiredException {
+			if (contractTypeName == null || contractTypeName.isBlank())
+				requiredElements.add(RequiredElement.ContractTypeNameRequired);
+			if (contractTypeStatus == null)
+				requiredElements.add(RequiredElement.ContractTypeStatusRequired);
+			if (timestamp == null)
+				requiredElements.add(RequiredElement.ContractTypeStatusRequired);
+			if (maxHandlingTime <= 0)
+				requiredElements.add(RequiredElement.ContractTypeMaxHandlingTimeRequired);
+			if (minThroughputTime <= 0)
+				requiredElements.add(RequiredElement.ContractTypeMinTroughPutTimeRequired);
+			if (price <= 0)
+				requiredElements.add(RequiredElement.ContractTypePriceRequired);
+			if (!(hasEmail || hasPhone || hasApplication))
+				requiredElements.add(RequiredElement.ContractTypeWayRequired);
+
+			if (!requiredElements.isEmpty()) {
+				throw new InformationRequiredException(requiredElements);
+			}
+
+		}
+	}
+
+	public ActemiumContractType clone() throws CloneNotSupportedException {
+
+		ActemiumContractType cloned = null;
+		try {
+			cloned = new ContractTypeBuilder()
+					.contractTypeName(this.contractTypeNameProperty().get())
+					.contractTypeStatus(this.getContractTypeStatusAsEnum())
+					.hasEmail(this.isHasEmail())
+					.hasPhone(this.isHasPhone())
+					.hasPhone(this.isHasPhone())
+					.timestamp(this.getTimestampAsEnum())
+					.maxHandlingTime(this.getMaxHandlingTime())
+					.minThroughputTime(this.getMinThroughputTime())
+					.price(this.getPrice())
+					.build();
+		} catch (InformationRequiredException e) {
+			//this should be a good Employee
+			e.printStackTrace();
+		}
+		return cloned;
 	}
 	
 }

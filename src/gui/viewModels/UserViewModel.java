@@ -6,6 +6,7 @@ import domain.*;
 import domain.enums.EmployeeRole;
 import domain.enums.UserStatus;
 import domain.facades.UserFacade;
+import exceptions.InformationRequiredException;
 import gui.GUIEnum;
 import javafx.collections.ObservableList;
 
@@ -101,25 +102,25 @@ public class UserViewModel extends ViewModel {
 	}
 
 	public void registerEmployee(String username, String lastName, String firstName, String address,
-			String emailAddress, String phoneNumber, EmployeeRole role) {
+			String emailAddress, String phoneNumber, EmployeeRole role) throws InformationRequiredException {
 		userFacade.registerEmployee(username, "Passwd123&", firstName, lastName, address, phoneNumber, emailAddress, role);
 		setSelectedUser(userFacade.getLastAddedEmployee());
 	}
 
 	public void modifyEmployee(String username, String password, String firstName, String lastName, String address,
-			String phoneNumber, String emailAddress, EmployeeRole role, UserStatus status) {
+			String phoneNumber, String emailAddress, EmployeeRole role, UserStatus status) throws InformationRequiredException {
 		userFacade.modifyEmployee((ActemiumEmployee) selectedUser, username, password, firstName, lastName, address,
 				phoneNumber, emailAddress, role, status);
 	}
 
 	public void registerCustomer(String username, String firstName, String lastName, String companyName,
-			String companyCountry, String companyCity, String companyAddress, String companyPhone) {
+			String companyCountry, String companyCity, String companyAddress, String companyPhone) throws InformationRequiredException {
 		userFacade.registerCustomer(username, "Passwd123&", firstName, lastName, companyName, companyCountry, companyCity, companyAddress,	companyPhone);
 		setSelectedUser(userFacade.getLastAddedCustomer());
 	}
 
 	public void modifyCustomer(String username, String password, String firstName, String lastName, String status,
-			String companyName, String companyCountry, String companyCity, String companyAddress, String companyPhone) {		
+			String companyName, String companyCountry, String companyCity, String companyAddress, String companyPhone) throws InformationRequiredException {
 		userFacade.modifyCustomer((ActemiumCustomer) this.selectedUser, username, password, firstName, lastName,
 				UserStatus.valueOf(status), companyName, companyCountry, companyCity, companyAddress, companyPhone);
 	}
