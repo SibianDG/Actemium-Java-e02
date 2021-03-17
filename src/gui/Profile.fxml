@@ -34,7 +34,7 @@
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
                <VBox.margin>
-                  <Insets left="64.0" right="64.0" top="64.0" />
+                  <Insets left="25.0" right="25.0" top="64.0" />
                </VBox.margin>
             </GridPane>
             <Text fx:id="txtErrorMessage" fill="#cd1010" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER">

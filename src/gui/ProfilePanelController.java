@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -66,8 +67,13 @@ public class ProfilePanelController extends GridPane  {
 
     private String getTextFromGridPane(int i){
         Node node = gridProfile.getChildren().get(2*i+1);
-        if (node instanceof HBox)
-            return ((PasswordField)((HBox) node).getChildren().get(0)).getText();
+        if (node instanceof HBox) {
+            String password = ((PasswordField) ((HBox) node).getChildren().get(0)).getText();
+            if (password == null || password.isBlank()){
+                password = "********";
+            }
+            return password;
+        }
         if (node instanceof TextField) {
             return ((TextField) node).getText();
         }
@@ -101,9 +107,9 @@ public class ProfilePanelController extends GridPane  {
 		gridProfile.getColumnConstraints().clear();
 
         ColumnConstraints col0 = new ColumnConstraints();
-        col0.setPercentWidth(40);
+        col0.setPercentWidth(30);
         ColumnConstraints col1 = new ColumnConstraints();
-        col1.setPercentWidth(60);
+        col1.setPercentWidth(70);
 
         gridProfile.getColumnConstraints().addAll(col0,col1);
         gridProfile.setGridLinesVisible(true);
@@ -156,6 +162,7 @@ public class ProfilePanelController extends GridPane  {
 
             if(label.getText().toLowerCase().contains("password")) {
                 HBox hbox = new HBox();
+                hbox.setAlignment(Pos.CENTER_LEFT);
                 PasswordField detail = new PasswordField();
                 detail.setPromptText("Change password");
 
@@ -171,9 +178,10 @@ public class ProfilePanelController extends GridPane  {
                 });
                 detail.setOnKeyTyped(e -> checkBox.setSelected(false));
                 hbox.getChildren().addAll(detail, checkBox);
+                HBox.setHgrow(detail, Priority.ALWAYS);
 
                 gridProfile.add(label, 0, i);
-                gridProfile.add(hbox, 2, i);
+                gridProfile.add(hbox, 1, i);
             } else {
                 gridProfile.add(label, 0, i);
                 gridProfile.add(makeNewText(details.get(key), key), 1, i);
