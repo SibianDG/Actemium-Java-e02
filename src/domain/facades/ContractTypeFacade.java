@@ -56,15 +56,15 @@ public class ContractTypeFacade implements Facade{
 
             contractTypeClone.checkAttributes();
 
-            contractType.setName(contractType.getName());
-            contractType.setContractTypeStatus(contractType.getContractTypeStatusAsEnum());
-            contractType.setHasEmail(contractType.isHasEmail());
-            contractType.setHasPhone(contractType.isHasEmail());
-            contractType.setHasApplication(contractType.isHasApplication());
-            contractType.setTimestamp(contractType.getTimestampAsEnum());
-            contractType.setMaxHandlingTime(contractType.getMaxHandlingTime());
-            contractType.setMinThroughputTime(contractType.getMinThroughputTime());
-            contractType.setPrice(contractType.getPrice());
+            contractType.setName(name);
+            contractType.setContractTypeStatus(contractTypeStatus);
+            contractType.setHasEmail(hasEmail);
+            contractType.setHasPhone(hasPhone);
+            contractType.setHasApplication(hasApplication);
+            contractType.setTimestamp(timestamp);
+            contractType.setMaxHandlingTime(maxHandlingTime);
+            contractType.setMinThroughputTime(minThroughputTime);
+            contractType.setPrice(price);
 
             actemium.modifyContractType(contractType);
         } catch (CloneNotSupportedException e) {

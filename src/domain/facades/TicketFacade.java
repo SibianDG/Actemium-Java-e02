@@ -60,13 +60,13 @@ public class TicketFacade implements Facade {
 
 			ticketClone.checkAttributes();
 
-			ticket.setPriority(ticketClone.getPriorityAsEnum());
-			ticket.setTicketType(ticketClone.getTicketTypeAsEnum());
-			ticket.setStatus(ticketClone.getStatusAsEnum());
-			ticket.setTitle(ticketClone.getTitle());
-			ticket.setDescription(ticketClone.getDescription());
-			ticket.setRemarks(ticketClone.getRemarks());
-			ticket.setAttachments(ticketClone.getAttachments());
+			ticket.setPriority(priority);
+			ticket.setTicketType(ticketType);
+			ticket.setStatus(status);
+			ticket.setTitle(title);
+			ticket.setDescription(description);
+			ticket.setRemarks(remarks);
+			ticket.setAttachments(attachments);
 			ticket.setTechnicians(new ArrayList<>());
 			technicians.forEach(ticket::addTechnician);
 
@@ -79,14 +79,24 @@ public class TicketFacade implements Facade {
 	}
 	
 	public void modifyTicketOutstanding(ActemiumTicket ticket, String solution, String quality, String supportNeeded) throws InformationRequiredException {
-		// check to see if signed in user is Support Manger
-		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
-		ticket.setSolution(solution);
-		ticket.setQuality(quality);
-		ticket.setSupportNeeded(supportNeeded);
-		ticket.checkAttributes();
+		try {
+			ActemiumTicket ticketClone = ticket.clone();
+			// check to see if signed in user is Support Manger
+			actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
+			ticketClone.setSolution(solution);
+			ticketClone.setQuality(quality);
+			ticketClone.setSupportNeeded(supportNeeded);
+			ticketClone.checkAttributes();
 
-		actemium.modifyTicket(ticket);
+			ticket.setSolution(solution);
+			ticket.setQuality(quality);
+			ticket.setSupportNeeded(supportNeeded);
+
+			actemium.modifyTicket(ticket);
+
+		} catch (CloneNotSupportedException e) {
+			System.out.println("Can't clone object");
+		}
 	}
 	
     public void delete(ActemiumTicket ticket) throws InformationRequiredException {

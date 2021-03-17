@@ -127,15 +127,14 @@ public class UserFacade implements Facade {
 			actemium.checkPermision(EmployeeRole.ADMINISTRATOR);
 
 			// Changes to company of the contactPerson (=Customer)
-			//TODO clone
-			ActemiumCompany company = customer.getCompany();
 
-			//TODO
-			//cloneCustomer.setName(companyName);
-			//cloneCustomer.setCountry(companyCountry);
-			//cloneCustomer.setCity(companyCity);
-			//cloneCustomer.setAddress(companyAddress);
-			//cloneCustomer.setPhoneNumber(companyPhone);
+			ActemiumCompany companyClone = cloneCustomer.getCompany().clone();
+
+			companyClone.setName(companyName);
+			companyClone.setCountry(companyCountry);
+			companyClone.setCity(companyCity);
+			companyClone.setAddress(companyAddress);
+			companyClone.setPhoneNumber(companyPhone);
 
 			// only needs to be checked if you changed the username
 			if (!cloneCustomer.getUsername().equals(username)) {
@@ -153,15 +152,26 @@ public class UserFacade implements Facade {
 //		customer.setCompany(company);
 			cloneCustomer.setStatus(status);
 
+			companyClone.checkAttributes();
 			cloneCustomer.checkAttributes();
 
-			customer.setUsername(cloneCustomer.getUsername());
-			customer.setPassword(cloneCustomer.getPassword());
-			customer.setFirstName(cloneCustomer.getFirstName());
-			customer.setLastName(cloneCustomer.getLastName());
-			customer.setStatus(cloneCustomer.getStatusAsEnum());
+			ActemiumCompany company = customer.getCompany();
+
+			company.setName(companyName);
+			company.setCountry(companyCountry);
+			company.setCity(companyCity);
+			company.setAddress(companyAddress);
+			company.setPhoneNumber(companyPhone);
+
+			customer.setUsername(username);
+			customer.setPassword(password);
+			customer.setFirstName(firstName);
+			customer.setLastName(lastName);
+			customer.setStatus(status);
 			// JPA automatically updates the company
 //		customer.setCompany(company);
+
+;
 
 			actemium.modifyCustomer(customer);
 		} catch (CloneNotSupportedException e) {
@@ -201,15 +211,15 @@ public class UserFacade implements Facade {
 
 			System.out.println("Hiervoorbij?");
 
-			employee.setUsername(cloneEmployee.getUsername());
-			employee.setPassword(cloneEmployee.getPassword());
-			employee.setFirstName(cloneEmployee.getFirstName());
-			employee.setLastName(cloneEmployee.getLastName());
-			employee.setAddress(cloneEmployee.getAddress());
-			employee.setPhoneNumber(cloneEmployee.getPhoneNumber());
-			employee.setEmailAddress(cloneEmployee.getEmailAddress());
-			employee.setRole(cloneEmployee.getRoleAsEnum());
-			employee.setStatus(cloneEmployee.getStatusAsEnum());
+			employee.setUsername(username);
+			employee.setPassword(password);
+			employee.setFirstName(firstName);
+			employee.setLastName(lastName);
+			employee.setAddress(address);
+			employee.setPhoneNumber(phoneNumber);
+			employee.setEmailAddress(emailAddress);
+			employee.setRole(role);
+			employee.setStatus(status);
 
 			actemium.modifyEmployee(employee);
 		} catch (CloneNotSupportedException e){

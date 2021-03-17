@@ -183,6 +183,18 @@ public class ActemiumCompany implements Company, Serializable {
 		this.actemiumTickets.add(ticket);
 	}
 
+	public void checkAttributes() throws InformationRequiredException {
+		// Ms. Malfait her idea
+		new ActemiumCompany.CompanyBuilder()
+				.name(this.getName())
+				.country(this.getCountry())
+				.city(this.getCity())
+				.address(this.getAddress())
+				.phoneNumber(this.getPhoneNumber())
+				.registrationDate(this.getRegistrationDate())
+				.build();
+	}
+
 	public static class CompanyBuilder {
 		private String name;
 		private String country;
@@ -248,19 +260,17 @@ public class ActemiumCompany implements Company, Serializable {
 
 	}
 
-	/*public ActemiumCompany clone() throws CloneNotSupportedException {
+	public ActemiumCompany clone() throws CloneNotSupportedException {
 
 		ActemiumCompany cloned = null;
 		try {
-			cloned = new ActemiumCompany.Bui()
-					.username(this.usernameProperty().get())
-					.password(this.getPassword())
-					.firstName(this.firstNameProperty().get())
-					.lastName(this.lastNameProperty().get())
+			cloned = new ActemiumCompany.CompanyBuilder()
+					.name(this.getName())
+					.country(this.getCountry())
+					.city(this.getCity())
 					.address(this.getAddress())
 					.phoneNumber(this.getPhoneNumber())
-					.emailAddress(this.getEmailAddress())
-					.role(this.getRoleAsEnum())
+					.registrationDate(this.getRegistrationDate())
 					.build();
 		} catch (InformationRequiredException e) {
 			//this should be a good Employee
@@ -268,6 +278,4 @@ public class ActemiumCompany implements Company, Serializable {
 		}
 		return cloned;
 	}
-
-	 */
 }

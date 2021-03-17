@@ -28,7 +28,7 @@ public class ContractFacade implements Facade {
 			actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
 			contractClone.setStatus(status);
 			contractClone.checkAttributes();
-			contract.setStatus(contractClone.getStatusAsEnum());
+			contract.setStatus(status);
 			actemium.modifyContract(contract);
 		} catch (CloneNotSupportedException e) {
 			System.out.println("Can't clone");
