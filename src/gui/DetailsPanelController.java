@@ -18,6 +18,7 @@ import domain.Employee;
 import domain.enums.ContractStatus;
 import domain.enums.ContractTypeStatus;
 import domain.enums.EmployeeRole;
+import domain.enums.KbItemType;
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
@@ -26,6 +27,7 @@ import domain.enums.UserStatus;
 import exceptions.InformationRequiredException;
 import gui.viewModels.ContractTypeViewModel;
 import gui.viewModels.ContractViewModel;
+import gui.viewModels.KnowledgeBaseViewModel;
 import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
@@ -50,6 +52,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -321,6 +324,26 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                             , Integer.parseInt(getTextFromGridItem(3))
                     );
                 }
+            } else if (viewModel instanceof KnowledgeBaseViewModel) {
+                if (editing) {
+                    if(viewModel.isFieldModified()){
+                        ((KnowledgeBaseViewModel) viewModel).modifyKbItem(
+                                getTextFromGridItem(0)
+                                , KbItemType.valueOf(getTextFromGridItem(1))
+                                , getTextFromGridItem(2)                                
+                        );
+						showPopupMessage("popupSuccess", LanguageResource.getString("kbItemEdited_succes"));
+                    } else {
+						showPopupMessage("popupWarning", LanguageResource.getString("unchangedMessage"));
+                    }
+                } else {
+                    ((KnowledgeBaseViewModel) viewModel).registerKbItem(
+                            // title, type, text
+                    		getTextFromGridItem(0)
+                            , KbItemType.valueOf(getTextFromGridItem(1))
+                            , getTextFromGridItem(2)   
+                    );
+                }
             }
             editing = false;
             viewModel.setFieldModified(false);
@@ -360,6 +383,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             text = ((DatePicker)node).getValue().toString();
         } else if(node instanceof TextField){
             text = ((TextField)node).getText();
+        } else if(node instanceof TextArea){
+            text = ((TextArea)node).getText();
         } else {
             text = "";
         }
@@ -403,6 +428,11 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             addGridDetails(((ContractViewModel) viewModel).getDetails());
             txtDetailsTitle.setText("Details of Contract: " + ((ContractViewModel) viewModel).getIdSelectedContract());
             btnModify.setText("Modify Contract");
+            btnDelete.setVisible(false);
+        } else if (viewModel instanceof KnowledgeBaseViewModel) {
+            addGridDetails(((KnowledgeBaseViewModel) viewModel).getDetails());
+            txtDetailsTitle.setText("Title: " + ((KnowledgeBaseViewModel) viewModel).getTitleSelectedKbItem());
+            btnModify.setText("Modify KB item");
             btnDelete.setVisible(false);
         }
         btnModify.setVisible(true);
@@ -466,6 +496,17 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             btnModify.setVisible(true);
             assert fields != null;
             addItemsToGridNewContract(fields);
+        } else if (viewModel instanceof KnowledgeBaseViewModel) {
+            if (((KnowledgeBaseViewModel) viewModel).getCurrentState().equals(GUIEnum.KNOWLEDGEBASE)) {
+                fields = ((KnowledgeBaseViewModel) viewModel).getDetailsNewKbItem();
+                txtDetailsTitle.setText(LanguageResource.getString("addKbItem"));
+                btnModify.setText(LanguageResource.getString("addKbItem"));
+            } else {
+                fields = null;
+            }
+            btnModify.setVisible(true);
+            assert fields != null;
+            addItemsToGridNewKbItem(fields);
         }
     }
 
@@ -626,6 +667,40 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             gridDetails.add(node, 1, i);
         }
     }
+    
+    private void addItemsToGridNewKbItem(ArrayList<String> fields){
+        initGridDetails();
+
+        Map<Integer, String> randomValues = Map.of(
+                0, "How to Solve Network Problems"
+                , 1, KbItemType.OTHER.toString()
+                , 2, "Sample text"
+        );
+
+        for (int i = 0; i < fields.size(); i++) {
+            gridDetails.addRow(i);
+
+            gridDetails.add(makeNewLabel(fields.get(i), true), 0, i);
+
+            Node node;
+            if (fields.get(i).toLowerCase().contains("text")) {
+            	TextArea textArea;
+            	textArea = new TextArea(randomValues.get(i));
+            	textArea.setFont(Font.font("Arial", 14));
+            	textArea.setPromptText(fields.get(i));
+                node = textArea;
+            } else if (fields.get(i).toLowerCase().contains("type")) {
+                node = makeComboBox(KbItemType.OTHER);
+            } else {
+                TextField textField;
+                textField = new TextField(randomValues.get(i));
+                textField.setFont(Font.font("Arial", 14));
+                textField.setPromptText(fields.get(i));
+                node = textField;
+            }
+            gridDetails.add(node, 1, i);
+        }
+    }
 
     private Label makeNewLabel(String text, boolean withColon){
         Label label = new Label(text+ (withColon ? ":" : ""));
@@ -673,23 +748,48 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             if (key.equals("Password")){
                 string = "********";
             }
-            TextField detail = new TextField(string);
-            detail.textProperty().addListener((observable, oldValue, newValue) -> {
-                viewModel.setFieldModified(true);
-            });
-            detail.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+            
+            //TODO transform into generic method
+            if(key.equals("Text")
+            		|| key.equals("Description")) {
+            	TextArea detail = new TextArea(string);
+            	
+            	detail.textProperty().addListener((observable, oldValue, newValue) -> {
+                    viewModel.setFieldModified(true);
+                });
+                detail.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
 
-            if (string.equals("")){
-                detail.setVisible(false);
-                detail.setPadding(new Insets(15, 0, 0, 0));
+                if (string.equals("")){
+                    detail.setVisible(false);
+                    detail.setPadding(new Insets(15, 0, 0, 0));
+                } else {
+                    //detail.setPadding(new Insets(0, 0, 0, 15));
+                    detail.setId("textFieldWithPadding");
+                }
+                detail.setDisable(disable);
+                detail.setPromptText(key);
+
+	            node = detail;
             } else {
-                //detail.setPadding(new Insets(0, 0, 0, 15));
-                detail.setId("textFieldWithPadding");
-            }
-            detail.setDisable(disable);
-            detail.setPromptText(key);
-
-            node = detail;
+            	TextField detail = new TextField(string);
+	            
+	            detail.textProperty().addListener((observable, oldValue, newValue) -> {
+	                viewModel.setFieldModified(true);
+	            });
+	            detail.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+	
+	            if (string.equals("")){
+	                detail.setVisible(false);
+	                detail.setPadding(new Insets(15, 0, 0, 0));
+	            } else {
+	                //detail.setPadding(new Insets(0, 0, 0, 15));
+	                detail.setId("textFieldWithPadding");
+	            }
+	            detail.setDisable(disable);
+	            detail.setPromptText(key);
+	
+	            node = detail;
+	        }
         } else if (o instanceof Enum) {
             node = makeComboBox(o);
         } else if (o instanceof Boolean) {
@@ -824,6 +924,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                 case "ContractStatus" -> list = FXCollections.observableList(Arrays.asList(ContractStatus.values()));
                 case "ContractTypeStatus" -> list = FXCollections.observableList(Arrays.asList(ContractTypeStatus.values()));
                 case "Timestamp" -> list = FXCollections.observableList(Arrays.asList(Timestamp.values()));
+                case "KbItemType" -> list = FXCollections.observableList(Arrays.asList(KbItemType.values()));
                 default -> list = FXCollections.observableList(Arrays.asList(UserStatus.values()));
             }
         }

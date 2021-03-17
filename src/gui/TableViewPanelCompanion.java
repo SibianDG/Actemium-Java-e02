@@ -17,11 +17,13 @@ import domain.Contract;
 import domain.ContractType;
 import domain.Customer;
 import domain.Employee;
+import domain.KbItem;
 import domain.Ticket;
 import domain.User;
 import domain.enums.ContractStatus;
 import domain.enums.ContractTypeStatus;
 import domain.enums.EmployeeRole;
+import domain.enums.KbItemType;
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
@@ -29,6 +31,7 @@ import domain.enums.Timestamp;
 import domain.enums.UserStatus;
 import gui.viewModels.ContractTypeViewModel;
 import gui.viewModels.ContractViewModel;
+import gui.viewModels.KnowledgeBaseViewModel;
 import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
@@ -108,6 +111,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 //				propertyMap.put("Username", item -> ((Employee)item).usernameProperty());
 				propertyMap.put("Role", item -> (Property<E>)((Employee)item).roleProperty());
 				propertyMap.put("Status", item -> (Property<E>)((Employee)item).statusProperty());
+				btnAdd.setText("Add "+currentState.toString().toLowerCase());
 			}
 			case CUSTOMER -> {
 				this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).giveCustomers();
@@ -118,6 +122,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 				propertyMap.put("Firstname", item -> (Property<E>)((Customer)item).firstNameProperty());
 				propertyMap.put("Lastname", item -> (Property<E>)((Customer)item).lastNameProperty());
 //				propertyMap.put("Username", item -> ((Customer)item).usernameProperty());
+				btnAdd.setText("Add "+currentState.toString().toLowerCase());
 			}
 			case TICKET -> {
 				// obsolete, but just in case we want all the tickets in the future
@@ -138,6 +143,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 				propertyMap.put("Priority", item -> (Property<E>)((Ticket) item).priorityProperty());
 				propertyMap.put("Title", item -> (Property<E>)((Ticket) item).titleProperty());
 				propertyMap.put("Status", item -> (Property<E>)((Ticket) item).statusProperty());
+				btnAdd.setText("Add "+currentState.toString().toLowerCase());
 			}
 			case CONTRACT -> {
 				this.mainData = (ObservableList<T>) ((ContractViewModel) viewModel).giveContracts();
@@ -146,6 +152,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 				propertyMap.put("Company", item -> (Property<E>)((Contract) item).giveCustomer().giveCompany().nameProperty());
 				propertyMap.put("Type", item -> (Property<E>)((Contract) item).contractTypeNameProperty());
 				propertyMap.put("Status", item -> (Property<E>)((Contract) item).contractStatusProperty());
+				btnAdd.setText("Add "+currentState.toString().toLowerCase());
 			}
 			case CONTRACTTYPE -> {
 				this.mainData = (ObservableList<T>) ((ContractTypeViewModel) viewModel).giveContractTypes();
@@ -154,10 +161,17 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 				propertyMap.put("Timestamp", item -> (Property<E>)((ContractType) item).contractTypestampProperty());
 				propertyMap.put("Status", item -> (Property<E>)((ContractType) item).contractTypeStatusProperty());
 				//propertyMap.put("Number Active Contracts", item -> ((ContractType) item));
+				btnAdd.setText("Add "+currentState.toString().toLowerCase());
+			}
+			case KNOWLEDGEBASE -> {
+				this.mainData = (ObservableList<T>) ((KnowledgeBaseViewModel) viewModel).giveKbItems();
+				this.tableViewData = new FilteredList<>(mainData);
+				propertyMap.put("Title", item -> (Property<E>)((KbItem) item).titleProperty());
+				propertyMap.put("Type", item -> (Property<E>)((KbItem) item).typeProperty());
+				btnAdd.setText("Add item to KB");
 			}
 		}
 
-		btnAdd.setText("Add "+currentState.toString().toLowerCase());
 		initializeFilters();
 		initializeTableView();
 	}
@@ -181,6 +195,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 		filterMap.put(GUIEnum.TICKET, new ArrayList<>(Arrays.asList("ID", TicketType.SOFTWARE, TicketPriority.P1, "Title", TicketStatus.CREATED)));
 		filterMap.put(GUIEnum.CONTRACTTYPE, new ArrayList<>(Arrays.asList("Name", Timestamp.WORKINGHOURS, ContractTypeStatus.ACTIVE)));
 		filterMap.put(GUIEnum.CONTRACT, new ArrayList<>(Arrays.asList("ContractId", "CompanyName", "ContractTypeName", ContractStatus.CURRENT)));
+		filterMap.put(GUIEnum.KNOWLEDGEBASE, new ArrayList<>(Arrays.asList("Title", KbItemType.DATABASE)));
 
 		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createElementDetailGridpane(o)));
 	}
@@ -256,6 +271,11 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 				Arrays.asList(Timestamp.values()).forEach(string -> stringArrayList.add(string.toString()));
 				itemText = "Timestamp";
 		    }
+	        case "KbItemType" -> {
+	        	stringArrayList = new ArrayList<>(Collections.singleton("SELECT TYPE"));
+				Arrays.asList(KbItemType.values()).forEach(string -> stringArrayList.add(string.toString()));
+				itemText = "KbItemType";
+	        }      
 	        default -> {
 	        	stringArrayList = new ArrayList<>(Collections.singleton("SELECT STATUS"));
 				Arrays.asList(UserStatus.values()).forEach(string -> stringArrayList.add(string.toString()));
@@ -272,7 +292,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 	        }
 	        case "EmployeeRole" -> c.getSelectionModel().select("SELECT ROLE");
 	        case "TicketPriority" -> c.getSelectionModel().select("SELECT PRIO");
-	        case "TicketType" -> c.getSelectionModel().select("SELECT TYPE");
+	        case "TicketType", "KbItemType" -> c.getSelectionModel().select("SELECT TYPE");
 		    case "Timestamp" -> c.getSelectionModel().select("SELECT TIMESTAMP");
 	        default -> c.getSelectionModel().select("SELECT");
 	    } 
@@ -322,6 +342,9 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 					
 					ArrayList<Timestamp> timestampArrayList = new ArrayList<>(Arrays.asList(Timestamp.values()));
 					List<String> timestampStringArray = timestampArrayList.stream().map(Timestamp::toString).collect(Collectors.toList());
+					
+					ArrayList<KbItemType> kbItemTypeArrayList = new ArrayList<>(Arrays.asList(KbItemType.values()));
+					List<String> kbItemTypeStringArray = kbItemTypeArrayList.stream().map(KbItemType::toString).collect(Collectors.toList());
 
 					String selectedItem = comboBox.getSelectionModel().getSelectedItem().toString();
 
@@ -330,6 +353,8 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 						predicates.add(giveFilterPredicate("ContractTypeStatus", selectedItem.toLowerCase()));
 					} else if (currentState.equals(GUIEnum.CONTRACT) && contractStatusStringArray.contains(selectedItem)) {
 						predicates.add(giveFilterPredicate("ContractStatus", selectedItem.toLowerCase()));
+					} else if (currentState.equals(GUIEnum.KNOWLEDGEBASE) && kbItemTypeStringArray.contains(selectedItem)) {
+						predicates.add(giveFilterPredicate("KbItemType", selectedItem.toLowerCase()));
 					} else {
 						if (userStatusStringArray.contains(selectedItem)){
 							predicates.add(giveFilterPredicate("UserStatus", selectedItem.toLowerCase()));
@@ -379,6 +404,8 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 					((ContractTypeViewModel) viewModel).setSelectedContractType((ContractType) data);
 				} else if (data instanceof Contract) {
 					((ContractViewModel) viewModel).setSelectedContract((Contract) data);
+				} else if (data instanceof KbItem) {
+					((KnowledgeBaseViewModel) viewModel).setSelectedKbItem((KbItem) data);
 				}
 			}
 		});
@@ -452,6 +479,10 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 			case CONTRACT -> {
 				((ContractViewModel) viewModel).setCurrentState(GUIEnum.CONTRACT);
 				((ContractViewModel) viewModel).setSelectedContract(null);
+			}
+			case KNOWLEDGEBASE -> {
+				((KnowledgeBaseViewModel) viewModel).setCurrentState(GUIEnum.KNOWLEDGEBASE);
+				((KnowledgeBaseViewModel) viewModel).setSelectedKbItem(null);
 			}
 			default -> {
 				//tableView.getSelectionModel().clearSelection();
@@ -538,6 +569,19 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 					case "ContractStatus" -> newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
 //					case "StartDate" -> newPredicate = e -> e.getStartDate().toString().contains(filterText);
 //					case "EndDate" -> newPredicate = e -> e.getEndDate().toString().contains(filterText);
+					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
+				}				
+				return newPredicate;				
+			}
+		} else if (currentState.equals(GUIEnum.KNOWLEDGEBASE)){
+
+			if (fieldName.length() > 0 && !filterText.contains("select")){
+
+				Predicate<KbItem> newPredicate;
+				
+				switch (fieldName) {
+					case "Title" -> newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);
+					case "KbItemType" -> newPredicate = e -> e.getType().toLowerCase().contains(filterText);
 					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 				}				
 				return newPredicate;				

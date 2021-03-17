@@ -638,7 +638,17 @@ public class PopulateDB {
 				.type(KbItemType.DATABASE)
 				.text("some sample text here")
 				.build());
+		
+		
+        KbItemType[] kbItemTypes = KbItemType.values();
 
+        for (int i = 0; i < 20; i++) {
+        	kbItemDao.insert(new ActemiumKbItem.KbItemBuilder()
+                                    .title("Random KB article Title"+i)
+                                    .type(kbItemTypes[randomGen.nextInt(kbItemTypes.length)])
+                                    .text("Sample Text"+i)
+                                    .build());
+        }
 		kbItemDao.commitTransaction();
 		
     }

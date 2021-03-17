@@ -150,5 +150,5 @@ public class ActemiumKbItem implements KbItem, Serializable {
 		}
 		return cloned;
 	}
-	
+
 }

@@ -16,36 +16,35 @@ import javafx.collections.ObservableList;
 
 public class KnowledgeBaseViewModel extends ViewModel {
 
-    private GUIEnum currentState;
-    private KbItem selectedKbItem;
-    private final KnowledgeBaseFacade knowledgeBaseFacade;
+	private GUIEnum currentState;
+	private KbItem selectedKbItem;
+	private final KnowledgeBaseFacade knowledgeBaseFacade;
 
-    public KnowledgeBaseViewModel(KnowledgeBaseFacade knowledgeBaseFacade) {
-        super();
-        this.knowledgeBaseFacade = knowledgeBaseFacade;
-        setCurrentState(GUIEnum.KNOWLEDGEBASE);
-    }
+	public KnowledgeBaseViewModel(KnowledgeBaseFacade knowledgeBaseFacade) {
+		super();
+		this.knowledgeBaseFacade = knowledgeBaseFacade;
+		setCurrentState(GUIEnum.KNOWLEDGEBASE);
+	}
 
-    public ObservableList<KbItem> giveContractTypes() {
-        return knowledgeBaseFacade.giveActemiumKbItems();
-    }
+	public ObservableList<KbItem> giveKbItems() {
+		return knowledgeBaseFacade.giveActemiumKbItems();
+	}
 
-    public KbItem getSelectedKbItem() {
-        return selectedKbItem;
-    }
+	public KbItem getSelectedKbItem() {
+		return selectedKbItem;
+	}
 
-    public void setSelectedKbItem(KbItem kbItem) {
-        this.selectedKbItem = kbItem;
-        if (kbItem != null){
-            // substring(8) to remove ACTEMIUM
-            setCurrentState(GUIEnum.valueOf(kbItem.getClass().getSimpleName().substring(8).toUpperCase()));
-        }
-        fireInvalidationEvent();
-    }
+	public void setSelectedKbItem(KbItem kbItem) {
+		this.selectedKbItem = kbItem;
+		if (kbItem != null) {
+			// substring(8) to remove ACTEMIUM
+			setCurrentState(GUIEnum.KNOWLEDGEBASE);
+		}
+		fireInvalidationEvent();
+	}
 
 	public ArrayList<String> getDetailsNewKbItem() {
-		return new ArrayList<String>(Arrays.asList("Name", "Status", "Email", "Phone", "Application",
-				"Timestamp (support hours)", "Max handling time", "Min throughput time contract", "Price contract"));
+		return new ArrayList<String>(Arrays.asList("Title", "Type", "Text"));
 	}
 
     public Map<String, Map<Boolean, Object>> getDetails() {
@@ -55,32 +54,32 @@ public class KnowledgeBaseViewModel extends ViewModel {
         details.put("Type", Collections.singletonMap(true, kbItem.getType()));
         details.put("Text", Collections.singletonMap(true, kbItem.getText()));
 
-        return details;
-    }
+		return details;
+	}
 
-    public void registerKbItem(String title, KbItemType type, String text) throws InformationRequiredException {
-    	knowledgeBaseFacade.registerKbItem(title, type, text);
-        setSelectedKbItem(knowledgeBaseFacade.getLastAddedKbItem());
-    }
+	public void registerKbItem(String title, KbItemType type, String text) throws InformationRequiredException {
+		knowledgeBaseFacade.registerKbItem(title, type, text);
+		setSelectedKbItem(knowledgeBaseFacade.getLastAddedKbItem());
+	}
 
-    public void modifyKbItem(String title, KbItemType type, String text) throws InformationRequiredException {
-    	knowledgeBaseFacade.modifyKbItem((ActemiumKbItem) selectedKbItem, title, type, text);
-    }
+	public void modifyKbItem(String title, KbItemType type, String text) throws InformationRequiredException {
+		knowledgeBaseFacade.modifyKbItem((ActemiumKbItem) selectedKbItem, title, type, text);
+	}
 
-    public GUIEnum getCurrentState() {
-        return currentState;
-    }
+	public GUIEnum getCurrentState() {
+		return currentState;
+	}
 
-    public void setCurrentState(GUIEnum currentState) {
-        this.currentState = currentState;
-    }
+	public void setCurrentState(GUIEnum currentState) {
+		this.currentState = currentState;
+	}
 
-    public String getTitleSelectedKbItem() {
-        return selectedKbItem.getTitle();
-    }
+	public String getTitleSelectedKbItem() {
+		return selectedKbItem.getTitle();
+	}
 
-    @Override
-    public void delete() {
-    	knowledgeBaseFacade.delete((ActemiumKbItem) selectedKbItem);
-    }
+	@Override
+	public void delete() {
+		knowledgeBaseFacade.delete((ActemiumKbItem) selectedKbItem);
+	}
 }
