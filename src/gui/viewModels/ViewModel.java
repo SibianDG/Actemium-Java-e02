@@ -38,4 +38,5 @@ public abstract class ViewModel implements Observable {
 	}
 
     public abstract void delete() throws InformationRequiredException;
+
 }

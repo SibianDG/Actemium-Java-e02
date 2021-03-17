@@ -3,17 +3,18 @@ package gui;
 import java.io.IOException;
 import java.util.*;
 
-import domain.facades.UserFacade;
+import exceptions.InformationRequiredException;
+import gui.viewModels.ProfileViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -23,7 +24,8 @@ import languages.LanguageResource;
 
 public class ProfilePanelController extends GridPane  {
 	
-	private UserFacade userFacade;
+	//private UserFacade userFacade;
+	private final ProfileViewModel profileViewModel;
 	
 	@FXML
     private Label lblProfile;
@@ -35,13 +37,49 @@ public class ProfilePanelController extends GridPane  {
     private Button btnModifyAccount;
 
     @FXML
+    private Text txtErrorMessage;
+
+    @FXML
     void modifyButtonAccountOnMousePressed(MouseEvent event) {
+        try {
+            profileViewModel.modifyProfile(
+                    getTextFromGridPane(1),
+                    getTextFromGridPane(2),
+                    getTextFromGridPane(3),
+                    getTextFromGridPane(4),
+                    getTextFromGridPane(5),
+                    getTextFromGridPane(6),
+                    getTextFromGridPane(7)
+            );
+
+        } catch (InformationRequiredException ire){
+            StringBuilder errorMessage = new StringBuilder();
+            ire.getInformationRequired().forEach(e -> {
+                System.out.println(e);
+                errorMessage.append(e).append("\n");
+            });
+            txtErrorMessage.setText(errorMessage.toString());
+            txtErrorMessage.setVisible(true);
+        }
 
     }
 
-	public ProfilePanelController(UserFacade userFacade) {
+    private String getTextFromGridPane(int i){
+        Node node = gridProfile.getChildren().get(2*i+1);
+        if (node instanceof HBox)
+            return ((PasswordField)((HBox) node).getChildren().get(0)).getText();
+        if (node instanceof TextField) {
+            return ((TextField) node).getText();
+        }
+        if (node instanceof Text) {
+            return ((Text) node).getText();
+        }
+        return null;
+    }
+
+	public ProfilePanelController(ProfileViewModel profileViewModel) {
 		super();   
-        this.userFacade = userFacade;
+        this.profileViewModel = profileViewModel;
         
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Profile.fxml"));
@@ -54,6 +92,7 @@ public class ProfilePanelController extends GridPane  {
         }
         
         lblProfile.setText(LanguageResource.getString("your_profile"));
+        txtErrorMessage.setVisible(false);
         initializeGridProfile();
 	}
 	
@@ -67,10 +106,14 @@ public class ProfilePanelController extends GridPane  {
         col1.setPercentWidth(60);
 
         gridProfile.getColumnConstraints().addAll(col0,col1);
+        gridProfile.setGridLinesVisible(true);
         
-        addGridDetails(getDetailsSignedInUser());
-		
-	}
+        addGridDetails(profileViewModel.getDetailsSignedInUser());
+        gridProfile.setGridLinesVisible(true);
+        System.out.println("Columns: "+ gridProfile.getColumnCount());
+        System.out.println("Row: "+ gridProfile.getRowCount());
+
+    }
 	
 	private Label makeNewLabel(String text){
         Label label = new Label(text);
@@ -101,23 +144,6 @@ public class ProfilePanelController extends GridPane  {
         return node;
 
 	}
-	
-    private Map<String, Map<Boolean, String>> getDetailsSignedInUser(){
-
-        Map<String, Map<Boolean, String>> detailsMap = new LinkedHashMap<>();
-        detailsMap.put("Employee nr:", Collections.singletonMap(true, userFacade.giveUserEmployeeId()));
-        detailsMap.put("Username:", Collections.singletonMap(true, userFacade.giveUserUsername()));
-        detailsMap.put("Password:", Collections.singletonMap(false, "*".repeat(userFacade.giveUserPassword().length())));
-        detailsMap.put("Firstname:", Collections.singletonMap(false, userFacade.giveUserFirstName()));
-        detailsMap.put("Lastname:", Collections.singletonMap(false, userFacade.giveUserLastName()));
-        detailsMap.put("Address:", Collections.singletonMap(false, userFacade.giveUserAddress()));
-        detailsMap.put("Phone number:", Collections.singletonMap(false, userFacade.giveUserPhoneNumber()));
-        detailsMap.put("Email:", Collections.singletonMap(false, userFacade.giveUserEmailAddress()));
-        detailsMap.put("Company Seniority:", Collections.singletonMap(true, userFacade.giveUserSeniority()));
-        detailsMap.put("Role:", Collections.singletonMap(true, userFacade.giveUserRole().toLowerCase()));
-        detailsMap.put("Status:", Collections.singletonMap(true, userFacade.giveUserStatus().toLowerCase()));
-        return detailsMap;
-	}
     
     private void addGridDetails(Map<String, Map<Boolean, String>> details){
         int i = 0;
@@ -129,6 +155,7 @@ public class ProfilePanelController extends GridPane  {
             Map<Boolean, String> map = details.get(key);
 
             if(label.getText().toLowerCase().contains("password")) {
+                HBox hbox = new HBox();
                 PasswordField detail = new PasswordField();
                 detail.setPromptText("Change password");
 
@@ -143,23 +170,10 @@ public class ProfilePanelController extends GridPane  {
                     }
                 });
                 detail.setOnKeyTyped(e -> checkBox.setSelected(false));
+                hbox.getChildren().addAll(detail, checkBox);
 
-
-                //Text txtShow= new Text("Show");
-                //Color blue = Color.rgb(29, 61, 120);
-                //txtShow.setFill(blue);
-                //txtShow.setCursor(Cursor.HAND);
-                //txtShow.setUnderline(true);
-                //txtShow.setOnMouseClicked(e -> {
-                //    if (((TextField)detail).getText().contains("****")){
-                //        ((TextField)detail).setText(userFacade.giveUserPassword());
-                //    } else {
-                //        ((TextField)detail).setText("*".repeat(8));
-                //    }
-                //});
                 gridProfile.add(label, 0, i);
-                gridProfile.add(detail, 1, i);
-                gridProfile.add(checkBox, 2, i);
+                gridProfile.add(hbox, 2, i);
             } else {
                 gridProfile.add(label, 0, i);
                 gridProfile.add(makeNewText(details.get(key), key), 1, i);

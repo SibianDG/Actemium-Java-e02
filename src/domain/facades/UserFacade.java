@@ -217,7 +217,7 @@ public class UserFacade implements Facade {
 			ActemiumEmployee cloneEmployee = employee.clone();
 
 			// check to see if signed in user is Admin
-			actemium.checkPermision(EmployeeRole.ADMINISTRATOR);
+			actemium.checkPermisionForModifyEmployee(EmployeeRole.ADMINISTRATOR, username);
 			// only needs to be checked if you changed the username
 			if (!cloneEmployee.getUsername().equals(username)) {
 				actemium.existingUsername(username);
@@ -256,6 +256,12 @@ public class UserFacade implements Facade {
 			System.out.println("Can't clone object");
 		}
 
+	}
+
+	public void modifyProfileOfEmployee(String username, String password, String firstName, String lastName, String address, String phoneNumber, String emailAddress) throws InformationRequiredException {
+		System.out.println("modifyProfileOfEmployee "+username);
+		ActemiumEmployee profile = (ActemiumEmployee) actemium.findByUsername(username);
+		modifyEmployee(profile, profile.getUsername(), password, firstName, lastName, address, phoneNumber, emailAddress, profile.getRole(), profile.getStatus());
 	}
 
 	public void deleteUser(UserModel user) {

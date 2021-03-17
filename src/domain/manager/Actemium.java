@@ -234,7 +234,9 @@ public class Actemium {
 		}
 		return null;
 	}
-	
+
+	//TODO Actemium knows role
+
 	// signedInUser right permissions check
 	public void checkPermision(EmployeeRole role) {
 		if (!giveUserRoleAsEnum().equals(role)) {
@@ -242,6 +244,12 @@ public class Actemium {
 					String.format("You need to be %s %s to do this!"
 							, role.equals(EmployeeRole.ADMINISTRATOR) ? "an" : "a"
 							, role.toString().toLowerCase()));
+		}
+	}
+
+	public void checkPermisionForModifyEmployee(EmployeeRole role, String username) {
+		if (!signedInUser.getUsername().equals(username)){
+			checkPermision(role);
 		}
 	}
 	

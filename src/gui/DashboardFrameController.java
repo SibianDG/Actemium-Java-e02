@@ -13,12 +13,7 @@ import domain.facades.KnowledgeBaseFacade;
 import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
 import gui.controllers.GuiController;
-import gui.viewModels.ContractTypeViewModel;
-import gui.viewModels.ContractViewModel;
-import gui.viewModels.KnowledgeBaseViewModel;
-import gui.viewModels.TicketViewModel;
-import gui.viewModels.UserViewModel;
-import gui.viewModels.ViewModel;
+import gui.viewModels.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
@@ -59,6 +54,7 @@ public class DashboardFrameController <T,E> extends GuiController {
 	private ContractTypeViewModel contractTypeViewModel;
 	private ContractViewModel contractViewModel;
 	private KnowledgeBaseViewModel knowledgeBaseViewModel;
+	private ProfileViewModel profileViewModel;
 	
 	//LoginController
 	private LoginController loginController;
@@ -113,7 +109,8 @@ public class DashboardFrameController <T,E> extends GuiController {
         this.ticketViewModel = new TicketViewModel(ticketFacade);        
         this.contractTypeViewModel = new ContractTypeViewModel(contractTypeFacade);    
         this.contractViewModel = new ContractViewModel(contractFacade);    
-        this.knowledgeBaseViewModel = new KnowledgeBaseViewModel(knowledgeBaseFacade);    
+        this.knowledgeBaseViewModel = new KnowledgeBaseViewModel(knowledgeBaseFacade);
+        this.profileViewModel = new ProfileViewModel(userFacade);
         
         this.loginController = loginController;
 
@@ -360,8 +357,9 @@ public class DashboardFrameController <T,E> extends GuiController {
     	
     	 	
 //    	vbProfile.getChildren().addAll(gridProfile);
-    	
-    	gridContent.add(new ProfilePanelController(userFacade), 0, 0);
+
+        //TODO as attribute?
+    	gridContent.add(new ProfilePanelController(profileViewModel), 0, 0);
     	
     }
 
