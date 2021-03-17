@@ -209,8 +209,6 @@ public class UserFacade implements Facade {
 		} catch (CloneNotSupportedException e) {
 			System.out.println("Can't clone object");
 		}
-
-
 	}
 
 	public void modifyEmployee(ActemiumEmployee employee, String username, String password, String firstName, String lastName, String address,

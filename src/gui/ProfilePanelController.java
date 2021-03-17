@@ -1,20 +1,17 @@
 package gui;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import domain.facades.UserFacade;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -33,8 +30,15 @@ public class ProfilePanelController extends GridPane  {
 
     @FXML
     private GridPane gridProfile;
-    
-	
+
+    @FXML
+    private Button btnModifyAccount;
+
+    @FXML
+    void modifyButtonAccountOnMousePressed(MouseEvent event) {
+
+    }
+
 	public ProfilePanelController(UserFacade userFacade) {
 		super();   
         this.userFacade = userFacade;
@@ -77,55 +81,88 @@ public class ProfilePanelController extends GridPane  {
         return label;
     }
 	
-	private TextField makeNewText(String text, String promptText) {
-        TextField textField = new TextField(text);
-        textField.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
-        textField.setPromptText(promptText);
-		return textField;
-		
+	private Node makeNewText(Map<Boolean, String> map, String promptText) {
+        boolean disable = (boolean) map.keySet().toArray()[0];
+        String text = map.get(disable);
+
+        Node node = null;
+
+        if (disable) {
+            Text txtItem = new Text(text);
+            txtItem.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+            node = txtItem;
+        } else {
+            TextField textField = new TextField(text);
+            textField.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+            textField.setPromptText(promptText);
+            textField.setPadding(new Insets(0));
+            node = textField;
+        }
+        return node;
+
 	}
 	
-    private Map<String, String> getDetailsSignedInUser(){
+    private Map<String, Map<Boolean, String>> getDetailsSignedInUser(){
 
-        Map<String, String> detailsMap = new LinkedHashMap<>();
-        detailsMap.put("Employee nr:", userFacade.giveUserEmployeeId());
-        detailsMap.put("Username:", userFacade.giveUserUsername());
-        detailsMap.put("Password:", "*".repeat(userFacade.giveUserPassword().length()));
-        detailsMap.put("Firstname:", userFacade.giveUserFirstName());
-        detailsMap.put("Lastname:", userFacade.giveUserLastName());
-        detailsMap.put("Address:", userFacade.giveUserAddress());
-        detailsMap.put("Phone number:", userFacade.giveUserPhoneNumber());
-        detailsMap.put("Email:", userFacade.giveUserEmailAddress());
-        detailsMap.put("Company Seniority:", userFacade.giveUserSeniority());
-        detailsMap.put("Role:", userFacade.giveUserRole());
-        detailsMap.put("Status:", userFacade.giveUserStatus());
+        Map<String, Map<Boolean, String>> detailsMap = new LinkedHashMap<>();
+        detailsMap.put("Employee nr:", Collections.singletonMap(true, userFacade.giveUserEmployeeId()));
+        detailsMap.put("Username:", Collections.singletonMap(true, userFacade.giveUserUsername()));
+        detailsMap.put("Password:", Collections.singletonMap(false, "*".repeat(userFacade.giveUserPassword().length())));
+        detailsMap.put("Firstname:", Collections.singletonMap(false, userFacade.giveUserFirstName()));
+        detailsMap.put("Lastname:", Collections.singletonMap(false, userFacade.giveUserLastName()));
+        detailsMap.put("Address:", Collections.singletonMap(false, userFacade.giveUserAddress()));
+        detailsMap.put("Phone number:", Collections.singletonMap(false, userFacade.giveUserPhoneNumber()));
+        detailsMap.put("Email:", Collections.singletonMap(false, userFacade.giveUserEmailAddress()));
+        detailsMap.put("Company Seniority:", Collections.singletonMap(true, userFacade.giveUserSeniority()));
+        detailsMap.put("Role:", Collections.singletonMap(true, userFacade.giveUserRole().toLowerCase()));
+        detailsMap.put("Status:", Collections.singletonMap(true, userFacade.giveUserStatus().toLowerCase()));
         return detailsMap;
 	}
     
-    private void addGridDetails(Map<String, String> details){
+    private void addGridDetails(Map<String, Map<Boolean, String>> details){
         int i = 0;
         // Using LinkedHashSet so the order of the map values doesn't change
         Set<String> keys = new LinkedHashSet<String>(details.keySet());
         for (String key : keys) {
             Label label = makeNewLabel(key);
 
-            TextField detail = makeNewText(details.get(key), key);
+            Map<Boolean, String> map = details.get(key);
 
             if(label.getText().toLowerCase().contains("password")) {
-            	gridProfile.add(label, 0, i);
-                gridProfile.add(detail, 1, i);
-                Text txtShow= new Text("Show");
-                Color blue = Color.rgb(29, 61, 120);
-                txtShow.setFill(blue);
-                txtShow.setCursor(Cursor.HAND);
-                txtShow.setUnderline(true);
-                txtShow.setOnMouseClicked(e -> {
-                	detail.setText(userFacade.giveUserPassword());
+                PasswordField detail = new PasswordField();
+                detail.setPromptText("Change password");
+
+                CheckBox checkBox = new CheckBox("Show password");
+                checkBox.setOnMouseClicked(e -> {
+                    if(checkBox.isSelected()){
+                        detail.setPromptText(detail.getText());
+                        detail.setText("");
+                    } else {
+                        detail.setText(detail.getPromptText());
+                        detail.setPromptText("");
+                    }
                 });
-                gridProfile.add(txtShow, 2, i);
+                detail.setOnKeyTyped(e -> checkBox.setSelected(false));
+
+
+                //Text txtShow= new Text("Show");
+                //Color blue = Color.rgb(29, 61, 120);
+                //txtShow.setFill(blue);
+                //txtShow.setCursor(Cursor.HAND);
+                //txtShow.setUnderline(true);
+                //txtShow.setOnMouseClicked(e -> {
+                //    if (((TextField)detail).getText().contains("****")){
+                //        ((TextField)detail).setText(userFacade.giveUserPassword());
+                //    } else {
+                //        ((TextField)detail).setText("*".repeat(8));
+                //    }
+                //});
+                gridProfile.add(label, 0, i);
+                gridProfile.add(detail, 1, i);
+                gridProfile.add(checkBox, 2, i);
             } else {
-            gridProfile.add(label, 0, i);
-            gridProfile.add(detail, 1, i);
+                gridProfile.add(label, 0, i);
+                gridProfile.add(makeNewText(details.get(key), key), 1, i);
             }
             
             i++;

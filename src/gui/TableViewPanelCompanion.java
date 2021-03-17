@@ -581,7 +581,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 				
 				switch (fieldName) {
 					case "Title" -> newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);
-					case "KbItemType" -> newPredicate = e -> e.getType().toLowerCase().contains(filterText);
+					case "KbItemType" -> newPredicate = e -> e.getTicketTypeAsString().toLowerCase().contains(filterText);
 					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 				}				
 				return newPredicate;				
