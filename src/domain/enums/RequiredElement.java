@@ -53,6 +53,18 @@ public enum RequiredElement {
             return LanguageResource.getString("companyName_invalid");
         }
     }
+    , CompanyCountryRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("country_invalid");
+        }
+    }
+    , CompanyCirtyRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("city_invalid");
+        }
+    }
     , CompanyAddressRequired {
         @Override
         public String toString() {

@@ -19,13 +19,68 @@ public class PopulateDB {
     	System.out.println("DBTester - creating and persisting multiple user objects");
         userDao.startTransaction();
 
-        ActemiumCompany theWhiteHouse = new ActemiumCompany("The White House", "United States", "Washington, D.C. 20500", "1600 Pennsylvania Avenue NW", "+1-202-456-1111");
-        ActemiumCompany naessensNV = new ActemiumCompany("Construct Willy Naessens", "Belgium", "9700 Oudenaarde", "Bedrijvenpark Coupure 15", "055 61 98 19");
-        ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
-        ActemiumCompany microsoft = new ActemiumCompany("Microsoft", "United States", "Redmond, WA 98052", "1 Microsoft Way", "+1-425-882-8080");
-        ActemiumCompany facebook = new ActemiumCompany("Facebook", "United States", "Menlo Park, CA 94025", "1 Hacker Way", "+1-650-308-7300");
-        ActemiumCompany amazon = new ActemiumCompany("Amazon", "United States", "Seattle, WA 98109-5210", "410 Terry Avenue North", "+1-206-266-1000");
-        ActemiumCompany tesla = new ActemiumCompany("Tesla", "United States", "Palo Alto, CA 94304", "3500 Deer Creek Road", "+31 20 365 0008");
+
+        ActemiumCompany theWhiteHouse = new ActemiumCompany.CompanyBuilder()
+                .name("The White House")
+                .country("United States")
+                .city("Washington, D.C. 20500")
+                .address("1600 Pennsylvania Avenue NW")
+                .phoneNumber("+1-202-456-1111")
+                .build();
+
+
+        ActemiumCompany naessensNV = new ActemiumCompany.CompanyBuilder()
+                .name("Construct Willy Naessens")
+                .country("Belgium")
+                .city("9700 Oudenaarde")
+                .address("Bedrijvenpark Coupure 15")
+                .phoneNumber("055 61 98 19")
+                .build();
+
+        ActemiumCompany google = new ActemiumCompany.CompanyBuilder()
+                .name("Google")
+                .country("United States")
+                .city("Mountain View, CA 94043")
+                .address("1600 Amphitheatre Parkway")
+                .phoneNumber("+1-650-253-0000")
+                .build();
+
+        ActemiumCompany microsoft = new ActemiumCompany.CompanyBuilder()
+                .name("Microsoft")
+                .country("United States")
+                .city("Redmond, WA 98052")
+                .address("1 Microsoft Way")
+                .phoneNumber("+1-425-882-8080")
+                .build();
+
+        ActemiumCompany facebook = new ActemiumCompany.CompanyBuilder()
+                .name("Facebook")
+                .country("United States")
+                .city("Menlo Park, CA 94025")
+                .address("1 Hacker Way")
+                .phoneNumber("+1-650-308-7300")
+                .build();
+        new ActemiumCompany.CompanyBuilder()
+                .name("Amazon")
+                .country("United States")
+                .city("Seattle, WA 98109-5210")
+                .address("410 Terry Avenue North")
+                .phoneNumber("+1-206-266-1000")
+                .build();
+        ActemiumCompany amazon = new ActemiumCompany.CompanyBuilder()
+                .name("Amazon")
+                .country("United States")
+                .city("Seattle, WA 98109-5210")
+                .address("410 Terry Avenue North")
+                .phoneNumber("+1-206-266-1000")
+                .build();
+        ActemiumCompany tesla = new ActemiumCompany.CompanyBuilder()
+                .name("Tesla")
+                .country("United States")
+                .city("Palo Alto, CA 94304")
+                .address("3500 Deer Creek Road")
+                .phoneNumber("+31 20 365 0008")
+                .build();
 
         ActemiumContractType bCtype = new ActemiumContractType.ContractTypeBuilder()
                 .contractTypeName("BasicSupport")
@@ -517,7 +572,13 @@ public class PopulateDB {
         //userDao.insert(new ActemiumEmployee("supman01John", "Passwd123&", "John", "Smiths", "Stationstraat 34", "093504816", "john.smiths@hogent.be", EmployeeRole.SUPPORT_MANAGER));
 
         //String name, String country, String city, String address, String phoneNumber
-        ActemiumCompany vatican = new ActemiumCompany("Vatican", "Vatican", "Vatican City", "00120 Vatican City", "666");
+        ActemiumCompany vatican = new ActemiumCompany.CompanyBuilder()
+                .name("Vatican")
+                .country("Vatican")
+                .city("Vatican City")
+                .address("00120 Vatican City")
+                .phoneNumber("666")
+                .build();
 
 
         ActemiumCustomer pope = new ActemiumCustomer.CustomerBuilder()

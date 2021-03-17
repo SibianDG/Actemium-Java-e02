@@ -60,7 +60,13 @@ public class UserFacade implements Facade {
 		// check to see if signed in user is Admin
 		actemium.checkPermision(EmployeeRole.ADMINISTRATOR);
 		actemium.existingUsername(username);
-		ActemiumCompany company = new ActemiumCompany(companyName, companyCountry, companyCity, companyAddress,	companyPhone);
+		ActemiumCompany company = new ActemiumCompany.CompanyBuilder()
+				.name(companyName)
+				.country(companyCountry)
+				.city(companyCity)
+				.address(companyAddress)
+				.phoneNumber(companyPhone)
+				.build();
 		ActemiumCustomer newCustomer = new ActemiumCustomer.CustomerBuilder()
 				.username(username)
 				.password(password)

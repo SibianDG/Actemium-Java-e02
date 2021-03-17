@@ -79,8 +79,23 @@ public class ContractTest {
 			e.printStackTrace();
 		}
 	}
+	private static ActemiumCompany facebook;
 
-	private static final ActemiumCompany facebook = new ActemiumCompany("Facebook", "United States", "Menlo Park, CA 94025", "1 Hacker Way", "+1-650-308-7300");
+	static {
+		try {
+			facebook = new ActemiumCompany.CompanyBuilder()
+					.name("Facebook")
+					.country("United States")
+					.city("Menlo Park, CA 94025")
+					.address("1 Hacker Way")
+					.phoneNumber("+1-650-308-7300")
+					.build();
+		} catch (InformationRequiredException e) {
+			e.printStackTrace();
+		}
+	}
+
+	;
     private static ActemiumCustomer mark;
 
 	static {

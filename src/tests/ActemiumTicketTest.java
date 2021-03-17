@@ -29,9 +29,24 @@ public class ActemiumTicketTest implements Attributes {
 			.emailAddress("student@student.hogent.be")
 			.role(EmployeeRole.TECHNICIAN)
 			.build();
-	private static final ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
 
-    private static ActemiumCustomer customer;
+	private static ActemiumCompany google;
+
+	static {
+		try {
+			google = new ActemiumCompany.CompanyBuilder()
+					.name("Google")
+					.country("United States")
+					.city("Mountain View, CA 94043")
+					.address("1600 Amphitheatre Parkway")
+					.phoneNumber("+1-650-253-0000")
+					.build();
+		} catch (InformationRequiredException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static ActemiumCustomer customer;
 
 	static {
 		try {

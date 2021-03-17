@@ -2,6 +2,7 @@ package tests;
 
 import java.util.ArrayList;
 
+import domain.ActemiumCompany;
 import domain.ActemiumCustomer;
 import exceptions.InformationRequiredException;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +19,14 @@ import repository.GenericDao;
 
 @ExtendWith(MockitoExtension.class)
 public class TicketFacadeTest implements Attributes {
+
+    ActemiumCompany google = new ActemiumCompany.CompanyBuilder()
+            .name("Google")
+            .country("United States")
+            .city("Mountain View, CA 94043")
+            .address("1600 Amphitheatre Parkway")
+            .phoneNumber("+1-650-253-0000")
+            .build();
 
     private final ActemiumCustomer cust = new ActemiumCustomer.CustomerBuilder()
             .username("customer123")

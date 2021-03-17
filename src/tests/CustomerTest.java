@@ -15,9 +15,18 @@ import domain.ActemiumCustomer;
 
 public class CustomerTest {
 
-	ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
+	private ActemiumCompany google = new ActemiumCompany.CompanyBuilder()
+			.name("Facebook")
+			.country("United States")
+			.city("Menlo Park, CA 94025")
+			.address("1 Hacker Way")
+			.phoneNumber("+1-650-308-7300")
+			.build();
 
-    private static Stream<Arguments> validUserAttributes() {
+	public CustomerTest() throws InformationRequiredException {
+	}
+
+	private static Stream<Arguments> validUserAttributes() {
         return Stream.of(
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens"),
                 Arguments.of("A", "AaBbCc&1", "A", "A"),

@@ -49,7 +49,13 @@ public class UserFacadeTest {
 			.emailAddress("student@student.hogent.be")
 			.role(EmployeeRole.TECHNICIAN)
 			.build();
-    private final ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
+    private final ActemiumCompany google = new ActemiumCompany.CompanyBuilder()
+			.name("Facebook")
+			.country("United States")
+			.city("Menlo Park, CA 94025")
+			.address("1 Hacker Way")
+			.phoneNumber("+1-650-308-7300")
+			.build();
 
     private final UserModel cust = new ActemiumCustomer.CustomerBuilder()
 			.username("customer123")

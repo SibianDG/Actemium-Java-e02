@@ -286,5 +286,24 @@ public class ActemiumContract implements Contract, Serializable {
 			}
 		}
 
+
+	}
+
+	public ActemiumContract clone() throws CloneNotSupportedException {
+
+		ActemiumContract cloned = null;
+		try {
+			cloned = new ContractBuilder()
+					.contractType(this.getContractType())
+					.customer(this.getCustomer())
+					.status(this.getStatusAsEnum())
+					.startDate(this.getStartDate())
+					.endDate(this.getEndDate())
+					.build();
+		} catch (InformationRequiredException e) {
+			//this should be a good Employee
+			e.printStackTrace();
+		}
+		return cloned;
 	}
 }

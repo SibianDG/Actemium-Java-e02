@@ -60,7 +60,14 @@ public class ActemiumTest {
             .emailAddress("student@student.hogent.be")
             .role(EmployeeRole.TECHNICIAN)
             .build();
-    private final ActemiumCompany google = new ActemiumCompany("Google", "United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000");
+
+    private final ActemiumCompany google = new ActemiumCompany.CompanyBuilder()
+            .name("Google")
+            .country("United States")
+            .city("Mountain View, CA 94043")
+            .address("1600 Amphitheatre Parkway")
+            .phoneNumber("+1-650-253-0000")
+            .build();
 
     private final UserModel cust = new ActemiumCustomer.CustomerBuilder()
             .username("customer123")

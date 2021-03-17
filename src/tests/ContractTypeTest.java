@@ -139,7 +139,7 @@ public class ContractTypeTest {
 	public void verifyTicketCreationMethods_NoCreationMethods_ThrowsIllegalArgumentException() {
 		boolean hasEmail = false, hasPhone = false, hasApplication = false;
 		ActemiumContractType contractType = new ActemiumContractType();
-		Assertions.assertThrows(InformationRequiredException.class,
+		Assertions.assertThrows(IllegalArgumentException.class,
 				() -> contractType.verifyTicketCreationMethods(hasEmail, hasPhone, hasApplication));
 	}
     
