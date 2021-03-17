@@ -1,6 +1,6 @@
 package domain;
 
-import domain.enums.TicketType;
+import domain.enums.KbItemType;
 import javafx.beans.property.StringProperty;
 
 public interface KbItem {
@@ -9,7 +9,7 @@ public interface KbItem {
 
 	public String getTicketType();
 
-	public TicketType getTypeAsEnum();
+	public KbItemType getTypeAsEnum();
 
 	public String getText();
 

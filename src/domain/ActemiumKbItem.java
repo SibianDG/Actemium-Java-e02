@@ -13,8 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
+import domain.enums.KbItemType;
 import domain.enums.RequiredElement;
-import domain.enums.TicketType;
 import exceptions.InformationRequiredException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -60,11 +60,11 @@ public class ActemiumKbItem implements KbItem, Serializable {
 		return type.get();
 	}
 	
-	public TicketType getTypeAsEnum() {
-		return  TicketType.valueOf(type.get());
+	public KbItemType getTypeAsEnum() {
+		return  KbItemType.valueOf(type.get());
 	}
 
-	public void setType(TicketType type) {
+	public void setType(KbItemType type) {
 		this.type.set(String.valueOf(type));
 	}
 	
@@ -84,9 +84,17 @@ public class ActemiumKbItem implements KbItem, Serializable {
 		return type;
 	}
 	
+	public void checkAttributes() throws InformationRequiredException {
+		new KbItemBuilder()
+			.title(this.getTitle())
+			.type(this.getTypeAsEnum())
+			.text(this.getText())
+			.build();
+	}
+	
 	public static class KbItemBuilder {
 		private String title;
-		private TicketType type;
+		private KbItemType type;
 		private String text;
 
 		private Set<RequiredElement> requiredElements;
@@ -95,7 +103,7 @@ public class ActemiumKbItem implements KbItem, Serializable {
 			this.title = title;
 			return this;
 		}
-		public KbItemBuilder type(TicketType type) {
+		public KbItemBuilder type(KbItemType type) {
 			this.type = type;
 			return this;
 		}

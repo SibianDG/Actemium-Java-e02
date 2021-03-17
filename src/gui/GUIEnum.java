@@ -6,5 +6,5 @@ public enum GUIEnum {
     TICKET,
     CONTRACT,
     CONTRACTTYPE,
-    
+    KNOWLEDGEBASE //Knowledge Base
 }

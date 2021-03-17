@@ -9,11 +9,13 @@ import java.util.Set;
 import domain.enums.TicketStatus;
 import domain.facades.ContractFacade;
 import domain.facades.ContractTypeFacade;
+import domain.facades.KnowledgeBaseFacade;
 import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
 import gui.controllers.GuiController;
 import gui.viewModels.ContractTypeViewModel;
 import gui.viewModels.ContractViewModel;
+import gui.viewModels.KnowledgeBaseViewModel;
 import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
@@ -27,7 +29,6 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -36,7 +37,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -51,12 +51,14 @@ public class DashboardFrameController <T,E> extends GuiController {
 	private final TicketFacade ticketFacade;
     private final ContractTypeFacade contractTypeFacade;
     private final ContractFacade contractFacade;
+    private final KnowledgeBaseFacade knowledgeBaseFacade;
 
     // ViewModels
     private UserViewModel userViewModel;
 	private TicketViewModel ticketViewModel;
 	private ContractTypeViewModel contractTypeViewModel;
 	private ContractViewModel contractViewModel;
+	private KnowledgeBaseViewModel knowledgeBaseViewModel;
 	
 	//LoginController
 	private LoginController loginController;
@@ -97,18 +99,21 @@ public class DashboardFrameController <T,E> extends GuiController {
     private DetailsPanelController detailsPanelController;
 
 //    public DashboardFrameController(Actemium actemium, UserFacade userFacade) throws FileNotFoundException {
-    public DashboardFrameController(UserFacade userFacade, TicketFacade ticketFacade, ContractTypeFacade contractTypeFacade, ContractFacade contractFacade, LoginController loginController) throws FileNotFoundException {
+    public DashboardFrameController(UserFacade userFacade, TicketFacade ticketFacade, ContractTypeFacade contractTypeFacade, 
+    		ContractFacade contractFacade, KnowledgeBaseFacade knowledgeBaseFacade, LoginController loginController) throws FileNotFoundException {
         super();
         
         this.userFacade = userFacade;        
         this.ticketFacade = ticketFacade;
         this.contractTypeFacade = contractTypeFacade;
         this.contractFacade = contractFacade;
+        this.knowledgeBaseFacade = knowledgeBaseFacade;
 
         this.userViewModel = new UserViewModel(userFacade);        
         this.ticketViewModel = new TicketViewModel(ticketFacade);        
         this.contractTypeViewModel = new ContractTypeViewModel(contractTypeFacade);    
         this.contractViewModel = new ContractViewModel(contractFacade);    
+        this.knowledgeBaseViewModel = new KnowledgeBaseViewModel(knowledgeBaseFacade);    
         
         this.loginController = loginController;
 
@@ -262,6 +267,9 @@ public class DashboardFrameController <T,E> extends GuiController {
         } else if (name.toLowerCase().contains("manage") && name.toLowerCase().contains("contracts")) {
         	tableViewPanelCompanion = new TableViewPanelCompanion<>(this, contractViewModel, GUIEnum.CONTRACT);
         	switchToManageScreen(name, tableViewPanelCompanion, contractViewModel);
+        } else if (name.toLowerCase().contains("manage") && name.toLowerCase().contains("knowledge")) {
+        	tableViewPanelCompanion = new TableViewPanelCompanion<>(this, knowledgeBaseViewModel, GUIEnum.KNOWLEDGEBASE);
+        	switchToManageScreen(name, tableViewPanelCompanion, knowledgeBaseViewModel);
         } else {
             makePopUp(name);
         }

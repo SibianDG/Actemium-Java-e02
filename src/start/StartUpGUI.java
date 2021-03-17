@@ -7,6 +7,7 @@ import domain.ActemiumTicket;
 import domain.PopulateDB;
 import domain.facades.ContractFacade;
 import domain.facades.ContractTypeFacade;
+import domain.facades.KnowledgeBaseFacade;
 import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
 import domain.manager.Actemium;
@@ -44,7 +45,8 @@ public class StartUpGUI extends Application {
             TicketFacade ticketFacade = new TicketFacade(actemium);
             ContractTypeFacade contractTypeFacade = new ContractTypeFacade(actemium);
             ContractFacade contractFacade = new ContractFacade(actemium);
-            LoginController root = new LoginController(userFacade, ticketFacade, contractTypeFacade, contractFacade);
+            KnowledgeBaseFacade knowledgeBaseFacade = new KnowledgeBaseFacade(actemium);
+            LoginController root = new LoginController(userFacade, ticketFacade, contractTypeFacade, contractFacade, knowledgeBaseFacade);
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("styles.css").toString());
             primaryStage.setScene(scene);

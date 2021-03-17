@@ -1,12 +1,12 @@
 package gui;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.persistence.EntityNotFoundException;
 
 import domain.facades.ContractFacade;
 import domain.facades.ContractTypeFacade;
+import domain.facades.KnowledgeBaseFacade;
 import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
 import exceptions.BlockedUserException;
@@ -27,11 +27,13 @@ import languages.LanguageResource;
 
 public class LoginController extends GuiController {
 		
+
+    private DashboardFrameController dashboardFrameController;
     private UserFacade userFacade;
 	private TicketFacade ticketFacade;
     private ContractTypeFacade contractTypeFacade;
-    private DashboardFrameController dashboardFrameController;
     private ContractFacade contractFacade;
+    private KnowledgeBaseFacade knowledgeBaseFacade;
 	
     @FXML
     private Text txtTitle;
@@ -54,13 +56,14 @@ public class LoginController extends GuiController {
     @FXML
     private Text txtErrorLogin;
 
-    public LoginController(UserFacade userFacade, TicketFacade ticketFacade, ContractTypeFacade contractTypeFacade, ContractFacade contractFacade){
+    public LoginController(UserFacade userFacade, TicketFacade ticketFacade, ContractTypeFacade contractTypeFacade, ContractFacade contractFacade, KnowledgeBaseFacade knowledgeBaseFacade){
         super();
         
         this.userFacade = userFacade;        
         this.ticketFacade = ticketFacade;
         this.contractTypeFacade = contractTypeFacade;
         this.contractFacade = contractFacade;
+        this.knowledgeBaseFacade = knowledgeBaseFacade;
            
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
@@ -104,7 +107,7 @@ public class LoginController extends GuiController {
                 userFacade.signIn(txfUsername.getText(), pwfPassword.getText());
                 txtErrorLogin.setOpacity(0);
                 //DashboardFrameController dashboardController = new DashboardFrameController(userFacade, ticketFacade, contractTypeFacade, this);
-                dashboardFrameController = new DashboardFrameController(userFacade, ticketFacade, contractTypeFacade, contractFacade, this);
+                dashboardFrameController = new DashboardFrameController(userFacade, ticketFacade, contractTypeFacade, contractFacade, knowledgeBaseFacade, this);
                 Scene scene = new Scene(dashboardFrameController);
                 Stage stage = (Stage) this.getScene().getWindow();
                 stage.setTitle(LanguageResource.getString("dashboard"));
