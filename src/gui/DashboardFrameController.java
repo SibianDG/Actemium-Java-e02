@@ -327,7 +327,7 @@ public class DashboardFrameController <T,E> extends GuiController {
     void btnProfileAction(MouseEvent event) {
         //makePopUp("Profile");
     	resetGridpane(gridContent);
-    	initializeGridPane(1, 1, 300, 300);
+    	initializeGridPane(1, 1, 600, 600);
     	
 //    	GridPane gridProfile = new GridPane();
 //    	

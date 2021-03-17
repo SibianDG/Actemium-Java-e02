@@ -54,7 +54,39 @@ public class UserFacade implements Facade {
 	public String giveUserLastName() {
 		return actemium.giveUserLastName();
 	}
+	
+	public String giveUserUsername() {
+		return actemium.giveUsername();
+	}
+	
+	public String giveUserEmployeeId() {
+		return actemium.giveUserEmployeeId();
+	}
+	
+	public String giveUserStatus( ) {
+		return actemium.giveUserStatus();
+	}
 
+	public String giveUserEmailAddress() {
+		return actemium.giveUserEmailAddress();
+	}
+	
+	public String giveUserPhoneNumber() {
+		return actemium.giveUserPhoneNumber();
+	}
+	
+	public String giveUserAddress() {
+		return actemium.giveUserAddress();
+	}
+	
+	public String giveUserSeniority() {
+		return actemium.giveUserSeniority();
+	}
+	
+	public String giveUserPassword() {
+		return actemium.giveUserPassword();
+	}
+	
 	public void registerCustomer(String username, String password, String firstName, String lastName, String companyName,
 			String companyCountry, String companyCity, String companyAddress, String companyPhone) throws InformationRequiredException {
 		// check to see if signed in user is Admin

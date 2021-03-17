@@ -1,18 +1,18 @@
 package gui;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import domain.Employee;
 import domain.facades.UserFacade;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -21,6 +21,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import languages.LanguageResource;
 
 public class ProfilePanelController extends GridPane  {
 	
@@ -47,6 +48,7 @@ public class ProfilePanelController extends GridPane  {
             throw new RuntimeException(e);
         }
         
+        lblProfile.setText(LanguageResource.getString("your_profile"));
         initializeGridProfile();
 	}
 	
@@ -55,9 +57,9 @@ public class ProfilePanelController extends GridPane  {
 		gridProfile.getColumnConstraints().clear();
 
         ColumnConstraints col0 = new ColumnConstraints();
-        col0.setPercentWidth(30);
+        col0.setPercentWidth(40);
         ColumnConstraints col1 = new ColumnConstraints();
-        col1.setPercentWidth(70);
+        col1.setPercentWidth(60);
 
         gridProfile.getColumnConstraints().addAll(col0,col1);
         
@@ -82,18 +84,23 @@ public class ProfilePanelController extends GridPane  {
 	}
 	
     private Map<String, String> getDetailsSignedInUser(){
+    	StringBuilder password = new StringBuilder();
+    	for(int i = 0; i < userFacade.giveUserPassword().length(); i++) {
+    		password.append("*");
+    	}
+    	
         Map<String, String> detailsMap = new LinkedHashMap<>();
-//        detailsMap.put("Employee ID", Collections.singletonMap(false, String.valueOf()));
-//        detailsMap.put("Username", Collections.singletonMap(true, ));
-//        detailsMap.put("Password", Collections.singletonMap(true, ));
+        detailsMap.put("Employee nr:", userFacade.giveUserEmployeeId());
+        detailsMap.put("Username:", userFacade.giveUserUsername());
+        detailsMap.put("Password:", password.toString());
         detailsMap.put("Firstname:", userFacade.giveUserFirstName());
         detailsMap.put("Lastname:", userFacade.giveUserLastName());
-//        detailsMap.put("Address", Collections.singletonMap(true, ));
-//        detailsMap.put("Phone number", Collections.singletonMap(true, ));
-//        detailsMap.put("Email", Collections.singletonMap(true, ));
-//        detailsMap.put("Company Seniority", Collections.singletonMap(false, String.valueOf()));
+        detailsMap.put("Address:", userFacade.giveUserAddress());
+        detailsMap.put("Phone number:", userFacade.giveUserPhoneNumber());
+        detailsMap.put("Email:", userFacade.giveUserEmailAddress());
+        detailsMap.put("Company Seniority:", userFacade.giveUserSeniority());
         detailsMap.put("Role:", userFacade.giveUserRole());
-//        detailsMap.put("Status", Collections.singletonMap(true, ));
+        detailsMap.put("Status:", userFacade.giveUserStatus());
         return detailsMap;
 	}
     
@@ -104,10 +111,25 @@ public class ProfilePanelController extends GridPane  {
         for (String key : keys) {
             Label label = makeNewLabel(key);
 
-            Node detail = makeNewText(details.get(key));
+            Text detail = makeNewText(details.get(key));
 
+            if(label.getText().toLowerCase().contains("password")) {
+            	gridProfile.add(label, 0, i);
+                gridProfile.add(detail, 1, i);
+                Text txtShow= new Text("Show");
+                Color blue = Color.rgb(29, 61, 120);
+                txtShow.setFill(blue);
+                txtShow.setCursor(Cursor.HAND);
+                txtShow.setUnderline(true);
+                txtShow.setOnMouseClicked(e -> {
+                	detail.setText(userFacade.giveUserPassword());
+                });
+                gridProfile.add(txtShow, 2, i);
+            } else {
             gridProfile.add(label, 0, i);
             gridProfile.add(detail, 1, i);
+            }
+            
             i++;
          }            
     }

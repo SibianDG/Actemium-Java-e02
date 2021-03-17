@@ -232,6 +232,10 @@ public class Actemium {
 							, role.toString().toLowerCase()));
 		}
 	}
+	
+	public String giveUserStatus() {
+		return signedInUser.getStatus();
+	}
 
 	public String giveUsername() {
 		return signedInUser.getUsername();
@@ -243,6 +247,30 @@ public class Actemium {
 
 	public String giveUserLastName() {
 		return signedInUser.getLastName();
+	}
+	
+	public String giveUserEmployeeId() {
+		return String.valueOf(((Employee)signedInUser).getEmployeeNr());
+	}
+	
+	public String giveUserEmailAddress() {
+		return ((Employee) signedInUser).getEmailAddress();
+	}
+	
+	public String giveUserPhoneNumber() {
+		return ((Employee) signedInUser).getPhoneNumber();
+	}
+	
+	public String giveUserAddress() {
+		return ((Employee) signedInUser).getAddress();
+	}
+	
+	public String giveUserSeniority() {
+		return String.valueOf(((Employee) signedInUser).giveSeniority());
+	}
+	
+	public String giveUserPassword() {
+		return signedInUser.getPassword();
 	}
 
 	// Check needed for register and modify user
