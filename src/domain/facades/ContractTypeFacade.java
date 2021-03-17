@@ -54,6 +54,8 @@ public class ContractTypeFacade implements Facade{
             contractTypeClone.setMinThroughputTime(minThroughputTime);
             contractTypeClone.setPrice(price);
 
+            System.out.println("99999999");
+
             contractTypeClone.checkAttributes();
 
             contractType.setName(name);

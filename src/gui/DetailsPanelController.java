@@ -309,7 +309,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             txtErrorMessage.setText(errorMessage.toString());
             txtErrorMessage.setVisible(true);
         } catch (NumberFormatException nfe) {
-            txtErrorMessage.setText(LanguageResource.getString("ticketCustomerID_invalid"));
+            txtErrorMessage.setText(LanguageResource.getString("number_invalid"));
             txtErrorMessage.setVisible(true);
         }
         catch (Exception e){
