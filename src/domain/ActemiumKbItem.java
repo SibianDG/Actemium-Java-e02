@@ -56,7 +56,7 @@ public class ActemiumKbItem implements KbItem, Serializable {
 		this.title.set(title);
 	}
 
-	public String getTicketType() {
+	public String getType() {
 		return type.get();
 	}
 	
@@ -146,5 +146,5 @@ public class ActemiumKbItem implements KbItem, Serializable {
 		}
 		return cloned;
 	}
-	
+
 }

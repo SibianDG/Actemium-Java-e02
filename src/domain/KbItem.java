@@ -7,8 +7,7 @@ public interface KbItem {
 
 	public String getTitle();
 
-	public String getTicketType();
-
+	public String getType();
 	public KbItemType getTypeAsEnum();
 
 	public String getText();

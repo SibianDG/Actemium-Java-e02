@@ -26,7 +26,7 @@ public class KnowledgeBaseViewModel extends ViewModel {
         setCurrentState(GUIEnum.KNOWLEDGEBASE);
     }
 
-    public ObservableList<KbItem> giveContractTypes() {
+    public ObservableList<KbItem> giveKbItems() {
         return knowledgeBaseFacade.giveActemiumKbItems();
     }
 
