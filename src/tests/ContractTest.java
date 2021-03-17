@@ -39,11 +39,48 @@ public class ContractTest {
 	private static final LocalDate nextYearNextWeek = LocalDate.now().plusYears(1).plusWeeks(1);
 	private static final LocalDate inTwoYearsNextWeek = LocalDate.now().plusYears(2).plusWeeks(1);
 	private static final LocalDate inThreeYearsNextWeek = LocalDate.now().plusYears(3).plusWeeks(1);
-	
-    private static final ActemiumContractType contractType01 = new ActemiumContractType("BasisEmailSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
-    private static final ActemiumContractType contractType02 = new ActemiumContractType("FullAllSupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.ALWAYS, 3, 1, 3999.99);
 
-    private static final ActemiumCompany facebook = new ActemiumCompany("Facebook", "United States", "Menlo Park, CA 94025", "1 Hacker Way", "+1-650-308-7300");
+    private static ActemiumContractType contractType01;
+
+	static {
+		try {
+			contractType01 = new ActemiumContractType.ContractTypeBuilder()
+					.contractTypeName("BasisEmailSupport")
+					.contractTypeStatus(ContractTypeStatus.ACTIVE)
+					.hasEmail(true)
+					.hasPhone(false)
+					.hasApplication(false)
+					.timestamp(Timestamp.WORKINGHOURS)
+					.maxHandlingTime(5)
+					.minThroughputTime(2)
+					.price(999.99)
+					.build();
+		} catch (InformationRequiredException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static ActemiumContractType contractType02;
+
+	static {
+		try {
+			contractType02 = new ActemiumContractType.ContractTypeBuilder()
+					.contractTypeName("FullAllSupport")
+					.contractTypeStatus(ContractTypeStatus.ACTIVE)
+					.hasEmail(true)
+					.hasPhone(true)
+					.hasApplication(true)
+					.timestamp(Timestamp.ALWAYS)
+					.maxHandlingTime(3)
+					.minThroughputTime(1)
+					.price(3999.99)
+					.build();
+		} catch (InformationRequiredException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static final ActemiumCompany facebook = new ActemiumCompany("Facebook", "United States", "Menlo Park, CA 94025", "1 Hacker Way", "+1-650-308-7300");
     private static ActemiumCustomer mark;
 
 	static {

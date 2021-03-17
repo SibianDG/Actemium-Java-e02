@@ -27,17 +27,135 @@ public class PopulateDB {
         ActemiumCompany amazon = new ActemiumCompany("Amazon", "United States", "Seattle, WA 98109-5210", "410 Terry Avenue North", "+1-206-266-1000");
         ActemiumCompany tesla = new ActemiumCompany("Tesla", "United States", "Palo Alto, CA 94304", "3500 Deer Creek Road", "+31 20 365 0008");
 
-        ActemiumContractType bCtype = new ActemiumContractType("BasicSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
-        ActemiumContractType bCtype02 = new ActemiumContractType("BasicEmailSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
-        ActemiumContractType cCtype = new ActemiumContractType("BasicAppSupport", ContractTypeStatus.ACTIVE, false, false, true, Timestamp.WORKINGHOURS, 5, 2, 1299.99);
-        ActemiumContractType dCtype = new ActemiumContractType("FullEmailSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.ALWAYS, 4, 1, 1999.99);
-        ActemiumContractType eCtype = new ActemiumContractType("FullPhoneSupport", ContractTypeStatus.ACTIVE, false, true, false, Timestamp.ALWAYS, 4, 1, 2999.99);
-        ActemiumContractType fCtype = new ActemiumContractType("FullAppSupport", ContractTypeStatus.ACTIVE, false, false, true, Timestamp.ALWAYS, 4, 1, 2299.99);
-        ActemiumContractType gCtype = new ActemiumContractType("BasicAllSupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.WORKINGHOURS, 4, 2, 2999.99);
-        ActemiumContractType hCtype = new ActemiumContractType("FullAllSupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.ALWAYS, 3, 1, 3999.99);
-        ActemiumContractType jCtype = new ActemiumContractType("AmazonSupport", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 2, 999.99);
-        ActemiumContractType jCtype02 = new ActemiumContractType("MonopolySupport", ContractTypeStatus.ACTIVE, true, true, true, Timestamp.ALWAYS, 3, 1, 6969.69);
-        ActemiumContractType pCtype = new ActemiumContractType("BasicPhoneSupport", ContractTypeStatus.ACTIVE, false, true, false, Timestamp.WORKINGHOURS, 5, 2, 1999.99);
+        ActemiumContractType bCtype = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("BasicSupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(true)
+                .hasPhone(false)
+                .hasApplication(false)
+                .timestamp(Timestamp.WORKINGHOURS)
+                .maxHandlingTime(5)
+                .minThroughputTime(2)
+                .price(999.99)
+                .build();
+
+        ActemiumContractType bCtype02 = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("BasicEmailSupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(true)
+                .hasPhone(false)
+                .hasApplication(false)
+                .timestamp(Timestamp.WORKINGHOURS)
+                .maxHandlingTime(5)
+                .minThroughputTime(2)
+                .price(999.99)
+                .build();
+        ActemiumContractType cCtype = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("BasicAppSupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(false)
+                .hasPhone(false)
+                .hasApplication(true)
+                .timestamp(Timestamp.WORKINGHOURS)
+                .maxHandlingTime(5)
+                .minThroughputTime(2)
+                .price(1299.99)
+                .build();
+
+        ActemiumContractType dCtype = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("FullEmailSupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(true)
+                .hasPhone(false)
+                .hasApplication(false)
+                .timestamp(Timestamp.ALWAYS)
+                .maxHandlingTime(4)
+                .minThroughputTime(1)
+                .price(1999.99)
+                .build();
+        ActemiumContractType eCtype = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("FullPhoneSupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(false)
+                .hasPhone(true)
+                .hasApplication(false)
+                .timestamp(Timestamp.ALWAYS)
+                .maxHandlingTime(4)
+                .minThroughputTime(1)
+                .price(2999.99)
+                .build();
+
+        ActemiumContractType fCtype = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("FullAppSupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(false)
+                .hasPhone(false)
+                .hasApplication(true)
+                .timestamp(Timestamp.ALWAYS)
+                .maxHandlingTime(4)
+                .minThroughputTime(1)
+                .price(2299.99)
+                .build();
+
+        ActemiumContractType gCtype = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("BasicAllSupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(true)
+                .hasPhone(true)
+                .hasApplication(true)
+                .timestamp(Timestamp.WORKINGHOURS)
+                .maxHandlingTime(4)
+                .minThroughputTime(2)
+                .price(2999.99)
+                .build();
+
+        ActemiumContractType hCtype = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("FullAllSupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(true)
+                .hasPhone(true)
+                .hasApplication(true)
+                .timestamp(Timestamp.ALWAYS)
+                .maxHandlingTime(4)
+                .minThroughputTime(2)
+                .price(3999.99)
+                .build();
+
+        ActemiumContractType jCtype = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("AmazonSupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(true)
+                .hasPhone(false)
+                .hasApplication(false)
+                .timestamp(Timestamp.WORKINGHOURS)
+                .maxHandlingTime(5)
+                .minThroughputTime(2)
+                .price(999.99)
+                .build();
+
+        ActemiumContractType jCtype02 = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("MonopolySupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(true)
+                .hasPhone(true)
+                .hasApplication(true)
+                .timestamp(Timestamp.ALWAYS)
+                .maxHandlingTime(3)
+                .minThroughputTime(1)
+                .price(6969.69)
+                .build();
+
+        ActemiumContractType pCtype = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("BasicPhoneSupport")
+                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .hasEmail(false)
+                .hasPhone(true)
+                .hasApplication(false)
+                .timestamp(Timestamp.WORKINGHOURS)
+                .maxHandlingTime(5)
+                .minThroughputTime(2)
+                .price(1999.99)
+                .build();
 
 
 
@@ -383,7 +501,18 @@ public class PopulateDB {
         userDao.commitTransaction();
 
         contractTypeDao.startTransaction();
-        contractTypeDao.insert(new ActemiumContractType("ExperimentalSupport", ContractTypeStatus.INACTIVE, true, false, true, Timestamp.ALWAYS, 4, 1, 2999.99));
+
+        contractTypeDao.insert(new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName("ExperimentalSupport")
+                .contractTypeStatus(ContractTypeStatus.INACTIVE)
+                .hasEmail(true)
+                .hasPhone(true)
+                .hasApplication(true)
+                .timestamp(Timestamp.ALWAYS)
+                .maxHandlingTime(4)
+                .minThroughputTime(1)
+                .price(2999.99)
+                .build());
 		contractTypeDao.commitTransaction();
     }
 

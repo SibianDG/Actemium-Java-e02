@@ -6,6 +6,7 @@ import domain.enums.ContractTypeStatus;
 import domain.enums.EmployeeRole;
 import domain.enums.Timestamp;
 import domain.manager.Actemium;
+import exceptions.InformationRequiredException;
 import javafx.collections.ObservableList;
 
 public class ContractTypeFacade implements Facade{
@@ -17,15 +18,25 @@ public class ContractTypeFacade implements Facade{
     }
 
     public void registerContractType(String name, ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone,
-                                     boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) {
+                                     boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) throws InformationRequiredException {
 		// check to see if signed in user is Support Manager
 		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
-    	ActemiumContractType contractType = new ActemiumContractType(name, contractTypeStatus, hasEmail, hasPhone, hasApplication, timestamp, maxHandlingTime, minThroughputTime, price);
+    	ActemiumContractType contractType = new ActemiumContractType.ContractTypeBuilder()
+                .contractTypeName(name)
+                .contractTypeStatus(contractTypeStatus)
+                .hasEmail(hasEmail)
+                .hasPhone(hasPhone)
+                .hasApplication(hasApplication)
+                .timestamp(timestamp)
+                .maxHandlingTime(maxHandlingTime)
+                .minThroughputTime(minThroughputTime)
+                .price(price)
+                .build();
         actemium.registerContractType(contractType);
     }
 
     public void modifyContractType(ActemiumContractType contractType, String name, ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone,
-                                   boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) {
+                                   boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) throws InformationRequiredException {
 		// check to see if signed in user is Support Manager
 		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
 		
@@ -38,6 +49,8 @@ public class ContractTypeFacade implements Facade{
         contractType.setMaxHandlingTime(maxHandlingTime);
         contractType.setMinThroughputTime(minThroughputTime);
         contractType.setPrice(price);
+
+        contractType.checkAttributes();
 
         actemium.modifyContractType(contractType);
     }

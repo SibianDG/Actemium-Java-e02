@@ -103,6 +103,12 @@ public enum RequiredElement {
             return LanguageResource.getString("contractTypeName_invalid");
         }
     }
+    , ContractTypeStatusRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("contractTypeTimestamp_invalid");
+        }
+    }
     , ContractTypeWayRequired {
         @Override
         public String toString() {
@@ -116,7 +122,7 @@ public enum RequiredElement {
         }
     }
 
-    , ContractTypeLinTroughPutTimeRequired {
+    , ContractTypeMinTroughPutTimeRequired {
         @Override
         public String toString() {
             return LanguageResource.getString("minThroughputTime_invalid");
@@ -140,5 +146,4 @@ public enum RequiredElement {
             return LanguageResource.getString("registrationDateRequired");
         }
     }
-
 }

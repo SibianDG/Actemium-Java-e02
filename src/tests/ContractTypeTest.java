@@ -2,6 +2,7 @@ package tests;
 
 import java.util.stream.Stream;
 
+import exceptions.InformationRequiredException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -100,8 +101,18 @@ public class ContractTypeTest {
     public void createContractType_ValidAttributes_DoesNotThrowException(String name,
 			ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone, boolean hasApplication,
 			Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) {
-        Assertions.assertDoesNotThrow(() -> new ActemiumContractType(name, contractTypeStatus,
-				hasEmail, hasPhone, hasApplication, timestamp, maxHandlingTime, minThroughputTime, price));
+
+        Assertions.assertDoesNotThrow(() -> new ActemiumContractType.ContractTypeBuilder()
+				.contractTypeName(name)
+				.contractTypeStatus(contractTypeStatus)
+				.hasEmail(hasEmail)
+				.hasPhone(hasPhone)
+				.hasApplication(hasApplication)
+				.timestamp(timestamp)
+				.maxHandlingTime(maxHandlingTime)
+				.minThroughputTime(minThroughputTime)
+				.price(price)
+				.build());
     }
 
 	@ParameterizedTest
@@ -109,8 +120,17 @@ public class ContractTypeTest {
 	public void createContractType_InValidAttributes_ThrowsIllegalArgumentException(String name,
 			ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone, boolean hasApplication,
 			Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) {
-		Assertions.assertThrows(IllegalArgumentException.class, () -> new ActemiumContractType(name, contractTypeStatus,
-				hasEmail, hasPhone, hasApplication, timestamp, maxHandlingTime, minThroughputTime, price));
+		Assertions.assertThrows(InformationRequiredException.class, () -> new ActemiumContractType.ContractTypeBuilder()
+				.contractTypeName(name)
+				.contractTypeStatus(contractTypeStatus)
+				.hasEmail(hasEmail)
+				.hasPhone(hasPhone)
+				.hasApplication(hasApplication)
+				.timestamp(timestamp)
+				.maxHandlingTime(maxHandlingTime)
+				.minThroughputTime(minThroughputTime)
+				.price(price)
+				.build());
 	}
     
 	//TODO Should this method be tested seperately like it is now
@@ -119,7 +139,7 @@ public class ContractTypeTest {
 	public void verifyTicketCreationMethods_NoCreationMethods_ThrowsIllegalArgumentException() {
 		boolean hasEmail = false, hasPhone = false, hasApplication = false;
 		ActemiumContractType contractType = new ActemiumContractType();
-		Assertions.assertThrows(IllegalArgumentException.class,
+		Assertions.assertThrows(InformationRequiredException.class,
 				() -> contractType.verifyTicketCreationMethods(hasEmail, hasPhone, hasApplication));
 	}
     
