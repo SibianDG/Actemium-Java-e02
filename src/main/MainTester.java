@@ -17,11 +17,12 @@ public class MainTester {
         GenericDaoJpa<ActemiumTicket> ticketDaoJpa = new GenericDaoJpa<>(ActemiumTicket.class);
         GenericDaoJpa<ActemiumContractType> contractTypeDaoJpa = new GenericDaoJpa<>(ActemiumContractType.class);
         GenericDaoJpa<ActemiumContract> contractDaoJpa = new GenericDaoJpa<>(ActemiumContract.class);
+        GenericDaoJpa<ActemiumKbItem> kbItemDaoJpa = new GenericDaoJpa<>(ActemiumKbItem.class);
         PopulateDB populateDB = new PopulateDB();
         populateDB.run(userDaoJpa, contractTypeDaoJpa);
         System.out.println("populateDB successful");
-        
-        Actemium actemium = new Actemium(userDaoJpa, companyDaoJpa, ticketDaoJpa, contractTypeDaoJpa, contractDaoJpa);
+
+        Actemium actemium = new Actemium(userDaoJpa, companyDaoJpa, ticketDaoJpa, contractTypeDaoJpa, contractDaoJpa, kbItemDaoJpa);
         UserFacade dc = new UserFacade(actemium);
 
         // 4 failed login attempts for Admin123

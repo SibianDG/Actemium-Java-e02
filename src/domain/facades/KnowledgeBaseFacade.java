@@ -56,7 +56,7 @@ public class KnowledgeBaseFacade implements Facade {
 		// check to see if signed in user is Support Manager
 		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
 		// physical delete for kb item?
-        actemium.modifyKbItem(contractType);
+        actemium.modifyKbItem(kbItem);
     }
 
     public ObservableList<KbItem> giveActemiumKbItems() {

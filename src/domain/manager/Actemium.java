@@ -12,11 +12,13 @@ import domain.ActemiumContract;
 import domain.ActemiumContractType;
 import domain.ActemiumCustomer;
 import domain.ActemiumEmployee;
+import domain.ActemiumKbItem;
 import domain.ActemiumTicket;
 import domain.Contract;
 import domain.ContractType;
 import domain.Customer;
 import domain.Employee;
+import domain.KbItem;
 import domain.LoginAttempt;
 import domain.Ticket;
 import domain.UserModel;
@@ -31,7 +33,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import languages.LanguageResource;
 import repository.GenericDao;
-import repository.GenericDaoJpa;
 import repository.UserDao;
 import repository.UserDaoJpa;
 
@@ -46,6 +47,7 @@ public class Actemium {
 	private GenericDao<ActemiumTicket> ticketDaoJpa;
 	private GenericDao<ActemiumContractType> contractTypeDaoJpa;
 	private GenericDao<ActemiumContract> contractDaoJpa;
+	private GenericDao<ActemiumKbItem> kbItemDaoJpa;
 
 	// All the ObservableLists
 	private ObservableList<Customer> actemiumCustomers;
@@ -55,6 +57,7 @@ public class Actemium {
 	private ObservableList<Ticket> actemiumTicketsOutstanding;
 	private ObservableList<Contract> actemiumContracts;
 	private ObservableList<ContractType> actemiumContractTypes;
+	private ObservableList<KbItem> actemiumKbItems;
 	
 	// User (Employee, Customer) that is signed in
 	private UserModel signedInUser;
@@ -69,19 +72,23 @@ public class Actemium {
 		fillInUserLists();
 	}
 	
-	public Actemium(UserDao userDaoJpa, GenericDao<ActemiumCompany> companyRepo, GenericDao<ActemiumTicket> ticketRepo, GenericDao<ActemiumContractType> contactTypeRepo, GenericDao<ActemiumContract> contractRepo) {
+	public Actemium(UserDao userDaoJpa, GenericDao<ActemiumCompany> companyRepo, GenericDao<ActemiumTicket> ticketRepo, 
+			GenericDao<ActemiumContractType> contactTypeRepo, GenericDao<ActemiumContract> contractRepo,
+			GenericDao<ActemiumKbItem> kbItemDaoJpa) {
 		
 		this.userDaoJpa = userDaoJpa;
 		this.companyDaoJpa = companyRepo;
 		this.ticketDaoJpa = ticketRepo;
 		this.contractTypeDaoJpa = contactTypeRepo;
 		this.contractDaoJpa = contractRepo;
+		this.kbItemDaoJpa = kbItemDaoJpa;
 		
 		// Fill up ObservableLists
 		fillInUserLists();
 		fillTicketList();
 		fillContractTypeList();
 		fillContractList();
+		fillKbItemList();
 	}
 	
 	// Fill up ObservableLists
@@ -123,6 +130,11 @@ public class Actemium {
 	public void fillContractList() {
 		List<ActemiumContract> contractList = contractDaoJpa.findAll();
 		this.actemiumContracts = FXCollections.observableArrayList((List<Contract>)(Object)contractList);
+	}
+	
+	public void fillKbItemList() {
+		List<ActemiumKbItem> kbItemList = kbItemDaoJpa.findAll();
+		this.actemiumKbItems = FXCollections.observableArrayList((List<KbItem>)(Object)kbItemList);
 	}
 	
 	//TODO constructor vs setter injection?
@@ -471,5 +483,28 @@ public class Actemium {
 
 	public ObservableList<Contract> giveActemiumContracts() {
 		return FXCollections.unmodifiableObservableList(actemiumContracts);
+	}
+	
+	////////-KNOWLEDGEBASEFACADE-////////
+	
+	public void registerKbItem(ActemiumKbItem kbItem) {
+		kbItemDaoJpa.startTransaction();
+		kbItemDaoJpa.insert(kbItem);
+		kbItemDaoJpa.commitTransaction();
+		actemiumKbItems.add(kbItem);
+	}
+	
+	public void modifyKbItem(ActemiumKbItem kbItem) {
+		kbItemDaoJpa.startTransaction();
+		kbItemDaoJpa.update(kbItem);
+		kbItemDaoJpa.commitTransaction();
+	}
+
+	public KbItem getLastAddedKbItem() {
+		return actemiumKbItems.get(actemiumKbItems.size()-1);
+	}
+
+	public ObservableList<KbItem> giveActemiumKbItems() {
+		return FXCollections.unmodifiableObservableList(actemiumKbItems);
 	}
 }
