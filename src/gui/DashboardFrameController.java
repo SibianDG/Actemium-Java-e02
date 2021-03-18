@@ -94,6 +94,7 @@ public class DashboardFrameController <T,E> extends GuiController {
 
     private TableViewPanelCompanion<T,E> tableViewPanelCompanion;
     private DetailsPanelController detailsPanelController;
+    private ProfilePanelController profilePanelController;
 
 //    public DashboardFrameController(Actemium actemium, UserFacade userFacade) throws FileNotFoundException {
     public DashboardFrameController(UserFacade userFacade, TicketFacade ticketFacade, ContractTypeFacade contractTypeFacade, 
@@ -183,6 +184,8 @@ public class DashboardFrameController <T,E> extends GuiController {
             button.setOnMouseClicked(e -> {
                 if(tableViewPanelCompanion != null)
                     tableViewPanelCompanion.alertChangesOnTabelView();
+                if (profilePanelController != null)
+                    profilePanelController.alertChanges();
                 if (enabled)
                     buttonMenusClicked(text);
             });
@@ -360,8 +363,11 @@ public class DashboardFrameController <T,E> extends GuiController {
 //    	vbProfile.getChildren().addAll(gridProfile);
 
         //TODO as attribute?
-    	gridContent.add(new ProfilePanelController(profileViewModel), 0, 0);
-    	
+        this.profilePanelController = new ProfilePanelController(profileViewModel, this);
+    	gridContent.add(this.profilePanelController, 0, 0);
+        hboxMenu.getChildren().forEach(child -> child.getStyleClass().remove("menuButton-active"));
+
+
     }
 
     @FXML

@@ -12,6 +12,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -31,6 +32,7 @@ public class ProfilePanelController extends GridPane  {
 	
 	//private UserFacade userFacade;
 	private final ProfileViewModel profileViewModel;
+	private final DashboardFrameController dashboardFrameController;
 	
 	@FXML
     private Label lblProfile;
@@ -47,22 +49,26 @@ public class ProfilePanelController extends GridPane  {
     @FXML
     void modifyButtonAccountOnMousePressed(MouseEvent event) {
         try {
-            profileViewModel.modifyProfile(
-                    getTextFromGridPane(1),
-                    getTextFromGridPane(2),
-                    getTextFromGridPane(3),
-                    getTextFromGridPane(4),
-                    getTextFromGridPane(5),
-                    getTextFromGridPane(6),
-                    getTextFromGridPane(7)
-            );
+            if (profileViewModel.isFieldModified()){
+                System.out.println("START");
+                profileViewModel.modifyProfile(
+                        getTextFromGridPane(1),
+                        getTextFromGridPane(2),
+                        getTextFromGridPane(3),
+                        getTextFromGridPane(4),
+                        getTextFromGridPane(5),
+                        getTextFromGridPane(6),
+                        getTextFromGridPane(7)
+                );
 
-            //TODO afhandeling
+                //TODO afhandeling
 
-            showPopupMessage("popupSuccess", "You have successfully edited your profile.");
+                showPopupMessage("popupSuccess", "You have successfully edited your profile.");
+                txtErrorMessage.setVisible(false);
 
-
-            txtErrorMessage.setVisible(false);
+            } else {
+                showPopupMessage("popupWarning", LanguageResource.getString("unchangedMessage"));
+            }
 
         } catch (InformationRequiredException ire){
             StringBuilder errorMessage = new StringBuilder();
@@ -83,27 +89,10 @@ public class ProfilePanelController extends GridPane  {
 
     }
 
-    private String getTextFromGridPane(int i){
-        Node node = gridProfile.getChildren().get(2*i+1);
-        if (node instanceof HBox) {
-            String password = ((PasswordField) ((HBox) node).getChildren().get(0)).getText();
-            if (password == null || password.isBlank()){
-                password = "********";
-            }
-            return password;
-        }
-        if (node instanceof TextField) {
-            return ((TextField) node).getText();
-        }
-        if (node instanceof Text) {
-            return ((Text) node).getText();
-        }
-        return null;
-    }
-
-	public ProfilePanelController(ProfileViewModel profileViewModel) {
+	public ProfilePanelController(ProfileViewModel profileViewModel, DashboardFrameController dashboardFrameController) {
 		super();   
         this.profileViewModel = profileViewModel;
+        this.dashboardFrameController = dashboardFrameController;
         
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Profile.fxml"));
@@ -119,6 +108,27 @@ public class ProfilePanelController extends GridPane  {
         txtErrorMessage.setVisible(false);
         initializeGridProfile();
 	}
+
+
+    private String getTextFromGridPane(int i){
+        Node node = gridProfile.getChildren().get(2*i+1);
+        if (node instanceof HBox) {
+            PasswordField passwordField = ((PasswordField) ((HBox) node).getChildren().get(0));
+            String password = passwordField.getText();
+            System.out.println("PAsswod: "+password);
+            if (password == null || password.isBlank()){
+                password = "********";
+            }
+            return password;
+        }
+        if (node instanceof TextField) {
+            return ((TextField) node).getText();
+        }
+        if (node instanceof Text) {
+            return ((Text) node).getText();
+        }
+        return null;
+    }
 	
 	private void initializeGridProfile() {
 		gridProfile.getChildren().clear();
@@ -160,6 +170,10 @@ public class ProfilePanelController extends GridPane  {
             textField.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
             textField.setPromptText(promptText);
             textField.setPadding(new Insets(0));
+            textField.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!oldValue.equals(newValue))
+                    profileViewModel.setFieldModified(true);
+            });
             node = textField;
         }
         return node;
@@ -192,6 +206,11 @@ public class ProfilePanelController extends GridPane  {
                     }
                 });
                 detail.setOnKeyTyped(e -> checkBox.setSelected(false));
+
+                detail.textProperty().addListener((observable, oldValue, newValue) -> {
+                    if (!oldValue.equals(newValue))
+                        profileViewModel.setFieldModified(true);
+                });
                 hbox.getChildren().addAll(detail, checkBox);
                 HBox.setHgrow(detail, Priority.ALWAYS);
 
@@ -237,6 +256,44 @@ public class ProfilePanelController extends GridPane  {
         });
         popup.show(stage);
     }
-    
 
+
+    public boolean alertChanges() {
+        boolean showNewObject = true;
+        if(profileViewModel.isFieldModified()) {
+            //popup
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+            alert.setTitle(LanguageResource.getString("modifiedWithoutSaving"));
+            alert.setHeaderText(LanguageResource.getString("unsavedChanges"));
+            alert.setContentText(LanguageResource.getString("chooseOption"));
+
+            alert.getDialogPane().getStylesheets().add("file:src/start/styles.css");
+            alert.getDialogPane().getStyleClass().add("alert");
+            ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
+
+            ButtonType discardChanges = new ButtonType(LanguageResource.getString("discardChanges"));
+            ButtonType buttonTypeCancel = new ButtonType(LanguageResource.getString("keepEditing"), ButtonBar.ButtonData.CANCEL_CLOSE);
+            alert.getButtonTypes().setAll(discardChanges, buttonTypeCancel);
+
+            Node discardButton = alert.getDialogPane().lookupButton(discardChanges);
+            discardButton.setId("discardBtn");
+            Node CancelButton = alert.getDialogPane().lookupButton(buttonTypeCancel);
+            CancelButton.setId("cancelBtn");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == discardChanges){
+                // using this variable with if to avoid duplicate code
+                showNewObject = true;
+                dashboardFrameController.setEnabled(true);
+                profileViewModel.setFieldModified(false);
+            } else {
+                // ... user chose CANCEL or closed the dialog
+                // nothing happens -> back to same detail panel
+                dashboardFrameController.setEnabled(false);
+                showNewObject = false;
+            }
+        }
+        return showNewObject;
+    }
 }
