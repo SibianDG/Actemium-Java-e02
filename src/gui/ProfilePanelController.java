@@ -231,14 +231,9 @@ public class ProfilePanelController extends GridPane  {
     public void showPopupMessage(final String popupType, String message) {
         final Popup popup = createPopup(message, popupType);
         final Stage stage = (Stage) gridProfile.getScene().getWindow();
-        popup.setOnShown(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent e) {
-                System.out.println(lblProfile.getLayoutX());
-                System.out.println(lblProfile.getLayoutY());
-                popup.setX(575 + lblProfile.getLayoutX());
-                popup.setY(285 + lblProfile.getLayoutY() + 15 + popup.getHeight()/2);
-            }
+        popup.setOnShown(e -> {
+            popup.setX(popup.getWidth() < 300 ? 840 : 810);
+            popup.setY(285 + lblProfile.getLayoutY() + 15 + popup.getHeight()/2);
         });
         popup.show(stage);
     }

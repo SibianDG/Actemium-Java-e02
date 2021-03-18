@@ -224,8 +224,10 @@ public class UserFacade implements Facade {
 				cloneEmployee.setUsername(username);
 
 			}
+			System.out.println("1. MyPSWWD: "+password);
 
 			if (!(password.equals("********") || password.isBlank())) {
+				System.out.println("2. MyPSWWD: "+password);
 				cloneEmployee.setPassword(password);
 			}
 
@@ -241,8 +243,8 @@ public class UserFacade implements Facade {
 			cloneEmployee.checkAttributes();
 			System.out.println(2);
 
-			employee.setUsername(username);
-			employee.setPassword(password);
+			employee.setUsername(cloneEmployee.getUsername());
+			employee.setPassword(cloneEmployee.getPassword());
 			employee.setFirstName(firstName);
 			employee.setLastName(lastName);
 			employee.setAddress(address);
