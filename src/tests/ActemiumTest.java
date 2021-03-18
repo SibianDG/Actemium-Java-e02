@@ -38,44 +38,14 @@ public class ActemiumTest {
 
     final String ADMINUSERNAME = "janJannsens123", PASSWORD = "PassWd123&", WRONGPASSWORD = "foutPas12&",
     			 TECHUSERNAME = "jooKlein123", CUSTOMERUSERNAME = "customer123",
-    			 WRONGUSERNAME = "usernameDoesNotExist"; //EntityNotFoundException()
+    			 WRONGUSERNAME = "usernameDoesNotExist";
 
-    private final UserModel admin = new ActemiumEmployee.EmployeeBuilder()
-            .username("janJannsens123")
-            .password("PassWd123&")
-            .firstName("Jan")
-            .lastName("Jannsens")
-            .address("Adress")
-            .phoneNumber("0470099874")
-            .emailAddress("student@student.hogent.be")
-            .role(EmployeeRole.ADMINISTRATOR)
-            .build();
-    private final UserModel tech = new ActemiumEmployee.EmployeeBuilder()
-            .username("jooKlein123")
-            .password("PassWd123&")
-            .firstName("Joost")
-            .lastName("Klein")
-            .address("Adress")
-            .phoneNumber("0470099874")
-            .emailAddress("student@student.hogent.be")
-            .role(EmployeeRole.TECHNICIAN)
-            .build();
+    private UserModel admin;
+    private UserModel tech;
 
-    private final ActemiumCompany google = new ActemiumCompany.CompanyBuilder()
-            .name("Google")
-            .country("United States")
-            .city("Mountain View, CA 94043")
-            .address("1600 Amphitheatre Parkway")
-            .phoneNumber("+1-650-253-0000")
-            .build();
+    private ActemiumCompany google;
 
-    private final UserModel cust = new ActemiumCustomer.CustomerBuilder()
-            .username("customer123")
-            .password("PassWd123&")
-            .firstName("John")
-            .lastName("Smith")
-            .company(google)
-            .build();
+    private UserModel cust;
 
     @Mock
     private UserDao userRepoDummy;
@@ -84,10 +54,59 @@ public class ActemiumTest {
     @InjectMocks
     private Actemium actemium;
 
-    public ActemiumTest() throws InformationRequiredException {
+    public ActemiumTest() {
     }
 
     private void trainDummy() {
+        try {
+            tech = new ActemiumEmployee.EmployeeBuilder()
+                    .username("jooKlein123")
+                    .password("PassWd123&")
+                    .firstName("Joost")
+                    .lastName("Klein")
+                    .address("Adress")
+                    .phoneNumber("0470099874")
+                    .emailAddress("student@student.hogent.be")
+                    .role(EmployeeRole.TECHNICIAN)
+                    .build();
+            admin = new ActemiumEmployee.EmployeeBuilder()
+                    .username("janJannsens123")
+                    .password("PassWd123&")
+                    .firstName("Jan")
+                    .lastName("Jannsens")
+                    .address("Adress")
+                    .phoneNumber("0470099874")
+                    .emailAddress("student@student.hogent.be")
+                    .role(EmployeeRole.ADMINISTRATOR)
+                    .build();
+            tech = new ActemiumEmployee.EmployeeBuilder()
+                    .username("jooKlein123")
+                    .password("PassWd123&")
+                    .firstName("Joost")
+                    .lastName("Klein")
+                    .address("Adress")
+                    .phoneNumber("0470099874")
+                    .emailAddress("student@student.hogent.be")
+                    .role(EmployeeRole.TECHNICIAN)
+                    .build();
+            google = new ActemiumCompany.CompanyBuilder()
+                    .name("Google")
+                    .country("United States")
+                    .city("Mountain View, CA 94043")
+                    .address("1600 Amphitheatre Parkway")
+                    .phoneNumber("+1-650-253-0000")
+                    .build();
+            cust = new ActemiumCustomer.CustomerBuilder()
+                    .username("customer123")
+                    .password("PassWd123&")
+                    .firstName("John")
+                    .lastName("Smith")
+                    .company(google)
+                    .build();
+        } catch (InformationRequiredException e) {
+            throw new IllegalArgumentException("Problem with initialize variables before test.");
+        }
+
     	Mockito.lenient().when(userRepoDummy.findByUsername(ADMINUSERNAME)).thenReturn(admin);
     	Mockito.lenient().when(userRepoDummy.findByUsername(TECHUSERNAME)).thenReturn(tech);
     	Mockito.lenient().when(userRepoDummy.findByUsername(CUSTOMERUSERNAME)).thenReturn(cust);

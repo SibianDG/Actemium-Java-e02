@@ -51,19 +51,20 @@ public class KnowledgeBaseViewModel extends ViewModel {
     	KbItem kbItem = selectedKbItem;
         Map<String,Map<Boolean, Object>> details = new LinkedHashMap<>();
         details.put("Title", Collections.singletonMap(false, kbItem.getTitle()));
-        details.put("Type", Collections.singletonMap(true, kbItem.getType()));
+        details.put("Type", Collections.singletonMap(true, kbItem.getType()));        
+        details.put("Keywords", Collections.singletonMap(true, kbItem.getKeywords()));
         details.put("Text", Collections.singletonMap(true, kbItem.getText()));
 
 		return details;
 	}
 
-	public void registerKbItem(String title, KbItemType type, String text) throws InformationRequiredException {
-		knowledgeBaseFacade.registerKbItem(title, type, text);
+	public void registerKbItem(String title, KbItemType type, String keywords, String text) throws InformationRequiredException {
+		knowledgeBaseFacade.registerKbItem(title, type, keywords, text);
 		setSelectedKbItem(knowledgeBaseFacade.getLastAddedKbItem());
 	}
 
-	public void modifyKbItem(String title, KbItemType type, String text) throws InformationRequiredException {
-		knowledgeBaseFacade.modifyKbItem((ActemiumKbItem) selectedKbItem, title, type, text);
+	public void modifyKbItem(String title, KbItemType type, String keywords, String text) throws InformationRequiredException {
+		knowledgeBaseFacade.modifyKbItem((ActemiumKbItem) selectedKbItem, title, type, keywords, text);
 	}
 
 	public GUIEnum getCurrentState() {

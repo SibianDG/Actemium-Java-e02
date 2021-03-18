@@ -97,17 +97,22 @@ public class EmployeeTest {
 	}
 
 	@Test
-	public void giveEmployeeSeniroity_returns_valid() throws InformationRequiredException {
-		ActemiumEmployee employee = new ActemiumEmployee.EmployeeBuilder()
-				.username("Tester123")
-				.password("Passwd123&")
-				.firstName("Jan")
-				.lastName("Jannsens")
-				.address("Hogent Adress")
-				.phoneNumber("0470099874")
-				.emailAddress("student@student.hogent.be")
-				.role(EmployeeRole.ADMINISTRATOR)
-				.build();
+	public void giveEmployeeSeniroity_returns_valid() {
+		ActemiumEmployee employee;
+		try {
+			employee = new ActemiumEmployee.EmployeeBuilder()
+					.username("Tester123")
+					.password("Passwd123&")
+					.firstName("Jan")
+					.lastName("Jannsens")
+					.address("Hogent Adress")
+					.phoneNumber("0470099874")
+					.emailAddress("student@student.hogent.be")
+					.role(EmployeeRole.ADMINISTRATOR)
+					.build();
+		} catch (InformationRequiredException e) {
+			throw new IllegalArgumentException("Problem with initialize variables before test.");
+		}
 
 		employee.setRegistrationDate(LocalDate.now().minusYears(10));
 		Assertions.assertEquals(10, employee.giveSeniority());

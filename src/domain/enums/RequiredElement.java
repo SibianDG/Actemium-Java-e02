@@ -193,5 +193,29 @@ public enum RequiredElement {
         public String toString() {
             return LanguageResource.getString("registrationDateRequired");
         }
+    }    
+    , KbItemTitleRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("kbItemTitle_invalid");
+        }
+    }
+    , KbItemTypeRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("kbItemType_invalid");
+        }
+    }
+    , KbItemKeywordsRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("kbItemKeywords_invalid");
+        }
+    }
+    , KbItemTextRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("kbItemText_invalid");
+        }
     }
 }

@@ -229,7 +229,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 		filterMap.put(GUIEnum.TICKET, new ArrayList<>(Arrays.asList("ID", TicketType.SOFTWARE, TicketPriority.P1, "Title", TicketStatus.CREATED)));
 		filterMap.put(GUIEnum.CONTRACTTYPE, new ArrayList<>(Arrays.asList("Name", Timestamp.WORKINGHOURS, ContractTypeStatus.ACTIVE)));
 		filterMap.put(GUIEnum.CONTRACT, new ArrayList<>(Arrays.asList("ContractId", "CompanyName", "ContractTypeName", ContractStatus.CURRENT)));
-		filterMap.put(GUIEnum.KNOWLEDGEBASE, new ArrayList<>(Arrays.asList("Title", KbItemType.DATABASE)));
+		filterMap.put(GUIEnum.KNOWLEDGEBASE, new ArrayList<>(Arrays.asList("Title", KbItemType.DATABASE, "Keywords", "FullSearch")));
 
 		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createElementDetailGridpane(o)));
 	}
@@ -615,7 +615,14 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 				
 				switch (fieldName) {
 					case "Title" -> newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);
-					case "KbItemType" -> newPredicate = e -> e.getTicketTypeAsString().toLowerCase().contains(filterText);
+					case "KbItemType" -> newPredicate = e -> e.getTypeAsString().toLowerCase().contains(filterText);
+					case "Keywords" -> newPredicate = e -> e.getKeywords().toLowerCase().contains(filterText);
+					case "FullSearch" -> {						
+						newPredicate = e -> e.getText()
+												.concat(" " + e.getTitle() + " " + e.getTypeAsString() + " " + e.getKeywords())
+												.toLowerCase()
+												.contains(filterText);
+					}
 					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 				}
 				System.out.println(newPredicate.toString());

@@ -18,23 +18,32 @@ import domain.enums.TicketPriority;
 import domain.enums.TicketType;
 
 public class CompanyTest implements Attributes {
-    private ActemiumCompany google = new ActemiumCompany.CompanyBuilder()
-            .name("Google")
-            .country("United States")
-            .city("Mountain View, CA 94043")
-            .address("1600 Amphitheatre Parkway")
-            .phoneNumber("+1-650-253-0000")
-            .build();
+    private ActemiumCompany google ;
 
-    private final ActemiumCustomer cust = new ActemiumCustomer.CustomerBuilder()
-            .username("customer123")
-            .password("PassWd123&")
-            .firstName("John")
-            .lastName("Smith")
-            .company(google)
-            .build();
+    private ActemiumCustomer cust;
 
-    public CompanyTest() throws InformationRequiredException {
+    public CompanyTest() {
+    }
+
+    public void initializeAttributes(){
+        try {
+            google = new ActemiumCompany.CompanyBuilder()
+                    .name("Google")
+                    .country("United States")
+                    .city("Mountain View, CA 94043")
+                    .address("1600 Amphitheatre Parkway")
+                    .phoneNumber("+1-650-253-0000")
+                    .build();
+            cust = new ActemiumCustomer.CustomerBuilder()
+                    .username("customer123")
+                    .password("PassWd123&")
+                    .firstName("John")
+                    .lastName("Smith")
+                    .company(google)
+                    .build();
+        } catch (InformationRequiredException e) {
+            throw new IllegalArgumentException("Problem with initialize variables before test.");
+        }
     }
 
     private static Stream<Arguments> validCompanyAttributes() {
@@ -120,28 +129,38 @@ public class CompanyTest implements Attributes {
     }
 
     @Test
-    public void createCompany_correctdateOfCreation() throws InformationRequiredException {
-        ActemiumCompany google = new ActemiumCompany.CompanyBuilder()
-                .name("Google")
-                .country("United States")
-                .city("Mountain View, CA 94043")
-                .address("1600 Amphitheatre Parkway")
-                .phoneNumber("+1-650-253-0000")
-                .build();
+    public void createCompany_correctdateOfCreation() {
+        ActemiumCompany google;
+        try {
+            google = new ActemiumCompany.CompanyBuilder()
+                    .name("Google")
+                    .country("United States")
+                    .city("Mountain View, CA 94043")
+                    .address("1600 Amphitheatre Parkway")
+                    .phoneNumber("+1-650-253-0000")
+                    .build();
+        } catch (InformationRequiredException e) {
+            throw new IllegalArgumentException("Problem with initialize variables before test.");
+        }
 
         Assertions.assertEquals(LocalDate.now(), google.getRegistrationDate());
     }
 
     @Test
-    public void addActemiumTicket_CompanyContainsTicket() throws InformationRequiredException {
+    public void addActemiumTicket_CompanyContainsTicket() {
+        ActemiumCompany facebook;
+        try {
+            facebook = new ActemiumCompany.CompanyBuilder()
+                    .name("Facebook")
+                    .country("United States")
+                    .city("Menlo Park, CA 94025")
+                    .address("1 Hacker Way")
+                    .phoneNumber("+1-650-308-7300")
+                    .build();
+        } catch (InformationRequiredException e) {
+            throw new IllegalArgumentException("Problem with initialize variables before test.");
+        }
 
-    	ActemiumCompany facebook = new ActemiumCompany.CompanyBuilder()
-                .name("Facebook")
-                .country("United States")
-                .city("Menlo Park, CA 94025")
-                .address("1 Hacker Way")
-                .phoneNumber("+1-650-308-7300")
-                .build();
     	ActemiumTicket ticket = getActemiumTicket();
     	facebook.addActemiumTicket(ticket);
     	Assertions.assertEquals(ticket, facebook.getActemiumTickets().get(0));
@@ -152,15 +171,22 @@ public class CompanyTest implements Attributes {
     }
 
     @Test
-    public void addActemiumTicket_CompanyContainsMultipleTickets() throws InformationRequiredException {
+    public void addActemiumTicket_CompanyContainsMultipleTickets() {
+        initializeAttributes();
         for (int i = 0; i < MAX_NUMBER; i++) {
-            ActemiumTicket ticket = new ActemiumTicket.TicketBuilder()
-                    .ticketPriority(TicketPriority.P1)
-                    .ticketType(TicketType.SOFTWARE)
-                    .title("Ticket"+i)
-                    .description("Cannot print labels")
-                    .customer(cust)
-                    .build();
+            ActemiumTicket ticket;
+            try {
+                 ticket = new ActemiumTicket.TicketBuilder()
+                        .ticketPriority(TicketPriority.P1)
+                        .ticketType(TicketType.SOFTWARE)
+                        .title("Ticket"+i)
+                        .description("Cannot print labels")
+                        .customer(cust)
+                        .build();
+            } catch (InformationRequiredException e) {
+                throw new IllegalArgumentException("Problem with initialize variables before test.");
+            }
+
             google.addActemiumTicket(ticket);
         }
         Assertions.assertEquals(MAX_NUMBER, google.getActemiumTickets().size());
@@ -171,43 +197,65 @@ public class CompanyTest implements Attributes {
     // we will use the name Customer for contactPerson
     // Could be changed if we realy have to
     @Test
-    public void addContactPerson_CompanyContainsContactPerson() throws InformationRequiredException {
+    public void addContactPerson_CompanyContainsContactPerson() {
+        initializeAttributes();
 
-    	ActemiumCompany facebook = new ActemiumCompany.CompanyBuilder()
-                .name("Facebook")
-                .country("United States")
-                .city("Menlo Park, CA 94025")
-                .address("1 Hacker Way")
-                .phoneNumber("+1-650-308-7300")
-                .build();
+        ActemiumCompany facebook;
+        try {
+            facebook = new ActemiumCompany.CompanyBuilder()
+                    .name("Facebook")
+                    .country("United States")
+                    .city("Menlo Park, CA 94025")
+                    .address("1 Hacker Way")
+                    .phoneNumber("+1-650-308-7300")
+                    .build();
+        } catch (InformationRequiredException e) {
+            throw new IllegalArgumentException("Problem with initialize variables before test.");
+        }
+
     	facebook.addContactPerson(cust);
         Assertions.assertEquals(cust, facebook.getContactPersons().get(0));
     }
 
     @Test
-    public void addContactPerson_CompanyContainsMultipleContactPerson() throws InformationRequiredException {
-        for (int i = 0; i < MAX_NUMBER; i++) {
+    public void addContactPerson_CompanyContainsMultipleContactPerson() {
+        initializeAttributes();
 
-        	ActemiumCustomer contactPerson = new ActemiumCustomer.CustomerBuilder()
-                    .username("customer"+i)
-                    .password("PassWd123&")
-                    .firstName("John")
-                    .lastName("Smith")
-                    .company(google)
-                    .build();
-        	google.addContactPerson(contactPerson);
+        for (int i = 0; i < MAX_NUMBER; i++) {
+            ActemiumCustomer contactPerson;
+
+            try {
+                contactPerson = new ActemiumCustomer.CustomerBuilder()
+                        .username("customer"+i)
+                        .password("PassWd123&")
+                        .firstName("John")
+                        .lastName("Smith")
+                        .company(google)
+                        .build();
+
+            } catch (InformationRequiredException e) {
+                throw new IllegalArgumentException("Problem with initialize variables before test.");
+            }
+            google.addContactPerson(contactPerson);
+
         }
         Assertions.assertEquals(MAX_NUMBER, google.getContactPersons().size());
     }
 
     @Override
-    public ActemiumTicket getActemiumTicket() throws InformationRequiredException {
-        return new ActemiumTicket.TicketBuilder()
-                .ticketPriority(TicketPriority.P1)
-                .ticketType(TicketType.SOFTWARE)
-                .title("Printer Broken")
-                .description("Cannot print labels")
-                .customer(cust)
-                .build();
+    public ActemiumTicket getActemiumTicket() {
+        initializeAttributes();
+
+        try {
+            return new ActemiumTicket.TicketBuilder()
+                    .ticketPriority(TicketPriority.P1)
+                    .ticketType(TicketType.SOFTWARE)
+                    .title("Printer Broken")
+                    .description("Cannot print labels")
+                    .customer(cust)
+                    .build();
+        } catch (InformationRequiredException e) {
+            throw new IllegalArgumentException("Problem with initialize variables before test.");
+        }
     }
 }

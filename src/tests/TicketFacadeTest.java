@@ -20,21 +20,30 @@ import repository.GenericDao;
 @ExtendWith(MockitoExtension.class)
 public class TicketFacadeTest implements Attributes {
 
-    ActemiumCompany google = new ActemiumCompany.CompanyBuilder()
-            .name("Google")
-            .country("United States")
-            .city("Mountain View, CA 94043")
-            .address("1600 Amphitheatre Parkway")
-            .phoneNumber("+1-650-253-0000")
-            .build();
+    private ActemiumCompany google;
 
-    private final ActemiumCustomer cust = new ActemiumCustomer.CustomerBuilder()
-            .username("customer123")
-            .password("PassWd123&")
-            .firstName("John")
-            .lastName("Smith")
-            .company(google)
-            .build();
+    private ActemiumCustomer cust;
+
+    private void initializeAttributes(){
+        try {
+            google = new ActemiumCompany.CompanyBuilder()
+                    .name("Google")
+                    .country("United States")
+                    .city("Mountain View, CA 94043")
+                    .address("1600 Amphitheatre Parkway")
+                    .phoneNumber("+1-650-253-0000")
+                    .build();
+            cust = new ActemiumCustomer.CustomerBuilder()
+                    .username("customer123")
+                    .password("PassWd123&")
+                    .firstName("John")
+                    .lastName("Smith")
+                    .company(google)
+                    .build();
+        } catch (InformationRequiredException e) {
+            throw new IllegalArgumentException("Problem with initialize variables before test.");
+        }
+    }
 
     @Mock
     private GenericDao<ActemiumTicket> ticketRepoDummy;
@@ -42,10 +51,11 @@ public class TicketFacadeTest implements Attributes {
     @InjectMocks
     private TicketFacade tf;
 
-    public TicketFacadeTest() throws InformationRequiredException {
+    public TicketFacadeTest() {
     }
 
     private void trainDummy() throws InformationRequiredException {
+        initializeAttributes();
         ArrayList<ActemiumTicket> tickets = new ArrayList<>();
         for (int i = 0; i < MAX_NUMBER; i++) {
             ActemiumTicket ticket = new ActemiumTicket.TicketBuilder()
@@ -63,13 +73,20 @@ public class TicketFacadeTest implements Attributes {
     }
 
     @Override
-    public ActemiumTicket getActemiumTicket() throws InformationRequiredException {
-        return new ActemiumTicket.TicketBuilder()
-                .ticketPriority(TicketPriority.P1)
-                .ticketType(TicketType.SOFTWARE)
-                .title("Printer Broken")
-                .description("Cannot print labels")
-                .customer(cust)
-                .build();
+    public ActemiumTicket getActemiumTicket() {
+        initializeAttributes();
+
+        try {
+            return new ActemiumTicket.TicketBuilder()
+                    .ticketPriority(TicketPriority.P1)
+                    .ticketType(TicketType.SOFTWARE)
+                    .title("Printer Broken")
+                    .description("Cannot print labels")
+                    .customer(cust)
+                    .build();
+        } catch (InformationRequiredException e) {
+            throw new IllegalArgumentException("Problem with initialize variables before test.");
+        }
+
     }
 }

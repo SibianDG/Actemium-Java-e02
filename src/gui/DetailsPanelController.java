@@ -329,6 +329,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 getTextFromGridItem(0)
                                 , KbItemType.valueOf(getTextFromGridItem(1))
                                 , getTextFromGridItem(2)                                
+                                , getTextFromGridItem(3)                                
                         );
 						showPopupMessage("popupSuccess", LanguageResource.getString("kbItemEdited_succes"));
                     } else {
@@ -339,7 +340,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                             // title, type, text
                     		getTextFromGridItem(0)
                             , KbItemType.valueOf(getTextFromGridItem(1))
-                            , getTextFromGridItem(2)   
+                            , getTextFromGridItem(2)
+                            , getTextFromGridItem(3)
                     );
                 }
             }

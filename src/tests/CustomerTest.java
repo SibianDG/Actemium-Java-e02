@@ -15,15 +15,23 @@ import domain.ActemiumCustomer;
 
 public class CustomerTest {
 
-	private ActemiumCompany google = new ActemiumCompany.CompanyBuilder()
-			.name("Facebook")
-			.country("United States")
-			.city("Menlo Park, CA 94025")
-			.address("1 Hacker Way")
-			.phoneNumber("+1-650-308-7300")
-			.build();
+	private ActemiumCompany google;
 
-	public CustomerTest() throws InformationRequiredException {
+	private void initializeAttibutes(){
+		try {
+			google = new ActemiumCompany.CompanyBuilder()
+					.name("Facebook")
+					.country("United States")
+					.city("Menlo Park, CA 94025")
+					.address("1 Hacker Way")
+					.phoneNumber("+1-650-308-7300")
+					.build();
+		} catch (InformationRequiredException e) {
+			throw new IllegalArgumentException("Problem with initialize variables before test.");
+		}
+	}
+
+	public CustomerTest() {
 	}
 
 	private static Stream<Arguments> validUserAttributes() {
@@ -68,8 +76,8 @@ public class CustomerTest {
 
 	@ParameterizedTest
 	@MethodSource("validUserAttributes")
-	public void createCustomer_ValidAttributes_DoesNotThrowException(String username, String password, String firstName, String lastName) throws InformationRequiredException {
-
+	public void createCustomer_ValidAttributes_DoesNotThrowException(String username, String password, String firstName, String lastName) {
+		initializeAttibutes();
 		Assertions.assertDoesNotThrow(() -> new ActemiumCustomer.CustomerBuilder()
 				.username(username)
 				.password(password)
@@ -83,6 +91,7 @@ public class CustomerTest {
 	@MethodSource("invalidUserAttributes")
 	public void createCustomer_InValidAttributes_ThrowsIllegalArgumentException(String username, String password,
 			String firstName, String lastName) {
+		initializeAttibutes();
 		Assertions.assertThrows(InformationRequiredException.class,
 				() -> new ActemiumCustomer.CustomerBuilder()
 						.username(username)
@@ -94,15 +103,20 @@ public class CustomerTest {
 	}
     
     @Test
-    public void giveEmployeeSeniroity_returns_valid() throws InformationRequiredException {
-
-		ActemiumCustomer customer = new ActemiumCustomer.CustomerBuilder()
-				.username("Tester123")
-				.password("Passwd123&")
-				.firstName("Jan")
-				.lastName("Jannsens")
-				.company(google)
-				.build();
+    public void giveEmployeeSeniroity_returns_valid() {
+		initializeAttibutes();
+		ActemiumCustomer customer;
+		try {
+			customer = new ActemiumCustomer.CustomerBuilder()
+					.username("Tester123")
+					.password("Passwd123&")
+					.firstName("Jan")
+					.lastName("Jannsens")
+					.company(google)
+					.build();
+		} catch (InformationRequiredException e) {
+			throw new IllegalArgumentException("Problem with initialize variables before test.");
+		}
     	customer.setRegistrationDate(LocalDate.now().minusYears(10));
         Assertions.assertEquals(10, customer.giveSeniority());
     }

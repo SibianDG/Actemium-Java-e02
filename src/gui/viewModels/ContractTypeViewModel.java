@@ -41,7 +41,7 @@ public class ContractTypeViewModel extends ViewModel {
 
 	public ArrayList<String> getDetailsNewContractType() {
 		return new ArrayList<String>(Arrays.asList("Name", "Status", "Email", "Phone", "Application",
-				"Timestamp (support hours)", "Max handling time", "Min throughput time contract", "Price contract"));
+				"Timestamp (support hours)", "Max handling time", "Min throughput time", "Price contract"));
 	}
 
     public Map<String, Map<Boolean, Object>> getDetails() {
@@ -54,7 +54,7 @@ public class ContractTypeViewModel extends ViewModel {
         details.put("Application", Collections.singletonMap(true, (Boolean) contractType.isHasApplication()));
         details.put("Timestamp (support hours)", Collections.singletonMap(true, contractType.getTimestamp()));
         details.put("Max handling time", Collections.singletonMap(true, String.format("%d", contractType.getMaxHandlingTime())));
-        details.put("Min throughput time contract", Collections.singletonMap(true, String.format("%d", contractType.getMinThroughputTime())));
+        details.put("Min throughput time", Collections.singletonMap(true, String.format("%d", contractType.getMinThroughputTime())));
         details.put("Price contract", Collections.singletonMap(true, String.format("%.2f", contractType.getPrice())));
         //details.put("Amount open contracts", contractType);
         //details.put("Amount resolved tickets", contractType);

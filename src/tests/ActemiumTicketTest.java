@@ -19,21 +19,24 @@ import domain.enums.TicketType;
 
 public class ActemiumTicketTest implements Attributes {
 	
-	private final ActemiumEmployee technician = new ActemiumEmployee.EmployeeBuilder()
-			.username("jooKlein123")
-			.password("Passwd123&")
-			.firstName("Joost")
-			.lastName("Klein")
-			.address("Adress")
-			.phoneNumber("0470099874")
-			.emailAddress("student@student.hogent.be")
-			.role(EmployeeRole.TECHNICIAN)
-			.build();
+	private static ActemiumEmployee technician;
 
 	private static ActemiumCompany google;
 
-	static {
+	private static ActemiumCustomer customer;
+
+	private static void setAttributes(){
 		try {
+			technician = new ActemiumEmployee.EmployeeBuilder()
+					.username("jooKlein123")
+					.password("Passwd123&")
+					.firstName("Joost")
+					.lastName("Klein")
+					.address("Adress")
+					.phoneNumber("0470099874")
+					.emailAddress("student@student.hogent.be")
+					.role(EmployeeRole.TECHNICIAN)
+					.build();
 			google = new ActemiumCompany.CompanyBuilder()
 					.name("Google")
 					.country("United States")
@@ -41,15 +44,6 @@ public class ActemiumTicketTest implements Attributes {
 					.address("1600 Amphitheatre Parkway")
 					.phoneNumber("+1-650-253-0000")
 					.build();
-		} catch (InformationRequiredException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private static ActemiumCustomer customer;
-
-	static {
-		try {
 			customer = new ActemiumCustomer.CustomerBuilder()
 					.username("customer123")
 					.password("PassWd123&")
@@ -58,14 +52,15 @@ public class ActemiumTicketTest implements Attributes {
 					.company(google)
 					.build();
 		} catch (InformationRequiredException e) {
-			e.printStackTrace();
+			throw new IllegalArgumentException("Problem with initialize variables before test.");
 		}
 	}
 
-	public ActemiumTicketTest() throws InformationRequiredException {
+	public ActemiumTicketTest() {
 	}
 
 	private static Stream<Arguments> validActemiumTicketAttributes04() {
+		setAttributes();
         return Stream.of(
                 Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer),
                 Arguments.of(TicketPriority.P2, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer),
@@ -77,7 +72,8 @@ public class ActemiumTicketTest implements Attributes {
     }
 
     private static Stream<Arguments> invalidActemiumTicketAttributes04() {
-        return Stream.of(
+		setAttributes();
+		return Stream.of(
                 // title: not null or empty or blank, but (special chars)? and digits are ok
         		Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, null, "Cannot print labels", customer),
                 Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "", "Cannot print labels", customer),
@@ -89,12 +85,18 @@ public class ActemiumTicketTest implements Attributes {
                 Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "    ", customer),
                                 
                 // customer: not null
-                Arguments.of(TicketPriority.P1, TicketType.SOFTWARE,"Printer Broken", "Cannot print labels", null)
-        		);
-    }
+                Arguments.of(TicketPriority.P1, TicketType.SOFTWARE,"Printer Broken", "Cannot print labels", null),
+
+				//Enums null
+				Arguments.of(null, TicketType.HARDWARE, "Printer Broken", "Cannot print labels", customer),
+				Arguments.of(TicketPriority.P1, null, "Printer Broken", "Cannot print labels", customer)
+		);
+
+	}
 
     private static Stream<Arguments> validActemiumTicketAttributes06() {
-    	return Stream.of(
+		setAttributes();
+		return Stream.of(
     			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer, null, null),
     			Arguments.of(TicketPriority.P2, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer, "", null),
     			Arguments.of(TicketPriority.P3, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer, null, ""),
@@ -106,7 +108,8 @@ public class ActemiumTicketTest implements Attributes {
     }
     
     private static Stream<Arguments> invalidActemiumTicketAttributes06() {
-    	return Stream.of(
+		setAttributes();
+		return Stream.of(
     			// title: not null or empty or blank, but (special chars)? and digits are ok
     			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, null, "Cannot print labels", customer, null, null),
     			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "", "Cannot print labels", customer, null, null),
@@ -133,7 +136,6 @@ public class ActemiumTicketTest implements Attributes {
 																.description(description)
 																.customer(customer)
 																.build());
-
 	}
 
 	@ParameterizedTest
@@ -161,6 +163,8 @@ public class ActemiumTicketTest implements Attributes {
 										.title(title)
 										.description(description)
 										.customer(customer)
+										.remarks(remarks)
+										.attachments(attachments)
 										.build());
 	}
 
@@ -175,6 +179,8 @@ public class ActemiumTicketTest implements Attributes {
 										.title(title)
 										.description(description)
 										.customer(customer)
+										.remarks(remarks)
+										.attachments(attachments)
 										.build());
 	}
 
@@ -182,14 +188,17 @@ public class ActemiumTicketTest implements Attributes {
 	// or will a constructor test be sufficient since the method is called in the
 	// constructor?
 	@Test
-	public void addTechnician_TechniciansContainsNewTechnician() throws InformationRequiredException {
+	public void addTechnician_TechniciansContainsNewTechnician() {
+		setAttributes();
 		ActemiumTicket actemiumTicket = getActemiumTicket();
 		actemiumTicket.addTechnician(technician);
 		Assertions.assertEquals(technician, actemiumTicket.getTechnicians().get(0));
 	}
 
 	@Override
-	public ActemiumTicket getActemiumTicket() throws InformationRequiredException {
+	public ActemiumTicket getActemiumTicket(){
+		setAttributes();
+		try {
 			return new ActemiumTicket.TicketBuilder()
 					.ticketPriority(TicketPriority.P1)
 					.ticketType(TicketType.SOFTWARE)
@@ -197,6 +206,8 @@ public class ActemiumTicketTest implements Attributes {
 					.description("Cannot print labels")
 					.customer(customer)
 					.build();
-
+		} catch (InformationRequiredException e) {
+			throw new IllegalArgumentException("Problem with initialize variables before test.");
+		}
 	}
 }

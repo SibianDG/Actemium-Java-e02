@@ -16,18 +16,19 @@ public class KnowledgeBaseFacade implements Facade {
         this.actemium = actemium;
     }
 
-    public void registerKbItem(String title, KbItemType type, String text) throws InformationRequiredException {
+    public void registerKbItem(String title, KbItemType type, String keywords, String text) throws InformationRequiredException {
 		// check to see if signed in user is Support Manager
 		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
     	ActemiumKbItem kbItem = new ActemiumKbItem.KbItemBuilder()
                 .title(title)
                 .type(type)
+                .keywords(keywords)
                 .text(text)
                 .build();
         actemium.registerKbItem(kbItem);
     }
 
-    public void modifyKbItem(ActemiumKbItem kbItem, String title, KbItemType type, String text) throws InformationRequiredException {
+    public void modifyKbItem(ActemiumKbItem kbItem, String title, KbItemType type, String keywords, String text) throws InformationRequiredException {
 
         try {
             ActemiumKbItem kbItemClone = kbItem.clone();
@@ -37,12 +38,14 @@ public class KnowledgeBaseFacade implements Facade {
 
             kbItemClone.setTitle(title);
             kbItemClone.setType(type);
+            kbItemClone.setKeywords(keywords);
             kbItemClone.setText(text);
 
             kbItemClone.checkAttributes();
             
             kbItem.setTitle(title);
             kbItem.setType(type);
+            kbItem.setKeywords(keywords);
             kbItem.setText(text);
 
             actemium.modifyKbItem(kbItem);
