@@ -33,9 +33,8 @@ public class ContractTypeViewModel extends ViewModel {
 
     public void setSelectedContractType(ContractType contractType) {
         this.selectedContractType = contractType;
-        if (contractType != null){
-            // substring(8) to remove ACTEMIUM
-            setCurrentState(GUIEnum.valueOf(contractType.getClass().getSimpleName().substring(8).toUpperCase()));
+        if (contractType != null) {
+            setCurrentState(GUIEnum.CONTRACTTYPE);
         }
         fireInvalidationEvent();
     }

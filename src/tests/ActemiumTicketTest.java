@@ -126,7 +126,7 @@ public class ActemiumTicketTest implements Attributes {
 	@MethodSource("validActemiumTicketAttributes04")
 	public void createActemiumTicket_ValidAttributes04_DoesNotThrowException(TicketPriority ticketPriority, TicketType ticketType,
 			String title, String description, ActemiumCustomer customer) {
-		Assertions.assertDoesNotThrow(() -> new ActemiumTicket.TicketBuiler()
+		Assertions.assertDoesNotThrow(() -> new ActemiumTicket.TicketBuilder()
 																.ticketPriority(ticketPriority)
 																.ticketType(ticketType)
 																.title(title)
@@ -141,7 +141,7 @@ public class ActemiumTicketTest implements Attributes {
 	public void createActemiumTicket_InValidAttributes04_ThrowsIllegalArgumentException(TicketPriority ticketPriority, TicketType ticketType,
 			String title, String description, ActemiumCustomer customer) {
 		Assertions.assertThrows(InformationRequiredException.class,
-				() -> new ActemiumTicket.TicketBuiler()
+				() -> new ActemiumTicket.TicketBuilder()
 										.ticketPriority(ticketPriority)
 										.ticketType(ticketType)
 										.title(title)
@@ -155,7 +155,7 @@ public class ActemiumTicketTest implements Attributes {
 	public void createActemiumTicket_ValidAttributes06_DoesNotThrowException(TicketPriority ticketPriority, TicketType ticketType,
 			String title, String description, ActemiumCustomer customer, String remarks, String attachments) {
 		Assertions.assertDoesNotThrow(
-				() -> new ActemiumTicket.TicketBuiler()
+				() -> new ActemiumTicket.TicketBuilder()
 										.ticketPriority(ticketPriority)
 										.ticketType(ticketType)
 										.title(title)
@@ -169,7 +169,7 @@ public class ActemiumTicketTest implements Attributes {
 	public void createActemiumTicket_InValidAttributes06_ThrowsIllegalArgumentException(TicketPriority ticketPriority, TicketType ticketType,
 			String title, String description, ActemiumCustomer customer, String remarks, String attachments) {
 		Assertions.assertThrows(InformationRequiredException.class,
-				() -> new ActemiumTicket.TicketBuiler()
+				() -> new ActemiumTicket.TicketBuilder()
 										.ticketPriority(ticketPriority)
 										.ticketType(ticketType)
 										.title(title)
@@ -190,7 +190,7 @@ public class ActemiumTicketTest implements Attributes {
 
 	@Override
 	public ActemiumTicket getActemiumTicket() throws InformationRequiredException {
-			return new ActemiumTicket.TicketBuiler()
+			return new ActemiumTicket.TicketBuilder()
 					.ticketPriority(TicketPriority.P1)
 					.ticketType(TicketType.SOFTWARE)
 					.title("Printer Broken")

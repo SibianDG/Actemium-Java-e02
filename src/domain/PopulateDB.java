@@ -370,7 +370,7 @@ public class PopulateDB {
 
         userDao.insert(tech);
         userDao.insert(tech2);
-        ActemiumTicket ticket01 = new ActemiumTicket.TicketBuiler()
+        ActemiumTicket ticket01 = new ActemiumTicket.TicketBuilder()
                                                     .ticketPriority(TicketPriority.P1)
                                                     .ticketType(TicketType.DATABASE)
                                                     .title("Ticket1")
@@ -378,35 +378,35 @@ public class PopulateDB {
                                                     .customer(barak)
                                                     .build();
 
-        ActemiumTicket ticket02 = new ActemiumTicket.TicketBuiler()
+        ActemiumTicket ticket02 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.HARDWARE)
                 .title("Ticket2")
                 .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
                 .customer(jeff)
                 .build();
-        ActemiumTicket ticket03 = new ActemiumTicket.TicketBuiler()
+        ActemiumTicket ticket03 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.INFRASTRUCTURE)
                 .title("BBQ grill stopt working")
                 .description("I was smoking these meats with sweet baby rays saus and suddenly my BBQ stopped working")
                 .customer(mark)
                 .build();
-        ActemiumTicket ticket04 = new ActemiumTicket.TicketBuiler()
+        ActemiumTicket ticket04 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.NETWORK)
                 .title("Microchips in vaccine not working")
                 .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
                 .customer(bill)
                 .build();
-        ActemiumTicket ticket05 = new ActemiumTicket.TicketBuiler()
+        ActemiumTicket ticket05 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.SOFTWARE)
                 .title("Ticket5")
                 .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
                 .customer(larry)
                 .build();
-        ActemiumTicket ticket06 = new ActemiumTicket.TicketBuiler()
+        ActemiumTicket ticket06 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.SOFTWARE)
                 .title("Ticket6")
@@ -599,7 +599,7 @@ public class PopulateDB {
         TicketStatus[] status = TicketStatus.values();
 
         for (int i = 0; i < 20; i++) {
-            ActemiumTicket t = new ActemiumTicket.TicketBuiler()
+            ActemiumTicket t = new ActemiumTicket.TicketBuilder()
                                                     .ticketPriority(prios[randomGen.nextInt(3)])
                                                     .ticketType(types[randomGen.nextInt(types.length)])
                                                     .title("TitleRandom"+i)

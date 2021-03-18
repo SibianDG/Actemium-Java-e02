@@ -32,7 +32,7 @@ public class TicketFacade implements Facade {
 		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
 		ActemiumCustomer customer = (ActemiumCustomer) actemium.findUserById(customerId);
 //		ActemiumTicket ticket = new ActemiumTicket(priority, ticketType, title, description, customer, remarks, attachments);
-		ActemiumTicket ticket = new ActemiumTicket.TicketBuiler()
+		ActemiumTicket ticket = new ActemiumTicket.TicketBuilder()
 							.ticketPriority(priority)
 							.ticketType(ticketType)
 							.description(description)

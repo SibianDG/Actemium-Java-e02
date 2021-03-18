@@ -48,7 +48,7 @@ public class TicketFacadeTest implements Attributes {
     private void trainDummy() throws InformationRequiredException {
         ArrayList<ActemiumTicket> tickets = new ArrayList<>();
         for (int i = 0; i < MAX_NUMBER; i++) {
-            ActemiumTicket ticket = new ActemiumTicket.TicketBuiler()
+            ActemiumTicket ticket = new ActemiumTicket.TicketBuilder()
                     .ticketPriority(TicketPriority.P1)
                     .ticketType(TicketType.SOFTWARE)
                     .title("Printer Broken")
@@ -64,7 +64,7 @@ public class TicketFacadeTest implements Attributes {
 
     @Override
     public ActemiumTicket getActemiumTicket() throws InformationRequiredException {
-        return new ActemiumTicket.TicketBuiler()
+        return new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.SOFTWARE)
                 .title("Printer Broken")

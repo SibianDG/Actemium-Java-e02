@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import domain.Contract;
@@ -44,6 +45,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -139,7 +141,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
         try {
-            viewModel.delete();
+        	if(deleteConfirmationAlert()) {
+        		viewModel.delete();
+        	}
         } catch (InformationRequiredException ire) {
             StringBuilder errorMessage = new StringBuilder();
             ire.getInformationRequired().forEach(e -> {
@@ -155,7 +159,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     @FXML
     void btnModifyOnAction(ActionEvent event) {
-
         try {
             if (viewModel instanceof UserViewModel) {
                 if (editing) {
@@ -412,9 +415,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             btnDelete.setVisible(true);
         } else if (viewModel instanceof TicketViewModel) {
             if (TicketStatus.isOutstanding()) {
-                addGridDetails(((TicketViewModel) viewModel).getDetailsOutstanding());
+                addGridDetails(((TicketViewModel) viewModel).getDetails());
             } else {
-                addGridDetails(((TicketViewModel) viewModel).getDetailsResolved());
+                addGridDetails(((TicketViewModel) viewModel).getDetails());
             }
             txtDetailsTitle.setText("Details of ticket: " + ((TicketViewModel) viewModel).getIdSelectedTicket());
             btnModify.setText("Modify Ticket");
@@ -446,7 +449,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         ArrayList<String> fields = null;
 
         viewModel.setFieldModified(true);
-
 
         if (viewModel instanceof UserViewModel) {
             if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)) {
@@ -737,6 +739,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     private Node createElementDetailGridpane(Map<Boolean, Object> map, String key) {
         boolean disable = (boolean) map.keySet().toArray()[0];
+        boolean editable = disable;
         Object o = map.get(disable);
 
         disable = !disable;
@@ -766,7 +769,10 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                     //detail.setPadding(new Insets(0, 0, 0, 15));
                     detail.setId("textFieldWithPadding");
                 }
-                detail.setDisable(disable);
+                // TextArea should still be scrollable when ticket is resolved
+                // otherwise the technician and support manager can't read
+                // all the text that is written in description
+	            detail.setEditable(editable);
                 detail.setPromptText(key);
 
 	            node = detail;
@@ -786,14 +792,17 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 	                detail.setId("textFieldWithPadding");
 	            }
 	            detail.setDisable(disable);
+//	            detail.setEditable(editable);
 	            detail.setPromptText(key);
 	
 	            node = detail;
 	        }
         } else if (o instanceof Enum) {
             node = makeComboBox(o);
+            node.setDisable(disable);
         } else if (o instanceof Boolean) {
             node = makeComboBox(o);
+            node.setDisable(disable);
         } else if (o instanceof ObservableList) {
             if(viewModel instanceof TicketViewModel)
                 node = makeViewTechnicians(o);
@@ -805,9 +814,11 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             }
         } else if (o instanceof LocalDate) {
             node = makeDatePicker(o);
-        }
-        if (node != null)
             node.setDisable(disable);
+        }
+//        if (node != null) {
+//            node.setDisable(disable);
+//        }
         return node;
     }
 
@@ -899,17 +910,22 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         }
 
         //create Listview for technicians for ticket
-        listView.setMaxHeight(((TicketViewModel) viewModel).getTechniciansAsignedToTicket().size()*25+25);
+        listView.setMaxHeight(((TicketViewModel) viewModel).getTechniciansAsignedToTicket().size()*25+25);		
         listView.getStylesheets().add("file:src/start/styles.css");
         listView.setId("list-view");
         listView.setSelectionModel(null);
-        vBox.getChildren().addAll(menuButton, listView);
-
+        // only show menuButton when ticket is outstanding
+        // hide it when ticket is resolved
+        if (!TicketStatus.isOutstanding()) {        	
+			listView.setMinHeight(50);
+			vBox.getChildren().addAll(listView);
+		} else {
+			vBox.getChildren().addAll(menuButton, listView);
+		}
         return vBox;
     }
 
     private ComboBox makeComboBox(Object o){
-
 
         ObservableList list;
         if (o instanceof Boolean){
@@ -939,7 +955,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     private DatePicker makeDatePicker(Object o) {
 
-        // Create the DatePicker.
         DatePicker datePicker = new DatePicker((LocalDate) o);
 
         String pattern = "yyyy-MM-dd";
@@ -968,27 +983,39 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             }
         });
 
-        // Add some action (in Java 8 lambda syntax style).
         datePicker.setOnAction(event -> {
             LocalDate date = datePicker.getValue();
         });
-
-        // Add the DatePicker to the Stage.
-//    	StackPane root = new StackPane();
-//    	root.getChildren().add(datePicker);
-//    	stage.setScene(new Scene(root, 500, 650));
-//    	stage.show();
+        
         return datePicker;
     }
 
     // replaced by showPopUpMessage
-    private void makePopUp(String headerText, String text){
+    private void makePopUp(String headerText, String text) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, text);
         alert.setHeaderText(headerText);
         alert.getDialogPane().getStylesheets().add("file:src/start/styles.css");
         alert.getDialogPane().getStyleClass().add("alert");
         ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
         alert.showAndWait();
+    }
+    
+    private boolean deleteConfirmationAlert() {
+    	boolean confirmed = false;
+        String headerText = "Delete Confrimation";
+    	String text = "Are you sure you want to delete this item?\nThe item will remain stored in the database.\n(logical delete)";
+    	Alert alert = new Alert(Alert.AlertType.CONFIRMATION, text);
+        alert.setHeaderText(headerText);
+        alert.getDialogPane().getStylesheets().add("file:src/start/styles.css");
+        alert.getDialogPane().getStyleClass().add("alert");
+        ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            confirmed = true;
+        } else {
+            confirmed = false;
+        }
+        return confirmed;
     }
     
     public Popup createPopup(final String message, String popupType) {

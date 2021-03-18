@@ -50,9 +50,8 @@ public class TicketViewModel extends ViewModel {
 
     public void setSelectedTicket(Ticket ticket) {
         this.selectedTicket = ticket;
-        if (ticket != null){
-            // substring(8) to remove ACTEMIUM
-            setCurrentState(GUIEnum.valueOf(ticket.getClass().getSimpleName().substring(8).toUpperCase()));
+        if (ticket != null) {        	
+            setCurrentState(GUIEnum.TICKET);
             setTechniciansAsignedToTicketEmpty();
             //techniciansForTicket = ticket.giveTechnicians();
         }
@@ -63,51 +62,30 @@ public class TicketViewModel extends ViewModel {
         return new ArrayList<String>(Arrays.asList("Title", "Creation date", "Priority", "Type", "Customer ID", "Description", "Remarks", "Attachments"));
     }
 
-    public Map<String, Map<Boolean, Object>> getDetailsOutstanding() {
-        Ticket ticket = selectedTicket;
+    public Map<String, Map<Boolean, Object>> getDetails() {
+        Ticket ticket = selectedTicket;        
         Map<String, Map<Boolean, Object>> details = new LinkedHashMap<>();
-        details.put("Title", Collections.singletonMap(true, ticket.getTitle()));
+        boolean editable = TicketStatus.isOutstanding();
+        details.put("Title", Collections.singletonMap(editable, ticket.getTitle()));
         details.put("Creation date", Collections.singletonMap(false, ticket.getDateOfCreation().format(DateTimeFormatter.ISO_DATE)));
         details.put("Creation time", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_TIME)));
         if (!TicketStatus.isOutstanding()) {
             details.put("Completion date", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_DATE)));
             details.put("Completion time", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_TIME)));
         }
-        details.put("Priority", Collections.singletonMap(true, ticket.getPriority()));
-        details.put("Type", Collections.singletonMap(true, ticket.getTicketType()));
-        details.put("Status", Collections.singletonMap(true, ticket.getStatus()));
-        details.put("Description", Collections.singletonMap(true, ticket.getDescription()));
+        details.put("Priority", Collections.singletonMap(editable, ticket.getPriority()));
+        details.put("Type", Collections.singletonMap(editable, ticket.getTicketType()));
+        details.put("Status", Collections.singletonMap(editable, ticket.getStatus()));
+        details.put("Description", Collections.singletonMap(editable, ticket.getDescription()));
         details.put("Customer/Company", Collections.singletonMap(false, ticket.giveCustomer().giveCompany().getName()));
-        details.put("Technicians", Collections.singletonMap(true, ticket.giveTechnicians()));
-        details.put("Remarks", Collections.singletonMap(true, ticket.getRemarks()));
-        details.put("Attachments", Collections.singletonMap(true, ticket.getAttachments()));
-        return details;
-    }
-
-    public Map<String, Map<Boolean, Object>> getDetailsResolved() {
-        Ticket ticket = selectedTicket;
-        Map<String, Map<Boolean, Object>> details = new LinkedHashMap<>();
-        details.put("Title", Collections.singletonMap(false, ticket.getTitle()));
-        details.put("Creation date", Collections.singletonMap(false, ticket.getDateOfCreation().format(DateTimeFormatter.ISO_DATE)));
-        details.put("Creation time", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_TIME)));
+        details.put("Technicians", Collections.singletonMap(editable, ticket.giveTechnicians()));
+        details.put("Remarks", Collections.singletonMap(editable, ticket.getRemarks()));
+        details.put("Attachments", Collections.singletonMap(editable, ticket.getAttachments()));
         if (!TicketStatus.isOutstanding()) {
-            details.put("Completion date", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_DATE)));
-            details.put("Completion time", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_TIME)));
+        	details.put("Solution", Collections.singletonMap(true, ticket.getSolution()));
+            details.put("Quality", Collections.singletonMap(true, ticket.getQuality()));
+            details.put("Support Needed", Collections.singletonMap(true, ticket.getSupportNeeded()));
         }
-        details.put("Priority", Collections.singletonMap(false, ticket.getPriority()));
-        details.put("Type", Collections.singletonMap(false, ticket.getTicketType()));
-        details.put("Status", Collections.singletonMap(false, ticket.getStatus()));
-        details.put("Description", Collections.singletonMap(false, ticket.getDescription()));
-        details.put("Customer/Company", Collections.singletonMap(false, ticket.giveCustomer().giveCompany().getName()));
-        details.put("Technicians", Collections.singletonMap(false, ticket.giveTechnicians()));
-        details.put("Remarks", Collections.singletonMap(false, ticket.getRemarks()));
-        details.put("Attachments", Collections.singletonMap(false, ticket.getAttachments()));
-        //TODO only the fields below should be editable in resloved tickets
-        // this means all the above fields should be set to false, ...
-        // How will we do this without using one big if/else block?
-        details.put("Solution", Collections.singletonMap(true, ticket.getSolution()));
-        details.put("Quality", Collections.singletonMap(true, ticket.getQuality()));
-        details.put("Support Needed", Collections.singletonMap(true, ticket.getSupportNeeded()));
         return details;
     }
 

@@ -154,7 +154,7 @@ public class CompanyTest implements Attributes {
     @Test
     public void addActemiumTicket_CompanyContainsMultipleTickets() throws InformationRequiredException {
         for (int i = 0; i < MAX_NUMBER; i++) {
-            ActemiumTicket ticket = new ActemiumTicket.TicketBuiler()
+            ActemiumTicket ticket = new ActemiumTicket.TicketBuilder()
                     .ticketPriority(TicketPriority.P1)
                     .ticketType(TicketType.SOFTWARE)
                     .title("Ticket"+i)
@@ -202,7 +202,7 @@ public class CompanyTest implements Attributes {
 
     @Override
     public ActemiumTicket getActemiumTicket() throws InformationRequiredException {
-        return new ActemiumTicket.TicketBuiler()
+        return new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.SOFTWARE)
                 .title("Printer Broken")

@@ -130,7 +130,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 
 	 */
 
-	private ActemiumTicket(TicketBuiler builder) throws InformationRequiredException {
+	private ActemiumTicket(TicketBuilder builder) throws InformationRequiredException {
 		this.status.set(TicketStatus.CREATED.toString());
 		this.priority.set(String.valueOf(builder.ticketPriority));
 		this.ticketType.set(String.valueOf(builder.ticketType));
@@ -364,7 +364,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 		//TODO: maybe not check all?
 		//if you make a new TicketBuilder with the current set attributes, it will throw exception.
 		// Ms. Malfait her idea
-		new TicketBuiler()
+		new TicketBuilder()
 				.ticketPriority(getPriority())
 				.ticketStatus(getStatus())
 				.ticketType(getTicketType())
@@ -383,7 +383,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 
 	}
 
-	public static class TicketBuiler {
+	public static class TicketBuilder {
 		//private int ticketIdInt;
 		//private ActemiumCompany company;
 
@@ -407,65 +407,65 @@ public class ActemiumTicket implements Ticket, Serializable {
 		private Set<RequiredElement> requiredElements;
 
 
-		public TicketBuiler ticketPriority(TicketPriority priority){
+		public TicketBuilder ticketPriority(TicketPriority priority){
 			this.ticketPriority = priority;
 			return this;
 		}
 
-		public TicketBuiler ticketType(TicketType ticketType){
+		public TicketBuilder ticketType(TicketType ticketType){
 			this.ticketType = ticketType;
 			return this;
 		}
-		public TicketBuiler title(String title){
+		public TicketBuilder title(String title){
 			this.title = title;
 			return this;
 		}
-		public TicketBuiler description(String description){
+		public TicketBuilder description(String description){
 			this.description = description;
 			return this;
 		}
-		public TicketBuiler customer(ActemiumCustomer customer){
+		public TicketBuilder customer(ActemiumCustomer customer){
 			this.customer = customer;
 			return this;
 		}
-		public TicketBuiler ticketStatus(TicketStatus ticketStatus){
+		public TicketBuilder ticketStatus(TicketStatus ticketStatus){
 			this.ticketStatus = ticketStatus;
 			return this;
 		}
 
-		public TicketBuiler dateOfCreation(LocalDate dateOfCreation){
+		public TicketBuilder dateOfCreation(LocalDate dateOfCreation){
 			this.dateOfCreation = dateOfCreation;
 			return this;
 		}
-		public TicketBuiler dateAndTimeOfCreation(LocalDateTime dateAndTimeOfCreation){
+		public TicketBuilder dateAndTimeOfCreation(LocalDateTime dateAndTimeOfCreation){
 			this.dateAndTimeOfCreation = dateAndTimeOfCreation;
 			return this;
 		}
-		public TicketBuiler dateAndTimeOfCompletion(LocalDateTime dateAndTimeOfCompletion){
+		public TicketBuilder dateAndTimeOfCompletion(LocalDateTime dateAndTimeOfCompletion){
 			this.dateAndTimeOfCompletion = dateAndTimeOfCompletion;
 			return this;
 		}
-		public TicketBuiler remarks(String remarks){
+		public TicketBuilder remarks(String remarks){
 			this.remarks = remarks;
 			return this;
 		}
-		public TicketBuiler attachments(String attachments){
+		public TicketBuilder attachments(String attachments){
 			this.attachments = attachments;
 			return this;
 		}
-		public TicketBuiler solution(String solution){
+		public TicketBuilder solution(String solution){
 			this.solution = solution;
 			return this;
 		}
-		public TicketBuiler quality(String quality){
+		public TicketBuilder quality(String quality){
 			this.quality = quality;
 			return this;
 		}
-		public TicketBuiler supportNeeded(String supportNeeded){
+		public TicketBuilder supportNeeded(String supportNeeded){
 			this.supportNeeded = supportNeeded;
 			return this;
 		}
-		public TicketBuiler technicians(List<ActemiumEmployee> technicians){
+		public TicketBuilder technicians(List<ActemiumEmployee> technicians){
 			this.technicians = technicians;
 			return this;
 		}
@@ -474,11 +474,11 @@ public class ActemiumTicket implements Ticket, Serializable {
 			requiredElements = new HashSet<>();
 
 			//ActemiumTicket ticket = ;
-			checkAttributesTicketBuiler();
+			checkAttributesTicketBuilder();
 			return new ActemiumTicket(this);
 		}
 
-		public void checkAttributesTicketBuiler() throws InformationRequiredException {
+		public void checkAttributesTicketBuilder() throws InformationRequiredException {
 
 			if (ticketPriority == null)
 				requiredElements.add(RequiredElement.TicketPriorityRequired);
@@ -518,7 +518,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 
 		ActemiumTicket cloned = null;
 		try {
-			cloned = new TicketBuiler()
+			cloned = new TicketBuilder()
 					.ticketStatus(this.getStatus())
 					.ticketPriority(this.getPriority())
 					.ticketType(this.getTicketType())
