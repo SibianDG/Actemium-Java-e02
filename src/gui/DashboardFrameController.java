@@ -268,7 +268,7 @@ public class DashboardFrameController <T,E> extends GuiController {
         } else if (name.toLowerCase().contains("manage") && name.toLowerCase().contains("contracts")) {
         	tableViewPanelCompanion = new TableViewPanelCompanion<>(this, contractViewModel, GUIEnum.CONTRACT, EmployeeRole.valueOf(userFacade.giveUserRole()));
         	switchToManageScreen(name, tableViewPanelCompanion, contractViewModel);
-        } else if (name.toLowerCase().contains("manage") && name.toLowerCase().contains("knowledge")) {
+        } else if ((name.toLowerCase().contains("manage") || name.toLowerCase().contains("consult") ) && name.toLowerCase().contains("knowledge")) {
         	tableViewPanelCompanion = new TableViewPanelCompanion<>(this, knowledgeBaseViewModel, GUIEnum.KNOWLEDGEBASE, EmployeeRole.valueOf(userFacade.giveUserRole()));
         	switchToManageScreen(name, tableViewPanelCompanion, knowledgeBaseViewModel);
         } else {
