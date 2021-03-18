@@ -9,10 +9,12 @@ import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 import domain.enums.RequiredElement;
@@ -38,6 +40,8 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 	private LocalDateTime dateTimeOfChange;
 	
 	private String changeDescription;
+	@Lob
+	@Column
 	private String changeContent;
 	
 	public ActemiumTicketChange() {
@@ -195,7 +199,8 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 		ticketChange.append(String.format("%s: %s %s%n", getUserRole(), user.getFirstName(), user.getLastName()));
 		ticketChange.append(String.format("Date: %s%n", getDateTimeOfChange().format(DateTimeFormatter.ISO_DATE)));
 		ticketChange.append(String.format("Time: %s%n", getDateTimeOfChange().format(DateTimeFormatter.ISO_TIME)));
-		ticketChange.append(String.format("Change: %s%n", getChangeDescription()));
+		ticketChange.append(String.format("Description: %s%n", getChangeDescription()));
+		ticketChange.append(String.format("Change Content: %s%n", getChangeContent()));
 		return ticketChange.toString();
 	}
 

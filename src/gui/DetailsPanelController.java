@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import domain.Contract;
 import domain.Employee;
@@ -147,9 +148,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     void btnHistoryOnAction(ActionEvent event) {
     	// show ticket history
     	
-    	// username (who dit the edit) 				time-of-edit
-    	// String with change that happended
-    	// content of the change
+    	// time-of-edit		username (who dit the edit)
+    	// 					String with change that happended
+    	// 					content of the change
     	
     	// console output
     	System.out.println("==============BEGIN=============\n");
@@ -964,6 +965,13 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                 listView.setMaxHeight(((TicketViewModel) viewModel).getTechniciansAsignedToTicket().size()*25+25);
             });
         }
+        //TODO when adding and then removing a technician with the menu
+        // but leaving the end result unchanged, it still thinks there is a modification
+        // causes an unnecessary modifyTicket and adds a useless entry in tickethistory        
+//        if(technicians.equals(((TicketViewModel) viewModel).getTechniciansAsignedToTicket().stream().collect(Collectors.toList()))){
+//        	viewModel.setFieldModified(false);
+//        	System.out.println("huh");
+//        }
 
         //create Listview for technicians for ticket
         listView.setMaxHeight(((TicketViewModel) viewModel).getTechniciansAsignedToTicket().size()*25+25);		
