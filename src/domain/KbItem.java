@@ -7,9 +7,11 @@ public interface KbItem {
 
 	public String getTitle();
 
-	public String getTicketTypeAsString();
+	public String getTypeAsString();
 
 	public KbItemType getType();
+	
+	public String getKeywords();
 
 	public String getText();
 

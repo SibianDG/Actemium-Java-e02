@@ -37,6 +37,7 @@ public class ActemiumKbItem implements KbItem, Serializable {
 	@Transient
 	private StringProperty type = new SimpleStringProperty();
 	
+	private String keywords;
 	private String text;
 
 	public ActemiumKbItem() {
@@ -46,6 +47,7 @@ public class ActemiumKbItem implements KbItem, Serializable {
 	private ActemiumKbItem(KbItemBuilder builder) throws InformationRequiredException {
 		this.title.set(builder.title);
 		this.type.set(String.valueOf(builder.type));
+		this.keywords = builder.keywords;
 		this.text = builder.text;
 	}
 		
@@ -58,7 +60,7 @@ public class ActemiumKbItem implements KbItem, Serializable {
 		this.title.set(title);
 	}
 
-	public String getTicketTypeAsString() {
+	public String getTypeAsString() {
 		return type.get();
 	}
 
@@ -70,6 +72,14 @@ public class ActemiumKbItem implements KbItem, Serializable {
 
 	public void setType(KbItemType type) {
 		this.type.set(String.valueOf(type));
+	}
+	
+	public String getKeywords() {
+		return keywords;
+	}
+	
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
 	}
 	
 	public String getText() {
@@ -92,6 +102,7 @@ public class ActemiumKbItem implements KbItem, Serializable {
 		new KbItemBuilder()
 			.title(this.getTitle())
 			.type(this.getType())
+			.keywords(this.getKeywords())
 			.text(this.getText())
 			.build();
 	}
@@ -99,6 +110,7 @@ public class ActemiumKbItem implements KbItem, Serializable {
 	public static class KbItemBuilder {
 		private String title;
 		private KbItemType type;
+		private String keywords;
 		private String text;
 
 		private Set<RequiredElement> requiredElements;
@@ -109,6 +121,10 @@ public class ActemiumKbItem implements KbItem, Serializable {
 		}
 		public KbItemBuilder type(KbItemType type) {
 			this.type = type;
+			return this;
+		}
+		public KbItemBuilder keywords(String keywords) {
+			this.keywords = keywords;
 			return this;
 		}
 		public KbItemBuilder text(String text) {
@@ -124,11 +140,13 @@ public class ActemiumKbItem implements KbItem, Serializable {
 
 		private void checkAttributesKbItemBuiler() throws InformationRequiredException {
 			if (title == null || title.isBlank())
-				requiredElements.add(RequiredElement.TicketTitleRequired);
+				requiredElements.add(RequiredElement.KbItemTitleRequired);
 			if(type == null)
-				requiredElements.add(RequiredElement.TicketTypeRequired);
+				requiredElements.add(RequiredElement.KbItemTypeRequired);
+			if(keywords == null || keywords.isBlank())
+				requiredElements.add(RequiredElement.KbItemKeywordsRequired);
 			if(text == null || text.isBlank())
-				requiredElements.add(RequiredElement.TicketDescriptionRequired);
+				requiredElements.add(RequiredElement.KbItemTextRequired);
 
 			if (!requiredElements.isEmpty())
 				throw new InformationRequiredException(requiredElements);
@@ -142,6 +160,7 @@ public class ActemiumKbItem implements KbItem, Serializable {
 			cloned = new ActemiumKbItem.KbItemBuilder()
 					.title(this.getTitle())
 					.type(this.getType())
+					.keywords(this.getKeywords())
 					.text(this.getText())
 					.build();
 		} catch (InformationRequiredException e) {
