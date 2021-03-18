@@ -127,7 +127,7 @@ public class TicketFacade implements Facade {
 	
 	public ObservableList<Ticket> giveActemiumTicketsCompleted() {
 		return FXCollections.observableArrayList(
-				actemium.giveActemiumTicketsOutstanding()
+				actemium.giveActemiumTicketsResolved()
 					.stream()
 					.filter(t -> t.getStatus().equals(TicketStatus.COMPLETED))
 					.collect(Collectors.toList()));

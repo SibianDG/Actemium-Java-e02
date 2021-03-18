@@ -723,7 +723,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             Label label = makeNewLabel(key, true);
 
             Node detail = createElementDetailGridpane(details.get(key), key);
-            if (key.toLowerCase().contains("contracts")){
+            if (key.toLowerCase().contains("contracts")
+            		|| key.toLowerCase().contains("ticketsofsametype")){
                 gridDetails.add(label, 0, i);
                 gridDetails.add(detail, 0, i+1);
                 setColumnSpan(detail, 2);
@@ -884,6 +885,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         tableView.setSelectionModel(null);
         tableView.getStyleClass().add("ignoreHover");
 
+        tableView.setMaxHeight(list.size()*25+75);
+        
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         return tableView;
     }

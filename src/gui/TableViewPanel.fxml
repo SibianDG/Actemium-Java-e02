@@ -37,7 +37,7 @@
                   </Button>
                   <HBox alignment="CENTER_RIGHT" spacing="16.0">
                      <children>
-                        <Button fx:id="btnP1" mnemonicParsing="false" onMouseClicked="#addOnMouseClicked" styleClass="btn-red" text="P1">
+                        <Button fx:id="btnP1" mnemonicParsing="false" onMouseClicked="#addOnMouseClicked" styleClass="button-red" text="P1">
                            <padding>
                               <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                            </padding>
