@@ -221,11 +221,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                         );
                     }
                 }
-                //TODO
-                // This is just a draft version, nothing is correct here,
-                // everything still needs to be implemented properly
-                // (but you can already modify a ticket
-                // and click on add new ticket)
             } else if (viewModel instanceof TicketViewModel) {
                 if (editing) {
                     if(viewModel.isFieldModified() && TicketStatus.isOutstanding()){

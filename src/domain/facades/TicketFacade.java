@@ -1,5 +1,6 @@
 package domain.facades;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +34,7 @@ public class TicketFacade implements Facade {
 		ActemiumCustomer customer = (ActemiumCustomer) actemium.findUserById(customerId);
 //		ActemiumTicket ticket = new ActemiumTicket(priority, ticketType, title, description, customer, remarks, attachments);
 		ActemiumTicket ticket = new ActemiumTicket.TicketBuilder()
+							.title(title)
 							.ticketPriority(priority)
 							.ticketType(ticketType)
 							.description(description)

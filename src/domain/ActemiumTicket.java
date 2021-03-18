@@ -172,7 +172,8 @@ public class ActemiumTicket implements Ticket, Serializable {
 	}
 
 	public void setStatus(TicketStatus ticketStatus) throws InformationRequiredException {
-		if (ticketStatus == TicketStatus.COMPLETED) {
+		if (ticketStatus == TicketStatus.COMPLETED
+				|| ticketStatus == TicketStatus.CANCELLED) {
 			setDateAndTimeOfCompletion(LocalDateTime.now());
 		}
 		this.status.set(ticketStatus.toString());

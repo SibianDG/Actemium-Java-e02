@@ -18,9 +18,10 @@ import repository.UserDaoJpa;
 public class PopulateDB {
     public void run(UserDaoJpa userDao, GenericDao<ActemiumContractType> contractTypeDao,
     		GenericDao<ActemiumKbItem> kbItemDao) throws InformationRequiredException {
+    	
     	System.out.println("DBTester - creating and persisting multiple user objects");
+    	
         userDao.startTransaction();
-
 
         ActemiumCompany theWhiteHouse = new ActemiumCompany.CompanyBuilder()
                 .name("The White House")
@@ -29,7 +30,6 @@ public class PopulateDB {
                 .address("1600 Pennsylvania Avenue NW")
                 .phoneNumber("+1-202-456-1111")
                 .build();
-
 
         ActemiumCompany naessensNV = new ActemiumCompany.CompanyBuilder()
                 .name("Construct Willy Naessens")
@@ -62,13 +62,7 @@ public class PopulateDB {
                 .address("1 Hacker Way")
                 .phoneNumber("+1-650-308-7300")
                 .build();
-        new ActemiumCompany.CompanyBuilder()
-                .name("Amazon")
-                .country("United States")
-                .city("Seattle, WA 98109-5210")
-                .address("410 Terry Avenue North")
-                .phoneNumber("+1-206-266-1000")
-                .build();
+        
         ActemiumCompany amazon = new ActemiumCompany.CompanyBuilder()
                 .name("Amazon")
                 .country("United States")
@@ -76,6 +70,7 @@ public class PopulateDB {
                 .address("410 Terry Avenue North")
                 .phoneNumber("+1-206-266-1000")
                 .build();
+        
         ActemiumCompany tesla = new ActemiumCompany.CompanyBuilder()
                 .name("Tesla")
                 .country("United States")
@@ -107,6 +102,7 @@ public class PopulateDB {
                 .minThroughputTime(2)
                 .price(999.99)
                 .build();
+        
         ActemiumContractType cCtype = new ActemiumContractType.ContractTypeBuilder()
                 .contractTypeName("BasicAppSupport")
                 .contractTypeStatus(ContractTypeStatus.ACTIVE)
@@ -130,6 +126,7 @@ public class PopulateDB {
                 .minThroughputTime(1)
                 .price(1999.99)
                 .build();
+        
         ActemiumContractType eCtype = new ActemiumContractType.ContractTypeBuilder()
                 .contractTypeName("FullPhoneSupport")
                 .contractTypeStatus(ContractTypeStatus.ACTIVE)
@@ -435,7 +432,7 @@ public class PopulateDB {
                 .username("Admin123")
                 .password("Passwd123&")
                 .firstName("Admin")
-                .lastName("Administrator")
+                .lastName("Istrator")
                 .address("Overwale 42")
                 .phoneNumber("091354864")
                 .emailAddress("thomas.dirven@hogent.be")
@@ -444,8 +441,8 @@ public class PopulateDB {
         userDao.insert( new ActemiumEmployee.EmployeeBuilder()
                 .username("Sup123")
                 .password("Passwd123&")
-                .firstName("Sup")
-                .lastName("Support manager")
+                .firstName("Support")
+                .lastName("Manager")
                 .address("Overwale 42")
                 .phoneNumber("091354864")
                 .emailAddress("thomas.dirven@hogent.be")
@@ -454,8 +451,8 @@ public class PopulateDB {
         userDao.insert( new ActemiumEmployee.EmployeeBuilder()
                 .username("Tech123")
                 .password("Passwd123&")
-                .firstName("tech")
-                .lastName("technician")
+                .firstName("Tech")
+                .lastName("Nician")
                 .address("Overwale 42")
                 .phoneNumber("091354864")
                 .emailAddress("thomas.dirven@hogent.be")

@@ -70,8 +70,8 @@ public class TicketViewModel extends ViewModel {
         details.put("Creation date", Collections.singletonMap(false, ticket.getDateOfCreation().format(DateTimeFormatter.ISO_DATE)));
         details.put("Creation time", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_TIME)));
         if (!TicketStatus.isOutstanding()) {
-            details.put("Completion date", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_DATE)));
-            details.put("Completion time", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_TIME)));
+            details.put("Completion date", Collections.singletonMap(false, ticket.getDateAndTimeOfCompletion().format(DateTimeFormatter.ISO_DATE)));
+            details.put("Completion time", Collections.singletonMap(false, ticket.getDateAndTimeOfCompletion().format(DateTimeFormatter.ISO_TIME)));
         }
         details.put("Priority", Collections.singletonMap(editable, ticket.getPriority()));
         details.put("Type", Collections.singletonMap(editable, ticket.getTicketType()));
