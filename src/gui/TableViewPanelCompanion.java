@@ -102,7 +102,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
         } catch (IOException e) {
         	throw new RuntimeException(e);
         }
-
+		
 		if(employeeRole.equals(EmployeeRole.TECHNICIAN)) {
 			btnAdd.setVisible(false);
 		} else {
