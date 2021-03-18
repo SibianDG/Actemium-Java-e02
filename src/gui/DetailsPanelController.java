@@ -93,6 +93,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     private Button btnModify;
     
     @FXML
+    private Button btnHistory;
+    
+    @FXML
     private HBox hBoxModify;
 
     @FXML
@@ -135,8 +138,14 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         txtDetailsTitle.setText(LanguageResource.getString("nothingSelected"));
         gridDetails.getChildren().clear();
         btnModify.setVisible(false);
+        btnHistory.setVisible(false);
         btnDelete.setVisible(false);
         txtErrorMessage.setVisible(false);
+    }
+    
+    @FXML
+    void btnHistoryOnAction(ActionEvent event) {
+    	// show ticket history
     }
 
     @FXML
@@ -420,6 +429,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             txtDetailsTitle.setText("Details of ticket: " + ((TicketViewModel) viewModel).getIdSelectedTicket());
             btnModify.setText("Modify Ticket");
             btnDelete.setVisible(true);
+            btnHistory.setVisible(true);
         } else if (viewModel instanceof ContractTypeViewModel) {
             addGridDetails(((ContractTypeViewModel) viewModel).getDetails());
             txtDetailsTitle.setText("Details of ContractType: " + ((ContractTypeViewModel) viewModel).getNameSelectedContractType());
