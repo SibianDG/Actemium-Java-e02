@@ -279,7 +279,7 @@ public class DashboardFrameController <T,E> extends GuiController {
 	private void switchToManageScreen(String name, TableViewPanelCompanion<T,E> tableViewPanelCompanion, ViewModel viewModel) {
 		//txtTitle.setText(name);
 		resetGridpane(gridContent);
-		
+
 		//tableViewPanelCompanion = new TableViewPanelCompanion(this, userViewModel, currentState);
 		detailsPanelController = new DetailsPanelController(viewModel);
 		gridContent.add(tableViewPanelCompanion, 0, 0);
@@ -290,6 +290,8 @@ public class DashboardFrameController <T,E> extends GuiController {
         gridPane.getChildren().clear();
         gridPane.getColumnConstraints().clear();
         gridPane.getRowConstraints().clear();
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
     }
 
     private void initializeGridPane(int x, int y, double height, double width) {

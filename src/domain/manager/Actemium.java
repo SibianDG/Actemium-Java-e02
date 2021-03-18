@@ -249,6 +249,7 @@ public class Actemium {
 
 	public void checkPermisionForModifyEmployee(EmployeeRole role, String username) {
 		if (!signedInUser.getUsername().equals(username)){
+
 			checkPermision(role);
 		}
 	}

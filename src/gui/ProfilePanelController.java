@@ -65,6 +65,7 @@ public class ProfilePanelController extends GridPane  {
 
                 showPopupMessage("popupSuccess", "You have successfully edited your profile.");
                 txtErrorMessage.setVisible(false);
+                profileViewModel.setFieldModified(false);
 
             } else {
                 showPopupMessage("popupWarning", LanguageResource.getString("unchangedMessage"));
