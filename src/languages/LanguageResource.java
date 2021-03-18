@@ -28,11 +28,12 @@ package languages;
 		}
 
 		public static void setLocale(Locale locale) {
-			if (locale.toString().equals("en") || locale.toString().equals("fr") || locale.toString().equals("nl")) {
+			if (locale.toString().equals("en") || locale.toString().equals("fr") || locale.toString().equals("nl") || locale.toString().equals("de")) {
 				LanguageResource.locale = locale;
 			} else {
 				LanguageResource.locale = new Locale("en");
 			}
+			System.out.println(getLocale());
 			setBundle();
 		}
 

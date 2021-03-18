@@ -140,13 +140,18 @@ public class LoginController extends GuiController {
 
     @FXML
     void btnLanguageOnMousePressed(MouseEvent event) {
-        if (btnLanguage.getText().equalsIgnoreCase("nl")){
+        if (btnLanguage.getText().equalsIgnoreCase("nl")) {
             LanguageResource.setLocale(new Locale("nl"));
-            btnLanguage.setText("EN");
-
-        } else {
+            btnLanguage.setText("FR");
+        } else if (btnLanguage.getText().equalsIgnoreCase("en")){
             LanguageResource.setLocale(Locale.ENGLISH);
             btnLanguage.setText("NL");
+        } else if (btnLanguage.getText().equalsIgnoreCase("fr")) {
+            LanguageResource.setLocale(Locale.FRENCH);
+            btnLanguage.setText("DE");
+        } else if (btnLanguage.getText().equalsIgnoreCase("de")) {
+            LanguageResource.setLocale(Locale.GERMAN);
+            btnLanguage.setText("EN");
         }
 
         setCorrectLanguagesAllTexts();
