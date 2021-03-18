@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -39,6 +40,8 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import languages.LanguageResource;
+
+import java.awt.Desktop;
 
 public class DashboardFrameController <T,E> extends GuiController {
 	
@@ -186,8 +189,13 @@ public class DashboardFrameController <T,E> extends GuiController {
                     tableViewPanelCompanion.alertChangesOnTabelView();
                 if (profilePanelController != null)
                     profilePanelController.alertChanges();
-                if (enabled)
-                    buttonMenusClicked(text);
+                if (enabled) {
+                    try {
+                        buttonMenusClicked(text);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                }
             });
             hboxMenu.getChildren().add(button);
         }
@@ -229,7 +237,13 @@ public class DashboardFrameController <T,E> extends GuiController {
 
     private void addDashboardItem(String name, ImageView imageView, int x, int y, int i) {
         DashboardTile dashboardTile = new DashboardTile(imageView, name, i%2);
-        dashboardTile.setOnMouseClicked(e -> buttonMenusClicked(name) );
+        dashboardTile.setOnMouseClicked(e -> {
+            try {
+                buttonMenusClicked(name);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
         dashboardTiles.add(dashboardTile);
         gridContent.add(dashboardTile, x, y);
         setFillHeight(dashboardTile, true);
@@ -239,7 +253,7 @@ public class DashboardFrameController <T,E> extends GuiController {
 
     }
 
-    private void buttonMenusClicked(String name) {
+    private void buttonMenusClicked(String name) throws IOException {
         hboxMenu.getChildren().forEach(child -> child.getStyleClass().remove("menuButton-active"));
         hboxMenu.getChildren().forEach(child -> {
             if (((Button) child).getText().replace("\n", " ").toLowerCase().contains(name.toLowerCase())) {
@@ -273,6 +287,7 @@ public class DashboardFrameController <T,E> extends GuiController {
         	switchToManageScreen(name, tableViewPanelCompanion, knowledgeBaseViewModel);
         } else {
             makePopUp(name);
+            Desktop.getDesktop().open(new File("src/powerBi/PowerBiTest.pbix"));
         }
     }
 
@@ -377,7 +392,7 @@ public class DashboardFrameController <T,E> extends GuiController {
         initializeDashboard();
     }
 
-    private void makePopUp(String text){
+    private void makePopUp(String text) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, text);
 
         alert.getDialogPane().getStylesheets().add("file:src/start/styles.css");
