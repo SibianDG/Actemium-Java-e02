@@ -10,12 +10,12 @@ package languages;
 		private static final String location = "languages/resourcebundle/languages";
 
 		static {
-			setLocale(new Locale("en"));
+			setLocale(new Locale("nl"));
 			setBundle();
 		}
 
 		public LanguageResource() {
-			setLocale(new Locale("en"));
+			setLocale(new Locale("nl"));
 			setBundle();
 		}
 
@@ -31,7 +31,7 @@ package languages;
 			if (locale.toString().equals("en") || locale.toString().equals("fr") || locale.toString().equals("nl")) {
 				LanguageResource.locale = locale;
 			} else {
-				LanguageResource.locale = new Locale("en");
+				LanguageResource.locale = new Locale("nl");
 			}
 			setBundle();
 		}
