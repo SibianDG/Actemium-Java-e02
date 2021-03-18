@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -54,7 +55,10 @@ public class ActemiumTicket implements Ticket, Serializable {
 	private StringProperty status = new SimpleStringProperty();
 	@Transient
 	private StringProperty priority = new SimpleStringProperty();
+	
 	private LocalDate dateOfCreation;
+	@Transient
+	private StringProperty completionDate = new SimpleStringProperty();
 
 	// For statistics
 	private LocalDateTime dateAndTimeOfCreation;
@@ -359,6 +363,11 @@ public class ActemiumTicket implements Ticket, Serializable {
 
 	public StringProperty ticketTypeProperty() {
 		return ticketType;
+	}
+	
+	public StringProperty completionDateProperty() {
+		this.completionDate.set(getDateAndTimeOfCompletion().format(DateTimeFormatter.ISO_DATE));
+		return completionDate;
 	}
 
 	public void checkAttributes() throws InformationRequiredException {

@@ -1,6 +1,5 @@
 package domain.facades;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,6 +10,7 @@ import domain.ActemiumTicket;
 import domain.Employee;
 import domain.Ticket;
 import domain.enums.EmployeeRole;
+import domain.enums.KbItemType;
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
@@ -123,11 +123,68 @@ public class TicketFacade implements Facade {
 	public ObservableList<Ticket> giveActemiumTicketsOutstanding() {
 		return actemium.giveActemiumTicketsOutstanding();
 	}
+	
+	public ObservableList<Ticket> giveActemiumTicketsCompleted() {
+		return FXCollections.observableArrayList(
+				actemium.giveActemiumTicketsOutstanding()
+					.stream()
+					.filter(t -> t.getStatus().equals(TicketStatus.COMPLETED))
+					.collect(Collectors.toList()));
+	}
 
 	public ObservableList<Employee> getAllTechnicians() {
 		return FXCollections.observableArrayList(actemium.giveActemiumEmployees()
 				.stream()
 				.filter(t -> t.getRole() == EmployeeRole.TECHNICIAN)
 				.collect(Collectors.toList()));
+	}
+
+	public ObservableList<Ticket> giveTicketsOfSameType(KbItemType type) {
+		ObservableList<Ticket> ticketsOfSameType;
+		switch(type) {
+		case HARDWARE -> {
+			ticketsOfSameType = FXCollections.observableArrayList(
+					giveActemiumTicketsCompleted()
+					.stream()
+					.filter(t -> t.getTicketType() == TicketType.HARDWARE)
+					.collect(Collectors.toList()));
+		}
+		case SOFTWARE -> {
+			ticketsOfSameType = FXCollections.observableArrayList(
+					giveActemiumTicketsCompleted()
+					.stream()
+					.filter(t -> t.getTicketType() == TicketType.SOFTWARE)
+					.collect(Collectors.toList()));
+		}
+		case INFRASTRUCTURE -> {
+			ticketsOfSameType = FXCollections.observableArrayList(
+					giveActemiumTicketsCompleted()
+					.stream()
+					.filter(t -> t.getTicketType() == TicketType.INFRASTRUCTURE)
+					.collect(Collectors.toList()));
+		}
+		case DATABASE -> {
+			ticketsOfSameType = FXCollections.observableArrayList(
+					giveActemiumTicketsCompleted()
+					.stream()
+					.filter(t -> t.getTicketType() == TicketType.DATABASE)
+					.collect(Collectors.toList()));
+		}
+		case NETWORK -> {
+			ticketsOfSameType = FXCollections.observableArrayList(
+					giveActemiumTicketsCompleted()
+					.stream()
+					.filter(t -> t.getTicketType() == TicketType.NETWORK)
+					.collect(Collectors.toList()));
+		}
+		default -> {
+			ticketsOfSameType = FXCollections.observableArrayList(
+					giveActemiumTicketsCompleted()
+					.stream()
+					.filter(t -> t.getTicketType() == TicketType.OTHER)
+					.collect(Collectors.toList()));
+		}
+		}
+		return ticketsOfSameType;
 	}
 }

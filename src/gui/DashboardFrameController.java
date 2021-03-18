@@ -114,7 +114,7 @@ public class DashboardFrameController <T,E> extends GuiController {
         this.ticketViewModel = new TicketViewModel(ticketFacade);        
         this.contractTypeViewModel = new ContractTypeViewModel(contractTypeFacade);    
         this.contractViewModel = new ContractViewModel(contractFacade);    
-        this.knowledgeBaseViewModel = new KnowledgeBaseViewModel(knowledgeBaseFacade);
+        this.knowledgeBaseViewModel = new KnowledgeBaseViewModel(knowledgeBaseFacade, ticketFacade);
         this.profileViewModel = new ProfileViewModel(userFacade);
         
         this.loginController = loginController;

@@ -62,4 +62,6 @@ public interface Ticket {
 
 	public StringProperty ticketTypeProperty();
 	
+	public StringProperty completionDateProperty();
+	
 }

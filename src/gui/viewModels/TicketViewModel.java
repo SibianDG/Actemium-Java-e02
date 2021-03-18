@@ -28,7 +28,7 @@ public class TicketViewModel extends ViewModel {
     public TicketViewModel(TicketFacade ticketFacade) {
         super();
         this.ticketFacade = ticketFacade;
-        //his.userFacade = userFacade;
+        //this.userFacade = userFacade;
         setCurrentState(GUIEnum.TICKET);
     }
 

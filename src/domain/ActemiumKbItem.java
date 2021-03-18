@@ -20,6 +20,7 @@ import domain.enums.RequiredElement;
 import exceptions.InformationRequiredException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableList;
 
 @Entity
 @Access(AccessType.FIELD)
@@ -39,6 +40,9 @@ public class ActemiumKbItem implements KbItem, Serializable {
 	
 	private String keywords;
 	private String text;
+	
+	@Transient
+	private ObservableList<Ticket> ticketsOfSameType;
 
 	public ActemiumKbItem() {
 		super();
@@ -88,6 +92,11 @@ public class ActemiumKbItem implements KbItem, Serializable {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+	
+	public ObservableList<Ticket> giveTicketsOfSameType() {
+		// TODO Auto-generated method stub
+		return ticketsOfSameType;
 	}
 
 	public StringProperty titleProperty() {

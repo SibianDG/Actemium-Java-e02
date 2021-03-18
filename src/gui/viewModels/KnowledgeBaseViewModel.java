@@ -10,6 +10,7 @@ import domain.ActemiumKbItem;
 import domain.KbItem;
 import domain.enums.KbItemType;
 import domain.facades.KnowledgeBaseFacade;
+import domain.facades.TicketFacade;
 import exceptions.InformationRequiredException;
 import gui.GUIEnum;
 import javafx.collections.ObservableList;
@@ -19,10 +20,12 @@ public class KnowledgeBaseViewModel extends ViewModel {
 	private GUIEnum currentState;
 	private KbItem selectedKbItem;
 	private final KnowledgeBaseFacade knowledgeBaseFacade;
+	private final TicketFacade ticketFacade;
 
-	public KnowledgeBaseViewModel(KnowledgeBaseFacade knowledgeBaseFacade) {
+	public KnowledgeBaseViewModel(KnowledgeBaseFacade knowledgeBaseFacade, TicketFacade ticketFacade) {
 		super();
 		this.knowledgeBaseFacade = knowledgeBaseFacade;
+		this.ticketFacade = ticketFacade;
 		setCurrentState(GUIEnum.KNOWLEDGEBASE);
 	}
 
@@ -37,14 +40,13 @@ public class KnowledgeBaseViewModel extends ViewModel {
 	public void setSelectedKbItem(KbItem kbItem) {
 		this.selectedKbItem = kbItem;
 		if (kbItem != null) {
-			// substring(8) to remove ACTEMIUM
 			setCurrentState(GUIEnum.KNOWLEDGEBASE);
 		}
 		fireInvalidationEvent();
 	}
 
 	public ArrayList<String> getDetailsNewKbItem() {
-		return new ArrayList<String>(Arrays.asList("Title", "Type", "Text"));
+		return new ArrayList<String>(Arrays.asList("Title", "Type", "Keywords", "Text"));
 	}
 
     public Map<String, Map<Boolean, Object>> getDetails() {
@@ -54,6 +56,7 @@ public class KnowledgeBaseViewModel extends ViewModel {
         details.put("Type", Collections.singletonMap(true, kbItem.getType()));        
         details.put("Keywords", Collections.singletonMap(true, kbItem.getKeywords()));
         details.put("Text", Collections.singletonMap(true, kbItem.getText()));
+        details.put("TicketsOfSameType", Collections.singletonMap(true, ticketFacade.giveTicketsOfSameType(selectedKbItem.getType())));
 
 		return details;
 	}

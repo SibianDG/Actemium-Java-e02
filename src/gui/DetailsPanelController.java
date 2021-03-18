@@ -16,6 +16,7 @@ import java.util.Set;
 
 import domain.Contract;
 import domain.Employee;
+import domain.Ticket;
 import domain.enums.ContractStatus;
 import domain.enums.ContractTypeStatus;
 import domain.enums.EmployeeRole;
@@ -803,9 +804,14 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         } else if (o instanceof ObservableList) {
             if(viewModel instanceof TicketViewModel)
                 node = makeViewTechnicians(o);
+            else if(viewModel instanceof KnowledgeBaseViewModel)
+            	if(((ObservableList) o).size() > 0)
+            		node = makeTableViewTicketsInKb(o);
+                else
+                    node = makeNewLabel("No items available", false);
             else if(viewModel instanceof UserViewModel){
                 if(((ObservableList) o).size() > 0)
-                    node = makeTableView(o);
+                    node = makeTableViewContractsInCustomers(o);
                 else
                     node = makeNewLabel("No items available", false);
             }
@@ -819,7 +825,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         return node;
     }
 
-    private <T> Node makeTableView(Object o) {
+    private <T> Node makeTableViewContractsInCustomers(Object o) {
         //ObservableList<String> list = FXCollections.observableArrayList(contracts.stream().map(c -> c.toString()).collect(Collectors.toList()));
         ObservableList<Contract> list = (ObservableList<Contract>) o;
         TableView<Contract> tableView = new TableView<>(list);
@@ -845,6 +851,34 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         tableView.getColumns().add(columnName);
         tableView.getColumns().add(columnStatus);
         tableView.getColumns().add(columnStartDate);
+        tableView.getColumns().add(columnEndDate);
+
+        tableView.setSelectionModel(null);
+        tableView.getStyleClass().add("ignoreHover");
+
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        return tableView;
+    }
+    
+    private <T> Node makeTableViewTicketsInKb(Object o) {
+        //ObservableList<String> list = FXCollections.observableArrayList(contracts.stream().map(c -> c.toString()).collect(Collectors.toList()));
+        ObservableList<Ticket> list = (ObservableList<Ticket>) o;
+        TableView<Ticket> tableView = new TableView<>(list);
+        TableColumn<Ticket, Number> columnID = new TableColumn<>("ID");
+        columnID.setCellValueFactory(cellData -> cellData.getValue().ticketIdProperty());
+
+        TableColumn<Ticket, String> columnName = new TableColumn<>("Priority");
+        columnName.setCellValueFactory(cellData -> cellData.getValue().priorityProperty());
+
+        TableColumn<Ticket, String> columnStatus = new TableColumn<>("Title");
+        columnStatus.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
+
+        TableColumn<Ticket, String> columnEndDate = new TableColumn<>("Completion Date");
+        columnEndDate.setCellValueFactory(cellData -> cellData.getValue().completionDateProperty());
+
+        tableView.getColumns().add(columnID);
+        tableView.getColumns().add(columnName);
+        tableView.getColumns().add(columnStatus);
         tableView.getColumns().add(columnEndDate);
 
         tableView.setSelectionModel(null);
@@ -1044,7 +1078,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             @Override
             public void handle(WindowEvent e) {
 				popup.setX(1300 - popup.getWidth()/2);
-				popup.setY(260 + hBoxModify.getLayoutY() - popup.getHeight()/2);
+				popup.setY(190 + hBoxModify.getLayoutY() - popup.getHeight()/2);
             }
         });
         popup.show(stage);
