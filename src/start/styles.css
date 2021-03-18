@@ -18,6 +18,16 @@
     -fx-background-color: #5070b5;
 }
 
+.button-orange {
+	-fx-background-color: #FF8C00;
+    -fx-text-fill: #ffffff;
+}
+
+.button-yellow {
+	-fx-background-color: #FFFF00;
+	-fx-text-fill: #ffffff;
+}
+
 .bg-white {
     -fx-background-color: #ffffff;
 }

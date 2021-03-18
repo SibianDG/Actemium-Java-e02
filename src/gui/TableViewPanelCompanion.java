@@ -72,6 +72,15 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 
 	@FXML
     private Button btnAdd;
+	
+	@FXML
+	private Button btnP1;
+
+	@FXML
+	private Button btnP2;
+
+	@FXML
+	private Button btnP3;
 
     @FXML
     private Text txtFilter;
@@ -102,6 +111,10 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
         } catch (IOException e) {
         	throw new RuntimeException(e);
         }
+		
+		btnP1.setVisible(false);
+		btnP2.setVisible(false);
+		btnP3.setVisible(false);
 		
 		if(employeeRole.equals(EmployeeRole.TECHNICIAN)) {
 			btnAdd.setVisible(false);
@@ -138,6 +151,19 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 				
 				if (TicketStatus.isOutstanding()) {
 					this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTicketsOutstanding();
+					int amountOfP1Tickets = this.mainData.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P1 )).collect(Collectors.toList()).size();
+					int amountOfP2Tickets = this.mainData.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P2 )).collect(Collectors.toList()).size();
+					int amountOfP3Tickets = this.mainData.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P3 )).collect(Collectors.toList()).size();
+					
+					System.out.println(amountOfP1Tickets + " " + amountOfP2Tickets + " " + amountOfP3Tickets);
+					
+					btnP1.setText(String.valueOf(amountOfP1Tickets));		
+					btnP2.setText(String.valueOf(amountOfP2Tickets));
+					btnP3.setText(String.valueOf(amountOfP3Tickets));
+					btnP1.setVisible(true);
+					btnP2.setVisible(true);
+					btnP3.setVisible(true);	
+					
 				} else {
 					this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTicketsResolved();
 				}
