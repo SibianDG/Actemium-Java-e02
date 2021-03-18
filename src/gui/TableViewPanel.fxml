@@ -31,6 +31,9 @@
                      <font>
                         <Font name="Arial Bold" size="16.0" />
                      </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </Button>
                   <HBox alignment="CENTER_RIGHT" spacing="16.0">
                      <children>
@@ -58,7 +61,7 @@
                               <Font name="Arial Bold" size="16.0" />
                            </font>
                            <cursor>
-                              <Cursor fx:constant="NONE" />
+                              <Cursor fx:constant="DEFAULT" />
                            </cursor>
                         </Button>
                      </children>
