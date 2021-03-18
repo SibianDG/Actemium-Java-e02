@@ -628,17 +628,13 @@ public class PopulateDB {
 		contractTypeDao.commitTransaction();
 		
 		kbItemDao.startTransaction();
-		
 		kbItemDao.insert(new ActemiumKbItem.KbItemBuilder()
 				.title("Test title")
 				.keywords("easyfix")
 				.type(KbItemType.DATABASE)
 				.text("some sample text here")
 				.build());
-		
-		
         KbItemType[] kbItemTypes = KbItemType.values();
-
         for (int i = 0; i < 20; i++) {
         	kbItemDao.insert(new ActemiumKbItem.KbItemBuilder()
                                     .title("Random KB article Title"+i)
