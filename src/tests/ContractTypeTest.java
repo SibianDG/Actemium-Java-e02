@@ -92,7 +92,11 @@ public class ContractTypeTest {
                 // price: greater than zero
                 Arguments.of("priceLessThanZero", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 1, -420.69),
                 Arguments.of("priceLessThanZero", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 1, -00.01),
-                Arguments.of("priceLessThanZero", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 1, 0)
+				Arguments.of("priceLessThanZero", ContractTypeStatus.ACTIVE, true, false, false, Timestamp.WORKINGHOURS, 5, 1, 0),
+
+				Arguments.of("priceLessThanZero", null, true, false, false, Timestamp.WORKINGHOURS, 5, 1, 0),
+				Arguments.of("priceLessThanZero", ContractTypeStatus.ACTIVE, true, false, false, null, 5, 1, 0)
+
         		);
     }
 

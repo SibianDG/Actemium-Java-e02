@@ -9,10 +9,9 @@ import exceptions.InformationRequiredException;
 
 public interface Attributes {
 
-
     int MAX_NUMBER = 5;
 
-    ActemiumTicket getActemiumTicket() throws InformationRequiredException;
+    ActemiumTicket getActemiumTicket();
 
 
 }

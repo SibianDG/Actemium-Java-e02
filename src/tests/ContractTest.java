@@ -42,8 +42,15 @@ public class ContractTest {
 
     private static ActemiumContractType contractType01;
 
-	static {
+	private static ActemiumContractType contractType02;
+
+	private static ActemiumCompany facebook;
+
+    private static ActemiumCustomer mark;
+
+	private static void initializeAttributes(){
 		try {
+			System.out.println(1);
 			contractType01 = new ActemiumContractType.ContractTypeBuilder()
 					.contractTypeName("BasisEmailSupport")
 					.contractTypeStatus(ContractTypeStatus.ACTIVE)
@@ -55,15 +62,7 @@ public class ContractTest {
 					.minThroughputTime(2)
 					.price(999.99)
 					.build();
-		} catch (InformationRequiredException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private static ActemiumContractType contractType02;
-
-	static {
-		try {
+			System.out.println(2);
 			contractType02 = new ActemiumContractType.ContractTypeBuilder()
 					.contractTypeName("FullAllSupport")
 					.contractTypeStatus(ContractTypeStatus.ACTIVE)
@@ -75,14 +74,7 @@ public class ContractTest {
 					.minThroughputTime(1)
 					.price(3999.99)
 					.build();
-		} catch (InformationRequiredException e) {
-			e.printStackTrace();
-		}
-	}
-	private static ActemiumCompany facebook;
-
-	static {
-		try {
+			System.out.println(3);
 			facebook = new ActemiumCompany.CompanyBuilder()
 					.name("Facebook")
 					.country("United States")
@@ -90,29 +82,23 @@ public class ContractTest {
 					.address("1 Hacker Way")
 					.phoneNumber("+1-650-308-7300")
 					.build();
-		} catch (InformationRequiredException e) {
-			e.printStackTrace();
-		}
-	}
-
-	;
-    private static ActemiumCustomer mark;
-
-	static {
-		try {
 			mark = new ActemiumCustomer.CustomerBuilder()
 					.username("cust03Mark")
-							.password("Passwd123&")
-							.firstName("Mark")
-							.lastName("Zuckerberg")
-							.company(facebook)
-							.build();
+					.password("Passwd123&")
+					.firstName("Mark")
+					.lastName("Zuckerberg")
+					.company(facebook)
+					.build();
+			System.out.println(4);
+
+			System.out.println(5);
 		} catch (InformationRequiredException e) {
-			e.printStackTrace();
+			throw new IllegalArgumentException("Problem with initialize variables before test.");
 		}
 	}
 
 	private static Stream<Arguments> validContractAttributes02() {
+		initializeAttributes();
         return Stream.of(
                 Arguments.of(contractType01, mark, nextYear),
                 Arguments.of(contractType02, mark, nextYear),
@@ -122,8 +108,9 @@ public class ContractTest {
     }
     
     private static Stream<Arguments> invalidContractAttributes02() {
-        return Stream.of(
-                // endDate: cannot be before the startDate (today)
+		initializeAttributes();
+		return Stream.of(
+				// endDate: cannot be before the startDate (today)
         		Arguments.of(contractType01, mark, yesterday),
         		Arguments.of(contractType02, mark, yesterday), 
         		Arguments.of(contractType02, mark, lastWeek), 
@@ -139,7 +126,8 @@ public class ContractTest {
     }
     
     private static Stream<Arguments> validContractAttributes03() {
-    	return Stream.of(
+		initializeAttributes();
+		return Stream.of(
                 Arguments.of(contractType01, mark, today, nextYear),
                 Arguments.of(contractType02, mark, today, nextYear),
                 Arguments.of(contractType02, mark, today, inTwoYears),
@@ -154,7 +142,8 @@ public class ContractTest {
     }
     
     private static Stream<Arguments> invalidContractAttributes03() {
-    	return Stream.of(
+		initializeAttributes();
+		return Stream.of(
     			// startDate: must be today or in the future
     			Arguments.of(contractType01, mark, yesterday, nextYear),
                 Arguments.of(contractType02, mark, lastWeek, nextYear),
@@ -225,36 +214,66 @@ public class ContractTest {
     }
     
     @Test
-    public void contractCreation_WithoutStartDate_HasContractStatusCURRENT() throws InformationRequiredException {
+    public void contractCreation_WithoutStartDate_HasContractStatusCURRENT() {
+		initializeAttributes();
+		ActemiumContract contract;
+		try {
+			contract = new ActemiumContract.ContractBuilder()
+					.contractType(contractType01)
+					.customer(mark)
+					.endDate(nextYear)
+					.build();
+		} catch (InformationRequiredException e) {
+			throw new IllegalArgumentException("Problem with initialize variables before test.");
+		}
 
-    	ActemiumContract contract = new ActemiumContract.ContractBuilder()
-				.contractType(contractType01)
-				.customer(mark)
-				.endDate(nextYear)
-				.build();
         Assertions.assertEquals(ContractStatus.CURRENT, contract.getStatus());
     }
     
     @Test
-    public void contractCreation_WithStartDateNow_HasContractStatusCURRENT() throws InformationRequiredException {
-    	ActemiumContract contract = new ActemiumContract.ContractBuilder()
-				.contractType(contractType01)
-				.customer(mark)
-				.startDate(today)
-				.endDate(nextYear)
-				.build();
+    public void contractCreation_WithStartDateNow_HasContractStatusCURRENT() {
+		initializeAttributes();
+		ActemiumContract contract;
+		try {
+			contract = new ActemiumContract.ContractBuilder()
+					.contractType(contractType01)
+					.customer(mark)
+					.startDate(today)
+					.endDate(nextYear)
+					.build();
+		} catch (InformationRequiredException e) {
+			throw new IllegalArgumentException("Problem with initialize variables before test.");
+		}
     	Assertions.assertEquals(ContractStatus.CURRENT, contract.getStatus());
     }
     
     @Test
-    public void contractCreation_WithStartDateInFuture_HasContractStatusIN_REQUEST() throws InformationRequiredException {
-    	ActemiumContract contract = new ActemiumContract.ContractBuilder()
+    public void contractCreation_WithStartDateInFuture_HasContractStatusIN_REQUEST() {
+		initializeAttributes();
+		ActemiumContract contract;
+		try {
+			contract = new ActemiumContract.ContractBuilder()
+					.contractType(contractType01)
+					.customer(mark)
+					.startDate(nextWeek)
+					.endDate(nextYearNextWeek)
+					.build();
+		} catch (InformationRequiredException e) {
+			throw new IllegalArgumentException("Problem with initialize variables before test.");
+		}
+
+    	Assertions.assertEquals(ContractStatus.IN_REQUEST, contract.getStatus());
+    }
+
+	@Test
+	public void contractCreationWithEndDateNull() {
+		initializeAttributes();
+		Assertions.assertThrows(NullPointerException.class, () -> new ActemiumContract.ContractBuilder()
 				.contractType(contractType01)
 				.customer(mark)
 				.startDate(nextWeek)
-				.endDate(nextYearNextWeek)
-				.build();
-    	Assertions.assertEquals(ContractStatus.IN_REQUEST, contract.getStatus());
-    }
+				.endDate(null)
+				.build());
+	}
     
 }
