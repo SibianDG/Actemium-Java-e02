@@ -42,12 +42,12 @@
                   <Insets top="15.0" />
                </VBox.margin>
                <font>
-                  <Font name="Arial" size="12.0" />
+                  <Font name="Arial" size="14.0" />
                </font>
             </Text>
             <Button fx:id="btnModifyAccount" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMousePressed="#modifyButtonAccountOnMousePressed" styleClass="btn-blue" text="Modify" textAlignment="CENTER">
                <font>
-                  <Font name="Arial" size="12.0" />
+                  <Font name="Arial" size="14.0" />
                </font>
                <VBox.margin>
                   <Insets top="20.0" />

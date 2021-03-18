@@ -235,7 +235,7 @@
 .alert > .dialog-pane > .button-bar {
     -fx-font-size: 24px;
     -fx-background-color: indianred;
-    -fx-font-family: "Andalus";
+    -fx-font-family: "Arial";
 }
 
 .popupWarning {
@@ -256,6 +256,36 @@
     -fx-border-width: 4;
     -fx-border-radius: 10;
  */ -fx-font-size: 16;
+}
+
+.text-area {
+    -fx-border-color: #c0cc0f;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-background-color: transparent, white, transparent, white;
+    -fx-faint-focus-color: #fff;
+}
+
+.text-area:focused, .text-area:hover, .text-area:active, .text-area:focused:hover {
+    -fx-border-color: #c0cc0f;
+    -fx-background-color: transparent, white, transparent, white;
+}
+
+.text-area:focused .content, .text-area:focused {
+    -fx-background-color: transparent, white, transparent, white;
+}
+
+.check-box .box {
+    -fx-background-color: #fff;
+    -fx-border-color:#1D3D78;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: #fff;
+}
+
+.check-box:selected .box {
+    -fx-background-color: #1D3D78;
 }
 
 /*

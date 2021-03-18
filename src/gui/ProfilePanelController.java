@@ -5,6 +5,7 @@ import java.util.*;
 
 import exceptions.InformationRequiredException;
 import gui.viewModels.ProfileViewModel;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -21,6 +22,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import languages.LanguageResource;
 
 public class ProfilePanelController extends GridPane  {
@@ -53,6 +57,13 @@ public class ProfilePanelController extends GridPane  {
                     getTextFromGridPane(7)
             );
 
+            //TODO afhandeling
+
+            showPopupMessage("popupSuccess", "You have successfully edited your profile.");
+
+
+            txtErrorMessage.setVisible(false);
+
         } catch (InformationRequiredException ire){
             StringBuilder errorMessage = new StringBuilder();
             ire.getInformationRequired().forEach(e -> {
@@ -61,6 +72,13 @@ public class ProfilePanelController extends GridPane  {
             });
             txtErrorMessage.setText(errorMessage.toString());
             txtErrorMessage.setVisible(true);
+            showPopupMessage("popupWarning", LanguageResource.getString("unchangedMessage"));
+
+        } catch (Exception e){
+            txtErrorMessage.setText(e.getMessage());
+            txtErrorMessage.setVisible(true);
+            showPopupMessage("popupWarning", LanguageResource.getString("unchangedMessage"));
+
         }
 
     }
@@ -116,9 +134,6 @@ public class ProfilePanelController extends GridPane  {
         
         addGridDetails(profileViewModel.getDetailsSignedInUser());
         gridProfile.setGridLinesVisible(true);
-        System.out.println("Columns: "+ gridProfile.getColumnCount());
-        System.out.println("Row: "+ gridProfile.getRowCount());
-
     }
 	
 	private Label makeNewLabel(String text){
@@ -189,6 +204,43 @@ public class ProfilePanelController extends GridPane  {
             
             i++;
          }            
+    }
+
+    public Popup createPopup(final String message, String popupType) {
+        final Popup popup = new Popup();
+        popup.setAutoFix(true);
+        popup.setAutoHide(true);
+        popup.setHideOnEscape(true);
+        Label label = new Label(message);
+        label.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                popup.hide();
+            }
+        });
+//        label.getStylesheets().add("/css/styles.css");
+        label.getStylesheets().add("file:src/start/styles.css");
+        label.getStyleClass().add(popupType);
+        popup.getContent().add(label);
+        return popup;
+    }
+
+    //TODO fix positioning
+    // Can it be relative to a button such as btnModify or btnAdd
+    // Temp fix
+    public void showPopupMessage(final String popupType, String message) {
+        final Popup popup = createPopup(message, popupType);
+        final Stage stage = (Stage) gridProfile.getScene().getWindow();
+        popup.setOnShown(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent e) {
+                System.out.println(lblProfile.getLayoutX());
+                System.out.println(lblProfile.getLayoutY());
+                popup.setX(575 + lblProfile.getLayoutX());
+                popup.setY(285 + lblProfile.getLayoutY() + 15 + popup.getHeight()/2);
+            }
+        });
+        popup.show(stage);
     }
     
 

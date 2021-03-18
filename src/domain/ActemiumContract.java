@@ -256,7 +256,6 @@ public class ActemiumContract implements Contract, Serializable {
 
 		public ContractBuilder endDate(LocalDate endDate) {
 			this.endDate = endDate;
-			System.out.println("ENDDATE: "+endDate);
 			return this;
 		}
 
@@ -315,7 +314,6 @@ public class ActemiumContract implements Contract, Serializable {
 					.endDate(this.getEndDate())
 					.build();
 		} catch (InformationRequiredException e) {
-			System.out.println("OEPS, foutje");
 			e.printStackTrace();
 		}
 		return cloned;

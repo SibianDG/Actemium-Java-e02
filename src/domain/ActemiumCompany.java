@@ -238,7 +238,6 @@ public class ActemiumCompany implements Company, Serializable {
 		}
 
 		private void checkAttributesEmployeeBuiler() throws InformationRequiredException {
-			System.out.println();
 			if (name == null || name.isBlank())
 				requiredElements.add(RequiredElement.CompanyNameRequired);
 			if (country == null || country.isBlank())

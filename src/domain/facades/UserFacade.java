@@ -237,9 +237,9 @@ public class UserFacade implements Facade {
 			cloneEmployee.setRole(role);
 			cloneEmployee.setStatus(status);
 
+			System.out.println(1);
 			cloneEmployee.checkAttributes();
-
-			System.out.println("Hiervoorbij?");
+			System.out.println(2);
 
 			employee.setUsername(username);
 			employee.setPassword(password);
@@ -259,7 +259,6 @@ public class UserFacade implements Facade {
 	}
 
 	public void modifyProfileOfEmployee(String username, String password, String firstName, String lastName, String address, String phoneNumber, String emailAddress) throws InformationRequiredException {
-		System.out.println("modifyProfileOfEmployee "+username);
 		ActemiumEmployee profile = (ActemiumEmployee) actemium.findByUsername(username);
 		modifyEmployee(profile, profile.getUsername(), password, firstName, lastName, address, phoneNumber, emailAddress, profile.getRole(), profile.getStatus());
 	}

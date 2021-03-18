@@ -583,7 +583,8 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 					case "Title" -> newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);
 					case "KbItemType" -> newPredicate = e -> e.getTicketTypeAsString().toLowerCase().contains(filterText);
 					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
-				}				
+				}
+				System.out.println(newPredicate.toString());
 				return newPredicate;				
 			}
 		}
