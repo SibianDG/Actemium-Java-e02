@@ -146,6 +146,17 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     @FXML
     void btnHistoryOnAction(ActionEvent event) {
     	// show ticket history
+    	
+    	// username (who dit the edit) 				time-of-edit
+    	// String with change that happended
+    	// content of the change
+    	
+    	// console output
+    	System.out.println("==============BEGIN=============\n");
+    	System.out.println("History" + txtDetailsTitle.getText().substring(7) + "\n");
+    	((TicketViewModel) viewModel).getSelectedTicket().giveTicketChanges()
+    				.stream().forEach(System.out::println);;
+    	System.out.println("===============END==============\n");
     }
 
     @FXML
@@ -153,6 +164,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         try {
         	if(deleteConfirmationAlert()) {
         		viewModel.delete();
+        		showPopupMessage("popupDelete", "You have succesfully deleted the item");
         	}
         } catch (InformationRequiredException ire) {
             StringBuilder errorMessage = new StringBuilder();

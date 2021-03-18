@@ -41,9 +41,6 @@ public class ActemiumKbItem implements KbItem, Serializable {
 	private String keywords;
 	private String text;
 	
-	@Transient
-	private ObservableList<Ticket> ticketsOfSameType;
-
 	public ActemiumKbItem() {
 		super();
 	}
@@ -94,11 +91,6 @@ public class ActemiumKbItem implements KbItem, Serializable {
 		this.text = text;
 	}
 	
-	public ObservableList<Ticket> giveTicketsOfSameType() {
-		// TODO Auto-generated method stub
-		return ticketsOfSameType;
-	}
-
 	public StringProperty titleProperty() {
 		return title;
 	}

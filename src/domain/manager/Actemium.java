@@ -148,6 +148,10 @@ public class Actemium {
 		userDaoJpa = mock;
 	}
 		
+	public UserModel getSignedInUser() {
+		return signedInUser;
+	}
+
 	private void setSignedInUser(UserModel signedInEmployee) {
 		this.signedInUser = signedInEmployee;
 	}

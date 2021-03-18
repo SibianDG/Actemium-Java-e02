@@ -103,11 +103,11 @@ public class TicketViewModel extends ViewModel {
     // Cannot modify customer of the ticket, needs to be unmodifiable field
     public void modifyTicketOutstanding(TicketPriority priority, TicketType ticketType, TicketStatus status, String title, String description,
                                      String remarks, String attachments, List<ActemiumEmployee> technicians) throws InformationRequiredException {
-        ticketFacade.modifyTicket((ActemiumTicket) selectedTicket, priority, ticketType, status, title, description, remarks, attachments, technicians);
+        ticketFacade.modifyTicketOutstanding((ActemiumTicket) selectedTicket, priority, ticketType, status, title, description, remarks, attachments, technicians);
     }
 
     public void modifyTicketResolved(String solution, String quality, String supportNeeded) throws InformationRequiredException {
-        ticketFacade.modifyTicketOutstanding((ActemiumTicket) selectedTicket, solution, quality, supportNeeded);
+        ticketFacade.modifyTicketResolved((ActemiumTicket) selectedTicket, solution, quality, supportNeeded);
     }
 
     public GUIEnum getCurrentState() {

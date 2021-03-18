@@ -21,6 +21,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import domain.enums.RequiredElement;
@@ -95,6 +96,10 @@ public class ActemiumTicket implements Ticket, Serializable {
 	//   E.g. a ticket was created but the wrong  
 	//   department was assigned
 	private String supportNeeded;
+	
+	// List with changes to show history of the ticket
+	@OneToMany(mappedBy = "ticket", cascade = CascadeType.PERSIST)
+	private List<ActemiumTicketChange> ticketChanges = new ArrayList<>();
 	
 	public ActemiumTicket() {
 		super();
@@ -342,6 +347,23 @@ public class ActemiumTicket implements Ticket, Serializable {
 	public void setSupportNeeded(String supportNeeded) {
 		this.supportNeeded = supportNeeded;
 	}
+
+	public List<TicketChange> giveTicketChanges() {
+		return (List<TicketChange>)(Object) ticketChanges;
+	}
+	
+	public List<ActemiumTicketChange> getTicketChanges() {
+		return ticketChanges;
+	}
+
+	public void setTicketChanges(List<ActemiumTicketChange> ticketChanges) {
+		this.ticketChanges = ticketChanges;
+	}
+	
+	public void addTicketChange(ActemiumTicketChange ticketChange) {
+		this.ticketChanges.add(ticketChange);
+	}
+
 
 	public StringProperty titleProperty() {
 		return title;

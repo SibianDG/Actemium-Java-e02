@@ -2,6 +2,7 @@ package domain;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
@@ -50,6 +51,8 @@ public interface Ticket {
 	public String getQuality();
 
 	public String getSupportNeeded();
+
+	public List<TicketChange> giveTicketChanges();
 	
 	public StringProperty titleProperty();
 	

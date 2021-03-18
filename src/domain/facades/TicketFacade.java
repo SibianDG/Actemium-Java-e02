@@ -1,5 +1,6 @@
 package domain.facades;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,6 +8,7 @@ import java.util.stream.Collectors;
 import domain.ActemiumCustomer;
 import domain.ActemiumEmployee;
 import domain.ActemiumTicket;
+import domain.ActemiumTicketChange;
 import domain.Employee;
 import domain.Ticket;
 import domain.enums.EmployeeRole;
@@ -43,11 +45,15 @@ public class TicketFacade implements Facade {
 							.remarks(remarks)
 							.attachments(attachments)
 							.build();
+
+		ticket.addTicketChange(createTicketChange(ticket, "registerTicket"));
+		
 		actemium.registerTicket(ticket, customer);
 	}
 
-	public void modifyTicket(ActemiumTicket ticket, TicketPriority priority, TicketType ticketType, TicketStatus status, String title, String description,
-							 String remarks, String attachments, List<ActemiumEmployee> technicians) throws InformationRequiredException {
+	public void modifyTicketOutstanding(ActemiumTicket ticket, TicketPriority priority, TicketType ticketType,
+			TicketStatus status, String title, String description, String remarks, String attachments,
+			List<ActemiumEmployee> technicians) throws InformationRequiredException {
 		try {
 			ActemiumTicket ticketClone = ticket.clone();
 			// check to see if signed in user is Support Manger
@@ -71,7 +77,9 @@ public class TicketFacade implements Facade {
 			ticket.setRemarks(remarks);
 			ticket.setAttachments(attachments);
 			ticket.setTechnicians(new ArrayList<>());
-			technicians.forEach(ticket::addTechnician);
+			technicians.forEach(ticket::addTechnician);			
+			
+			ticket.addTicketChange(createTicketChange(ticket, "modifyTicketOutstanding"));
 
 			actemium.modifyTicket(ticket);
 
@@ -80,8 +88,9 @@ public class TicketFacade implements Facade {
 		}
 
 	}
-	
-	public void modifyTicketOutstanding(ActemiumTicket ticket, String solution, String quality, String supportNeeded) throws InformationRequiredException {
+
+	public void modifyTicketResolved(ActemiumTicket ticket, String solution, String quality, String supportNeeded)
+			throws InformationRequiredException {
 		try {
 			ActemiumTicket ticketClone = ticket.clone();
 			// check to see if signed in user is Support Manger
@@ -95,11 +104,31 @@ public class TicketFacade implements Facade {
 			ticket.setQuality(quality);
 			ticket.setSupportNeeded(supportNeeded);
 
+			ticket.addTicketChange(createTicketChange(ticket, "modifyTicketResolved"));
+			
 			actemium.modifyTicket(ticket);
 
 		} catch (CloneNotSupportedException e) {
 			System.out.println(LanguageResource.getString("cannot_clone"));
 		}
+	}
+	
+	private ActemiumTicketChange createTicketChange(ActemiumTicket ticket, String methodName) throws InformationRequiredException {
+		String changeDescription = "";
+		switch(methodName) {
+		case "registerTicket" -> changeDescription = "Created the ticket";
+		case "modifyTicketOutstanding" -> changeDescription = "Modified the outstanding ticket";
+		case "modifyTicketResolved" -> changeDescription = "Modified the resolved ticket";
+		}
+		
+		return new ActemiumTicketChange.TicketChangeBuilder()
+				.ticket(ticket)
+				.user(actemium.getSignedInUser())
+				.userRole(actemium.giveUserRole())
+				.dateTimeOfChange(LocalDateTime.now())
+				.changeDescription(changeDescription)
+				.changeContent("")
+				.build();
 	}
 	
     public void delete(ActemiumTicket ticket) throws InformationRequiredException {
@@ -117,12 +146,12 @@ public class TicketFacade implements Facade {
 		return actemium.giveActemiumTickets();
 	}
 	
-	public ObservableList<Ticket> giveActemiumTicketsResolved() {
-		return actemium.giveActemiumTicketsResolved();
-	}
-
 	public ObservableList<Ticket> giveActemiumTicketsOutstanding() {
 		return actemium.giveActemiumTicketsOutstanding();
+	}
+	
+	public ObservableList<Ticket> giveActemiumTicketsResolved() {
+		return actemium.giveActemiumTicketsResolved();
 	}
 	
 	public ObservableList<Ticket> giveActemiumTicketsCompleted() {
