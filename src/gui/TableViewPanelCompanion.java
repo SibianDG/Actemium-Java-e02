@@ -68,6 +68,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 	private final DashboardFrameController dashboardFrameController;
 	private final ViewModel viewModel;
 	private GUIEnum currentState;
+	private EmployeeRole employeeRole;
 
 	@FXML
     private Button btnAdd;
@@ -87,11 +88,12 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 	private FilteredList<T> tableViewData;
 	private SortedList<T> tableViewDataSorted;
 	
-	public TableViewPanelCompanion(DashboardFrameController dashboardFrameController, ViewModel viewModel, GUIEnum currentState) {
+	public TableViewPanelCompanion(DashboardFrameController dashboardFrameController, ViewModel viewModel, GUIEnum currentState, EmployeeRole employeeRole) {
 		this.dashboardFrameController = dashboardFrameController;
 		this.viewModel = viewModel;
 		this.currentState = currentState;
-
+		this.employeeRole = employeeRole;
+		
 		try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("TableViewPanel.fxml"));
             loader.setController(this);
@@ -100,6 +102,12 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
         } catch (IOException e) {
         	throw new RuntimeException(e);
         }
+
+		if(employeeRole.equals(EmployeeRole.TECHNICIAN)) {
+			btnAdd.setVisible(false);
+		} else {
+			btnAdd.setVisible(true);
+		}
 		
 		switch(currentState) {
 			case EMPLOYEE -> {

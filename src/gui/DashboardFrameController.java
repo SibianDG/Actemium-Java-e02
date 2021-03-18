@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import domain.enums.EmployeeRole;
 import domain.enums.TicketStatus;
 import domain.facades.ContractFacade;
 import domain.facades.ContractTypeFacade;
@@ -245,27 +246,27 @@ public class DashboardFrameController <T,E> extends GuiController {
 
         if (name.toLowerCase().contains("manage") && name.toLowerCase().contains("employee")) {
             //Todo weird => fixed? or still weird?
-            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.EMPLOYEE);
+            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.EMPLOYEE, EmployeeRole.valueOf(userFacade.giveUserRole()));
             switchToManageScreen(name, tableViewPanelCompanion, userViewModel);
         } else if (name.toLowerCase().contains("manage") && name.toLowerCase().contains("customer")) {
-            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.CUSTOMER);
+            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.CUSTOMER, EmployeeRole.valueOf(userFacade.giveUserRole()));
             switchToManageScreen(name, tableViewPanelCompanion, userViewModel);
         } else if (name.toLowerCase().contains("ticket") && name.toLowerCase().contains("outstanding")) {
             TicketStatus.setOutstanding(true);
-            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, ticketViewModel, GUIEnum.TICKET);
+            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, ticketViewModel, GUIEnum.TICKET, EmployeeRole.valueOf(userFacade.giveUserRole()));
             switchToManageScreen(name, tableViewPanelCompanion, ticketViewModel);
         } else if (name.toLowerCase().contains("ticket") && name.toLowerCase().contains("resolved")) {
             TicketStatus.setOutstanding(false);
-            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, ticketViewModel, GUIEnum.TICKET);
+            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, ticketViewModel, GUIEnum.TICKET, EmployeeRole.valueOf(userFacade.giveUserRole()));
             switchToManageScreen(name, tableViewPanelCompanion, ticketViewModel);
         } else if (name.toLowerCase().contains("manage") && name.toLowerCase().contains("contract type")) {
-            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, contractTypeViewModel, GUIEnum.CONTRACTTYPE);
+            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, contractTypeViewModel, GUIEnum.CONTRACTTYPE, EmployeeRole.valueOf(userFacade.giveUserRole()));
             switchToManageScreen(name, tableViewPanelCompanion, contractTypeViewModel);
         } else if (name.toLowerCase().contains("manage") && name.toLowerCase().contains("contracts")) {
-        	tableViewPanelCompanion = new TableViewPanelCompanion<>(this, contractViewModel, GUIEnum.CONTRACT);
+        	tableViewPanelCompanion = new TableViewPanelCompanion<>(this, contractViewModel, GUIEnum.CONTRACT, EmployeeRole.valueOf(userFacade.giveUserRole()));
         	switchToManageScreen(name, tableViewPanelCompanion, contractViewModel);
         } else if (name.toLowerCase().contains("manage") && name.toLowerCase().contains("knowledge")) {
-        	tableViewPanelCompanion = new TableViewPanelCompanion<>(this, knowledgeBaseViewModel, GUIEnum.KNOWLEDGEBASE);
+        	tableViewPanelCompanion = new TableViewPanelCompanion<>(this, knowledgeBaseViewModel, GUIEnum.KNOWLEDGEBASE, EmployeeRole.valueOf(userFacade.giveUserRole()));
         	switchToManageScreen(name, tableViewPanelCompanion, knowledgeBaseViewModel);
         } else {
             makePopUp(name);
