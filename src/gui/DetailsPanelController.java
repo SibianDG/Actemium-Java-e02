@@ -813,7 +813,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                 if(((ObservableList) o).size() > 0)
                     node = makeTableViewContractsInCustomers(o);
                 else
-                    node = makeNewLabel("No items available", false);
+                    node = makeNewLabel(LanguageResource.getString("no_items_available"), false);
             }
         } else if (o instanceof LocalDate) {
             node = makeDatePicker(o);
@@ -832,19 +832,19 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
 //return String.format("%s: %s %s %s until %s", this.getContractIdString(), this.contractType.getName(), this.getStatusAsString(), this.getStartDate().toString(), this.getEndDate().toString());
 
-        TableColumn<Contract, Number> columnID = new TableColumn<>("ID");
+        TableColumn<Contract, Number> columnID = new TableColumn<>(LanguageResource.getString("ID"));
         columnID.setCellValueFactory(cellData -> cellData.getValue().contractIdProperty());
 
-        TableColumn<Contract, String> columnName = new TableColumn<>("Name");
+        TableColumn<Contract, String> columnName = new TableColumn<>(LanguageResource.getString("name"));
         columnName.setCellValueFactory(cellData -> cellData.getValue().contractTypeNameProperty());
 
-        TableColumn<Contract, String> columnStatus = new TableColumn<>("Status");
+        TableColumn<Contract, String> columnStatus = new TableColumn<>(LanguageResource.getString("status"));
         columnStatus.setCellValueFactory(cellData -> cellData.getValue().contractStatusProperty());
 
-        TableColumn<Contract, String> columnStartDate = new TableColumn<>("Start Date");
+        TableColumn<Contract, String> columnStartDate = new TableColumn<>(LanguageResource.getString("start_date"));
         columnStartDate.setCellValueFactory(cellData -> cellData.getValue().contractStartDateProperty());
 
-        TableColumn<Contract, String> columnEndDate = new TableColumn<>("End Date");
+        TableColumn<Contract, String> columnEndDate = new TableColumn<>(LanguageResource.getString("end_date"));
         columnEndDate.setCellValueFactory(cellData -> cellData.getValue().contractEndDateProperty());
 
         tableView.getColumns().add(columnID);
@@ -1033,19 +1033,15 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     
     private boolean deleteConfirmationAlert() {
     	boolean confirmed = false;
-        String headerText = "Delete Confrimation";
-    	String text = "Are you sure you want to delete this item?\nThe item will remain stored in the database.\n(logical delete)";
+        String headerText = LanguageResource.getString("delele_confirmation_header");
+    	String text = LanguageResource.getString("delele_confirmation_text");
     	Alert alert = new Alert(Alert.AlertType.CONFIRMATION, text);
         alert.setHeaderText(headerText);
         alert.getDialogPane().getStylesheets().add("file:src/start/styles.css");
         alert.getDialogPane().getStyleClass().add("alert");
         ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-            confirmed = true;
-        } else {
-            confirmed = false;
-        }
+        confirmed = result.get() == ButtonType.OK;
         return confirmed;
     }
     

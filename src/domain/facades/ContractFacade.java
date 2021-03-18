@@ -11,6 +11,7 @@ import domain.enums.EmployeeRole;
 import domain.manager.Actemium;
 import exceptions.InformationRequiredException;
 import javafx.collections.ObservableList;
+import languages.LanguageResource;
 
 public class ContractFacade implements Facade {
 
@@ -31,7 +32,7 @@ public class ContractFacade implements Facade {
 			contract.setStatus(status);
 			actemium.modifyContract(contract);
 		} catch (CloneNotSupportedException e) {
-			System.out.println("Can't clone");
+			System.out.println(LanguageResource.getString("cannot_clone"));
 		}
 
     }
@@ -41,13 +42,13 @@ public class ContractFacade implements Facade {
 		// check to see if signed in user is Support Manager
 		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
 		ActemiumContractType contractType = (ActemiumContractType) actemium.findContractTypeById(contractTypeName);
-		if (contractType == null) {
-			throw new IllegalArgumentException("You must provide the name of an existing contractType");
-		}
+		//if (contractType == null) {
+		//	throw new IllegalArgumentException("You must provide the name of an existing contractType");
+		//}
 		ActemiumCustomer customer = (ActemiumCustomer) actemium.findUserById(customerId);
-		if (customer == null) {
-			throw new IllegalArgumentException("You must provide the customer ID of an existing customer");
-		}
+		//if (customer == null) {
+		//	throw new IllegalArgumentException("You must provide the customer ID of an existing customer");
+		//}
 		LocalDate endDate = startDate.plusYears(duration);
 		ActemiumContract contract = new ActemiumContract.ContractBuilder()
 				.contractType(contractType)

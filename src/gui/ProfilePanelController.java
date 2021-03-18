@@ -63,7 +63,7 @@ public class ProfilePanelController extends GridPane  {
 
                 //TODO afhandeling
 
-                showPopupMessage("popupSuccess", "You have successfully edited your profile.");
+                showPopupMessage("popupSuccess", LanguageResource.getString("profileEdit_success=You have successfully edited your profile."));
                 txtErrorMessage.setVisible(false);
                 profileViewModel.setFieldModified(false);
 
@@ -116,7 +116,6 @@ public class ProfilePanelController extends GridPane  {
         if (node instanceof HBox) {
             PasswordField passwordField = ((PasswordField) ((HBox) node).getChildren().get(0));
             String password = passwordField.getText();
-            System.out.println("PAsswod: "+password);
             if (password == null || password.isBlank()){
                 password = "********";
             }

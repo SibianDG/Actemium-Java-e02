@@ -18,6 +18,7 @@ import domain.manager.Actemium;
 import exceptions.InformationRequiredException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import languages.LanguageResource;
 
 public class TicketFacade implements Facade {
 	
@@ -75,7 +76,7 @@ public class TicketFacade implements Facade {
 			actemium.modifyTicket(ticket);
 
 		} catch (CloneNotSupportedException e) {
-			System.out.println("Can't clone object");
+			System.out.println(LanguageResource.getString("cannot_clone"));
 		}
 
 	}
@@ -97,7 +98,7 @@ public class TicketFacade implements Facade {
 			actemium.modifyTicket(ticket);
 
 		} catch (CloneNotSupportedException e) {
-			System.out.println("Can't clone object");
+			System.out.println(LanguageResource.getString("cannot_clone"));
 		}
 	}
 	

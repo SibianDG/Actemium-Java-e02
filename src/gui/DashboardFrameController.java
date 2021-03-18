@@ -330,7 +330,7 @@ public class DashboardFrameController <T,E> extends GuiController {
 
     @FXML
     void btnLogOutAction(MouseEvent event) {
-        makePopUp("You are loged out.");
+        makePopUp(LanguageResource.getString("logout_message"));
         //Platform.exit();
         //System.exit(0);    
         

@@ -1,13 +1,14 @@
 package exceptions;
 
 import domain.enums.RequiredElement;
+import languages.LanguageResource;
 
 import java.util.Collections;
 import java.util.Set;
 
 public class InformationRequiredException extends Exception{
     private static final String MESSAGE = 
-    "Further information is required";
+    LanguageResource.getString("information_required_exception_message");
     private Set<RequiredElement> informationRequired;
     
     public InformationRequiredException(Set<RequiredElement> itemsRequired){

@@ -157,5 +157,13 @@
             </Text>
          </children>
       </GridPane>
+      <Button fx:id="btnLanguage" alignment="TOP_RIGHT" mnemonicParsing="false" onMousePressed="#btnLanguageOnMousePressed" styleClass="button-language" text="NL" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+         <font>
+            <Font name="Arial" size="11.0" />
+         </font>
+         <GridPane.margin>
+            <Insets right="10.0" />
+         </GridPane.margin>
+      </Button>
    </children>
 </fx:root>

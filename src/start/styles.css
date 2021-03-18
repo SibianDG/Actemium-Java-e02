@@ -28,6 +28,15 @@
 	-fx-text-fill: #ffffff;
 }
 
+.button-language {
+    -fx-font-size: 12px;
+    -fx-background-radius: 50%;
+    -fx-background-color: #1d3d78;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 5px;
+    -fx-label-padding: 0px;
+}
+
 .bg-white {
     -fx-background-color: #ffffff;
 }

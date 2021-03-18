@@ -6,6 +6,7 @@ import domain.enums.UserStatus;
 import domain.manager.Actemium;
 import exceptions.InformationRequiredException;
 import javafx.collections.ObservableList;
+import languages.LanguageResource;
 
 public class UserFacade implements Facade {
 
@@ -207,7 +208,7 @@ public class UserFacade implements Facade {
 
 			actemium.modifyCustomer(customer);
 		} catch (CloneNotSupportedException e) {
-			System.out.println("Can't clone object");
+			System.out.println(LanguageResource.getString("cannot_clone"));
 		}
 	}
 
@@ -253,7 +254,7 @@ public class UserFacade implements Facade {
 
 			actemium.modifyEmployee(employee);
 		} catch (CloneNotSupportedException e){
-			System.out.println("Can't clone object");
+			System.out.println(LanguageResource.getString("cannot_clone"));
 		}
 
 	}

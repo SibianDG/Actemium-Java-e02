@@ -1,6 +1,7 @@
 package gui;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -21,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import languages.LanguageResource;
@@ -56,6 +58,9 @@ public class LoginController extends GuiController {
     @FXML
     private Text txtErrorLogin;
 
+    @FXML
+    private Button btnLanguage;
+
     public LoginController(UserFacade userFacade, TicketFacade ticketFacade, ContractTypeFacade contractTypeFacade, ContractFacade contractFacade, KnowledgeBaseFacade knowledgeBaseFacade){
         super();
         
@@ -87,10 +92,10 @@ public class LoginController extends GuiController {
                 tryLogin();
         });
 
+        setCorrectLanguagesAllTexts();
+
         txfUsername.setText("Sup123");
         pwfPassword.setText("Passwd123&");
-
-
     }
 
     @FXML
@@ -123,6 +128,30 @@ public class LoginController extends GuiController {
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    private void setCorrectLanguagesAllTexts(){
+        txtTitle.setText(LanguageResource.getString("login"));
+        lblUsername.setText(LanguageResource.getString("username"));
+        txfUsername.setPromptText(LanguageResource.getString("username"));
+        lblPassword.setText(LanguageResource.getString("password"));
+        pwfPassword.setPromptText(LanguageResource.getString("password"));
+    }
+
+    @FXML
+    void btnLanguageOnMousePressed(MouseEvent event) {
+        if (btnLanguage.getText().equalsIgnoreCase("nl")){
+            LanguageResource.setLocale(new Locale("nl"));
+            btnLanguage.setText("EN");
+
+        } else {
+            LanguageResource.setLocale(Locale.ENGLISH);
+            btnLanguage.setText("NL");
+        }
+
+        setCorrectLanguagesAllTexts();
+        Stage stage = (Stage) txtTitle.getScene().getWindow();
+        stage.setTitle(LanguageResource.getString("login"));
     }
 
 }

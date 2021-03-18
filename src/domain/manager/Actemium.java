@@ -160,7 +160,7 @@ public class Actemium {
 		UserModel user = findByUsername(username);
 		
 		if (user instanceof Customer) {
-			throw new AccessException("Customers cannot sign in into the desktop application!");
+			throw new AccessException(LanguageResource.getString("no_customer"));
 		}
 		
 		if (password.isBlank()) {
@@ -178,9 +178,14 @@ public class Actemium {
 			userDaoJpa.commitTransaction();
 			
 			throw new BlockedUserException(String.format(
-					"User account has been blocked because more than%n%d failed login attempts have been registered."
-					+ "%nPlease contact your system administrator.",
-					USER_LOGIN_MAX_ATTEMPTS));
+					"%S%n%d %s."
+					+ "%n%s.",
+					LanguageResource.getString("blocked_user_message1"),
+					USER_LOGIN_MAX_ATTEMPTS,
+					LanguageResource.getString("blocked_user_message2"),
+					LanguageResource.getString("blocked_user_message3")
+
+			));
 		}
 				
 		// check password
@@ -195,15 +200,22 @@ public class Actemium {
 				userDaoJpa.commitTransaction();				
 				
 				throw new BlockedUserException(
-						String.format("%s%nUser has reached more than %d failed login attempts,%n account has been blocked.",
+						String.format("%s%n%s %d %s,%n %s.",
 								LanguageResource.getString("wrongUsernamePasswordCombination"),
-								USER_LOGIN_MAX_ATTEMPTS));
-			}			
+								LanguageResource.getString("blocked_user_message4"),
+								USER_LOGIN_MAX_ATTEMPTS,
+								LanguageResource.getString("blocked_user_message5"),
+								LanguageResource.getString("blocked_user_message6")
+				));
+			}
 			userDaoJpa.commitTransaction();	
 			
-			throw new PasswordException(String.format("%s%nOnly %d attempts remaining", 
-					LanguageResource.getString("wrongUsernamePasswordCombination"), 
-					USER_LOGIN_MAX_ATTEMPTS - user.getFailedLoginAttempts()));
+			throw new PasswordException(String.format("%s%n%s %d attempts remaining",
+					LanguageResource.getString("wrongUsernamePasswordCombination"),
+					LanguageResource.getString("password_exception_message1"),
+					USER_LOGIN_MAX_ATTEMPTS - user.getFailedLoginAttempts(),
+					LanguageResource.getString("password_exception_message2")
+			));
 		}
 
 		// correct password
@@ -242,7 +254,7 @@ public class Actemium {
 		if (!giveUserRoleAsEnum().equals(role)) {
 			throw new AccessException(
 					String.format("You need to be %s %s to do this!"
-							, role.equals(EmployeeRole.ADMINISTRATOR) ? "an" : "a"
+							, role.equals(EmployeeRole.ADMINISTRATOR) ? LanguageResource.getString("an") : LanguageResource.getString("a")
 							, role.toString().toLowerCase()));
 		}
 	}
@@ -298,7 +310,7 @@ public class Actemium {
 	public void existingUsername(String username) {
 		try {
 			if (userDaoJpa.findByUsername(username) != null) {
-				throw new IllegalArgumentException("Username is already taken.");
+				throw new IllegalArgumentException(LanguageResource.getString("username_already_taken"));
 			}
 		} catch (EntityNotFoundException e) {
 			// ignore
