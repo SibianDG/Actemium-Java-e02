@@ -209,6 +209,58 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 		initializeFilters();
 		initializeTableView();
 	}
+
+	@FXML
+	void showFilterOnBtnP1(MouseEvent event) {
+		Predicate<Ticket>  newPredicate = e -> e.getPriority().equals(TicketPriority.P1);
+		tableViewData.setPredicate((Predicate<? super T>) newPredicate);
+	}
+	@FXML
+	void showFilterOnBtnP2(MouseEvent event) {
+		Predicate<Ticket>  newPredicate = e -> e.getPriority().equals(TicketPriority.P2);
+		tableViewData.setPredicate((Predicate<? super T>) newPredicate);
+	}
+	@FXML
+	void showFilterOnBtnP3(MouseEvent event) {
+		Predicate<Ticket>  newPredicate = e -> e.getPriority().equals(TicketPriority.P3);
+		tableViewData.setPredicate((Predicate<? super T>) newPredicate);
+	}
+	
+	@FXML
+	void addOnMouseClicked(MouseEvent event) {
+		if (alertChangesOnTabelView()) {
+		switch(currentState) {
+			case EMPLOYEE ->{
+				((UserViewModel) viewModel).setCurrentState(GUIEnum.EMPLOYEE);
+				((UserViewModel) viewModel).setSelectedUser(null);
+			}
+			case CUSTOMER -> {
+				((UserViewModel) viewModel).setCurrentState(GUIEnum.CUSTOMER);
+				((UserViewModel) viewModel).setSelectedUser(null);
+			}
+			case TICKET -> {
+				((TicketViewModel) viewModel).setCurrentState(GUIEnum.TICKET);
+				((TicketViewModel) viewModel).setSelectedTicket(null);
+			}
+			case CONTRACTTYPE -> {
+				((ContractTypeViewModel) viewModel).setCurrentState(GUIEnum.CONTRACTTYPE);
+				((ContractTypeViewModel) viewModel).setSelectedContractType(null);
+			}
+			case CONTRACT -> {
+				((ContractViewModel) viewModel).setCurrentState(GUIEnum.CONTRACT);
+				((ContractViewModel) viewModel).setSelectedContract(null);
+			}
+			case KNOWLEDGEBASE -> {
+				((KnowledgeBaseViewModel) viewModel).setCurrentState(GUIEnum.KNOWLEDGEBASE);
+				((KnowledgeBaseViewModel) viewModel).setSelectedKbItem(null);
+			}
+			default -> {
+				//tableView.getSelectionModel().clearSelection();
+//				((UserViewModel) viewModel).setSelectedUser(null);
+			}
+		}
+		}
+	}
 	
 	private <T> TableColumn<T, E> createColumn(String title, Function<T, Property<E>> prop) {
 		
@@ -488,42 +540,6 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 			}
 		}		
 		return showNewObject;		
-	}
-
-	@FXML
-	void addOnMouseClicked(MouseEvent event) {
-		if (alertChangesOnTabelView()) {
-		switch(currentState) {
-			case EMPLOYEE ->{
-				((UserViewModel) viewModel).setCurrentState(GUIEnum.EMPLOYEE);
-				((UserViewModel) viewModel).setSelectedUser(null);
-			}
-			case CUSTOMER -> {
-				((UserViewModel) viewModel).setCurrentState(GUIEnum.CUSTOMER);
-				((UserViewModel) viewModel).setSelectedUser(null);
-			}
-			case TICKET -> {
-				((TicketViewModel) viewModel).setCurrentState(GUIEnum.TICKET);
-				((TicketViewModel) viewModel).setSelectedTicket(null);
-			}
-			case CONTRACTTYPE -> {
-				((ContractTypeViewModel) viewModel).setCurrentState(GUIEnum.CONTRACTTYPE);
-				((ContractTypeViewModel) viewModel).setSelectedContractType(null);
-			}
-			case CONTRACT -> {
-				((ContractViewModel) viewModel).setCurrentState(GUIEnum.CONTRACT);
-				((ContractViewModel) viewModel).setSelectedContract(null);
-			}
-			case KNOWLEDGEBASE -> {
-				((KnowledgeBaseViewModel) viewModel).setCurrentState(GUIEnum.KNOWLEDGEBASE);
-				((KnowledgeBaseViewModel) viewModel).setSelectedKbItem(null);
-			}
-			default -> {
-				//tableView.getSelectionModel().clearSelection();
-//				((UserViewModel) viewModel).setSelectedUser(null);
-			}
-		}
-		}
 	}
 
 	private Predicate giveFilterPredicate(String fieldName, String filterText){		
