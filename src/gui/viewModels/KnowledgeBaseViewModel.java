@@ -56,7 +56,7 @@ public class KnowledgeBaseViewModel extends ViewModel {
         details.put("Type", Collections.singletonMap(true, kbItem.getType()));        
         details.put("Keywords", Collections.singletonMap(true, kbItem.getKeywords()));
         details.put("Text", Collections.singletonMap(true, kbItem.getText()));
-        details.put("TicketsOfSameType", Collections.singletonMap(true, ticketFacade.giveTicketsOfSameType(selectedKbItem.getType())));
+        details.put("CompletedTicketsOfSameType", Collections.singletonMap(true, ticketFacade.giveTicketsOfSameType(selectedKbItem.getType())));
 
 		return details;
 	}

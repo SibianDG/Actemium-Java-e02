@@ -22,19 +22,34 @@
    <children>
       <VBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="bg-rounded" stylesheets="@../start/styles.css">
          <children>
-            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="600.0">
+            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="470.0">
                <children>
-                  <Button fx:id="btnAdd" mnemonicParsing="false" onMouseClicked="#addOnMouseClicked" styleClass="btn-blue" text="Add">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <font>
-                        <Font name="Arial Bold" size="16.0" />
-                     </font>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
+                  <HBox spacing="16.0">
+                     <children>
+                        <Button fx:id="btnAdd" mnemonicParsing="false" onMouseClicked="#addOnMouseClicked" styleClass="btn-blue" text="Add">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                           <font>
+                              <Font name="Arial Bold" size="16.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Button fx:id="btnResetFilters" mnemonicParsing="false" onMouseClicked="#resetFiltersOnMouseClicked" styleClass="btn-blue" text="Reset Filters">
+                     		<padding>
+                        		<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    		</padding>
+                     		<font>
+                       			<Font name="Arial Bold" size="16.0" />
+                     		</font>
+		                    <cursor>
+		                       <Cursor fx:constant="HAND" />
+		                    </cursor>
+                  		</Button>
+                     </children>
+                  </HBox>
                   <HBox alignment="CENTER_RIGHT" spacing="16.0">
                      <children>
                         <Button fx:id="btnP1" mnemonicParsing="false" onMouseClicked="#showFilterOnBtnP1" styleClass="button-red" text="P1">

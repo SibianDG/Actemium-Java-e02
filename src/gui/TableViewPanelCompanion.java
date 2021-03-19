@@ -74,6 +74,9 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
     private Button btnAdd;
 	
 	@FXML
+	private Button btnResetFilters;
+	
+	@FXML
 	private Button btnP1;
 
 	@FXML
@@ -224,6 +227,11 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 	void showFilterOnBtnP3(MouseEvent event) {
 		Predicate<Ticket>  newPredicate = e -> e.getPriority().equals(TicketPriority.P3);
 		tableViewData.setPredicate((Predicate<? super T>) newPredicate);
+	}
+	
+	@FXML
+	void resetFiltersOnMouseClicked(MouseEvent event) {
+		tableViewData.setPredicate(p -> true);
 	}
 	
 	@FXML

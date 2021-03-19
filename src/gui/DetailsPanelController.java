@@ -468,6 +468,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     private void setupPaneNewObject(){
         editing = false;
         ArrayList<String> fields = null;
+        
+        btnHistory.setVisible(false);
+        btnDelete.setVisible(false);
 
         viewModel.setFieldModified(true);
 

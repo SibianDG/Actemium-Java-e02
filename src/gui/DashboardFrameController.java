@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import domain.enums.EmployeeRole;
@@ -26,6 +27,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -285,9 +287,11 @@ public class DashboardFrameController <T,E> extends GuiController {
         } else if ((name.toLowerCase().contains("manage") || name.toLowerCase().contains("consult") ) && name.toLowerCase().contains("knowledge")) {
         	tableViewPanelCompanion = new TableViewPanelCompanion<>(this, knowledgeBaseViewModel, GUIEnum.KNOWLEDGEBASE, EmployeeRole.valueOf(userFacade.giveUserRole()));
         	switchToManageScreen(name, tableViewPanelCompanion, knowledgeBaseViewModel);
+        } else if (name.toLowerCase().contains("statistics")) {
+            if (goToStatisticsConfirmationAlert())
+            Desktop.getDesktop().open(new File("src/powerBi/PowerBiTest.pbix"));
         } else {
             makePopUp(name);
-            Desktop.getDesktop().open(new File("src/powerBi/PowerBiTest.pbix"));
         }
     }
 
@@ -404,4 +408,19 @@ public class DashboardFrameController <T,E> extends GuiController {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
+    
+    private boolean goToStatisticsConfirmationAlert() {
+    	boolean confirmed = false;
+        String headerText = LanguageResource.getString("goToStatistics_confirmation_header");
+    	String text = LanguageResource.getString("goToStatistics_confirmation_text");
+    	Alert alert = new Alert(Alert.AlertType.CONFIRMATION, text);
+        alert.setHeaderText(headerText);
+        alert.getDialogPane().getStylesheets().add("file:src/start/styles.css");
+        alert.getDialogPane().getStyleClass().add("alert");
+        ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
+        Optional<ButtonType> result = alert.showAndWait();
+        confirmed = result.get() == ButtonType.OK;
+        return confirmed;
+    }
+    
 }
