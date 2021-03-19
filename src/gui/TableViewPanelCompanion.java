@@ -169,6 +169,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 					
 				} else {
 					this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTicketsResolved();
+					btnAdd.setVisible(false);
 				}
 				
 //				this.tableView.setPrefWidth(1000.0);

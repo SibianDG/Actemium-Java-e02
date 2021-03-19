@@ -213,10 +213,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                     , getTextFromGridItem(8)
                             );
                         }
-//                      makePopUp("User edited", "You have successfully edited the user.");
 						showPopupMessage("popupSuccess", "You have successfully edited the user.");
 					} else {
-//                      makePopUp("User not edited", "You haven't changed anything.");
 						showPopupMessage("popupWarning", "You haven't changed anything.");
 					}
                 } else {
@@ -231,6 +229,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 , getTextFromGridItem(5)
                                 , EmployeeRole.valueOf(getTextFromGridItem(6))
                         );
+                        showPopupMessageAddItem("popupSuccess", "You have successfully registered the Employee.");
                     } else if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.CUSTOMER)){
                         ((UserViewModel) viewModel).registerCustomer(
                                 getTextFromGridItem(0)
@@ -242,6 +241,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 , getTextFromGridItem(6)
                                 , getTextFromGridItem(7)
                         );
+                        showPopupMessageAddItem("popupSuccess", "You have successfully registered the Customer.");
                     }
                 }
             } else if (viewModel instanceof TicketViewModel) {
@@ -258,7 +258,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 , getTextFromGridItem(10)
                                 , ((TicketViewModel) viewModel).getTechniciansAsignedToTicket()
                         );
-//                        makePopUp(LanguageResource.getString("ticketEdited"), LanguageResource.getString("ticketEdited_succes"));
 						showPopupMessage("popupSuccess", LanguageResource.getString("ticketEdited_succes"));
                     } else if (viewModel.isFieldModified() && !TicketStatus.isOutstanding()){
                         ((TicketViewModel) viewModel).modifyTicketResolved(
@@ -267,10 +266,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 , getTextFromGridItem(14)
                                 , getTextFromGridItem(15)
                         );
-//                        makePopUp(LanguageResource.getString("ticketEdited"), LanguageResource.getString("ticketEdited_succes"));
 						showPopupMessage("popupSuccess", LanguageResource.getString("ticketEdited_succes"));
                     } else {
-//                        makePopUp(LanguageResource.getString("ticketEdited_false"), LanguageResource.getString("unchangedMessage"));
 						showPopupMessage("popupWarning", LanguageResource.getString("unchangedMessage"));
                     }
                 } else {
@@ -284,6 +281,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                             , getTextFromGridItem(7)
                             , Long.parseLong(getTextFromGridItem(4))
                     );
+                    showPopupMessageAddItem("popupSuccess", "You have successfully created the Ticket.");
                 }
             } else if (viewModel instanceof ContractTypeViewModel) {
                 if (editing) {
@@ -302,10 +300,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 Integer.parseInt(getTextFromGridItem(7)), //min troughputtime contract
                                 Double.parseDouble(getTextFromGridItem(8).replace(",", ".")) //price contract
                         );
-//                        makePopUp(LanguageResource.getString("contractTypeEdited"), LanguageResource.getString("contractTypeEdited_succes"));
 						showPopupMessage("popupSuccess", LanguageResource.getString("contractTypeEdited_succes"));
                     } else {
-//                        makePopUp(LanguageResource.getString("contractTypeEdited_false"), LanguageResource.getString("unchangedMessage"));
 						showPopupMessage("popupWarning", LanguageResource.getString("unchangedMessage"));
                     }
                 } else {
@@ -321,6 +317,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                             Integer.parseInt(getTextFromGridItem(7)),
                             Double.parseDouble(getTextFromGridItem(8).replace(",", "."))
                     );
+                    showPopupMessageAddItem("popupSuccess", "You have successfully created the Contract Type.");
                 }
             } else if (viewModel instanceof ContractViewModel) {
                 if (editing) {
@@ -329,10 +326,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 // Only the status can be modified in case a customer didnt pay his bills                        		
                                 ContractStatus.valueOf(getTextFromGridItem(3))
                         );
-//                        makePopUp(LanguageResource.getString("contractEdited"), LanguageResource.getString("contractEdited_succes"));
 						showPopupMessage("popupSuccess", LanguageResource.getString("contractEdited_succes"));
                     } else {
-//                        makePopUp(LanguageResource.getString("contractEdited_false"), LanguageResource.getString("unchangedMessage"));
 						showPopupMessage("popupWarning", LanguageResource.getString("unchangedMessage"));
                     }
                 } else {
@@ -344,6 +339,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                             , LocalDate.parse(getTextFromGridItem(2)) //startDate DatePicker
                             , Integer.parseInt(getTextFromGridItem(3))
                     );
+                    showPopupMessageAddItem("popupSuccess", "You have successfully created the Contract.");
                 }
             } else if (viewModel instanceof KnowledgeBaseViewModel) {
                 if (editing) {
@@ -366,11 +362,12 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                             , getTextFromGridItem(2)
                             , getTextFromGridItem(3)
                     );
+                    showPopupMessageAddItem("popupSuccess", "You have successfully created the KB item.");
                 }
             }
             editing = false;
             viewModel.setFieldModified(false);
-            setDetailOnModifying();
+            setDetailOnModifying();            
 
             //TODO: handle the correct error messages, not just all
         } catch (InformationRequiredException ire) {
@@ -462,7 +459,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         btnModify.setVisible(true);
         txtErrorMessage.setVisible(false);
         editing = true;
-
     }
 
     private void setupPaneNewObject(){
@@ -1099,18 +1095,30 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         popup.getContent().add(label);
         return popup;
     }
-
-    //TODO fix positioning
-    // Can it be relative to a button such as btnModify or btnAdd
-    // Temp fix
+    
 	public void showPopupMessage(final String popupType, String message) {
         final Popup popup = createPopup(message, popupType);
         final Stage stage = (Stage) gridDetails.getScene().getWindow();
         popup.setOnShown(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent e) {
-				popup.setX(1300 - popup.getWidth()/2);
-				popup.setY(190 + hBoxModify.getLayoutY() - popup.getHeight()/2);
+				popup.setX(btnModify.localToScreen(btnModify.getBoundsInLocal()).getMaxX() - popup.getWidth()/2 - 500);
+				popup.setY(btnModify.localToScreen(btnModify.getBoundsInLocal()).getMaxY() - popup.getHeight() - 5);
+            }
+        });
+        popup.show(stage);
+    }
+	
+	//TODO
+	//temp fix for created item popup
+	public void showPopupMessageAddItem(final String popupType, String message) {
+        final Popup popup = createPopup(message, popupType);
+        final Stage stage = (Stage) gridDetails.getScene().getWindow();
+        popup.setOnShown(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent e) {
+				popup.setX(btnModify.localToScreen(btnModify.getBoundsInLocal()).getMaxX() - popup.getWidth()/2 - 360);
+				popup.setY(160);
             }
         });
         popup.show(stage);
