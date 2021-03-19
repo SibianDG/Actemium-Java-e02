@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Access;
@@ -36,18 +37,18 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 	private UserModel user;
 //	private String username;
 	private String userRole;
-	
+
 	private LocalDateTime dateTimeOfChange;
-	
+
 	private String changeDescription;
-	@Lob
-	@Column
-	private String changeContent;
-	
+//	@Lob
+//	@Column
+	private List<String> changeContent;
+
 	public ActemiumTicketChange() {
 		super();
 	}
-	
+
 	private ActemiumTicketChange(TicketChangeBuilder builder) throws InformationRequiredException {
 		this.ticket = builder.ticket;
 		this.user = builder.user;
@@ -56,7 +57,7 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 		this.changeDescription = builder.changeDescription;
 		this.changeContent = builder.changeContent;
 	}
-		
+
 	public ActemiumTicket getTicket() {
 		return ticket;
 	}
@@ -97,33 +98,31 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 		this.changeDescription = changeDescription;
 	}
 
-	public String getChangeContent() {
+	public List<String> getChangeContent() {
 		return changeContent;
 	}
 
-	public void setChangeContent(String changeContent) {
+	public void setChangeContent(List<String> changeContent) {
 		this.changeContent = changeContent;
 	}
 
-	
 	public void checkAttributes() throws InformationRequiredException {
-		new TicketChangeBuilder()
-			.ticket(this.getTicket())
-			.user(this.getUser())
-			.userRole(this.getUserRole())
-			.dateTimeOfChange(this.getDateTimeOfChange())
-			.changeDescription(this.getChangeDescription())
-			.changeContent(this.getChangeContent())
-			.build();
+		new TicketChangeBuilder().ticket(this.getTicket())
+				.user(this.getUser())
+				.userRole(this.getUserRole())
+				.dateTimeOfChange(this.getDateTimeOfChange())
+				.changeDescription(this.getChangeDescription())
+				.changeContent(this.getChangeContent())
+				.build();
 	}
-	
+
 	public static class TicketChangeBuilder {
 		private ActemiumTicket ticket;
 		private UserModel user;
 		private String userRole;
 		private LocalDateTime dateTimeOfChange;
 		private String changeDescription;
-		private String changeContent;
+		private List<String> changeContent;
 
 		private Set<RequiredElement> requiredElements;
 
@@ -131,23 +130,28 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 			this.ticket = ticket;
 			return this;
 		}
+
 		public TicketChangeBuilder user(UserModel user) {
 			this.user = user;
 			return this;
 		}
+
 		public TicketChangeBuilder userRole(String userRole) {
 			this.userRole = userRole;
 			return this;
 		}
+
 		public TicketChangeBuilder dateTimeOfChange(LocalDateTime dateTimeOfChange) {
 			this.dateTimeOfChange = dateTimeOfChange;
 			return this;
 		}
+
 		public TicketChangeBuilder changeDescription(String changeDescription) {
 			this.changeDescription = changeDescription;
 			return this;
 		}
-		public TicketChangeBuilder changeContent(String changeContent) {
+
+		public TicketChangeBuilder changeContent(List<String> changeContent) {
 			this.changeContent = changeContent;
 			return this;
 		}
@@ -177,8 +181,7 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 
 		ActemiumTicketChange cloned = null;
 		try {
-			cloned = new ActemiumTicketChange.TicketChangeBuilder()
-					.ticket(this.getTicket())
+			cloned = new ActemiumTicketChange.TicketChangeBuilder().ticket(this.getTicket())
 					.user(this.getUser())
 					.userRole(this.getUserRole())
 					.dateTimeOfChange(this.getDateTimeOfChange())
@@ -186,12 +189,12 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 					.changeContent(this.getChangeContent())
 					.build();
 		} catch (InformationRequiredException e) {
-			//this should be a good Employee
+			// this should be a good Employee
 			e.printStackTrace();
 		}
 		return cloned;
 	}
-	
+
 	@Override
 	public String toString() {
 		// Stringbuilder
@@ -200,7 +203,8 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 		ticketChange.append(String.format("Date: %s%n", getDateTimeOfChange().format(DateTimeFormatter.ISO_DATE)));
 		ticketChange.append(String.format("Time: %s%n", getDateTimeOfChange().format(DateTimeFormatter.ISO_TIME)));
 		ticketChange.append(String.format("Description: %s%n", getChangeDescription()));
-		ticketChange.append(String.format("Change Content: %s%n", getChangeContent()));
+		ticketChange.append(String.format("Change Content: %n"));
+		getChangeContent().forEach(c -> ticketChange.append(String.format("%s%n", c)));
 		return ticketChange.toString();
 	}
 

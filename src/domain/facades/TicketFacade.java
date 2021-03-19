@@ -45,26 +45,18 @@ public class TicketFacade implements Facade {
 							.attachments(attachments)
 							.build();
 
-		StringBuilder changeList = new StringBuilder();
-		changeList.append(System.lineSeparator());
-		changeList.append(String.format("Ticket was added for customer: \"%s\".", ticket.getCustomer().getCompany().getName()));
-		changeList.append(System.lineSeparator());
-		changeList.append(String.format("Ticket Priority was set to \"%s\".", priority));
-		changeList.append(System.lineSeparator());
-		changeList.append(String.format("Ticket Type was set to \"%s\".", ticketType));
-		changeList.append(System.lineSeparator());
-		changeList.append(String.format("Ticket Status was initialized as \"%s\".", ticket.getStatus()));
-		changeList.append(System.lineSeparator());
-		changeList.append(String.format("Ticket Title was set to \"%s\".", title));
-		changeList.append(System.lineSeparator());
-		changeList.append(String.format("Ticket Description was added."));
+		List<String> changeList = new ArrayList<>();
+		changeList.add(String.format("Ticket was added for customer: \"%s\".", ticket.getCustomer().getCompany().getName()));
+		changeList.add(String.format("Ticket Priority was set to \"%s\".", priority));
+		changeList.add(String.format("Ticket Type was set to \"%s\".", ticketType));
+		changeList.add(String.format("Ticket Status was initialized as \"%s\".", ticket.getStatus()));
+		changeList.add(String.format("Ticket Title was set to \"%s\".", title));
+		changeList.add(String.format("Ticket Description was added."));
 		if (!remarks.equals("(none)")) {
-			changeList.append(System.lineSeparator());
-			changeList.append(String.format("Ticket Remarks were added."));
+			changeList.add(String.format("Ticket Remarks were added."));
 		}
 		if (!attachments.equals("(none)")) {
-			changeList.append(System.lineSeparator());
-			changeList.append(String.format("Ticket Attachments were added."));
+			changeList.add(String.format("Ticket Attachments were added."));
 		}				
 
 		// This counter intuitive way of doing things
@@ -72,7 +64,7 @@ public class TicketFacade implements Facade {
 		actemium.registerTicket(ticket, customer);		
 		
 		ticket = (ActemiumTicket) actemium.getLastAddedTicket();
-		ticket.addTicketChange(createTicketChange(ticket, "registerTicket", changeList.toString()));
+		ticket.addTicketChange(createTicketChange(ticket, "registerTicket", changeList));
 		
 		actemium.modifyTicket(ticket);
 	}
@@ -136,45 +128,38 @@ public class TicketFacade implements Facade {
 			ticketClone.setAttachments(attachments);
 			
 			ticketClone.checkAttributes();
-			
-			StringBuilder changeList = new StringBuilder();
+
+			List<String> changeList = new ArrayList<>();
 			
 			if (!ticket.getPriority().equals(priority)) {
-				changeList.append(System.lineSeparator());
-				changeList.append(String.format("Ticket Priority changed from \"%s\" to \"%s\".", ticket.getPriority(), priority));
+				changeList.add(String.format("Ticket Priority changed from \"%s\" to \"%s\".", ticket.getPriority(), priority));
 				ticket.setPriority(priority);
 			}
 			if (!ticket.getTicketType().equals(ticketType)) {
-				changeList.append(System.lineSeparator());
-				changeList.append(String.format("Ticket Type changed from \"%s\" to \"%s\".", ticket.getTicketType(), ticketType));
+				changeList.add(String.format("Ticket Type changed from \"%s\" to \"%s\".", ticket.getTicketType(), ticketType));
 				ticket.setTicketType(ticketType);
 			}
 			if (!ticket.getStatus().equals(status)) {
-				changeList.append(System.lineSeparator());
-				changeList.append(String.format("Ticket Status changed from \"%s\" to \"%s\".", ticket.getStatus(), status));
+				changeList.add(String.format("Ticket Status changed from \"%s\" to \"%s\".", ticket.getStatus(), status));
 				ticket.setStatus(status);
 			}
 			if (!ticket.getTitle().equals(title)) {
-				changeList.append(System.lineSeparator());
-				changeList.append(String.format("Ticket Title changed from \"%s\" to \"%s\".", ticket.getTitle(), title));
+				changeList.add(String.format("Ticket Title changed from \"%s\" to \"%s\".", ticket.getTitle(), title));
 				ticket.setTitle(title);
 			}
 			if (!ticket.getDescription().equals(description)) {
-				changeList.append(System.lineSeparator());
 //				changeList.append(String.format("Ticket Description changed from \"%s\" to \"%s\".", ticket.getDescription(), description));
-				changeList.append(String.format("Ticket Description changed."));
+				changeList.add(String.format("Ticket Description changed."));
 				ticket.setDescription(description);
 			}
 			if (!ticket.getRemarks().equals(remarks)) {
-				changeList.append(System.lineSeparator());
 //				changeList.append(String.format("Ticket Remarks changed from \"%s\" to \"%s\".", ticket.getRemarks(), remarks));
-				changeList.append(String.format("Ticket Remarks changed."));
+				changeList.add(String.format("Ticket Remarks changed."));
 				ticket.setRemarks(remarks);
 			}
 			if (!ticket.getAttachments().equals(attachments)) {
-				changeList.append(System.lineSeparator());
 //				changeList.append(String.format("Ticket Attachments changed from \"%s\" to \"%s\".", ticket.getAttachments(), attachments));
-				changeList.append(String.format("Ticket Attachments changed."));
+				changeList.add(String.format("Ticket Attachments changed."));
 				ticket.setAttachments(attachments);
 			}
 			// Had to stream the list in order for the removeAll to work properly
@@ -185,8 +170,7 @@ public class TicketFacade implements Facade {
 				System.out.println(originalTechnicians);
 				if (originalTechnicians.size() != 0) {
 					for (ActemiumEmployee technician : originalTechnicians) {
-						changeList.append(System.lineSeparator());
-						changeList.append(String.format("Technician \"%s %s\" with ID: %d got removed from the ticket.", 
+						changeList.add(String.format("Technician \"%s %s\" with ID: %d got removed from the ticket.", 
 								technician.getFirstName(), technician.getLastName(), technician.getUserId()));
 					}
 				}
@@ -198,8 +182,7 @@ public class TicketFacade implements Facade {
 				System.out.println(newTechnicians);
 				if (newTechnicians.size() != 0) {
 					for (ActemiumEmployee technician : newTechnicians) {
-						changeList.append(System.lineSeparator());
-						changeList.append(String.format("Technician \"%s %s\" with ID: %d got added to the ticket.", 
+						changeList.add(String.format("Technician \"%s %s\" with ID: %d got added to the ticket.", 
 								technician.getFirstName(), technician.getLastName(), technician.getUserId()));
 					}
 				}
@@ -207,7 +190,7 @@ public class TicketFacade implements Facade {
 				technicians.forEach(ticket::addTechnician);	
 			}		
 			
-			ticket.addTicketChange(createTicketChange(ticket, "modifyTicketOutstanding", changeList.toString()));
+			ticket.addTicketChange(createTicketChange(ticket, "modifyTicketOutstanding", changeList));
 			
 			actemium.modifyTicket(ticket);
 			
@@ -253,25 +236,22 @@ public class TicketFacade implements Facade {
 			ticketClone.setSupportNeeded(supportNeeded);
 			ticketClone.checkAttributes();
 			
-			StringBuilder changeList = new StringBuilder();
+			List<String> changeList = new ArrayList<>();
 			
 			if (!ticket.getSolution().equals(solution)) {
-				changeList.append(System.lineSeparator());
-				changeList.append(String.format("Ticket Solution changed from \"%s\" to \"%s\".", ticket.getSolution(), solution));
+				changeList.add(String.format("Ticket Solution changed from \"%s\" to \"%s\".", ticket.getSolution(), solution));
 				ticket.setSolution(solution);
 			}
 			if (!ticket.getQuality().equals(quality)) {
-				changeList.append(System.lineSeparator());
-				changeList.append(String.format("Ticket Quality changed from \"%s\" to \"%s\".", ticket.getQuality(), quality));
+				changeList.add(String.format("Ticket Quality changed from \"%s\" to \"%s\".", ticket.getQuality(), quality));
 				ticket.setQuality(quality);
 			}
 			if (!ticket.getSupportNeeded().equals(supportNeeded)) {
-				changeList.append(System.lineSeparator());
-				changeList.append(String.format("Ticket Support Needed changed from \"%s\" to \"%s\".", ticket.getSupportNeeded(), supportNeeded));
+				changeList.add(String.format("Ticket Support Needed changed from \"%s\" to \"%s\".", ticket.getSupportNeeded(), supportNeeded));
 				ticket.setSupportNeeded(supportNeeded);
 			}
 			
-			ticket.addTicketChange(createTicketChange(ticket, "modifyTicketResolved", changeList.toString()));
+			ticket.addTicketChange(createTicketChange(ticket, "modifyTicketResolved", changeList));
 			
 			actemium.modifyTicket(ticket);
 			
@@ -280,7 +260,7 @@ public class TicketFacade implements Facade {
 		}
 	}
 	
-	private ActemiumTicketChange createTicketChange(ActemiumTicket ticket, String methodName, String changeList) throws InformationRequiredException {
+	private ActemiumTicketChange createTicketChange(ActemiumTicket ticket, String methodName, List<String> changeList) throws InformationRequiredException {
 		StringBuilder changeDescription = new StringBuilder();
 		switch(methodName) {
 		case "registerTicket" -> changeDescription.append("Created ticket with ID: ");

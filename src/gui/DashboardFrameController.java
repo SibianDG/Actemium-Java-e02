@@ -304,7 +304,7 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
 		resetGridpane(gridContent);
 
 		//tableViewPanelCompanion = new TableViewPanelCompanion(this, userViewModel, currentState);
-		detailsPanelController = new DetailsPanelController(viewModel);
+		detailsPanelController = new DetailsPanelController(viewModel, gridContent);
 		gridContent.add(tableViewPanelCompanion, 0, 0);
 		gridContent.add(detailsPanelController, 1, 0);
 	}

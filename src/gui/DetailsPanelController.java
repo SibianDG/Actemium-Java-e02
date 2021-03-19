@@ -101,9 +101,14 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     @FXML
     private Text txtErrorMessage;
+    
+    private GridPane gridContent;
+    
+    private TicketHistoryPanelController ticketHistoryPanelController;
 
-    public DetailsPanelController(ViewModel viewModel) {
+    public DetailsPanelController(ViewModel viewModel, GridPane gridContent) {
         this.viewModel = viewModel;
+        this.gridContent = gridContent;
         viewModel.addListener(this);
 
         try {
@@ -157,7 +162,10 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     	System.out.println("History" + txtDetailsTitle.getText().substring(7) + "\n");
     	((TicketViewModel) viewModel).getSelectedTicket().giveTicketChanges()
     				.stream().forEach(System.out::println);;
-    	System.out.println("===============END==============\n");
+    	System.out.println("===============END==============\n");    	
+    	
+    	ticketHistoryPanelController = new TicketHistoryPanelController((TicketViewModel) viewModel, gridContent, this);
+		gridContent.add(ticketHistoryPanelController, 1, 0);
     }
 
     @FXML
