@@ -34,6 +34,7 @@ public class ProfileViewModel extends ViewModel {
 
     public void modifyProfile(String username, String password, String firstName, String lastName, String address, String phoneNumber, String emailAddress) throws InformationRequiredException {
         userFacade.modifyProfileOfEmployee(username, password, firstName, lastName, address, phoneNumber, emailAddress);
+        fireInvalidationEvent();
     }
 
 
