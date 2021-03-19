@@ -35,6 +35,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import languages.LanguageResource;
 
 
 @Entity
@@ -529,15 +530,15 @@ public class ActemiumTicket implements Ticket, Serializable {
 			if (dateAndTimeOfCreation == null)
 				this.dateAndTimeOfCreation = LocalDateTime.now();
 			if (solution == null)
-				this.solution = "(not filled in yet)";
+				this.solution = String.format("(%s)", LanguageResource.getString("not_filled_in_yet"));
 			if (quality == null)
-				this.quality = "(not filled in yet)";
+				this.quality = String.format("(%s)", LanguageResource.getString("not_filled_in_yet"));
 			if (supportNeeded == null)
-				this.supportNeeded = "(not filled in yet)";
+				this.supportNeeded = String.format("(%s)", LanguageResource.getString("not_filled_in_yet"));
 			if (remarks == null)
-				this.remarks = "(none)";
+				this.remarks = String.format("(%s)", LanguageResource.getString("none"));
 			if (attachments == null)
-				this.attachments = "(none)";
+				this.attachments = String.format("(%s)", LanguageResource.getString("none"));
 			if (!requiredElements.isEmpty()) {
 				//requiredElements.forEach(element -> System.out.println(element));
 				throw new InformationRequiredException(requiredElements);

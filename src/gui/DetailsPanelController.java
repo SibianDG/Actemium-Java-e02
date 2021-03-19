@@ -173,7 +173,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         try {
         	if(deleteConfirmationAlert()) {
         		viewModel.delete();
-        		showPopupMessage("popupDelete", "You have succesfully deleted the item");
+        		showPopupMessage("popupDelete", LanguageResource.getString("succesfully_deleted_item"));
         	}
         } catch (InformationRequiredException ire) {
             StringBuilder errorMessage = new StringBuilder();
@@ -221,9 +221,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                     , getTextFromGridItem(8)
                             );
                         }
-						showPopupMessage("popupSuccess", "You have successfully edited the user.");
+						showPopupMessage("popupSuccess", LanguageResource.getString("user_edit_success"));
 					} else {
-						showPopupMessage("popupWarning", "You haven't changed anything.");
+						showPopupMessage("popupWarning", LanguageResource.getString("unchangedMessage"));
 					}
                 } else {
                     if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.EMPLOYEE)){
@@ -237,7 +237,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 , getTextFromGridItem(5)
                                 , EmployeeRole.valueOf(getTextFromGridItem(6))
                         );
-                        showPopupMessageAddItem("popupSuccess", "You have successfully registered the Employee.");
+                        showPopupMessageAddItem("popupSuccess", LanguageResource.getString("employee_registred_success"));
                     } else if (((UserViewModel) viewModel).getCurrentState().equals(GUIEnum.CUSTOMER)){
                         ((UserViewModel) viewModel).registerCustomer(
                                 getTextFromGridItem(0)
@@ -249,7 +249,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                                 , getTextFromGridItem(6)
                                 , getTextFromGridItem(7)
                         );
-                        showPopupMessageAddItem("popupSuccess", "You have successfully registered the Customer.");
+                        showPopupMessageAddItem("popupSuccess", LanguageResource.getString("customer_registred_success"));
                     }
                 }
             } else if (viewModel instanceof TicketViewModel) {
@@ -289,7 +289,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                             , getTextFromGridItem(7)
                             , Long.parseLong(getTextFromGridItem(4))
                     );
-                    showPopupMessageAddItem("popupSuccess", "You have successfully created the Ticket.");
+                    showPopupMessageAddItem("popupSuccess", LanguageResource.getString("ticket_created_success"));
                 }
             } else if (viewModel instanceof ContractTypeViewModel) {
                 if (editing) {
@@ -325,7 +325,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                             Integer.parseInt(getTextFromGridItem(7)),
                             Double.parseDouble(getTextFromGridItem(8).replace(",", "."))
                     );
-                    showPopupMessageAddItem("popupSuccess", "You have successfully created the Contract Type.");
+                    showPopupMessageAddItem("popupSuccess", LanguageResource.getString("contracttype_created_success"));
                 }
             } else if (viewModel instanceof ContractViewModel) {
                 if (editing) {
@@ -347,7 +347,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                             , LocalDate.parse(getTextFromGridItem(2)) //startDate DatePicker
                             , Integer.parseInt(getTextFromGridItem(3))
                     );
-                    showPopupMessageAddItem("popupSuccess", "You have successfully created the Contract.");
+                    showPopupMessageAddItem("popupSuccess", LanguageResource.getString("contract_created_success"));
                 }
             } else if (viewModel instanceof KnowledgeBaseViewModel) {
                 if (editing) {
@@ -370,7 +370,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                             , getTextFromGridItem(2)
                             , getTextFromGridItem(3)
                     );
-                    showPopupMessageAddItem("popupSuccess", "You have successfully created the KB item.");
+                    showPopupMessageAddItem("popupSuccess", LanguageResource.getString("KBitem_created_success"));
                 }
             }
             editing = false;
@@ -435,8 +435,8 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
         if (viewModel instanceof UserViewModel) {
             addGridDetails(((UserViewModel) viewModel).getDetails());
-            txtDetailsTitle.setText("Details of " + ((UserViewModel) viewModel).getNameOfSelectedUser());
-            btnModify.setText("Modify " + ((UserViewModel) viewModel).getCurrentState().toString().toLowerCase());
+            txtDetailsTitle.setText(String.format("%s %s", LanguageResource.getString("details_of"), ((UserViewModel) viewModel).getNameOfSelectedUser()));
+            btnModify.setText(String.format("%s %s", LanguageResource.getString("modify") ,((UserViewModel) viewModel).getCurrentState().toString().toLowerCase()));
             btnDelete.setVisible(true);
         } else if (viewModel instanceof TicketViewModel) {
             if (TicketStatus.isOutstanding()) {
@@ -444,24 +444,24 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             } else {
                 addGridDetails(((TicketViewModel) viewModel).getDetails());
             }
-            txtDetailsTitle.setText("Details of ticket: " + ((TicketViewModel) viewModel).getIdSelectedTicket());
-            btnModify.setText("Modify Ticket");
+            txtDetailsTitle.setText(String.format("%s: %s", LanguageResource.getString("details_of_ticket"), ((TicketViewModel) viewModel).getIdSelectedTicket()));
+            btnModify.setText(LanguageResource.getString("modify_ticket"));
             btnDelete.setVisible(true);
             btnHistory.setVisible(true);
         } else if (viewModel instanceof ContractTypeViewModel) {
             addGridDetails(((ContractTypeViewModel) viewModel).getDetails());
-            txtDetailsTitle.setText("Details of ContractType: " + ((ContractTypeViewModel) viewModel).getNameSelectedContractType());
-            btnModify.setText("Modify ContractType");
+            txtDetailsTitle.setText(String.format("%s: %s", LanguageResource.getString("details_of_contracttype"), ((ContractTypeViewModel) viewModel).getNameSelectedContractType()));
+            btnModify.setText(LanguageResource.getString("modify_contractType"));
             btnDelete.setVisible(true);
         } else if (viewModel instanceof ContractViewModel) {
             addGridDetails(((ContractViewModel) viewModel).getDetails());
-            txtDetailsTitle.setText("Details of Contract: " + ((ContractViewModel) viewModel).getIdSelectedContract());
-            btnModify.setText("Modify Contract");
+            txtDetailsTitle.setText(String.format("%s: %S", LanguageResource.getString("details_of_contract"), ((ContractViewModel) viewModel).getIdSelectedContract()));
+            btnModify.setText(LanguageResource.getString("modify_contract"));
             btnDelete.setVisible(false);
         } else if (viewModel instanceof KnowledgeBaseViewModel) {
             addGridDetails(((KnowledgeBaseViewModel) viewModel).getDetails());
-            txtDetailsTitle.setText("Title: " + ((KnowledgeBaseViewModel) viewModel).getTitleSelectedKbItem());
-            btnModify.setText("Modify KB item");
+            txtDetailsTitle.setText(String.format("%s: %S", LanguageResource.getString("title"), ((KnowledgeBaseViewModel) viewModel).getTitleSelectedKbItem()));
+            btnModify.setText(LanguageResource.getString("modify_KB_item"));
             btnDelete.setVisible(false);
         }
         btnModify.setVisible(true);
@@ -570,7 +570,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             gridDetails.add(makeNewLabel(fields.get(i), true), 0, i);
 
             Node node;
-            if (fields.get(i).toLowerCase().contains("role")){
+            if (fields.get(i).toLowerCase().contains(LanguageResource.getString("role").toLowerCase())){
                 node = makeComboBox(EmployeeRole.ADMINISTRATOR);
             } else {
                 TextField textField;
@@ -607,9 +607,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             gridDetails.add(makeNewLabel(fields.get(i), true), 0, i);
 
             Node node;
-            if (fields.get(i).toLowerCase().contains("priority")) {
+            if (fields.get(i).toLowerCase().contains(LanguageResource.getString("priority").toLowerCase())) {
                 node = makeComboBox(TicketPriority.P3);
-            } else if (fields.get(i).toLowerCase().contains("type")) {
+            } else if (fields.get(i).toLowerCase().contains(LanguageResource.getString("type").toLowerCase())) {
                 node = makeComboBox(TicketType.OTHER);
             } else {
                 TextField textField;
@@ -644,13 +644,13 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             itemName = itemName.toLowerCase();
 
             Node node;
-            if (itemName.contains("status")) {
+            if (itemName.contains(LanguageResource.getString("status").toLowerCase())) {
                 node = makeComboBox(ContractTypeStatus.ACTIVE);
-            } else if (itemName.contains("timestamp")) {
+            } else if (itemName.contains(LanguageResource.getString("timestamp").toLowerCase())) {
                 node = makeComboBox(Timestamp.ALWAYS);
-            } else if (itemName.contains("email")
-                    || itemName.contains("phone")
-                    || itemName.contains("application")){
+            } else if (itemName.contains(LanguageResource.getString("email").toLowerCase())
+                    || itemName.contains(LanguageResource.getString("phone").toLowerCase())
+                    || itemName.contains(LanguageResource.getString("application").toLowerCase())){
                 node = makeComboBox(false);
             } else {
                 TextField textField;
@@ -685,7 +685,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             itemName = itemName.toLowerCase();
 
             Node node;
-            if (itemName.contains("start")) {
+            if (itemName.contains(LanguageResource.getString("start").toLowerCase())) {
                 node = makeDatePicker(LocalDate.now());
             } else {
                 TextField textField;
@@ -713,13 +713,13 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             gridDetails.add(makeNewLabel(fields.get(i), true), 0, i);
 
             Node node;
-            if (fields.get(i).toLowerCase().contains("text")) {
+            if (fields.get(i).toLowerCase().contains(LanguageResource.getString("text").toLowerCase())) {
             	TextArea textArea;
             	textArea = new TextArea(randomValues.get(i));
             	textArea.setFont(Font.font("Arial", 14));
             	textArea.setPromptText(fields.get(i));
                 node = textArea;
-            } else if (fields.get(i).toLowerCase().contains("type")) {
+            } else if (fields.get(i).toLowerCase().contains(LanguageResource.getString("type").toLowerCase())) {
                 node = makeComboBox(KbItemType.OTHER);
             } else {
                 TextField textField;
@@ -753,7 +753,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             Label label = makeNewLabel(key, true);
 
             Node detail = createElementDetailGridpane(details.get(key), key);
-            if (key.toLowerCase().contains("contracts")
+            if (key.toLowerCase().contains(LanguageResource.getString("contracts").toLowerCase())
             		|| key.toLowerCase().contains("ticketsofsametype")){
                 gridDetails.add(label, 0, i);
                 gridDetails.add(detail, 0, i+1);
@@ -777,13 +777,13 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
         if (o instanceof String) {
             String string = (String) o;
-            if (key.equals("Password")){
+            if (key.equalsIgnoreCase(LanguageResource.getString("password"))){
                 string = "********";
             }
             
             //TODO transform into generic method
-            if(key.equals("Text")
-            		|| key.equals("Description")) {
+            if(key.equalsIgnoreCase(LanguageResource.getString("text"))
+            		|| key.equalsIgnoreCase(LanguageResource.getString("description"))) {
             	TextArea detail = new TextArea(string);
             	
             	detail.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -839,7 +839,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             	if(((ObservableList) o).size() > 0)
             		node = makeTableViewTicketsInKb(o);
                 else
-                    node = makeNewLabel("No items available", false);
+                    node = makeNewLabel(LanguageResource.getString("no_items_available"), false);
             else if(viewModel instanceof UserViewModel){
                 if(((ObservableList) o).size() > 0)
                     node = makeTableViewContractsInCustomers(o);
@@ -895,16 +895,16 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         //ObservableList<String> list = FXCollections.observableArrayList(contracts.stream().map(c -> c.toString()).collect(Collectors.toList()));
         ObservableList<Ticket> list = (ObservableList<Ticket>) o;
         TableView<Ticket> tableView = new TableView<>(list);
-        TableColumn<Ticket, Number> columnID = new TableColumn<>("ID");
+        TableColumn<Ticket, Number> columnID = new TableColumn<>(LanguageResource.getString("ID"));
         columnID.setCellValueFactory(cellData -> cellData.getValue().ticketIdProperty());
 
-        TableColumn<Ticket, String> columnName = new TableColumn<>("Priority");
+        TableColumn<Ticket, String> columnName = new TableColumn<>(LanguageResource.getString("priority"));
         columnName.setCellValueFactory(cellData -> cellData.getValue().priorityProperty());
 
-        TableColumn<Ticket, String> columnStatus = new TableColumn<>("Title");
+        TableColumn<Ticket, String> columnStatus = new TableColumn<>(LanguageResource.getString("title"));
         columnStatus.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
 
-        TableColumn<Ticket, String> columnEndDate = new TableColumn<>("Completion Date");
+        TableColumn<Ticket, String> columnEndDate = new TableColumn<>(LanguageResource.getString("completion_date"));
         columnEndDate.setCellValueFactory(cellData -> cellData.getValue().completionDateProperty());
 
         tableView.getColumns().add(columnID);
@@ -950,7 +950,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         }
 
         //create dropdown with all possible employees
-        MenuButton menuButton = new MenuButton("Select technician");
+        MenuButton menuButton = new MenuButton(LanguageResource.getString("select_technician"));
         menuButton.setId("menu-bar");
         menuButton.getItems().addAll(listTechicians);
 

@@ -214,7 +214,7 @@ public class Actemium {
 			}
 			userDaoJpa.commitTransaction();	
 			
-			throw new PasswordException(String.format("%s%n%s %d attempts remaining",
+			throw new PasswordException(String.format("%s%n%s %d %s",
 					LanguageResource.getString("wrongUsernamePasswordCombination"),
 					LanguageResource.getString("password_exception_message1"),
 					USER_LOGIN_MAX_ATTEMPTS - user.getFailedLoginAttempts(),
@@ -231,7 +231,8 @@ public class Actemium {
 		userDaoJpa.commitTransaction();
 		
 		setSignedInUser(user);
-		
+
+		//TODO remove:
 		System.out.println("Just signed in: " + signedInUser.getUsername());
 	}
 
@@ -257,9 +258,12 @@ public class Actemium {
 	public void checkPermision(EmployeeRole role) {
 		if (!giveUserRoleAsEnum().equals(role)) {
 			throw new AccessException(
-					String.format("You need to be %s %s to do this!"
+					String.format("%s %s %s %s!"
+							, LanguageResource.getString("you_need_to_be")
 							, role.equals(EmployeeRole.ADMINISTRATOR) ? LanguageResource.getString("an") : LanguageResource.getString("a")
-							, role.toString().toLowerCase()));
+							, role.toString().toLowerCase()
+							, LanguageResource.getString("to_do_this")
+					));
 		}
 	}
 

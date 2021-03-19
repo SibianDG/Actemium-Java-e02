@@ -14,6 +14,7 @@ import domain.facades.TicketFacade;
 import exceptions.InformationRequiredException;
 import gui.GUIEnum;
 import javafx.collections.ObservableList;
+import languages.LanguageResource;
 
 public class TicketViewModel extends ViewModel {
 
@@ -59,32 +60,34 @@ public class TicketViewModel extends ViewModel {
     }
 
     public ArrayList<String> getDetailsNewTicket(){
-        return new ArrayList<String>(Arrays.asList("Title", "Creation date", "Priority", "Type", "Customer ID", "Description", "Remarks", "Attachments"));
+        return new ArrayList<String>(Arrays.asList(LanguageResource.getString("title"), LanguageResource.getString("creation_date"),
+                LanguageResource.getString("priority"), LanguageResource.getString("type"), LanguageResource.getString("customer_id"),
+                LanguageResource.getString("description"), LanguageResource.getString("remarks"), LanguageResource.getString("attachments")));
     }
 
     public Map<String, Map<Boolean, Object>> getDetails() {
         Ticket ticket = selectedTicket;        
         Map<String, Map<Boolean, Object>> details = new LinkedHashMap<>();
         boolean editable = TicketStatus.isOutstanding();
-        details.put("Title", Collections.singletonMap(editable, ticket.getTitle()));
-        details.put("Creation date", Collections.singletonMap(false, ticket.getDateOfCreation().format(DateTimeFormatter.ISO_DATE)));
-        details.put("Creation time", Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_TIME)));
+        details.put(LanguageResource.getString("title"), Collections.singletonMap(editable, ticket.getTitle()));
+        details.put(LanguageResource.getString("creation_date"), Collections.singletonMap(false, ticket.getDateOfCreation().format(DateTimeFormatter.ISO_DATE)));
+        details.put(LanguageResource.getString("creation_time"), Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_TIME)));
         if (!TicketStatus.isOutstanding()) {
-            details.put("Completion date", Collections.singletonMap(false, ticket.getDateAndTimeOfCompletion().format(DateTimeFormatter.ISO_DATE)));
-            details.put("Completion time", Collections.singletonMap(false, ticket.getDateAndTimeOfCompletion().format(DateTimeFormatter.ISO_TIME)));
+            details.put(LanguageResource.getString("completion_date"), Collections.singletonMap(false, ticket.getDateAndTimeOfCompletion().format(DateTimeFormatter.ISO_DATE)));
+            details.put(LanguageResource.getString("completion_time"), Collections.singletonMap(false, ticket.getDateAndTimeOfCompletion().format(DateTimeFormatter.ISO_TIME)));
         }
-        details.put("Priority", Collections.singletonMap(editable, ticket.getPriority()));
-        details.put("Type", Collections.singletonMap(editable, ticket.getTicketType()));
-        details.put("Status", Collections.singletonMap(editable, ticket.getStatus()));
-        details.put("Description", Collections.singletonMap(editable, ticket.getDescription()));
-        details.put("Customer/Company", Collections.singletonMap(false, ticket.giveCustomer().giveCompany().getName()));
-        details.put("Technicians", Collections.singletonMap(editable, ticket.giveTechnicians()));
-        details.put("Remarks", Collections.singletonMap(editable, ticket.getRemarks()));
-        details.put("Attachments", Collections.singletonMap(editable, ticket.getAttachments()));
+        details.put(LanguageResource.getString("priority"), Collections.singletonMap(editable, ticket.getPriority()));
+        details.put(LanguageResource.getString("type"), Collections.singletonMap(editable, ticket.getTicketType()));
+        details.put(LanguageResource.getString("status"), Collections.singletonMap(editable, ticket.getStatus()));
+        details.put(LanguageResource.getString("description"), Collections.singletonMap(editable, ticket.getDescription()));
+        details.put(LanguageResource.getString("customer/company"), Collections.singletonMap(false, ticket.giveCustomer().giveCompany().getName()));
+        details.put(LanguageResource.getString("technicians"), Collections.singletonMap(editable, ticket.giveTechnicians()));
+        details.put(LanguageResource.getString("remarks"), Collections.singletonMap(editable, ticket.getRemarks()));
+        details.put(LanguageResource.getString("attachments"), Collections.singletonMap(editable, ticket.getAttachments()));
         if (!TicketStatus.isOutstanding()) {
-        	details.put("Solution", Collections.singletonMap(true, ticket.getSolution()));
-            details.put("Quality", Collections.singletonMap(true, ticket.getQuality()));
-            details.put("Support Needed", Collections.singletonMap(true, ticket.getSupportNeeded()));
+        	details.put(LanguageResource.getString("solution"), Collections.singletonMap(true, ticket.getSolution()));
+            details.put(LanguageResource.getString("quality"), Collections.singletonMap(true, ticket.getQuality()));
+            details.put(LanguageResource.getString("support_needed"), Collections.singletonMap(true, ticket.getSupportNeeded()));
         }
         return details;
     }

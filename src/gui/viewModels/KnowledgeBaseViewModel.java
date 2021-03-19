@@ -14,6 +14,7 @@ import domain.facades.TicketFacade;
 import exceptions.InformationRequiredException;
 import gui.GUIEnum;
 import javafx.collections.ObservableList;
+import languages.LanguageResource;
 
 public class KnowledgeBaseViewModel extends ViewModel {
 
@@ -46,16 +47,16 @@ public class KnowledgeBaseViewModel extends ViewModel {
 	}
 
 	public ArrayList<String> getDetailsNewKbItem() {
-		return new ArrayList<String>(Arrays.asList("Title", "Type", "Keywords", "Text"));
+		return new ArrayList<String>(Arrays.asList(LanguageResource.getString("Title"), LanguageResource.getString("type"), LanguageResource.getString("keywords"), LanguageResource.getString("text")));
 	}
 
     public Map<String, Map<Boolean, Object>> getDetails() {
     	KbItem kbItem = selectedKbItem;
         Map<String,Map<Boolean, Object>> details = new LinkedHashMap<>();
-        details.put("Title", Collections.singletonMap(false, kbItem.getTitle()));
-        details.put("Type", Collections.singletonMap(true, kbItem.getType()));        
-        details.put("Keywords", Collections.singletonMap(true, kbItem.getKeywords()));
-        details.put("Text", Collections.singletonMap(true, kbItem.getText()));
+        details.put(LanguageResource.getString("title"), Collections.singletonMap(false, kbItem.getTitle()));
+        details.put(LanguageResource.getString("type"), Collections.singletonMap(true, kbItem.getType()));
+        details.put(LanguageResource.getString("keywords"), Collections.singletonMap(true, kbItem.getKeywords()));
+        details.put(LanguageResource.getString("text"), Collections.singletonMap(true, kbItem.getText()));
         details.put("CompletedTicketsOfSameType", Collections.singletonMap(true, ticketFacade.giveTicketsOfSameType(selectedKbItem.getType())));
 
 		return details;

@@ -10,6 +10,7 @@ import domain.facades.ContractTypeFacade;
 import exceptions.InformationRequiredException;
 import gui.GUIEnum;
 import javafx.collections.ObservableList;
+import languages.LanguageResource;
 
 public class ContractTypeViewModel extends ViewModel {
 
@@ -40,22 +41,22 @@ public class ContractTypeViewModel extends ViewModel {
     }
 
 	public ArrayList<String> getDetailsNewContractType() {
-		return new ArrayList<String>(Arrays.asList("Name", "Status", "Email", "Phone", "Application",
-				"Timestamp (support hours)", "Max handling time", "Min throughput time", "Price contract"));
+		return new ArrayList<String>(Arrays.asList(LanguageResource.getString("name"), LanguageResource.getString("status"), LanguageResource.getString("email"), LanguageResource.getString("phone"), LanguageResource.getString("application"),
+				LanguageResource.getString("timestamp_sh"), LanguageResource.getString("max_handling_time"), LanguageResource.getString("min_throughput_time"), LanguageResource.getString("price_contract")));
 	}
 
     public Map<String, Map<Boolean, Object>> getDetails() {
         ContractType contractType = selectedContractType;
         Map<String,Map<Boolean, Object>> details = new LinkedHashMap<>();
-        details.put("Name", Collections.singletonMap(false, contractType.getName()));
-        details.put("Status", Collections.singletonMap(true, contractType.getContractTypeStatus()));
-        details.put("Email", Collections.singletonMap(true, (Boolean) contractType.isHasEmail()));
-        details.put("Phone", Collections.singletonMap(true, (Boolean) contractType.isHasPhone()));
-        details.put("Application", Collections.singletonMap(true, (Boolean) contractType.isHasApplication()));
-        details.put("Timestamp (support hours)", Collections.singletonMap(true, contractType.getTimestamp()));
-        details.put("Max handling time", Collections.singletonMap(true, String.format("%d", contractType.getMaxHandlingTime())));
-        details.put("Min throughput time", Collections.singletonMap(true, String.format("%d", contractType.getMinThroughputTime())));
-        details.put("Price contract", Collections.singletonMap(true, String.format("%.2f", contractType.getPrice())));
+        details.put(LanguageResource.getString("name"), Collections.singletonMap(false, contractType.getName()));
+        details.put(LanguageResource.getString("status"), Collections.singletonMap(true, contractType.getContractTypeStatus()));
+        details.put(LanguageResource.getString("email"), Collections.singletonMap(true, (Boolean) contractType.isHasEmail()));
+        details.put(LanguageResource.getString("phone"), Collections.singletonMap(true, (Boolean) contractType.isHasPhone()));
+        details.put(LanguageResource.getString("application"), Collections.singletonMap(true, (Boolean) contractType.isHasApplication()));
+        details.put(LanguageResource.getString("timestamp_sh"), Collections.singletonMap(true, contractType.getTimestamp()));
+        details.put(LanguageResource.getString("max_handling_time"), Collections.singletonMap(true, String.format("%d", contractType.getMaxHandlingTime())));
+        details.put(LanguageResource.getString("min_throughput_time"), Collections.singletonMap(true, String.format("%d", contractType.getMinThroughputTime())));
+        details.put(LanguageResource.getString("price_contract"), Collections.singletonMap(true, String.format("%.2f", contractType.getPrice())));
         //details.put("Amount open contracts", contractType);
         //details.put("Amount resolved tickets", contractType);
         //details.put("Percentage tickets resolved within agreed time", contractType);

@@ -193,13 +193,13 @@ public class ProfilePanelController extends GridPane  {
 
             Map<Boolean, String> map = details.get(key);
 
-            if(label.getText().toLowerCase().contains("password")) {
+            if(label.getText().toLowerCase().contains(LanguageResource.getString("password").toLowerCase())) {
                 HBox hbox = new HBox();
                 hbox.setAlignment(Pos.CENTER_LEFT);
                 PasswordField detail = new PasswordField();
-                detail.setPromptText("Change password");
+                detail.setPromptText(LanguageResource.getString("change_password"));
 
-                CheckBox checkBox = new CheckBox("Show password");
+                CheckBox checkBox = new CheckBox(LanguageResource.getString("show_password"));
                 checkBox.setOnMouseClicked(e -> {
                     if(checkBox.isSelected()){
                         detail.setPromptText(detail.getText());

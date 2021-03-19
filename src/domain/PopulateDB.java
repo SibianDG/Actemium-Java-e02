@@ -12,6 +12,7 @@ import domain.enums.TicketType;
 import domain.enums.Timestamp;
 import domain.enums.UserStatus;
 import exceptions.InformationRequiredException;
+import languages.LanguageResource;
 import repository.GenericDao;
 import repository.UserDaoJpa;
 
@@ -598,11 +599,11 @@ public class PopulateDB {
             ActemiumTicket t = new ActemiumTicket.TicketBuilder()
                                                     .ticketPriority(prios[randomGen.nextInt(3)])
                                                     .ticketType(types[randomGen.nextInt(types.length)])
-                                                    .title("TitleRandom"+i)
-                                                    .description("Description"+i)
+                                                    .title(String.format("%s %d", LanguageResource.getString("title_random"), i))
+                                                    .description(String.format("%s %d", LanguageResource.getString("description"), i))
                                                     .customer(bill)
-                                                    .remarks("Remark"+i)
-                                                    .attachments("screenshot"+i+".png")
+                                                    .remarks(String.format("%s %d", LanguageResource.getString("remark"), i))
+                                                    .attachments(String.format("%s%d.png", LanguageResource.getString("screenshot"), i))
                                                     .build();
             t.setStatus(status[randomGen.nextInt(status.length)]);
             mark.addTicket(t);

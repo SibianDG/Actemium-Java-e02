@@ -130,23 +130,23 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 				this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).giveEmployees();
 				this.tableViewData = new FilteredList<>(mainData);
 //				tableViewDataSorted = tableViewData.sorted((Comparator<T>) Comparator.comparing(c -> ((User) c).getFirstName().toLowerCase()).thenComparing(c -> ((User) c).getLastName().toLowerCase()));
-				propertyMap.put("Firstname", item -> (Property<E>)((Employee)item).firstNameProperty());
-				propertyMap.put("Lastname", item -> (Property<E>)((Employee)item).lastNameProperty());
+				propertyMap.put(LanguageResource.getString("firstname"), item -> (Property<E>)((Employee)item).firstNameProperty());
+				propertyMap.put(LanguageResource.getString("lastname"), item -> (Property<E>)((Employee)item).lastNameProperty());
 //				propertyMap.put("Username", item -> ((Employee)item).usernameProperty());
-				propertyMap.put("Role", item -> (Property<E>)((Employee)item).roleProperty());
-				propertyMap.put("Status", item -> (Property<E>)((Employee)item).statusProperty());
-				btnAdd.setText("Add "+currentState.toString().toLowerCase());
+				propertyMap.put(LanguageResource.getString("role"), item -> (Property<E>)((Employee)item).roleProperty());
+				propertyMap.put(LanguageResource.getString("status"), item -> (Property<E>)((Employee)item).statusProperty());
+				btnAdd.setText(String.format("%s %s", LanguageResource.getString("add"), currentState.toString().toLowerCase()));
 			}
 			case CUSTOMER -> {
 				this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).giveCustomers();
 				this.tableViewData = new FilteredList<>(mainData);
 //				tableViewData.sorted((Comparator<T>) Comparator.comparing(c -> ((Customer) c).giveCompany().getName().toLowerCase()).thenComparing(c -> ((User) c).getFirstName().toLowerCase()).thenComparing(c -> ((User) c).getLastName().toLowerCase()));
-				propertyMap.put("Company", item -> (Property<E>)((Customer)item).giveCompany().nameProperty());
-				propertyMap.put("Status", item -> (Property<E>)((Customer)item).statusProperty());
-				propertyMap.put("Firstname", item -> (Property<E>)((Customer)item).firstNameProperty());
-				propertyMap.put("Lastname", item -> (Property<E>)((Customer)item).lastNameProperty());
+				propertyMap.put(LanguageResource.getString("company"), item -> (Property<E>)((Customer)item).giveCompany().nameProperty());
+				propertyMap.put(LanguageResource.getString("status"), item -> (Property<E>)((Customer)item).statusProperty());
+				propertyMap.put(LanguageResource.getString("firstname"), item -> (Property<E>)((Customer)item).firstNameProperty());
+				propertyMap.put(LanguageResource.getString("lastname"), item -> (Property<E>)((Customer)item).lastNameProperty());
 //				propertyMap.put("Username", item -> ((Customer)item).usernameProperty());
-				btnAdd.setText("Add "+currentState.toString().toLowerCase());
+				btnAdd.setText(String.format("%s %s", LanguageResource.getString("add"), currentState.toString().toLowerCase()));
 			}
 			case TICKET -> {
 				// obsolete, but just in case we want all the tickets in the future
@@ -176,37 +176,38 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 				//this.tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 				this.tableViewData = new FilteredList<>(mainData);
 				//propertyMap.put("Number", item -> ((ActemiumTicket) item).numberProperty());
-				propertyMap.put("ID", item -> (Property<E>)((Ticket) item).ticketIdProperty()); // IntegerProperty
-				propertyMap.put("Type", item -> (Property<E>)((Ticket) item).ticketTypeProperty());
-				propertyMap.put("Priority", item -> (Property<E>)((Ticket) item).priorityProperty());
-				propertyMap.put("Title", item -> (Property<E>)((Ticket) item).titleProperty());
-				propertyMap.put("Status", item -> (Property<E>)((Ticket) item).statusProperty());
-				btnAdd.setText("Add "+currentState.toString().toLowerCase());
+				propertyMap.put(LanguageResource.getString("ID"), item -> (Property<E>)((Ticket) item).ticketIdProperty()); // IntegerProperty
+				propertyMap.put(LanguageResource.getString("type"), item -> (Property<E>)((Ticket) item).ticketTypeProperty());
+				propertyMap.put(LanguageResource.getString("priority"), item -> (Property<E>)((Ticket) item).priorityProperty());
+				propertyMap.put(LanguageResource.getString("title"), item -> (Property<E>)((Ticket) item).titleProperty());
+				propertyMap.put(LanguageResource.getString("status"), item -> (Property<E>)((Ticket) item).statusProperty());
+				btnAdd.setText(String.format("%s %s", LanguageResource.getString("add"), currentState.toString().toLowerCase()));
 			}
 			case CONTRACT -> {
 				this.mainData = (ObservableList<T>) ((ContractViewModel) viewModel).giveContracts();
 				this.tableViewData = new FilteredList<>(mainData);
-				propertyMap.put("ID", item -> (Property<E>)((Contract) item).contractIdProperty()); // IntegerProperty
-				propertyMap.put("Company", item -> (Property<E>)((Contract) item).giveCustomer().giveCompany().nameProperty());
-				propertyMap.put("Type", item -> (Property<E>)((Contract) item).contractTypeNameProperty());
-				propertyMap.put("Status", item -> (Property<E>)((Contract) item).contractStatusProperty());
-				btnAdd.setText("Add "+currentState.toString().toLowerCase());
+				propertyMap.put(LanguageResource.getString("ID"), item -> (Property<E>)((Contract) item).contractIdProperty()); // IntegerProperty
+				propertyMap.put(LanguageResource.getString("company"), item -> (Property<E>)((Contract) item).giveCustomer().giveCompany().nameProperty());
+				propertyMap.put(LanguageResource.getString("type"), item -> (Property<E>)((Contract) item).contractTypeNameProperty());
+				propertyMap.put(LanguageResource.getString("status"), item -> (Property<E>)((Contract) item).contractStatusProperty());
+				btnAdd.setText(String.format("%s %s", LanguageResource.getString("add"), currentState.toString().toLowerCase()));
 			}
 			case CONTRACTTYPE -> {
 				this.mainData = (ObservableList<T>) ((ContractTypeViewModel) viewModel).giveContractTypes();
 				this.tableViewData = new FilteredList<>(mainData);
-				propertyMap.put("Name", item -> (Property<E>)((ContractType) item).contractTypeNameProperty());
-				propertyMap.put("Timestamp", item -> (Property<E>)((ContractType) item).contractTypestampProperty());
-				propertyMap.put("Status", item -> (Property<E>)((ContractType) item).contractTypeStatusProperty());
+				propertyMap.put(LanguageResource.getString("name"), item -> (Property<E>)((ContractType) item).contractTypeNameProperty());
+				propertyMap.put(LanguageResource.getString("timestamp"), item -> (Property<E>)((ContractType) item).contractTypestampProperty());
+				propertyMap.put(LanguageResource.getString("status"), item -> (Property<E>)((ContractType) item).contractTypeStatusProperty());
 				//propertyMap.put("Number Active Contracts", item -> ((ContractType) item));
-				btnAdd.setText("Add "+currentState.toString().toLowerCase());
+				btnAdd.setText(String.format("%s %s", LanguageResource.getString("add"), currentState.toString().toLowerCase()));
+
 			}
 			case KNOWLEDGEBASE -> {
 				this.mainData = (ObservableList<T>) ((KnowledgeBaseViewModel) viewModel).giveKbItems();
 				this.tableViewData = new FilteredList<>(mainData);
-				propertyMap.put("Title", item -> (Property<E>)((KbItem) item).titleProperty());
-				propertyMap.put("Type", item -> (Property<E>)((KbItem) item).typeProperty());
-				btnAdd.setText("Add item to KB");
+				propertyMap.put(LanguageResource.getString("title"), item -> (Property<E>)((KbItem) item).titleProperty());
+				propertyMap.put(LanguageResource.getString("type"), item -> (Property<E>)((KbItem) item).typeProperty());
+				btnAdd.setText(String.format("%s %s", LanguageResource.getString("add"), currentState.toString().toLowerCase()));
 			}
 		}
 
@@ -276,7 +277,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 		TableColumn<T, E> column = new TableColumn<>(title);
 		column.setCellValueFactory(cellData -> prop.apply(cellData.getValue()));
 		// Resize policy for Title column in Tickets TableView
-		if(title.equals("Title")) {
+		if(title.equalsIgnoreCase(LanguageResource.getString("title"))) {
 			//TODO
 			column.setPrefWidth(320.00);
 		}
@@ -285,12 +286,12 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 	
 	private void initializeFilters() {
 		Map<GUIEnum, ArrayList<Object>> filterMap = new HashMap<>();
-		filterMap.put(GUIEnum.EMPLOYEE, new ArrayList<>(Arrays.asList("Firstname", "Lastname", EmployeeRole.ADMINISTRATOR, UserStatus.ACTIVE)));
-		filterMap.put(GUIEnum.CUSTOMER, new ArrayList<>(Arrays.asList("Company", UserStatus.ACTIVE, "Firstname", "Lastname")));
-		filterMap.put(GUIEnum.TICKET, new ArrayList<>(Arrays.asList("ID", TicketType.SOFTWARE, TicketPriority.P1, "Title", TicketStatus.CREATED)));
-		filterMap.put(GUIEnum.CONTRACTTYPE, new ArrayList<>(Arrays.asList("Name", Timestamp.WORKINGHOURS, ContractTypeStatus.ACTIVE)));
-		filterMap.put(GUIEnum.CONTRACT, new ArrayList<>(Arrays.asList("ContractId", "CompanyName", "ContractTypeName", ContractStatus.CURRENT)));
-		filterMap.put(GUIEnum.KNOWLEDGEBASE, new ArrayList<>(Arrays.asList("Title", KbItemType.DATABASE, "Keywords", "FullSearch")));
+		filterMap.put(GUIEnum.EMPLOYEE, new ArrayList<>(Arrays.asList(LanguageResource.getString("firstname"), LanguageResource.getString("lastname"), EmployeeRole.ADMINISTRATOR, UserStatus.ACTIVE)));
+		filterMap.put(GUIEnum.CUSTOMER, new ArrayList<>(Arrays.asList(LanguageResource.getString("company"), UserStatus.ACTIVE, LanguageResource.getString("firstname"), LanguageResource.getString("lastname"))));
+		filterMap.put(GUIEnum.TICKET, new ArrayList<>(Arrays.asList(LanguageResource.getString("ID"), TicketType.SOFTWARE, TicketPriority.P1, LanguageResource.getString("title"), TicketStatus.CREATED)));
+		filterMap.put(GUIEnum.CONTRACTTYPE, new ArrayList<>(Arrays.asList(LanguageResource.getString("name"), Timestamp.WORKINGHOURS, ContractTypeStatus.ACTIVE)));
+		filterMap.put(GUIEnum.CONTRACT, new ArrayList<>(Arrays.asList(LanguageResource.getString("contractId"), LanguageResource.getString("company_name"), LanguageResource.getString("contract_type_name"), ContractStatus.CURRENT)));
+		filterMap.put(GUIEnum.KNOWLEDGEBASE, new ArrayList<>(Arrays.asList(LanguageResource.getString("title"), KbItemType.DATABASE, LanguageResource.getString("keywords"), LanguageResource.getString("FullSearch"))));
 
 		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createElementDetailGridpane(o)));
 	}
@@ -321,58 +322,58 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 		
 	    switch(o.getClass().getSimpleName()) {
 	        case "UserStatus" -> {
-	        	stringArrayList = new ArrayList<>(Collections.singleton("SELECT STATUS"));
+	        	stringArrayList = new ArrayList<>(Collections.singleton(LanguageResource.getString("select_status").toUpperCase()));
 				Arrays.asList(UserStatus.values()).forEach(string -> stringArrayList.add(string.toString()));
 				itemText = "UserStatus";
 	        }
 	        case "EmployeeRole" -> {
-	        	stringArrayList = new ArrayList<>(Collections.singleton("SELECT ROLE"));
+	        	stringArrayList = new ArrayList<>(Collections.singleton(LanguageResource.getString("select_role").toUpperCase()));
 				Arrays.asList(EmployeeRole.values()).forEach(string -> stringArrayList.add(string.toString()));
 				itemText = "EmployeeRole";
 	        }
 	        case "TicketPriority" -> {
-	        	stringArrayList = new ArrayList<>(Collections.singleton("SELECT PRIO"));
+	        	stringArrayList = new ArrayList<>(Collections.singleton(LanguageResource.getString("select_prio").toUpperCase()));
 				Arrays.asList(TicketPriority.values()).forEach(string -> stringArrayList.add(string.toString()));
 				itemText = "TicketPriority";
 	        }
 	        case "TicketType" -> {
-	        	stringArrayList = new ArrayList<>(Collections.singleton("SELECT TYPE"));
+	        	stringArrayList = new ArrayList<>(Collections.singleton(LanguageResource.getString("select_type").toUpperCase()));
 				Arrays.asList(TicketType.values()).forEach(string -> stringArrayList.add(string.toString()));
 				itemText = "TicketType";
 	        }       
 		    case "TicketStatus" -> {
 	        	if (TicketStatus.isOutstanding()) {
-					stringArrayList = new ArrayList<>(Collections.singleton("SELECT STATUS"));
+					stringArrayList = new ArrayList<>(Collections.singleton(LanguageResource.getString("select_status").toUpperCase()));
 					Arrays.asList(TicketStatus.getOutstandingTicketStatuses()).forEach(e -> e.forEach(string ->stringArrayList.add(string.toString())));
 					itemText = "TicketStatus";
 				} else {
-					stringArrayList = new ArrayList<>(Collections.singleton("SELECT STATUS"));
+					stringArrayList = new ArrayList<>(Collections.singleton(LanguageResource.getString("select_status").toUpperCase()));
 					Arrays.asList(TicketStatus.getResolvedTicketStatuses()).forEach(e -> e.forEach(string ->stringArrayList.add(string.toString())));
 					itemText = "TicketStatus";
 				}
 		    }                
 		    case "ContractStatus" -> {
-		    	stringArrayList = new ArrayList<>(Collections.singleton("SELECT STATUS"));
+		    	stringArrayList = new ArrayList<>(Collections.singleton(LanguageResource.getString("select_status").toUpperCase()));
 				Arrays.asList(ContractStatus.values()).forEach(string -> stringArrayList.add(string.toString()));
 				itemText = "ContractStatus";
 		    }
 		    case "ContractTypeStatus" -> {
-		    	stringArrayList = new ArrayList<>(Collections.singleton("SELECT STATUS"));
+		    	stringArrayList = new ArrayList<>(Collections.singleton(LanguageResource.getString("select_status").toUpperCase()));
 				Arrays.asList(ContractTypeStatus.values()).forEach(string -> stringArrayList.add(string.toString()));
 				itemText = "ContractTypeStatus";
 		    }
 		    case "Timestamp" -> {
-		    	stringArrayList = new ArrayList<>(Collections.singleton("SELECT TIMESTAMP"));
+		    	stringArrayList = new ArrayList<>(Collections.singleton(LanguageResource.getString("select_timestamp").toUpperCase()));
 				Arrays.asList(Timestamp.values()).forEach(string -> stringArrayList.add(string.toString()));
 				itemText = "Timestamp";
 		    }
 	        case "KbItemType" -> {
-	        	stringArrayList = new ArrayList<>(Collections.singleton("SELECT TYPE"));
+	        	stringArrayList = new ArrayList<>(Collections.singleton(LanguageResource.getString("select_type").toUpperCase()));
 				Arrays.asList(KbItemType.values()).forEach(string -> stringArrayList.add(string.toString()));
 				itemText = "KbItemType";
 	        }      
 	        default -> {
-	        	stringArrayList = new ArrayList<>(Collections.singleton("SELECT STATUS"));
+	        	stringArrayList = new ArrayList<>(Collections.singleton(LanguageResource.getString("select_status").toUpperCase()));
 				Arrays.asList(UserStatus.values()).forEach(string -> stringArrayList.add(string.toString()));
 				itemText = "Status";
 	        }
@@ -554,7 +555,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 	private Predicate giveFilterPredicate(String fieldName, String filterText){		
 		
 		if(currentState.equals(GUIEnum.EMPLOYEE)) {
-			if (fieldName.length() > 0 && !filterText.contains("select")){
+			if (fieldName.length() > 0 && !filterText.toLowerCase().contains(LanguageResource.getString("select"))){
 				
 				Predicate<Employee> newPredicate;
 				
@@ -568,7 +569,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 				return newPredicate;				
 			}
 		} else if (currentState.equals(GUIEnum.CUSTOMER)){
-			if (fieldName.length() > 0 && !filterText.contains("select")){
+			if (fieldName.length() > 0 && !filterText.toLowerCase().contains(LanguageResource.getString("select"))){
 
 				Predicate<Customer> newPredicate;
 				
@@ -583,7 +584,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 			}
 		} else if (currentState.equals(GUIEnum.TICKET)){
 			//TODO
-			if (fieldName.length() > 0 && !filterText.contains("select")){
+			if (fieldName.length() > 0 && !filterText.toLowerCase().contains(LanguageResource.getString("select"))){
 
 				Predicate<Ticket> newPredicate;
 				
@@ -603,7 +604,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 			}
 		} else if (currentState.equals(GUIEnum.CONTRACTTYPE)){
 			
-			if (fieldName.length() > 0 && !filterText.contains("select")){
+			if (fieldName.length() > 0 && !filterText.toLowerCase().contains(LanguageResource.getString("select"))){
 
 				Predicate<ContractType> newPredicate;
 
@@ -617,7 +618,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 			}
 		} else if (currentState.equals(GUIEnum.CONTRACT)){
 
-			if (fieldName.length() > 0 && !filterText.contains("select")){
+			if (fieldName.length() > 0 && !filterText.toLowerCase().contains(LanguageResource.getString("select"))){
 
 				Predicate<Contract> newPredicate;
 				
@@ -634,7 +635,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 			}
 		} else if (currentState.equals(GUIEnum.KNOWLEDGEBASE)){
 
-			if (fieldName.length() > 0 && !filterText.contains("select")){
+			if (fieldName.length() > 0 && !filterText.toLowerCase().contains(LanguageResource.getString("select"))){
 
 				Predicate<KbItem> newPredicate;
 				

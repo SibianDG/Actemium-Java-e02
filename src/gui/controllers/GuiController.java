@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import languages.LanguageResource;
 
 public abstract class GuiController extends GridPane {
 
@@ -32,7 +33,7 @@ public abstract class GuiController extends GridPane {
 		} catch (IOException e) {
 			System.err.println("FXML not loaded");
 			e.printStackTrace();
-			return new AnchorPane(new Label("Error loading..."));
+			return new AnchorPane(new Label(String.format("%s...", LanguageResource.getString("error_loading"))));
 		}
 	}
 

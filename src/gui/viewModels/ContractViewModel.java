@@ -14,6 +14,7 @@ import domain.facades.ContractFacade;
 import exceptions.InformationRequiredException;
 import gui.GUIEnum;
 import javafx.collections.ObservableList;
+import languages.LanguageResource;
 
 public class ContractViewModel extends ViewModel {
 
@@ -44,18 +45,18 @@ public class ContractViewModel extends ViewModel {
     }
 
 	public ArrayList<String> getDetailsNewContract() {
-		return new ArrayList<String>(Arrays.asList("Customer ID", "Contract Type Name", "Start date", "Duration (in years)"));
+		return new ArrayList<String>(Arrays.asList(LanguageResource.getString("customer_ID"), LanguageResource.getString("contract_type_name"), LanguageResource.getString("start_date"), LanguageResource.getString("duration_iy")));
 	}
 
     public Map<String, Map<Boolean, Object>> getDetails() {
         Contract contract = selectedContract;
         Map<String,Map<Boolean, Object>> details = new LinkedHashMap<>();
-        details.put("Contract ID", Collections.singletonMap(false, contract.getContractIdString()));
-        details.put("Company", Collections.singletonMap(false, contract.giveCustomer().giveCompany().getName()));
-        details.put("Type", Collections.singletonMap(false, contract.giveContractType().getName()));
-        details.put("Status", Collections.singletonMap(true, contract.getStatus()));
-        details.put("Start date", Collections.singletonMap(false, contract.getStartDate().toString()));
-        details.put("End date", Collections.singletonMap(false, contract.getEndDate().toString()));
+        details.put(LanguageResource.getString("contract_ID"), Collections.singletonMap(false, contract.getContractIdString()));
+        details.put(LanguageResource.getString("company"), Collections.singletonMap(false, contract.giveCustomer().giveCompany().getName()));
+        details.put(LanguageResource.getString("type"), Collections.singletonMap(false, contract.giveContractType().getName()));
+        details.put(LanguageResource.getString("status"), Collections.singletonMap(true, contract.getStatus()));
+        details.put(LanguageResource.getString("start_date"), Collections.singletonMap(false, contract.getStartDate().toString()));
+        details.put(LanguageResource.getString("end_date"), Collections.singletonMap(false, contract.getEndDate().toString()));
 
         return details;
     }

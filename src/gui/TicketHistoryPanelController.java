@@ -20,6 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import languages.LanguageResource;
 
 
 public class TicketHistoryPanelController extends GridPane implements InvalidationListener {
@@ -79,7 +80,7 @@ public class TicketHistoryPanelController extends GridPane implements Invalidati
 
         addGridDetails();
             
-        txtTicketHistoryTitle.setText("History of ticket: " + ticketViewModel.getIdSelectedTicket());
+        txtTicketHistoryTitle.setText(String.format("%s: %s", LanguageResource.getString("history_of_ticket"), ticketViewModel.getIdSelectedTicket()));
         btnClose.setVisible(true);
     }
 

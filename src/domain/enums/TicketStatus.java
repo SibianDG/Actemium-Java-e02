@@ -1,27 +1,64 @@
 package domain.enums;
 
+import languages.LanguageResource;
+
 import java.util.Arrays;
 import java.util.List;
 
 public enum TicketStatus {
 
 	// Ticket has just been created
-	CREATED,
+	CREATED /*{
+		@Override
+		public String toString() {
+			return LanguageResource.getString("CREATED");
+		}
+	}*/
 	// A Technician has been assigned to the ticket
-	IN_PROGRESS,
+	,IN_PROGRESS /*{
+		@Override
+		public String toString() {
+			return LanguageResource.getString("IN_PROGRESS");
+		}
+	}*/
 	// The support engineer/technician has added information to the ticket but needs
 	// input of the client before it can be completed
-	WAITING_ON_USER_INFORMATION,
+	,WAITING_ON_USER_INFORMATION /*{
+		@Override
+		public String toString() {
+			return LanguageResource.getString("WAITING_ON_USER_INFORMATION");
+		}
+	}*/
 	// The client has provided the information needed and the technician can proceed
-	USER_INFORMATION_RECEIVED,
+	,USER_INFORMATION_RECEIVED /*{
+		@Override
+		public String toString() {
+			return LanguageResource.getString("USER_INFORMATION_RECEIVED");
+		}
+	}*/
 	// The ticket requires a code change before it can be completed
-	IN_DEVELOPMENT,
+	,IN_DEVELOPMENT /*{
+		@Override
+		public String toString() {
+			return LanguageResource.getString("IN_DEVELOPMENT");
+		}
+	}*/
 	// A solution for the ticket has been found
-	COMPLETED,
+	,COMPLETED /*{
+		@Override
+		public String toString() {
+			return LanguageResource.getString("COMPLETED");
+		}
+	}*/
 	// The customer did not need any further support for this ticket
 	// Ticket was removed* by the customer/support engineer
 	// *Data is still kept in the database
-	CANCELLED;
+	,CANCELLED /*{
+		@Override
+		public String toString() {
+			return LanguageResource.getString("CANCELLED");
+		}
+	}*/;
 
 	private static boolean outstanding;
 

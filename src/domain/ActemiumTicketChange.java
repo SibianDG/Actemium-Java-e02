@@ -20,6 +20,7 @@ import javax.persistence.ManyToOne;
 
 import domain.enums.RequiredElement;
 import exceptions.InformationRequiredException;
+import languages.LanguageResource;
 
 @Entity
 @Access(AccessType.FIELD)
@@ -200,10 +201,10 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 		// Stringbuilder
 		StringBuilder ticketChange = new StringBuilder();
 		ticketChange.append(String.format("%s: %s %s%n", getUserRole(), user.getFirstName(), user.getLastName()));
-		ticketChange.append(String.format("Date: %s%n", getDateTimeOfChange().format(DateTimeFormatter.ISO_DATE)));
-		ticketChange.append(String.format("Time: %s%n", getDateTimeOfChange().format(DateTimeFormatter.ISO_TIME)));
-		ticketChange.append(String.format("Description: %s%n", getChangeDescription()));
-		ticketChange.append(String.format("Change Content: %n"));
+		ticketChange.append(String.format("%s: %s%n", LanguageResource.getString("date"), getDateTimeOfChange().format(DateTimeFormatter.ISO_DATE)));
+		ticketChange.append(String.format("%s: %s%n", LanguageResource.getString("time"), getDateTimeOfChange().format(DateTimeFormatter.ISO_TIME)));
+		ticketChange.append(String.format("%s: %s%n", LanguageResource.getString("description"), getChangeDescription()));
+		ticketChange.append(String.format("%s: %n", LanguageResource.getString("change_content")));
 		getChangeContent().forEach(c -> ticketChange.append(String.format("%s%n", c)));
 		return ticketChange.toString();
 	}

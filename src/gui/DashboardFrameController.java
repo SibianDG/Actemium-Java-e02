@@ -161,15 +161,18 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
 
         switch (userFacade.giveUserRole().toUpperCase()) {
             case "ADMINISTRATOR" -> {
-                itemNames = new String[]{"manage employees", "manage customers"};
+                itemNames = new String[]{LanguageResource.getString("manage_employees"), LanguageResource.getString("manage_customers")};
                 itemIcons = new String[]{"icon_manage_user", "icon_manage_user"};
             }
             case "SUPPORT_MANAGER" -> {
-                itemNames = new String[]{"manage knowledge base", "outstanding tickets", "resolved tickets", "statistics", "manage contract types", "manage contracts"};
+                itemNames = new String[]{LanguageResource.getString("manage_knowledge_base"), LanguageResource.getString("outstanding_tickets")
+                        , LanguageResource.getString("resolved_tickets"), LanguageResource.getString("statistics"), LanguageResource.getString("manage_contract_types")
+                        , LanguageResource.getString("manage_contracts")};
                 itemIcons = new String[]{"icon_manage", "icon_outstanding", "icon_resolved", "icon_statistics", "icon_manage_contract_types", "icon_manage_contracts"};
             }
             case "TECHNICIAN" -> {
-                itemNames = new String[]{"consult knowledge base", "outstanding tickets", "resolved tickets", "statistics"};
+                itemNames = new String[]{LanguageResource.getString("consult_knowledge_base"), LanguageResource.getString("outstanding_tickets"),
+                        LanguageResource.getString("resolved_tickets"), LanguageResource.getString("statistics")};
                 itemIcons = new String[]{"icon_consult", "icon_outstanding", "icon_resolved", "icon_statistics"};
             }
         }
@@ -267,31 +270,31 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
             }
         });
 
-        if (name.toLowerCase().contains("manage") && name.toLowerCase().contains("employee")) {
+        if (name.toLowerCase().contains(LanguageResource.getString("manage").toLowerCase()) && name.toLowerCase().contains(LanguageResource.getString("employee").toLowerCase())) {
             //Todo weird => fixed? or still weird?
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.EMPLOYEE, EmployeeRole.valueOf(userFacade.giveUserRole()));
             switchToManageScreen(name, tableViewPanelCompanion, userViewModel);
-        } else if (name.toLowerCase().contains("manage") && name.toLowerCase().contains("customer")) {
+        } else if (name.toLowerCase().contains(LanguageResource.getString("manage").toLowerCase()) && name.toLowerCase().contains(LanguageResource.getString("customer").toLowerCase())) {
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.CUSTOMER, EmployeeRole.valueOf(userFacade.giveUserRole()));
             switchToManageScreen(name, tableViewPanelCompanion, userViewModel);
-        } else if (name.toLowerCase().contains("ticket") && name.toLowerCase().contains("outstanding")) {
+        } else if (name.toLowerCase().contains(LanguageResource.getString("ticket").toLowerCase()) && name.toLowerCase().contains(LanguageResource.getString("outstanding").toLowerCase())) {
             TicketStatus.setOutstanding(true);
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, ticketViewModel, GUIEnum.TICKET, EmployeeRole.valueOf(userFacade.giveUserRole()));
             switchToManageScreen(name, tableViewPanelCompanion, ticketViewModel);
-        } else if (name.toLowerCase().contains("ticket") && name.toLowerCase().contains("resolved")) {
+        } else if (name.toLowerCase().contains(LanguageResource.getString("ticket").toLowerCase()) && name.toLowerCase().contains(LanguageResource.getString("resolved").toLowerCase())) {
             TicketStatus.setOutstanding(false);
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, ticketViewModel, GUIEnum.TICKET, EmployeeRole.valueOf(userFacade.giveUserRole()));
             switchToManageScreen(name, tableViewPanelCompanion, ticketViewModel);
-        } else if (name.toLowerCase().contains("manage") && name.toLowerCase().contains("contract type")) {
+        } else if (name.toLowerCase().contains(LanguageResource.getString("manage").toLowerCase()) && name.toLowerCase().contains(LanguageResource.getString("contract_type").toLowerCase())) {
             tableViewPanelCompanion = new TableViewPanelCompanion<>(this, contractTypeViewModel, GUIEnum.CONTRACTTYPE, EmployeeRole.valueOf(userFacade.giveUserRole()));
             switchToManageScreen(name, tableViewPanelCompanion, contractTypeViewModel);
-        } else if (name.toLowerCase().contains("manage") && name.toLowerCase().contains("contracts")) {
+        } else if (name.toLowerCase().contains(LanguageResource.getString("manage").toLowerCase()) && name.toLowerCase().contains(LanguageResource.getString("contracts").toLowerCase())) {
         	tableViewPanelCompanion = new TableViewPanelCompanion<>(this, contractViewModel, GUIEnum.CONTRACT, EmployeeRole.valueOf(userFacade.giveUserRole()));
         	switchToManageScreen(name, tableViewPanelCompanion, contractViewModel);
-        } else if ((name.toLowerCase().contains("manage") || name.toLowerCase().contains("consult") ) && name.toLowerCase().contains("knowledge")) {
+        } else if ((name.toLowerCase().contains(LanguageResource.getString("manage").toLowerCase()) || name.toLowerCase().contains(LanguageResource.getString("consult").toLowerCase()) ) && name.toLowerCase().contains(LanguageResource.getString("knowledge").toLowerCase())) {
         	tableViewPanelCompanion = new TableViewPanelCompanion<>(this, knowledgeBaseViewModel, GUIEnum.KNOWLEDGEBASE, EmployeeRole.valueOf(userFacade.giveUserRole()));
         	switchToManageScreen(name, tableViewPanelCompanion, knowledgeBaseViewModel);
-        } else if (name.toLowerCase().contains("statistics")) {
+        } else if (name.toLowerCase().contains(LanguageResource.getString("statistics"))) {
             if (goToStatisticsConfirmationAlert())
             Desktop.getDesktop().open(new File("src/powerBi/PowerBiTest.pbix"));
         } else {

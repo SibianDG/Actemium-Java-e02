@@ -25,6 +25,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import languages.LanguageResource;
 
 
 @Entity
@@ -211,7 +212,7 @@ public class ActemiumContract implements Contract, Serializable {
 
 	@Override
 	public String toString() {
-		return String.format("%s: %s %s %s until %s", this.getContractIdString(), this.contractType.getName(), this.getStatusAsString(), this.getStartDate().toString(), this.getEndDate().toString());
+		return String.format("%s: %s %s %s %s %s", this.getContractIdString(), this.contractType.getName(), this.getStatusAsString(), this.getStartDate().toString(), LanguageResource.getString("until") ,this.getEndDate().toString());
 	}
 
 	public void checkAttributes() throws InformationRequiredException {
