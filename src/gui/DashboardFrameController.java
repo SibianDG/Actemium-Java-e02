@@ -16,6 +16,8 @@ import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
 import gui.controllers.GuiController;
 import gui.viewModels.*;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
@@ -43,7 +45,7 @@ import languages.LanguageResource;
 
 import java.awt.Desktop;
 
-public class DashboardFrameController <T,E> extends GuiController {
+public class DashboardFrameController <T,E> extends GuiController implements InvalidationListener {
 	
 	// Facades
     private final UserFacade userFacade;
@@ -101,7 +103,7 @@ public class DashboardFrameController <T,E> extends GuiController {
 
 //    public DashboardFrameController(Actemium actemium, UserFacade userFacade) throws FileNotFoundException {
     public DashboardFrameController(UserFacade userFacade, TicketFacade ticketFacade, ContractTypeFacade contractTypeFacade, 
-    		ContractFacade contractFacade, KnowledgeBaseFacade knowledgeBaseFacade, LoginController loginController) throws FileNotFoundException {
+    		ContractFacade contractFacade, KnowledgeBaseFacade knowledgeBaseFacade, LoginController loginController) throws FileNotFoundException  {
         super();
         
         this.userFacade = userFacade;        
@@ -116,7 +118,7 @@ public class DashboardFrameController <T,E> extends GuiController {
         this.contractViewModel = new ContractViewModel(contractFacade);    
         this.knowledgeBaseViewModel = new KnowledgeBaseViewModel(knowledgeBaseFacade, ticketFacade);
         this.profileViewModel = new ProfileViewModel(userFacade);
-        
+
         this.loginController = loginController;
 
         try {
@@ -127,6 +129,8 @@ public class DashboardFrameController <T,E> extends GuiController {
         } catch (IOException e) {
         	throw new RuntimeException(e);
         }
+
+        profileViewModel.addListener(this);
 
         initializeDashboard();
         initializeText();
@@ -403,5 +407,10 @@ public class DashboardFrameController <T,E> extends GuiController {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    @Override
+    public void invalidated(Observable observable) {
+        txtName.setText(String.format("%s %s" , userFacade.giveUserFirstName(), userFacade.giveUserLastName()));
     }
 }

@@ -63,15 +63,18 @@ public class ProfilePanelController extends GridPane  {
 
                 //TODO afhandeling
 
-                showPopupMessage("popupSuccess", LanguageResource.getString("profileEdit_success=You have successfully edited your profile."));
+                showPopupMessage("popupSuccess", LanguageResource.getString("profileEdit_success"));
                 txtErrorMessage.setVisible(false);
                 profileViewModel.setFieldModified(false);
 
+
             } else {
+                System.out.println("nothing changed?");
                 showPopupMessage("popupWarning", LanguageResource.getString("unchangedMessage"));
             }
 
         } catch (InformationRequiredException ire){
+            System.out.println("IRE ex");
             StringBuilder errorMessage = new StringBuilder();
             ire.getInformationRequired().forEach(e -> {
                 System.out.println(e);
@@ -82,6 +85,7 @@ public class ProfilePanelController extends GridPane  {
             showPopupMessage("popupWarning", LanguageResource.getString("unchangedMessage"));
 
         } catch (Exception e){
+            System.out.println("General Exception");
             txtErrorMessage.setText(e.getMessage());
             txtErrorMessage.setVisible(true);
             showPopupMessage("popupWarning", LanguageResource.getString("unchangedMessage"));
