@@ -78,7 +78,12 @@ public class TicketHistoryPanelController extends GridPane implements Invalidati
 
     private void addGridDetails(){
         int i = 0;
-        // Using LinkedHashSet so the order of the map values doesn't change
+        
+        // Added extra empty field because of weird first Vgap
+        TextField empty = new TextField("");
+        empty.getStyleClass().clear();
+        gridDetails.add(empty, 0, i++);
+        
         List<TicketChange> ticketChanges = ticketViewModel.getSelectedTicket().giveTicketChanges();
         for (TicketChange change : ticketChanges) {
         	List<Node> dateTimeNodeList = createDateTimeNodeList(change);
@@ -90,9 +95,9 @@ public class TicketHistoryPanelController extends GridPane implements Invalidati
 				gridDetails.add(changeInfoNodeList.get(j), 1, i + j);
 			}
 			i += changeInfoNodeList.size();
-            TextField empty = new TextField("");
-            empty.getStyleClass().clear();
-            gridDetails.add(empty, 1, i);
+			TextField empty2 = new TextField("");
+	        empty2.getStyleClass().clear();        
+            gridDetails.add(empty2, 1, i);
             i++;
         }
     }

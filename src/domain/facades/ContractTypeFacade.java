@@ -56,7 +56,7 @@ public class ContractTypeFacade implements Facade{
 
             contractTypeClone.checkAttributes();
 
-            contractType.setName(name);
+//            contractType.setName(name);
             contractType.setContractTypeStatus(contractTypeStatus);
             contractType.setHasEmail(hasEmail);
             contractType.setHasPhone(hasPhone);

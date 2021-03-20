@@ -251,6 +251,7 @@ public class ContractTypeDetailsPanelController extends DetailsPanelController {
             switch(o.getClass().getSimpleName()) {
                 case "ContractStatus" -> list = FXCollections.observableList(Arrays.asList(ContractStatus.values()));
                 case "ContractTypeStatus" -> list = FXCollections.observableList(Arrays.asList(ContractTypeStatus.values()));
+                case "Timestamp" -> list = FXCollections.observableList(Arrays.asList(Timestamp.values()));
             }
         }
         ComboBox c = new ComboBox(list);

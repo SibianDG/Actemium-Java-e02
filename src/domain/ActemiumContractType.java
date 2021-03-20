@@ -55,8 +55,8 @@ public class ActemiumContractType implements ContractType, Serializable {
 	}
 
 	public ActemiumContractType(ContractTypeBuilder builder){
+		this.name = (builder.name);
 		this.contractTypeName.set(builder.contractTypeName);
-		this.name = (builder.contractTypeName);
 		this.contractTypeStatus.set(String.valueOf(builder.contractTypeStatus));
 		this.hasEmail = builder.hasEmail;
 		this.hasPhone = builder.hasPhone;
@@ -95,8 +95,8 @@ public class ActemiumContractType implements ContractType, Serializable {
 		//}
 		////TODO check if contractTypeName is not already taken,
 		//// two contractTypes can't have the same name
-		setContractTypeName();
 		this.name = name;
+		setContractTypeName();
 	}
 	
 	private void setContractTypeName() {
@@ -223,11 +223,12 @@ public class ActemiumContractType implements ContractType, Serializable {
 	public void checkAttributes() throws InformationRequiredException {
 		// Ms. Malfait her idea
 		new ContractTypeBuilder()
-				.contractTypeName(this.contractTypeNameProperty().get())
+				.name(this.getName())
+				.contractTypeName(this.getName())
 				.contractTypeStatus(this.getContractTypeStatus())
 				.hasEmail(this.hasEmail)
 				.hasPhone(this.hasPhone)
-				.hasApplication(this.isHasApplication())
+				.hasApplication(this.hasApplication)
 				.timestamp(this.getTimestamp())
 				.maxHandlingTime(this.getMaxHandlingTime())
 				.minThroughputTime(this.minThroughputTime)
@@ -236,6 +237,7 @@ public class ActemiumContractType implements ContractType, Serializable {
 	}
 
 	public static class ContractTypeBuilder {
+		private String name;
 		private String contractTypeName;
 		private ContractTypeStatus contractTypeStatus;
 		private boolean hasEmail;
@@ -247,6 +249,11 @@ public class ActemiumContractType implements ContractType, Serializable {
 		private double price;
 
 		private Set<RequiredElement> requiredElements;
+
+		public ContractTypeBuilder name(String name) {
+			this.name = name;
+			return this;
+		}
 
 		public ContractTypeBuilder contractTypeName(String contractTypeName) {
 			this.contractTypeName = contractTypeName;
@@ -312,6 +319,16 @@ public class ActemiumContractType implements ContractType, Serializable {
 				requiredElements.add(RequiredElement.ContractTypeMinTroughPutTimeRequired);
 			if (price <= 0)
 				requiredElements.add(RequiredElement.ContractTypePriceRequired);
+			//TODO
+			// very weird small bug
+			// set hasEmail and hasPhone to false
+			// set hasApplication to true
+			// modify contractType
+			// success
+			// set hasApplication to false
+			// set hasPhone to true
+			// modify contractType
+			// error -> clone == null
 			if (!(hasEmail || hasPhone || hasApplication))
 				requiredElements.add(RequiredElement.ContractTypeWayRequired);
 
@@ -327,7 +344,8 @@ public class ActemiumContractType implements ContractType, Serializable {
 		ActemiumContractType cloned = null;
 		try {
 			cloned = new ContractTypeBuilder()
-					.contractTypeName(this.contractTypeNameProperty().get())
+					.name(this.getName())
+					.contractTypeName(this.getName())
 					.contractTypeStatus(this.getContractTypeStatus())
 					.hasEmail(this.isHasEmail())
 					.hasPhone(this.isHasPhone())

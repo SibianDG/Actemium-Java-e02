@@ -81,6 +81,7 @@ public class PopulateDB {
                 .build();
 
         ActemiumContractType bCtype = new ActemiumContractType.ContractTypeBuilder()
+                .name("BasicSupport")
                 .contractTypeName("BasicSupport")
                 .contractTypeStatus(ContractTypeStatus.ACTIVE)
                 .hasEmail(true)
@@ -93,6 +94,7 @@ public class PopulateDB {
                 .build();
 
         ActemiumContractType bCtype02 = new ActemiumContractType.ContractTypeBuilder()
+                .name("BasicEmailSupport")
                 .contractTypeName("BasicEmailSupport")
                 .contractTypeStatus(ContractTypeStatus.ACTIVE)
                 .hasEmail(true)
@@ -105,6 +107,7 @@ public class PopulateDB {
                 .build();
         
         ActemiumContractType cCtype = new ActemiumContractType.ContractTypeBuilder()
+                .name("BasicAppSupport")
                 .contractTypeName("BasicAppSupport")
                 .contractTypeStatus(ContractTypeStatus.ACTIVE)
                 .hasEmail(false)
@@ -117,6 +120,7 @@ public class PopulateDB {
                 .build();
 
         ActemiumContractType dCtype = new ActemiumContractType.ContractTypeBuilder()
+                .name("FullEmailSupport")
                 .contractTypeName("FullEmailSupport")
                 .contractTypeStatus(ContractTypeStatus.ACTIVE)
                 .hasEmail(true)
@@ -129,6 +133,7 @@ public class PopulateDB {
                 .build();
         
         ActemiumContractType eCtype = new ActemiumContractType.ContractTypeBuilder()
+                .name("FullPhoneSupport")
                 .contractTypeName("FullPhoneSupport")
                 .contractTypeStatus(ContractTypeStatus.ACTIVE)
                 .hasEmail(false)
@@ -141,6 +146,7 @@ public class PopulateDB {
                 .build();
 
         ActemiumContractType fCtype = new ActemiumContractType.ContractTypeBuilder()
+                .name("FullAppSupport")
                 .contractTypeName("FullAppSupport")
                 .contractTypeStatus(ContractTypeStatus.ACTIVE)
                 .hasEmail(false)
@@ -153,6 +159,7 @@ public class PopulateDB {
                 .build();
 
         ActemiumContractType gCtype = new ActemiumContractType.ContractTypeBuilder()
+                .name("BasicAllSupport")
                 .contractTypeName("BasicAllSupport")
                 .contractTypeStatus(ContractTypeStatus.ACTIVE)
                 .hasEmail(true)
@@ -165,6 +172,7 @@ public class PopulateDB {
                 .build();
 
         ActemiumContractType hCtype = new ActemiumContractType.ContractTypeBuilder()
+                .name("FullAllSupport")
                 .contractTypeName("FullAllSupport")
                 .contractTypeStatus(ContractTypeStatus.ACTIVE)
                 .hasEmail(true)
@@ -177,6 +185,7 @@ public class PopulateDB {
                 .build();
 
         ActemiumContractType jCtype = new ActemiumContractType.ContractTypeBuilder()
+                .name("AmazonSupport")
                 .contractTypeName("AmazonSupport")
                 .contractTypeStatus(ContractTypeStatus.ACTIVE)
                 .hasEmail(true)
@@ -189,6 +198,7 @@ public class PopulateDB {
                 .build();
 
         ActemiumContractType jCtype02 = new ActemiumContractType.ContractTypeBuilder()
+                .name("MonopolySupport")
                 .contractTypeName("MonopolySupport")
                 .contractTypeStatus(ContractTypeStatus.ACTIVE)
                 .hasEmail(true)
@@ -201,6 +211,7 @@ public class PopulateDB {
                 .build();
 
         ActemiumContractType pCtype = new ActemiumContractType.ContractTypeBuilder()
+                .name("BasicPhoneSupport")
                 .contractTypeName("BasicPhoneSupport")
                 .contractTypeStatus(ContractTypeStatus.ACTIVE)
                 .hasEmail(false)
@@ -615,6 +626,7 @@ public class PopulateDB {
         contractTypeDao.startTransaction();
 
         contractTypeDao.insert(new ActemiumContractType.ContractTypeBuilder()
+                .name("ExperimentalSupport")
                 .contractTypeName("ExperimentalSupport")
                 .contractTypeStatus(ContractTypeStatus.INACTIVE)
                 .hasEmail(true)
