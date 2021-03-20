@@ -453,7 +453,18 @@ public class Actemium {
 	}
 
 	public ObservableList<Ticket> giveActemiumTicketsOutstanding() {
+		if (signedInUser instanceof Employee) {
+			if (((Employee) signedInUser).getRole() == EmployeeRole.TECHNICIAN) {
+				return giveActemiumTicketsOutstandingAssignedToTechnician();
+			}
+		} // else
 		return FXCollections.unmodifiableObservableList(actemiumTicketsOutstanding);
+	}
+	
+	public ObservableList<Ticket> giveActemiumTicketsOutstandingAssignedToTechnician() {
+		return FXCollections.observableArrayList(actemiumTicketsOutstanding.stream()
+				.filter(t -> t.giveTechnicians().stream().collect(Collectors.toList()).contains(getSignedInUser()))
+				.collect(Collectors.toList()));
 	}
 
 	////////-CONTRACTTYPEFACADE-////////

@@ -42,8 +42,8 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 
 	private LocalDate registrationDate;
 	
-	@ManyToMany(mappedBy = "technicians", cascade = CascadeType.PERSIST)
-	private List<ActemiumTicket> tickets = new ArrayList<>();
+//	@ManyToMany(mappedBy = "technicians", cascade = CascadeType.PERSIST)
+//	private List<ActemiumTicket> tickets = new ArrayList<>();
 	
 //	@ManyToMany
 //	private List<Customer> customers;
@@ -147,17 +147,17 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 		this.roleProperty().set(role.toString());
 	}
 
-	public List<ActemiumTicket> getTickets() {
-		return tickets;
-	}
-	
-	public List<Ticket> giveTickets() {
-		return (List<Ticket>) (Object) tickets;
-	}
-
-	public void setTickets(List<ActemiumTicket> tickets) {
-		this.tickets = tickets;
-	}
+//	public List<ActemiumTicket> getTickets() {
+//		return tickets;
+//	}
+//	
+//	public List<Ticket> giveTickets() {
+//		return (List<Ticket>) (Object) tickets;
+//	}
+//
+//	public void setTickets(List<ActemiumTicket> tickets) {
+//		this.tickets = tickets;
+//	}
 
 	public StringProperty roleProperty() {
 		return role;

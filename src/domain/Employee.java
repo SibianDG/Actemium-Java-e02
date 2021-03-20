@@ -26,7 +26,7 @@ public interface Employee extends User {
 
 	public EmployeeRole getRole();
 
-	public List<Ticket> giveTickets();
+//	public List<Ticket> giveTickets();
 	
 	public StringProperty roleProperty();
 

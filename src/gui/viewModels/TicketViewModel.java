@@ -40,6 +40,10 @@ public class TicketViewModel extends ViewModel {
     public ObservableList<Ticket> giveTicketsOutstanding() {
         return ticketFacade.giveActemiumTicketsOutstanding();
     }
+    
+    public ObservableList<Ticket> giveTicketsOutstandingAssignedToTechnician() {
+    	return ticketFacade.giveActemiumTicketsOutstandingAssignedToTechnician();
+    }
 
     public ObservableList<Ticket> giveTicketsResolved() {
         return ticketFacade.giveActemiumTicketsResolved();
