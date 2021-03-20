@@ -170,7 +170,6 @@ public class ContractDetailsPanelController extends DetailsPanelController {
         }
     }
     
-    //TODO
     private void addGridDetails(Map<String, Map<Boolean, Object>> details){
         int i = 0;
         // Using LinkedHashSet so the order of the map values doesn't change
@@ -187,7 +186,6 @@ public class ContractDetailsPanelController extends DetailsPanelController {
         }
     }
 
-    //TODO
     private Node createElementDetailGridpane(Map<Boolean, Object> map, String key) {
         boolean disable = (boolean) map.keySet().toArray()[0];
         boolean editable = disable;
@@ -242,8 +240,6 @@ public class ContractDetailsPanelController extends DetailsPanelController {
         return c;
     }
 
-    //TODO
-    // can be only in super class or only here
     private DatePicker makeDatePicker(Object o) {
         DatePicker datePicker = new DatePicker((LocalDate) o);
         String pattern = "yyyy-MM-dd";

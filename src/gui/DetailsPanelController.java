@@ -103,7 +103,7 @@ public abstract class DetailsPanelController extends GridPane implements Invalid
 		return viewModel;
 	}
 
-	public void clearDetailPane() {
+	private void clearDetailPane() {
         txtDetailsTitle.setText(LanguageResource.getString("nothingSelected"));
         gridDetails.getChildren().clear();
         btnModify.setVisible(false);
@@ -217,7 +217,7 @@ public abstract class DetailsPanelController extends GridPane implements Invalid
         return confirmed;
     }
     
-    public Popup createPopup(final String message, String popupType) {
+    private Popup createPopup(final String message, String popupType) {
         final Popup popup = new Popup();
         popup.setAutoFix(true);
         popup.setAutoHide(true);
@@ -235,7 +235,7 @@ public abstract class DetailsPanelController extends GridPane implements Invalid
         return popup;
     }
     
-	public void showPopupMessage(final String popupType, String message) {
+    protected void showPopupMessage(final String popupType, String message) {
         final Popup popup = createPopup(message, popupType);
         final Stage stage = (Stage) gridDetails.getScene().getWindow();
         popup.setOnShown(new EventHandler<WindowEvent>() {
@@ -250,7 +250,7 @@ public abstract class DetailsPanelController extends GridPane implements Invalid
 	
 	//TODO
 	//temp fix for created item popup
-	public void showPopupMessageAddItem(final String popupType, String message) {
+    protected void showPopupMessageAddItem(final String popupType, String message) {
         final Popup popup = createPopup(message, popupType);
         final Stage stage = (Stage) gridDetails.getScene().getWindow();
         popup.setOnShown(new EventHandler<WindowEvent>() {

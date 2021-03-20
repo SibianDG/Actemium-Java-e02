@@ -34,6 +34,7 @@ import languages.LanguageResource;
 // EmployeeDetailsPanelController
 // and
 // CustomerDetailsPanelController
+// Should we do this?
 
 public class UserDetailsPanelController extends DetailsPanelController { 
 
@@ -47,26 +48,6 @@ public class UserDetailsPanelController extends DetailsPanelController {
             setDetailOnModifying();
         } catch (NullPointerException e){
             setupPaneNewObject();
-        }
-    }
-    
-    @FXML
-    void btnDeleteOnAction(ActionEvent event) {
-        try {
-        	if(deleteConfirmationAlert()) {
-        		viewModel.delete();
-        		showPopupMessage("popupDelete", LanguageResource.getString("succesfully_deleted_item"));
-        	}
-        } catch (InformationRequiredException ire) {
-            StringBuilder errorMessage = new StringBuilder();
-            ire.getInformationRequired().forEach(e -> {
-                System.out.println(e);
-                errorMessage.append(e).append("\n");
-
-            });
-            txtErrorMessage.setText(errorMessage.toString());
-            txtErrorMessage.setVisible(true);
-            clearDetailPane();
         }
     }
 
@@ -239,7 +220,6 @@ public class UserDetailsPanelController extends DetailsPanelController {
         }
     }
 
-    //TODO
     private void addGridDetails(Map<String, Map<Boolean, Object>> details){
         int i = 0;
         // Using LinkedHashSet so the order of the map values doesn't change
@@ -340,7 +320,6 @@ public class UserDetailsPanelController extends DetailsPanelController {
         return tableView;
     }
     
-    //TODO
     private ComboBox makeComboBox(Object o) {
 
         ObservableList list;

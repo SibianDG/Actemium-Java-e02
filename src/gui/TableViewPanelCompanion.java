@@ -513,7 +513,8 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 		});*/
 	}
 
-	public boolean alertChangesOnTabelView() {
+	// package visibility
+	boolean alertChangesOnTabelView() {
 		boolean showNewObject = true;
 		if(viewModel.isFieldModified()) {
 			//popup
