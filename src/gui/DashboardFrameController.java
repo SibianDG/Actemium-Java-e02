@@ -322,13 +322,10 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         } else if ((name.toLowerCase().contains(LanguageResource.getString("manage").toLowerCase()) || name.toLowerCase().contains(LanguageResource.getString("consult").toLowerCase()) ) && name.toLowerCase().contains(LanguageResource.getString("knowledge").toLowerCase())) {
         	tableViewPanelCompanion = new TableViewPanelCompanion<>(this, knowledgeBaseViewModel, GUIEnum.KNOWLEDGEBASE, EmployeeRole.valueOf(userFacade.giveUserRole()));
         	switchToManageScreen(name, tableViewPanelCompanion, knowledgeBaseViewModel);
-        } else if (name.toLowerCase().contains("statistics")) {
+        } else if (name.toLowerCase().contains(LanguageResource.getString("statistics"))) {
             resetGridpane(gridContent);
             initializeGridPane(1, 1, 600, 600);
             gridContent.add(new ChartController(this, chartViewModel), 0, 0);
-        } else if (name.toLowerCase().contains(LanguageResource.getString("statistics"))) {
-            if (goToStatisticsConfirmationAlert())
-            Desktop.getDesktop().open(new File("src/powerBi/PowerBiTest.pbix"));
         } else {
             makePopUp(name);
         }
