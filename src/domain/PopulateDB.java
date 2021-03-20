@@ -342,7 +342,7 @@ public class PopulateDB {
         mark.setStatus(UserStatus.BLOCKED);
         larry.setStatus(UserStatus.INACTIVE);
         ActemiumEmployee tech = new ActemiumEmployee.EmployeeBuilder()
-                .username("Technician")
+                .username("joe123")
                 .password("Passwd123&")
                 .firstName("Joe")
                 .lastName("Biden")
@@ -354,7 +354,7 @@ public class PopulateDB {
 
         //("Technician", "Passwd123&", "Joe", "Biden","Overwale 42","091354864","thomas.dirven@hogent.be", EmployeeRole.TECHNICIAN);
         ActemiumEmployee tech2 = new ActemiumEmployee.EmployeeBuilder()
-                .username("Technician")
+                .username("don123")
                 .password("Passwd123&")
                 .firstName("Donald")
                 .lastName("Trump")

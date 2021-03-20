@@ -51,8 +51,7 @@ public class UserViewModel extends ViewModel {
                 LanguageResource.getString("company_city"), LanguageResource.getString("company_address"), LanguageResource.getString("company_phone_number")));
     }
 
-    public Map<String, Map<Boolean, Object>> getDetails(){
-//    	switch (selectedUser.getClass().getSimpleName().toLowerCase()) {
+    public Map<String, Map<Boolean, Object>> getDetails() {
         switch (selectedUser.getClass().getSimpleName().substring(8).toLowerCase()) {
             case "employee" -> {
                 Employee employee = (Employee) selectedUser;
