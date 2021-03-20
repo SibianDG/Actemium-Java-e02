@@ -103,7 +103,6 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
     private DetailsPanelController detailsPanelController;
     private ProfilePanelController profilePanelController;
 
-//    public DashboardFrameController(Actemium actemium, UserFacade userFacade) throws FileNotFoundException {
     public DashboardFrameController(UserFacade userFacade, TicketFacade ticketFacade, ContractTypeFacade contractTypeFacade, 
     		ContractFacade contractFacade, KnowledgeBaseFacade knowledgeBaseFacade, LoginController loginController) throws FileNotFoundException  {
         super();
@@ -141,7 +140,6 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         imgMyAccount.setCursor(Cursor.HAND);
         imgNotifications.setCursor(Cursor.HAND);
         imgLogout.setCursor(Cursor.HAND);
-
     }
 
     public void initializeDashboard() throws FileNotFoundException {
@@ -183,7 +181,6 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
 
         createGridMenu(itemNames);
     }
-
 
     private void createGridMenu(String[] itemNames){
         hboxMenu.getChildren().clear();
@@ -259,7 +256,6 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         setFillWidth(dashboardTile, true);
         gridContent.setHgap(35);
         gridContent.setVgap(35);
-
     }
 
     private void buttonMenusClicked(String name) throws IOException {
@@ -303,6 +299,14 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
     }
 
 	private void switchToManageScreen(String name, TableViewPanelCompanion<T,E> tableViewPanelCompanion, ViewModel viewModel) {
+    	// Necessary!!
+    	// if listener is never removed when you press the home button
+        // everytime you press an item in the tableView
+        // it will run setDetailOnModifying() multiple times instead of once
+    	// if you find a cleaner way to do this, please let me know xoxo
+		if (detailsPanelController != null) {
+			detailsPanelController.getViewModel().removeListener(detailsPanelController);
+		}
 		//txtTitle.setText(name);
 		resetGridpane(gridContent);
 
@@ -341,6 +345,9 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
 
     @FXML
     void btnLogOutAction(MouseEvent event) {
+		if (detailsPanelController != null) {
+			detailsPanelController.getViewModel().removeListener(detailsPanelController);
+		}
         makePopUp(LanguageResource.getString("logout_message"));
         //Platform.exit();
         //System.exit(0);    
@@ -394,12 +401,16 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         this.profilePanelController = new ProfilePanelController(profileViewModel, this);
     	gridContent.add(this.profilePanelController, 0, 0);
         hboxMenu.getChildren().forEach(child -> child.getStyleClass().remove("menuButton-active"));
-
-
     }
 
     @FXML
     void navigateToHome(MouseEvent event) throws FileNotFoundException {
+    	// Necessary!!
+    	// if listener is never removed when you press the home button
+        // everytime you press an item in the tableView
+        // it will run setDetailOnModifying() multiple times instead of once
+    	// if you find a cleaner way to do this, please let me know xoxo
+        detailsPanelController.getViewModel().removeListener(detailsPanelController);
         initializeDashboard();
     }
 
@@ -428,8 +439,7 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         Optional<ButtonType> result = alert.showAndWait();
         confirmed = result.get() == ButtonType.OK;
         return confirmed;
-    }
-    
+    }    
 
     @Override
     public void invalidated(Observable observable) {

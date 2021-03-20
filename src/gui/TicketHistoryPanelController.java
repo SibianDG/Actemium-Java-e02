@@ -34,17 +34,13 @@ public class TicketHistoryPanelController extends GridPane implements Invalidati
     private GridPane gridDetails;
     
     @FXML
-    private Button btnClose;
-    
+    private Button btnClose;    
 
-    private GridPane gridContent;
-    private DetailsPanelController detailsPanelController;
-    
+    private GridPane gridContent; 
 
-    public TicketHistoryPanelController(TicketViewModel ticketViewModel, GridPane gridContent, DetailsPanelController detailsPanelController) {
+    public TicketHistoryPanelController(TicketViewModel ticketViewModel, GridPane gridContent) {
         this.ticketViewModel = ticketViewModel;
         this.gridContent = gridContent;
-        this.detailsPanelController = detailsPanelController;
         ticketViewModel.addListener(this);
 
         try {
@@ -55,24 +51,20 @@ public class TicketHistoryPanelController extends GridPane implements Invalidati
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         gridDetails.setHgap(10);
         gridDetails.setVgap(3);
 
         setTicketHistoryPane();
-    }
-    
+    }    
 
     @FXML
     void btnCloseOnAction(ActionEvent event) {
 		gridContent.getChildren().remove(this);
-		// setDetailOnModifying();                
     }
 
     @Override
     public void invalidated(Observable observable) {
-        
-//            setDetailOnModifying();
+		gridContent.getChildren().remove(this);
     }
 
     private void setTicketHistoryPane(){
@@ -97,10 +89,10 @@ public class TicketHistoryPanelController extends GridPane implements Invalidati
 			for (int j = 0; j < changeInfoNodeList.size(); j++) {
 				gridDetails.add(changeInfoNodeList.get(j), 1, i + j);
 			}
-            i+=3;
+			i += changeInfoNodeList.size();
             TextField empty = new TextField("");
             empty.getStyleClass().clear();
-            gridDetails.add(empty, 0, i);
+            gridDetails.add(empty, 1, i);
             i++;
         }
     }

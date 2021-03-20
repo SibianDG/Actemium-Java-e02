@@ -101,7 +101,7 @@
                </VBox.margin>
             </Text>
             <HBox fx:id="hboxFilterSection" prefHeight="35.0" prefWidth="900.0" spacing="30.0" />
-            <TableView fx:id="tableView" maxHeight="1.7976931348623157E308" maxWidth="900.0" minHeight="625.0" VBox.vgrow="NEVER">
+            <TableView fx:id="tableView" maxHeight="1.7976931348623157E308" maxWidth="901.0" minHeight="625.0" prefHeight="700.0" prefWidth="901.0" VBox.vgrow="NEVER">
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy></TableView>

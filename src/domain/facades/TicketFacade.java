@@ -69,48 +69,6 @@ public class TicketFacade implements Facade {
 		actemium.modifyTicket(ticket);
 	}
 
-	// old method before TicketHistory
-	// I will remove this method if everyone is ok with the new one
-//	public void modifyTicketOutstanding(ActemiumTicket ticket, TicketPriority priority, TicketType ticketType,
-//			TicketStatus status, String title, String description, String remarks, String attachments,
-//			List<ActemiumEmployee> technicians) throws InformationRequiredException {
-//		try {
-//			ActemiumTicket ticketClone = ticket.clone();
-//			// check to see if signed in user is Support Manger
-//			actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
-//
-//			ticketClone.setPriority(priority);
-//			ticketClone.setTicketType(ticketType);
-//			ticketClone.setStatus(status);
-//			ticketClone.setTitle(title);
-//			ticketClone.setDescription(description);
-//			ticketClone.setRemarks(remarks);
-//			ticketClone.setAttachments(attachments);
-//
-//			ticketClone.checkAttributes();
-//
-//			StringBuilder changeList = new StringBuilder();
-//			
-//			ticket.setPriority(priority);
-//			ticket.setTicketType(ticketType);
-//			ticket.setStatus(status);
-//			ticket.setTitle(title);
-//			ticket.setDescription(description);
-//			ticket.setRemarks(remarks);
-//			ticket.setAttachments(attachments);
-//			ticket.setTechnicians(new ArrayList<>());
-//			technicians.forEach(ticket::addTechnician);			
-//			
-//			ticket.addTicketChange(createTicketChange(ticket, "modifyTicketOutstanding", changeList.toString()));
-//
-//			actemium.modifyTicket(ticket);
-//
-//		} catch (CloneNotSupportedException e) {
-//			System.out.println(LanguageResource.getString("cannot_clone"));
-//		}
-//
-//	}
-	
 	public void modifyTicketOutstanding(ActemiumTicket ticket, TicketPriority priority, TicketType ticketType,
 			TicketStatus status, String title, String description, String remarks, String attachments,
 			List<ActemiumEmployee> technicians) throws InformationRequiredException {
@@ -148,38 +106,30 @@ public class TicketFacade implements Facade {
 				ticket.setTitle(title);
 			}
 			if (!ticket.getDescription().equals(description)) {
-//				changeList.append(String.format("Ticket Description changed from \"%s\" to \"%s\".", ticket.getDescription(), description));
 				changeList.add(String.format("%s.", LanguageResource.getString("ticket_description_changed")));
 				ticket.setDescription(description);
 			}
 			if (!ticket.getRemarks().equals(remarks)) {
-//				changeList.append(String.format("Ticket Remarks changed from \"%s\" to \"%s\".", ticket.getRemarks(), remarks));
 				changeList.add(String.format("%s.", LanguageResource.getString("ticket_remarks_changed")));
 				ticket.setRemarks(remarks);
 			}
 			if (!ticket.getAttachments().equals(attachments)) {
-//				changeList.append(String.format("Ticket Attachments changed from \"%s\" to \"%s\".", ticket.getAttachments(), attachments));
 				changeList.add(String.format("%s.", LanguageResource.getString("ticket_attachments_changed")));
 				ticket.setAttachments(attachments);
 			}
 			// Had to stream the list in order for the removeAll to work properly
 			if (!ticket.getTechnicians().equals(technicians)) {
 				List<ActemiumEmployee> originalTechnicians = ticket.getTechnicians().stream().collect(Collectors.toList());
-				System.out.println(originalTechnicians);
 				originalTechnicians.removeAll(technicians);
-				System.out.println(originalTechnicians);
 				if (originalTechnicians.size() != 0) {
 					for (ActemiumEmployee technician : originalTechnicians) {
 						changeList.add(String.format("%s \"%s %s\" %s: %d %s.", "Technician"/*(LanguageResource.getString("TECHNICIAN").substring(0,1).toUpperCase() + LanguageResource.getString("TECHNICIAN").substring(1).toLowerCase())*/,
 								technician.getFirstName(), technician.getLastName(), LanguageResource.getString("with_id") ,technician.getUserId(), LanguageResource.getString("got_removed_from_the_ticket")));
 					}
 				}
-				originalTechnicians = ticket.getTechnicians().stream().collect(Collectors.toList());;
-				System.out.println(originalTechnicians);
-				List<ActemiumEmployee> newTechnicians = technicians.stream().collect(Collectors.toList());;
-				System.out.println(newTechnicians);
+				originalTechnicians = ticket.getTechnicians().stream().collect(Collectors.toList());
+				List<ActemiumEmployee> newTechnicians = technicians.stream().collect(Collectors.toList());
 				newTechnicians.removeAll(originalTechnicians);
-				System.out.println(newTechnicians);
 				if (newTechnicians.size() != 0) {
 					for (ActemiumEmployee technician : newTechnicians) {
 						changeList.add(String.format("%s \"%s %s\" %s: %d got added to the ticket.", "Technician"/*(LanguageResource.getString("TECHNICIAN").substring(0,1).toUpperCase() + LanguageResource.getString("TECHNICIAN").substring(1).toLowerCase())*/,
@@ -199,32 +149,7 @@ public class TicketFacade implements Facade {
 		}
 		
 	}
-
-	// old method before TicketHistory
-	// I will remove this method if everyone is ok with the new one
-//	public void modifyTicketResolved(ActemiumTicket ticket, String solution, String quality, String supportNeeded)
-//			throws InformationRequiredException {
-//		try {
-//			ActemiumTicket ticketClone = ticket.clone();
-//			// check to see if signed in user is Support Manger
-//			actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
-//			ticketClone.setSolution(solution);
-//			ticketClone.setQuality(quality);
-//			ticketClone.setSupportNeeded(supportNeeded);
-//			ticketClone.checkAttributes();
-//
-//			ticket.setSolution(solution);
-//			ticket.setQuality(quality);
-//			ticket.setSupportNeeded(supportNeeded);
-//
-//			ticket.addTicketChange(createTicketChange(ticket, "modifyTicketResolved"));
-//			
-//			actemium.modifyTicket(ticket);
-//
-//		} catch (CloneNotSupportedException e) {
-//			System.out.println(LanguageResource.getString("cannot_clone"));
-//		}
-//	}
+	
 	public void modifyTicketResolved(ActemiumTicket ticket, String solution, String quality, String supportNeeded)
 			throws InformationRequiredException {
 		try {

@@ -33,8 +33,6 @@ public class UserViewModel extends ViewModel {
     public void setSelectedUser(User user) {
         this.selectedUser = user;
         if (user != null){
-        	// How can the type still be ActemiumEmployee when we casted it to Employee?
-//        	System.out.println(user.getClass().getSimpleName().toUpperCase());
         	// substring(8) to remove ACTEMIUM
             setCurrentState(GUIEnum.valueOf(user.getClass().getSimpleName().substring(8).toUpperCase()));
         }

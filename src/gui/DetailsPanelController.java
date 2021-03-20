@@ -109,6 +109,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     public DetailsPanelController(ViewModel viewModel, GridPane gridContent) {
         this.viewModel = viewModel;
         this.gridContent = gridContent;
+        // listener is removed when pressing home button or changing managescreen
         viewModel.addListener(this);
 
         try {
@@ -122,25 +123,15 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
         gridDetails.setHgap(5);
         gridDetails.setVgap(5);
-        // TODO not working, error viewModel is null ?? how?
-        // This whole if block is for the title when nothing is selected
-//		if (viewModel instanceof UserViewModel) {
-//			if (((UserViewModel) viewModel).getCurrentState()
-//					.equals(GUIEnum.EMPLOYEE)) {
-//		        txtDetailsTitle.setText("No employee is selected");
-//			} else if (((UserViewModel) viewModel).getCurrentState()
-//					.equals(GUIEnum.CUSTOMER)) {
-//		        txtDetailsTitle.setText("No customer is selected");
-//			} else {
-//		        txtDetailsTitle.setText("No user is selected");
-//			}
-//		} else if (viewModel instanceof TicketViewModel) {
-//	        txtDetailsTitle.setText("No ticket is selected");
-//		}
+        
         clearDetailPane();
     }
 
-    public void clearDetailPane() {
+    public ViewModel getViewModel() {
+		return viewModel;
+	}
+
+	public void clearDetailPane() {
         txtDetailsTitle.setText(LanguageResource.getString("nothingSelected"));
         gridDetails.getChildren().clear();
         btnModify.setVisible(false);
@@ -158,13 +149,14 @@ public class DetailsPanelController extends GridPane implements InvalidationList
     	// 					content of the change
     	
     	// console output
+    	System.out.println("=============HISTORY============\n");
     	System.out.println("==============BEGIN=============\n");
     	System.out.println("History" + txtDetailsTitle.getText().substring(7) + "\n");
     	((TicketViewModel) viewModel).getSelectedTicket().giveTicketChanges()
     				.stream().forEach(System.out::println);;
     	System.out.println("===============END==============\n");    	
     	
-    	ticketHistoryPanelController = new TicketHistoryPanelController((TicketViewModel) viewModel, gridContent, this);
+    	ticketHistoryPanelController = new TicketHistoryPanelController((TicketViewModel) viewModel, gridContent);
 		gridContent.add(ticketHistoryPanelController, 1, 0);
     }
 
@@ -375,7 +367,10 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             }
             editing = false;
             viewModel.setFieldModified(false);
-            setDetailOnModifying();            
+            setDetailOnModifying();
+            //was trying some different ways of renewing the detailsPane
+            // is this better or worse and why?
+//            viewModel.fireInvalidationEvent();
 
             //TODO: handle the correct error messages, not just all
         } catch (InformationRequiredException ire) {
@@ -426,7 +421,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             setDetailOnModifying();
         } catch (NullPointerException e){
             setupPaneNewObject();
-//            clearDetailPane();
         }
     }
 
@@ -455,12 +449,12 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             btnDelete.setVisible(true);
         } else if (viewModel instanceof ContractViewModel) {
             addGridDetails(((ContractViewModel) viewModel).getDetails());
-            txtDetailsTitle.setText(String.format("%s: %S", LanguageResource.getString("details_of_contract"), ((ContractViewModel) viewModel).getIdSelectedContract()));
+            txtDetailsTitle.setText(String.format("%s: %s", LanguageResource.getString("details_of_contract"), ((ContractViewModel) viewModel).getIdSelectedContract()));
             btnModify.setText(LanguageResource.getString("modify_contract"));
             btnDelete.setVisible(false);
         } else if (viewModel instanceof KnowledgeBaseViewModel) {
             addGridDetails(((KnowledgeBaseViewModel) viewModel).getDetails());
-            txtDetailsTitle.setText(String.format("%s: %S", LanguageResource.getString("title"), ((KnowledgeBaseViewModel) viewModel).getTitleSelectedKbItem()));
+            txtDetailsTitle.setText(String.format("%s: %s", LanguageResource.getString("title"), ((KnowledgeBaseViewModel) viewModel).getTitleSelectedKbItem()));
             btnModify.setText(LanguageResource.getString("modify_KB_item"));
             btnDelete.setVisible(false);
         }
@@ -732,8 +726,10 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         }
     }
 
+    //TODO still unable to get lable aligned right
     private Label makeNewLabel(String text, boolean withColon){
         Label label = new Label(text+ (withColon ? ":" : ""));
+        label.getStyleClass().clear();
         label.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         label.setAlignment(Pos.CENTER_RIGHT);
         label.setTextAlignment(TextAlignment.RIGHT);
@@ -755,11 +751,11 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             Node detail = createElementDetailGridpane(details.get(key), key);
             if (key.toLowerCase().contains(LanguageResource.getString("contracts").toLowerCase())
             		|| key.toLowerCase().contains("ticketsofsametype")){
-                gridDetails.add(label, 0, i);
+                gridDetails.add(makeNewLabel(key, true), 0, i);
                 gridDetails.add(detail, 0, i+1);
                 setColumnSpan(detail, 2);
             } else {
-                gridDetails.add(label, 0, i);
+                gridDetails.add(makeNewLabel(key, true), 0, i);
                 gridDetails.add(detail, 1, i);
             }
             i++;
@@ -850,9 +846,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             node = makeDatePicker(o);
             node.setDisable(disable);
         }
-//        if (node != null) {
-//            node.setDisable(disable);
-//        }
         return node;
     }
 
@@ -936,7 +929,6 @@ public class DetailsPanelController extends GridPane implements InvalidationList
             namesAndTechs.put(item.getFirstName() + " " + item.getLastName(), item);
         });
 
-
         //set the technicians already asigned to ticket marked
         for (Employee tech: technicians) {
             String name = tech.getFirstName() + " " + tech.getLastName();
@@ -969,16 +961,14 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                     //add technician to ticket
                     ((TicketViewModel) viewModel).removeTechnician(namesAndTechs.get(tech.getText()));
                 }
+                // prevents an unnecessary modifyTicket and prevents a useless entry in tickethistory  
+                if(((TicketViewModel) viewModel).getTechniciansAsignedToTicket().stream().sorted().collect(Collectors.toList())
+                		.equals(technicians.stream().sorted().collect(Collectors.toList()))){
+                	viewModel.setFieldModified(false);
+                }
                 listView.setMaxHeight(((TicketViewModel) viewModel).getTechniciansAsignedToTicket().size()*25+25);
             });
         }
-        //TODO when adding and then removing a technician with the menu
-        // but leaving the end result unchanged, it still thinks there is a modification
-        // causes an unnecessary modifyTicket and adds a useless entry in tickethistory        
-//        if(technicians.equals(((TicketViewModel) viewModel).getTechniciansAsignedToTicket().stream().collect(Collectors.toList()))){
-//        	viewModel.setFieldModified(false);
-//        	System.out.println("huh");
-//        }
 
         //create Listview for technicians for ticket
         listView.setMaxHeight(((TicketViewModel) viewModel).getTechniciansAsignedToTicket().size()*25+25);		

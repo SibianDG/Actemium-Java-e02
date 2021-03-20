@@ -47,7 +47,7 @@ public class KnowledgeBaseViewModel extends ViewModel {
 	}
 
 	public ArrayList<String> getDetailsNewKbItem() {
-		return new ArrayList<String>(Arrays.asList(LanguageResource.getString("Title"), LanguageResource.getString("type"), LanguageResource.getString("keywords"), LanguageResource.getString("text")));
+		return new ArrayList<String>(Arrays.asList(LanguageResource.getString("title"), LanguageResource.getString("type"), LanguageResource.getString("keywords"), LanguageResource.getString("text")));
 	}
 
     public Map<String, Map<Boolean, Object>> getDetails() {

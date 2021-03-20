@@ -25,7 +25,7 @@ import javafx.beans.property.StringProperty;
 
 @Entity
 @Access(AccessType.FIELD)
-public class ActemiumEmployee extends UserModel implements Employee, Seniority, Serializable {
+public class ActemiumEmployee extends UserModel implements Employee, Seniority, Serializable, Comparable {
 
 	@Serial
 	private static final long serialVersionUID = 1L;
@@ -283,6 +283,11 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 			e.printStackTrace();
 		}
 		return cloned;
+	}
+
+	@Override
+	public int compareTo(Object o) {		
+		return Integer.compare((int)getUserId(), (int)((ActemiumEmployee) o).getUserId());
 	}
 	
 }

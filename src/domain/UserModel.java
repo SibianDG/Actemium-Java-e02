@@ -200,6 +200,6 @@ public abstract class UserModel implements User, Serializable {
 
 	public StringProperty lastNameProperty() {
 		return lastName;
-	}
+	}	
 
 }
