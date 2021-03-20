@@ -426,7 +426,7 @@ public class DetailsPanelController extends GridPane implements InvalidationList
 
     private void setDetailOnModifying(){
         initGridDetails();
-
+        
         if (viewModel instanceof UserViewModel) {
             addGridDetails(((UserViewModel) viewModel).getDetails());
             txtDetailsTitle.setText(String.format("%s %s", LanguageResource.getString("details_of"), ((UserViewModel) viewModel).getNameOfSelectedUser()));
@@ -435,12 +435,13 @@ public class DetailsPanelController extends GridPane implements InvalidationList
         } else if (viewModel instanceof TicketViewModel) {
             if (TicketStatus.isOutstanding()) {
                 addGridDetails(((TicketViewModel) viewModel).getDetails());
+                btnDelete.setVisible(true);
             } else {
                 addGridDetails(((TicketViewModel) viewModel).getDetails());
+                btnDelete.setVisible(false);
             }
             txtDetailsTitle.setText(String.format("%s: %s", LanguageResource.getString("details_of_ticket"), ((TicketViewModel) viewModel).getIdSelectedTicket()));
             btnModify.setText(LanguageResource.getString("modify_ticket"));
-            btnDelete.setVisible(true);
             btnHistory.setVisible(true);
         } else if (viewModel instanceof ContractTypeViewModel) {
             addGridDetails(((ContractTypeViewModel) viewModel).getDetails());
@@ -610,6 +611,9 @@ public class DetailsPanelController extends GridPane implements InvalidationList
                 textField = new TextField(randomValues.get(i));
                 textField.setFont(Font.font("Arial", 14));
                 textField.setPromptText(fields.get(i));
+                if(fields.get(i).equals(LanguageResource.getString("creation_date"))) {
+                	textField.setEditable(false);
+                }
                 node = textField;
             }
             gridDetails.add(node, 1, i);
