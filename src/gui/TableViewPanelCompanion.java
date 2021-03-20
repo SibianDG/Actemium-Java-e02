@@ -304,7 +304,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 			String string = (String) o;
 			TextField filter = new TextField();
 			filter.setPromptText(string);
-			filter.setPrefWidth(150);
+			filter.setPrefWidth(145);
 			filter.setFont(Font.font("Arial", 14));
 			filter.setOnKeyTyped(event -> {
 				checkFilters();

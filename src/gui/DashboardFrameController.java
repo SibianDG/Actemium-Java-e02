@@ -275,7 +275,9 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
                 child.getStyleClass().remove("menuButton-active");
                 try {
                     String text = ((Button) child).getText();
-                    ((Button)child).setGraphic(createImageView(text, 1, 35));
+                    System.out.println("TEXT: "+text.replace("\n", " "));
+                    System.out.println(textToImageMap.get(text.replace("\n", " ")));
+                    ((Button)child).setGraphic(createImageView(textToImageMap.get(text.replace("\n", " ")), 1, 35));
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -292,7 +294,6 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
 
             }
         });
-
 
 
         if (name.toLowerCase().contains(LanguageResource.getString("manage").toLowerCase()) && name.toLowerCase().contains(LanguageResource.getString("employee").toLowerCase())) {
