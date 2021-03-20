@@ -159,6 +159,18 @@
     -fx-text-background-color: #292929;
 }
 
+.table-row-cell:empty, .list-cell:empty {
+    -fx-background-color: transparent;
+}
+
+.table-row-cell:empty {
+    -fx-background-color: transparent;
+}
+
+.table-row-cell:empty .table-cell {
+    -fx-border-width: 0px;
+}
+
 #list-view {
     -fx-background-insets: 0;
     -fx-padding: 0;
@@ -271,7 +283,8 @@
 }
 
 .popupDelete {
-    -fx-background-color: red;
+    -fx-background-color: #a40101;
+    -fx-text-fill: #fff;
     -fx-background-radius: 10;
     -fx-padding: 10;
  /* -fx-border-color: black; 

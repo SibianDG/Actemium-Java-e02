@@ -34,11 +34,13 @@ import gui.viewModels.KnowledgeBaseViewModel;
 import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -979,7 +981,18 @@ public class DetailsPanelControllerGenericOld extends GridPane implements Invali
         listView.setMaxHeight(((TicketViewModel) viewModel).getTechniciansAsignedToTicket().size()*25+25);		
         listView.getStylesheets().add("file:src/start/styles.css");
         listView.setId("list-view");
+        //TODO
+        //For disable clicking it
+        listView.setMouseTransparent( true );
+        listView.setFocusTraversable( false );
+        listView.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {});
+        listView.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {});
+        listView.addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {});
         listView.setSelectionModel(null);
+        listView.getSelectionModel()
+                .selectedIndexProperty()
+                .addListener((observable, oldvalue, newValue) -> Platform.runLater(() -> listView.getSelectionModel().clearSelection()));
+
         // only show menuButton when ticket is outstanding
         // hide it when ticket is resolved
         if (!TicketStatus.isOutstanding()) {        	
