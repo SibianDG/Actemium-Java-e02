@@ -16,6 +16,7 @@
 
 .button:default:hover {
     -fx-background-color: #5070b5;
+    -fx-cursor: hand;
 }
 
 .button-red {
@@ -47,7 +48,24 @@
 #cancelBtn, .btn-blue {
     -fx-background-color: #1d3d78;
     -fx-text-fill: #ffffff;
+    -fx-border-color: #1D3D78;
+    -fx-border-width: 3px;
+    -fx-border-radius: 50px;
+}
 
+.btn-blue:hover {
+    -fx-background-color: #5e7da7;
+    -fx-text-fill: #ffffff;
+    -fx-cursor: hand;
+}
+
+.btn-blue-active {
+    -fx-background-color: #ffffff;
+    -fx-text-background-color: #1D3D78 !important;
+    -fx-text-fill: #1D3D78 !important;
+    -fx-border-color: #1D3D78;
+    -fx-border-width: 3px;
+    -fx-border-radius: 50px;
 }
 
 #discardBtn, .btn-red {
@@ -202,6 +220,7 @@
 
 .menuButton:hover {
     -fx-background-color: #5070b5;
+    -fx-cursor: hand;
 }
 
 .combo-box {
@@ -256,6 +275,7 @@
 
 .dashboardTile:hover {
     -fx-opacity: .4;
+    -fx-cursor: hand;
 }
 
 .alert, .alert > *.button-bar > *.container, .alert > *.label.content, .alert:header *.header-panel, .alert:header *.header-panel *.label {
