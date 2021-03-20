@@ -123,6 +123,7 @@ public class DetailsPanelControllerGenericOld extends GridPane implements Invali
 
         gridDetails.setHgap(5);
         gridDetails.setVgap(5);
+        btnHistory.setText(LanguageResource.getString("show_history"));
         
         clearDetailPane();
     }

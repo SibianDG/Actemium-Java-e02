@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import domain.enums.EmployeeRole;
 import domain.enums.TicketStatus;
@@ -103,6 +101,18 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
     private DetailsPanelController detailsPanelController;
     private ProfilePanelController profilePanelController;
 
+    private final Map<String, String> textToImageMap = Map.of(
+            LanguageResource.getString("manage_employees"), "icon_manage_user"
+            , LanguageResource.getString("manage_customers"), "icon_manage_user"
+            , LanguageResource.getString("manage_knowledge_base"), "icon_manage"
+            , LanguageResource.getString("outstanding_tickets"), "icon_outstanding"
+            , LanguageResource.getString("resolved_tickets"), "icon_resolved"
+            , LanguageResource.getString("statistics"), "icon_statistics"
+            , LanguageResource.getString("manage_contracts"), "icon_manage_contracts"
+            , LanguageResource.getString("manage_contract_types"), "icon_manage_contract_types"
+            , LanguageResource.getString("consult_knowledge_base"), "icon_consult"
+    );
+
     public DashboardFrameController(UserFacade userFacade, TicketFacade ticketFacade, ContractTypeFacade contractTypeFacade, 
     		ContractFacade contractFacade, KnowledgeBaseFacade knowledgeBaseFacade, LoginController loginController) throws FileNotFoundException  {
         super();
@@ -155,36 +165,40 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         initializeGridPane(3, 2, 300, 300);
 
         String[] itemNames = new String[] {};
-        String[] itemIcons = new String[] {};
+        //String[] itemIcons = new String[] {};
 
         switch (userFacade.giveUserRole().toUpperCase()) {
             case "ADMINISTRATOR" -> {
                 itemNames = new String[]{LanguageResource.getString("manage_employees"), LanguageResource.getString("manage_customers")};
-                itemIcons = new String[]{"icon_manage_user", "icon_manage_user"};
+                //itemIcons = new String[]{"icon_manage_user", "icon_manage_user"};
             }
             case "SUPPORT_MANAGER" -> {
                 itemNames = new String[]{LanguageResource.getString("manage_knowledge_base"), LanguageResource.getString("outstanding_tickets")
                         , LanguageResource.getString("resolved_tickets"), LanguageResource.getString("statistics"), LanguageResource.getString("manage_contract_types")
                         , LanguageResource.getString("manage_contracts")};
-                itemIcons = new String[]{"icon_manage", "icon_outstanding", "icon_resolved", "icon_statistics", "icon_manage_contract_types", "icon_manage_contracts"};
+                //itemIcons = new String[]{"icon_manage", "icon_outstanding", "icon_resolved", "icon_statistics", "icon_manage_contract_types", "icon_manage_contracts"};
             }
             case "TECHNICIAN" -> {
                 itemNames = new String[]{LanguageResource.getString("consult_knowledge_base"), LanguageResource.getString("outstanding_tickets"),
                         LanguageResource.getString("resolved_tickets"), LanguageResource.getString("statistics")};
-                itemIcons = new String[]{"icon_consult", "icon_outstanding", "icon_resolved", "icon_statistics"};
+                //itemIcons = new String[]{"icon_consult", "icon_outstanding", "icon_resolved", "icon_statistics"};
             }
         }
         	
         for(int i = 0; i < itemNames.length; i++) {
-        	addDashboardItem(itemNames[i], createImageView(itemIcons[i], i%2), i%3, i/3, i);
+            System.out.println("IMAGE0 "+itemNames[i]);
+            System.out.println("MAP0 "+textToImageMap.get(itemNames[i]));
+
+            addDashboardItem(itemNames[i], createImageView(textToImageMap.get(itemNames[i]),i%2, 130), i%3, i/3, i);
         }
 
+        System.out.println("Before createGridMenu");
         createGridMenu(itemNames);
     }
 
-    private void createGridMenu(String[] itemNames){
+    private void createGridMenu(String[] itemNames) throws FileNotFoundException {
         hboxMenu.getChildren().clear();
-        
+        int i =0;
         //int width = (int) (primScreenBounds.getWidth()/(itemNames.length+1) - (gap*itemNames.length));
         for (String text : itemNames) {
             //gridMenu.addColumn(i);
@@ -204,10 +218,11 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
                 }
             });
             hboxMenu.getChildren().add(button);
+            i++;
         }
     }
     
-    private Button createMenuItemButton(String s, int numberOfItems){
+    private Button createMenuItemButton(String s, int numberOfItems) throws FileNotFoundException {
         if (numberOfItems > 4){
             s = s.replace(" ", "\n");
         }
@@ -221,23 +236,24 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         button.setTextAlignment(TextAlignment.CENTER);
         button.prefWidthProperty().bind(hboxMenu.widthProperty().divide(numberOfItems));
         button.prefHeightProperty().bind(hboxMenu.heightProperty());
+        button.setGraphic(createImageView(textToImageMap.get(s.replace("\n", " ")), 1, 35));
 
         if (numberOfItems < 4) {
             button.setMaxHeight(75);
-            button.setMaxWidth((primScreenBounds.getWidth() * 0.7) / (numberOfItems * 1.75));
+            button.setMaxWidth((primScreenBounds.getWidth() * 0.5) / (numberOfItems));
         }
 
 //        button.setPadding(new Insets(5, paddingX, 5, paddingX));
         return button;
     }
 
-    public ImageView createImageView(String image, int i) throws FileNotFoundException {
+    public ImageView createImageView(String image, int i, int size) throws FileNotFoundException {
 
         FileInputStream input = new FileInputStream("src/pictures/dashboard/dashboarditems/" + image + "_" + i + ".png");
 
         ImageView imageView = new ImageView(new Image(input));
-        imageView.setFitHeight(130);
-        imageView.setFitWidth(130);
+        imageView.setFitHeight(size);
+        imageView.setFitWidth(size);
         return imageView;
     }
 
@@ -259,12 +275,32 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
     }
 
     private void buttonMenusClicked(String name) throws IOException {
-        hboxMenu.getChildren().forEach(child -> child.getStyleClass().remove("menuButton-active"));
+        hboxMenu.getChildren().forEach(child -> {
+            if (child.getStyleClass().contains("menuButton-active")){
+                child.getStyleClass().remove("menuButton-active");
+                try {
+                    String text = ((Button) child).getText();
+                    ((Button)child).setGraphic(createImageView(text, 1, 35));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         hboxMenu.getChildren().forEach(child -> {
             if (((Button) child).getText().replace("\n", " ").toLowerCase().contains(name.toLowerCase())) {
                 child.getStyleClass().add("menuButton-active");
+                try {
+                    System.out.println("Hoeveel keer? andere");
+
+                    ((Button)child).setGraphic(createImageView(textToImageMap.get(name), 0, 35));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
+
+
 
         if (name.toLowerCase().contains(LanguageResource.getString("manage").toLowerCase()) && name.toLowerCase().contains(LanguageResource.getString("employee").toLowerCase())) {
             //Todo weird => fixed? or still weird?

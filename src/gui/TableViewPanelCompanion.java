@@ -64,6 +64,11 @@ import languages.LanguageResource;
 
 public class TableViewPanelCompanion<T,E> extends GridPane {
 
+	//---------ALL THE CASES FOR THE FILTERS WITH LanguageResource ---------------//
+	//enum employee { firstname(LanguageResource.getString("firstname")}
+	//----------------------------------------------------------------------------//
+
+
 	//private UserFacade userFacade;
 	private final DashboardFrameController dashboardFrameController;
 	private final ViewModel viewModel;
@@ -118,12 +123,9 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 		btnP1.setVisible(false);
 		btnP2.setVisible(false);
 		btnP3.setVisible(false);
-		
-		if(employeeRole.equals(EmployeeRole.TECHNICIAN)) {
-			btnAdd.setVisible(false);
-		} else {
-			btnAdd.setVisible(true);
-		}
+		btnResetFilters.setText(LanguageResource.getString("reset_filters"));
+
+		btnAdd.setVisible(!employeeRole.equals(EmployeeRole.TECHNICIAN));
 		
 		switch(currentState) {
 			case EMPLOYEE -> {
@@ -386,11 +388,11 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 	        case "UserStatus", "TicketStatus", "ContractStatus", "ContractTypeStatus" -> {
 	        	c.getSelectionModel().select("SELECT STATUS");
 	        }
-	        case "EmployeeRole" -> c.getSelectionModel().select("SELECT ROLE");
-	        case "TicketPriority" -> c.getSelectionModel().select("SELECT PRIO");
-	        case "TicketType", "KbItemType" -> c.getSelectionModel().select("SELECT TYPE");
-		    case "Timestamp" -> c.getSelectionModel().select("SELECT TIMESTAMP");
-	        default -> c.getSelectionModel().select("SELECT");
+	        case "EmployeeRole" -> c.getSelectionModel().select(LanguageResource.getString("select_status").toUpperCase());
+	        case "TicketPriority" -> c.getSelectionModel().select(LanguageResource.getString("select_prio").toUpperCase());
+	        case "TicketType", "KbItemType" -> c.getSelectionModel().select(LanguageResource.getString("select_type").toUpperCase());
+		    case "Timestamp" -> c.getSelectionModel().select(LanguageResource.getString("select_timestamp").toUpperCase());
+	        default -> c.getSelectionModel().select(LanguageResource.getString("select").toUpperCase());
 	    } 
 		//TODO e.g. select technician and admin at the same time
 //		c.getSelectionModel().select(SelectionMode.MULTIPLE);
@@ -403,6 +405,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 	private void checkFilters(){
 		
 		List<Predicate> predicates = new ArrayList<>();
+
 
 		hboxFilterSection.getChildren().forEach(object -> {
 			if (object instanceof TextField) {
@@ -553,54 +556,92 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 		return showNewObject;		
 	}
 
-	private Predicate giveFilterPredicate(String fieldName, String filterText){		
+	private Predicate giveFilterPredicate(String fieldName, String filterText){
+		fieldName = fieldName.toLowerCase();
 		
 		if(currentState.equals(GUIEnum.EMPLOYEE)) {
 			if (fieldName.length() > 0 && !filterText.toLowerCase().contains(LanguageResource.getString("select"))){
-				
 				Predicate<Employee> newPredicate;
-				
-				switch (fieldName) {				
-					case "Firstname" -> newPredicate = e -> e.getFirstName().toLowerCase().contains(filterText);
-					case "Lastname" -> newPredicate = e -> e.getLastName().toLowerCase().contains(filterText);
-					case "UserStatus" -> newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
-					case "EmployeeRole" -> newPredicate = e -> e.getRoleAsString().toLowerCase().contains(filterText);
-					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
-				}				
+
+				if (fieldName.equalsIgnoreCase(LanguageResource.getString("firstname"))){
+					newPredicate = e -> e.getFirstName().toLowerCase().contains(filterText);
+				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("lastname"))){
+					newPredicate = e -> e.getLastName().toLowerCase().contains(filterText);
+				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("select_status")) || fieldName.equalsIgnoreCase("userstatus")){
+					newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
+				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("select_role")) || fieldName.equalsIgnoreCase("employeerole")){
+					newPredicate = e -> e.getRoleAsString().toLowerCase().contains(filterText);
+				} else {
+					throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
+				}
+
+				//switch (fieldName) {
+				//	case "firstname" -> newPredicate = e -> e.getFirstName().toLowerCase().contains(filterText);
+				//	case "lastname" -> newPredicate = e -> e.getLastName().toLowerCase().contains(filterText);
+				//	case "userstatus" -> newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
+				//	case "employeerole" -> newPredicate = e -> e.getRoleAsString().toLowerCase().contains(filterText);
+				//	default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
+				//}
 				return newPredicate;				
 			}
 		} else if (currentState.equals(GUIEnum.CUSTOMER)){
 			if (fieldName.length() > 0 && !filterText.toLowerCase().contains(LanguageResource.getString("select"))){
 
 				Predicate<Customer> newPredicate;
-				
-				switch (fieldName) {
-					case "Company" -> newPredicate = e -> e.giveCompany().getName().toLowerCase().contains(filterText);
-					case "UserStatus" -> newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
-					case "Firstname" -> newPredicate = e -> e.getFirstName().toLowerCase().contains(filterText);
-					case "Lastname" -> newPredicate = e -> e.getLastName().toLowerCase().contains(filterText);
-					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
-				}				
+
+				if (fieldName.equalsIgnoreCase(LanguageResource.getString("company"))){
+					newPredicate = e -> e.giveCompany().getName().toLowerCase().contains(filterText);
+				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("select_status")) || fieldName.equalsIgnoreCase("userstatus")){
+					newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
+				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("firstname"))){
+					newPredicate = e -> e.getFirstName().toLowerCase().contains(filterText);
+				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("lastname"))) {
+					newPredicate = e -> e.getLastName().toLowerCase().contains(filterText);
+				} else {
+					throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
+				}
+
+				//switch (fieldName) {
+				//	case "company" -> newPredicate = e -> e.giveCompany().getName().toLowerCase().contains(filterText);
+				//	case "userstatus" -> newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
+				//	case "firstname" -> newPredicate = e -> e.getFirstName().toLowerCase().contains(filterText);
+				//	case "lastname" -> newPredicate = e -> e.getLastName().toLowerCase().contains(filterText);
+				//	default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
+				//}
 				return newPredicate;				
 			}
 		} else if (currentState.equals(GUIEnum.TICKET)){
 			//TODO
 			if (fieldName.length() > 0 && !filterText.toLowerCase().contains(LanguageResource.getString("select"))){
-
+				System.out.println("FIELDNAME: "+fieldName);
 				Predicate<Ticket> newPredicate;
+
+				if (fieldName.equalsIgnoreCase(LanguageResource.getString("ID"))){
+					newPredicate = e -> e.getTicketIdString().equals(filterText);
+				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("select_type")) || fieldName.equalsIgnoreCase("tickettype")){
+					newPredicate = e -> e.getTicketTypeAsString().toLowerCase().equals(filterText);
+				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("select_prio")) || fieldName.equalsIgnoreCase("ticketpriority")){
+					newPredicate = e -> e.getPriorityAsString().toLowerCase().contains(filterText);
+				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("title"))){
+					newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);
+				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("select_status")) || fieldName.equalsIgnoreCase("ticketstatus")) {
+					newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
+				} else {
+					throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
+				}
 				
-				switch (fieldName) {
-					case "ID" -> newPredicate = e -> e.getTicketIdString().equals(filterText);
-					case "TicketType" -> newPredicate = e -> e.getTicketTypeAsString().toLowerCase().equals(filterText);
-					case "TicketPriority" -> newPredicate = e -> e.getPriorityAsString().toLowerCase().contains(filterText);
-					case "Title" -> newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);
-					case "TicketStatus" -> newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
-					//TODO how will we display Company name in our observableList?
-//					case "Company" -> {
-//						newPredicate = e -> e.getCustomer().getCompany().getName().toLowerCase().contains(filterText);
-//					}
-					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
-				}				
+				//switch (fieldName) {
+				//	case "id" -> newPredicate = e -> e.getTicketIdString().equals(filterText);
+				//	case "tickettype" -> newPredicate = e -> e.getTicketTypeAsString().toLowerCase().equals(filterText);
+				//	case "ticketpriority" -> newPredicate = e -> e.getPriorityAsString().toLowerCase().contains(filterText);
+				//	case "title" -> newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);
+				//	case "ticketstatus" -> newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
+				//	//TODO how will we display Company name in our observableList?
+//				//	case "Company" -> {
+//				//		newPredicate = e -> e.getCustomer().getCompany().getName().toLowerCase().contains(filterText);
+//				//	}
+				//	default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
+				//}
 				return newPredicate;				
 			}
 		} else if (currentState.equals(GUIEnum.CONTRACTTYPE)){
@@ -609,12 +650,22 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 
 				Predicate<ContractType> newPredicate;
 
-				switch (fieldName) {
-					case "Name" -> newPredicate = e -> e.getName().toLowerCase().contains(filterText);
-					case "Timestamp" -> newPredicate = e -> e.getTimestampAsString().toString().toLowerCase().equals(filterText);
-					case "ContractTypeStatus" -> newPredicate = e -> e.getContractTypeStatusAsString().toString().toLowerCase().equals(filterText);
-					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
-				}				
+				if (fieldName.equalsIgnoreCase(LanguageResource.getString("name"))){
+					newPredicate = e -> e.getName().toLowerCase().contains(filterText);
+				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("timestamp")) || fieldName.equalsIgnoreCase("timestamp")){
+					newPredicate = e -> e.getTimestampAsString().toLowerCase().equals(filterText);
+				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("select_status")) || fieldName.equalsIgnoreCase("contracttypestatus")){
+					newPredicate = e -> e.getContractTypeStatusAsString().toLowerCase().equals(filterText);
+				} else {
+					throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
+				}
+
+				//switch (fieldName) {
+				//	case "name" -> newPredicate = e -> e.getName().toLowerCase().contains(filterText);
+				//	case "timestamp" -> newPredicate = e -> e.getTimestampAsString().toString().toLowerCase().equals(filterText);
+				//	case "contracttypestatus" -> newPredicate = e -> e.getContractTypeStatusAsString().toString().toLowerCase().equals(filterText);
+				//	default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
+				//}
 				return newPredicate;				
 			}
 		} else if (currentState.equals(GUIEnum.CONTRACT)){
@@ -622,16 +673,28 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 			if (fieldName.length() > 0 && !filterText.toLowerCase().contains(LanguageResource.getString("select"))){
 
 				Predicate<Contract> newPredicate;
-				
-				switch (fieldName) {
-					case "Contract ID" -> newPredicate = e -> e.getContractIdString().equals(filterText);
-					case "Company Name" -> newPredicate = e -> e.giveCustomer().giveCompany().getName().toLowerCase().contains(filterText);
-					case "Contract Type Name" -> newPredicate = e -> e.giveContractType().getName().toLowerCase().contains(filterText);
-					case "ContractStatus" -> newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
-//					case "StartDate" -> newPredicate = e -> e.getStartDate().toString().contains(filterText);
-//					case "EndDate" -> newPredicate = e -> e.getEndDate().toString().contains(filterText);
-					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
-				}				
+
+				if (fieldName.equalsIgnoreCase("contract id")){
+					newPredicate = e -> e.getContractIdString().equals(filterText);
+				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("company_name")) || fieldName.equalsIgnoreCase("timestamp")){
+					newPredicate = e -> e.giveCustomer().giveCompany().getName().toLowerCase().contains(filterText);
+				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("contract_type_name")) || fieldName.equalsIgnoreCase("contract type name")){
+					newPredicate = e -> e.giveContractType().getName().toLowerCase().contains(filterText);
+				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("select_status")) || fieldName.equalsIgnoreCase("contractstatus")){
+					newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
+				} else {
+					throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
+				}
+
+				//switch (fieldName) {
+				//	case "contract id" -> newPredicate = e -> e.getContractIdString().equals(filterText);
+				//	case "company name" -> newPredicate = e -> e.giveCustomer().giveCompany().getName().toLowerCase().contains(filterText);
+				//	case "contract type name" -> newPredicate = e -> e.giveContractType().getName().toLowerCase().contains(filterText);
+				//	case "contractstatus" -> newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
+//				//	case "StartDate" -> newPredicate = e -> e.getStartDate().toString().contains(filterText);
+//				//	case "EndDate" -> newPredicate = e -> e.getEndDate().toString().contains(filterText);
+				//	default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
+				//}
 				return newPredicate;				
 			}
 		} else if (currentState.equals(GUIEnum.KNOWLEDGEBASE)){
@@ -639,19 +702,34 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 			if (fieldName.length() > 0 && !filterText.toLowerCase().contains(LanguageResource.getString("select"))){
 
 				Predicate<KbItem> newPredicate;
-				
-				switch (fieldName) {
-					case "Title" -> newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);
-					case "KbItemType" -> newPredicate = e -> e.getTypeAsString().toLowerCase().contains(filterText);
-					case "Keywords" -> newPredicate = e -> e.getKeywords().toLowerCase().contains(filterText);
-					case "FullSearch" -> {						
-						newPredicate = e -> e.getText()
-												.concat(" " + e.getTitle() + " " + e.getTypeAsString() + " " + e.getKeywords())
-												.toLowerCase()
-												.contains(filterText);
-					}
-					default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
+
+				if (fieldName.equalsIgnoreCase(LanguageResource.getString("title")) || fieldName.equalsIgnoreCase("title")){
+					newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);
+				} else if (fieldName.equalsIgnoreCase("kbitemtype")){
+					newPredicate = e -> e.getTypeAsString().toLowerCase().contains(filterText);
+				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("keywords")) || fieldName.equalsIgnoreCase("keywords")){
+					newPredicate = e -> e.getKeywords().toLowerCase().contains(filterText);
+				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("FullSearch")) || fieldName.equalsIgnoreCase("fullsearch")){
+					newPredicate = e -> e.getText()
+							.concat(" " + e.getTitle() + " " + e.getTypeAsString() + " " + e.getKeywords())
+							.toLowerCase()
+							.contains(filterText);
+				} else {
+					throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 				}
+				
+				//switch (fieldName) {
+				//	case "title" -> newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);
+				//	case "kbitemtype" -> newPredicate = e -> e.getTypeAsString().toLowerCase().contains(filterText);
+				//	case "keywords" -> newPredicate = e -> e.getKeywords().toLowerCase().contains(filterText);
+				//	case "fullsearch" -> {
+				//		newPredicate = e -> e.getText()
+				//								.concat(" " + e.getTitle() + " " + e.getTypeAsString() + " " + e.getKeywords())
+				//								.toLowerCase()
+				//								.contains(filterText);
+				//	}
+				//	default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
+				//}
 				System.out.println(newPredicate.toString());
 				return newPredicate;				
 			}

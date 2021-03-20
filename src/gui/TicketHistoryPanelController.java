@@ -53,6 +53,7 @@ public class TicketHistoryPanelController extends GridPane implements Invalidati
         }
         gridDetails.setHgap(10);
         gridDetails.setVgap(3);
+        btnClose.setText(LanguageResource.getString("close"));
 
         setTicketHistoryPane();
     }    
