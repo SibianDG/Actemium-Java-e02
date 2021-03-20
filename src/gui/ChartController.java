@@ -76,24 +76,53 @@ public class ChartController extends GuiController {
     }
 
     @FXML
-    void btnCompanyOnAction(ActionEvent event) {
-        gridCharts.getChildren().clear();
-    }
-
-    @FXML
     void btnContractOnAction(ActionEvent event) {
         gridCharts.getChildren().clear();
+
+        CategoryAxis xAxis = new CategoryAxis();
+        xAxis.setLabel("Months");
+
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("Amount of Contracts");
+
+        BarChart<String, Integer> barChart = new BarChart(xAxis, yAxis);
+        barChart.setTitle("Contracts created per month for " + LocalDate.now().getYear());
+
+        Map<String, Integer> data = chartViewModel.barChartMonthlyContracts();
+
+        XYChart.Series<String, Integer> dataSeries = new XYChart.Series<>();
+        dataSeries.setName(Integer.toString(LocalDate.now().getYear()));
+        data.forEach((k, v) -> dataSeries.getData().add(new XYChart.Data(k, v)));
+        barChart.getData().add(dataSeries);
+
+        gridCharts.add(barChart, 0,0);
     }
 
     @FXML
     void btnContractTypeOnAction(ActionEvent event) {
         gridCharts.getChildren().clear();
+
+        CategoryAxis xAxis = new CategoryAxis();
+        xAxis.setLabel("Contract Types");
+
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("Amount of Contracts");
+
+        BarChart<String, Integer> barChart = new BarChart(xAxis, yAxis);
+        barChart.setTitle("Amount of Contract per Type");
+
+        Map<String, Integer> data = chartViewModel.barChartAmountOfContractsPerType();
+
+        XYChart.Series<String, Integer> dataSeries = new XYChart.Series<>();
+        dataSeries.setName("Amount of contracts");
+        data.forEach((k, v) -> {
+            dataSeries.getData().add(new XYChart.Data(k, v));
+        });
+        barChart.getData().add(dataSeries);
+
+        gridCharts.add(barChart, 0,0);
     }
 
-    @FXML
-    void btnCustomerOnAction(ActionEvent event) {
-        gridCharts.getChildren().clear();
-    }
 
     @FXML
     void btnTechnicianOnAction(ActionEvent event) {
@@ -135,6 +164,7 @@ public class ChartController extends GuiController {
 
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel("Ticket Statuses");
+        xAxis.setTickLabelsVisible(false);
 
         NumberAxis yAxis = new NumberAxis();
         yAxis.setLabel("Amount of Tickets");
@@ -179,7 +209,28 @@ public class ChartController extends GuiController {
 
     @FXML
     void btnTicketTypeOnAction(ActionEvent event) {
+        gridCharts.getChildren().clear();
 
+        CategoryAxis xAxis = new CategoryAxis();
+        xAxis.setLabel("Ticket Types");
+        xAxis.setTickLabelsVisible(false);
+
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("Amount of Tickets");
+
+        BarChart<String, Integer> barChart = new BarChart(xAxis, yAxis);
+        barChart.setTitle("Tickets per Type");
+
+        Map<String, Integer> data = chartViewModel.barChartTicketType();
+
+        data.forEach((k, v) -> {
+            XYChart.Series<String, Integer> dataSeries = new XYChart.Series<>();
+            dataSeries.setName(k);
+            dataSeries.getData().add(new XYChart.Data(k, v));
+            barChart.getData().add(dataSeries);
+        });
+
+        gridCharts.add(barChart, 0,0);
     }
 
 }
