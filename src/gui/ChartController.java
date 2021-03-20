@@ -6,8 +6,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.chart.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+import languages.LanguageResource;
 
 import java.awt.*;
 import java.io.File;
@@ -15,6 +20,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 public class ChartController extends GuiController {
 
@@ -72,7 +78,22 @@ public class ChartController extends GuiController {
 
     @FXML
     void btnPowerBiOnAction(ActionEvent event) throws IOException {
-        Desktop.getDesktop().open(new File("src/powerBi/PowerBiTest.pbix"));
+        if (goToStatisticsConfirmationAlert())
+            Desktop.getDesktop().open(new File("src/powerBi/PowerBiTest.pbix"));
+    }
+
+    private boolean goToStatisticsConfirmationAlert() {
+        boolean confirmed;
+        String headerText = LanguageResource.getString("goToStatistics_confirmation_header");
+        String text = LanguageResource.getString("goToStatistics_confirmation_text");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, text);
+        alert.setHeaderText(headerText);
+        alert.getDialogPane().getStylesheets().add("file:src/start/styles.css");
+        alert.getDialogPane().getStyleClass().add("alert");
+        ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
+        Optional<ButtonType> result = alert.showAndWait();
+        confirmed = result.get() == ButtonType.OK;
+        return confirmed;
     }
 
     @FXML

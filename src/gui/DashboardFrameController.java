@@ -294,12 +294,9 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         	tableViewPanelCompanion = new TableViewPanelCompanion<>(this, knowledgeBaseViewModel, GUIEnum.KNOWLEDGEBASE, EmployeeRole.valueOf(userFacade.giveUserRole()));
         	switchToManageScreen(name, tableViewPanelCompanion, knowledgeBaseViewModel);
         } else if (name.toLowerCase().contains("statistics")) {
-            if (goToStatisticsConfirmationAlert()) {
-                resetGridpane(gridContent);
-                initializeGridPane(1, 1, 600, 600);
-                gridContent.add(new ChartController(this, chartViewModel), 0, 0);
-            }
-
+            resetGridpane(gridContent);
+            initializeGridPane(1, 1, 600, 600);
+            gridContent.add(new ChartController(this, chartViewModel), 0, 0);
         } else {
             makePopUp(name);
         }
@@ -417,20 +414,6 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-    }
-
-    private boolean goToStatisticsConfirmationAlert() {
-    	boolean confirmed = false;
-        String headerText = LanguageResource.getString("goToStatistics_confirmation_header");
-    	String text = LanguageResource.getString("goToStatistics_confirmation_text");
-    	Alert alert = new Alert(Alert.AlertType.CONFIRMATION, text);
-        alert.setHeaderText(headerText);
-        alert.getDialogPane().getStylesheets().add("file:src/start/styles.css");
-        alert.getDialogPane().getStyleClass().add("alert");
-        ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
-        Optional<ButtonType> result = alert.showAndWait();
-        confirmed = result.get() == ButtonType.OK;
-        return confirmed;
     }
 
 
