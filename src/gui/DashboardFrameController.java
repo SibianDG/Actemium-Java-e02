@@ -311,7 +311,14 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
 		resetGridpane(gridContent);
 
 		//tableViewPanelCompanion = new TableViewPanelCompanion(this, userViewModel, currentState);
-		detailsPanelController = new DetailsPanelController(viewModel, gridContent);
+		switch(viewModel.getClass().getSimpleName()) {
+		case "UserViewModel" -> detailsPanelController = new UserDetailsPanelController(viewModel, gridContent);
+		case "TicketViewModel" -> detailsPanelController = new TicketDetailsPanelController(viewModel, gridContent);
+		case "ContractTypeViewModel" -> detailsPanelController = new ContractTypeDetailsPanelController(viewModel, gridContent);
+		case "ContractViewModel" -> detailsPanelController = new ContractDetailsPanelController(viewModel, gridContent);
+		case "KnowledgeBaseViewModel" -> detailsPanelController = new KnowledgeBaseDetailsPanelController(viewModel, gridContent);
+		}
+//		detailsPanelController = new DetailsPanelController(viewModel, gridContent);
 		gridContent.add(tableViewPanelCompanion, 0, 0);
 		gridContent.add(detailsPanelController, 1, 0);
 	}
