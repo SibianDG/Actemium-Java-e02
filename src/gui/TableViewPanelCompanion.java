@@ -623,9 +623,9 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 				Predicate<Contract> newPredicate;
 				
 				switch (fieldName) {
-					case "ContractId" -> newPredicate = e -> e.getContractIdString().equals(filterText);
-					case "CompanyName" -> newPredicate = e -> e.giveCustomer().giveCompany().getName().toLowerCase().contains(filterText);
-					case "ContractTypeName" -> newPredicate = e -> e.giveContractType().getName().toLowerCase().contains(filterText);
+					case "Contract ID" -> newPredicate = e -> e.getContractIdString().equals(filterText);
+					case "Company Name" -> newPredicate = e -> e.giveCustomer().giveCompany().getName().toLowerCase().contains(filterText);
+					case "Contract Type Name" -> newPredicate = e -> e.giveContractType().getName().toLowerCase().contains(filterText);
 					case "ContractStatus" -> newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
 //					case "StartDate" -> newPredicate = e -> e.getStartDate().toString().contains(filterText);
 //					case "EndDate" -> newPredicate = e -> e.getEndDate().toString().contains(filterText);
