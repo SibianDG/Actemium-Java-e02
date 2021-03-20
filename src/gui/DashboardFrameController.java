@@ -186,13 +186,8 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         }
         	
         for(int i = 0; i < itemNames.length; i++) {
-            System.out.println("IMAGE0 "+itemNames[i]);
-            System.out.println("MAP0 "+textToImageMap.get(itemNames[i]));
-
             addDashboardItem(itemNames[i], createImageView(textToImageMap.get(itemNames[i]),i%2, 130), i%3, i/3, i);
         }
-
-        System.out.println("Before createGridMenu");
         createGridMenu(itemNames);
     }
 
@@ -290,8 +285,6 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
             if (((Button) child).getText().replace("\n", " ").toLowerCase().contains(name.toLowerCase())) {
                 child.getStyleClass().add("menuButton-active");
                 try {
-                    System.out.println("Hoeveel keer? andere");
-
                     ((Button)child).setGraphic(createImageView(textToImageMap.get(name), 0, 35));
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();

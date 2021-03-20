@@ -66,6 +66,7 @@ public class ProfilePanelController extends GridPane  {
                 showPopupMessage("popupSuccess", LanguageResource.getString("profileEdit_success"));
                 txtErrorMessage.setVisible(false);
                 profileViewModel.setFieldModified(false);
+                emptyPasswordField();
 
 
             } else {
@@ -94,7 +95,25 @@ public class ProfilePanelController extends GridPane  {
 
     }
 
-	public ProfilePanelController(ProfileViewModel profileViewModel, DashboardFrameController dashboardFrameController) {
+    private void emptyPasswordField() {
+        System.out.println("emptyPasswordField");
+        gridProfile.getChildren().forEach(e -> {
+            System.out.println(e.getClass().getSimpleName());
+            if (e instanceof HBox) {
+                ((HBox) e).getChildren().forEach(h -> {
+                    if (h instanceof PasswordField){
+                        System.out.println("Binnen");
+                        PasswordField psswdf = (PasswordField) h;
+                        psswdf.setText("");
+                        psswdf.setPromptText(LanguageResource.getString("change_password"));
+                        System.out.println("Klaar?");
+                    }
+                });
+            }
+        });
+    }
+
+    public ProfilePanelController(ProfileViewModel profileViewModel, DashboardFrameController dashboardFrameController) {
 		super();   
         this.profileViewModel = profileViewModel;
         this.dashboardFrameController = dashboardFrameController;

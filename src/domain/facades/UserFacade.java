@@ -238,9 +238,7 @@ public class UserFacade implements Facade {
 			cloneEmployee.setRole(role);
 			cloneEmployee.setStatus(status);
 
-			System.out.println(1);
 			cloneEmployee.checkAttributes();
-			System.out.println(2);
 
 			employee.setUsername(cloneEmployee.getUsername());
 			employee.setPassword(cloneEmployee.getPassword());
