@@ -21,34 +21,35 @@
                 <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
             </GridPane.margin>
          <children>
-            <Button fx:id="btnPowerBi1" alignment="TOP_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnPowerBiOnAction" prefWidth="150.0" text="Tickets">
+            <Button fx:id="btnTicket" alignment="TOP_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnTicketOnAction" prefWidth="150.0" styleClass="btn-blue" text="TicketStatus">
                <VBox.margin>
                   <Insets bottom="25.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="btnPowerBi2" alignment="BOTTOM_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnPowerBiOnAction" prefWidth="150.0" text="Contracts">
+            <Button fx:id="btnTicketType" alignment="BOTTOM_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnTicketTypeOnAction" prefWidth="150.0" styleClass="btn-blue" text="TicketType">
                <VBox.margin>
                   <Insets bottom="25.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="btnPowerBi" alignment="BOTTOM_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnPowerBiOnAction" prefWidth="150.0" text="Company">
+            <Button fx:id="btnMonthly" alignment="BOTTOM_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnMonthlyOnAction" prefWidth="150.0" styleClass="btn-blue" text="Monthly Tickets">
                <VBox.margin>
                   <Insets bottom="25.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="btnPowerBi3" alignment="BOTTOM_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnPowerBiOnAction" prefWidth="150.0" text="ContractType">
+            <Button fx:id="btnContractType" alignment="BOTTOM_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnContractTypeOnAction" prefWidth="150.0" styleClass="btn-blue" text="ContractType">
                <VBox.margin>
                   <Insets bottom="25.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="btnPowerBi4" alignment="BOTTOM_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnPowerBiOnAction" prefWidth="150.0" text="Customers">
+            <Button fx:id="btnContract" alignment="BOTTOM_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnContractOnAction" prefWidth="150.0" styleClass="btn-blue" text="Contracts">
                <VBox.margin>
                   <Insets bottom="25.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="btnPowerBi5" alignment="BOTTOM_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnPowerBiOnAction" text="PowerBI">
+            <Button fx:id="btnTechnician" alignment="BOTTOM_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnTechnicianOnAction" prefWidth="150.0" styleClass="btn-blue" text="Technicians" />
+            <Button fx:id="btnPowerBi" alignment="BOTTOM_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnPowerBiOnAction" styleClass="btn-blue" text="PowerBI">
                <VBox.margin>
-                  <Insets top="450.0" />
+                  <Insets top="400.0" />
                </VBox.margin>
             </Button>
          </children>

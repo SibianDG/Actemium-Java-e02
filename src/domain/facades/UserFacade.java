@@ -289,5 +289,9 @@ public class UserFacade implements Facade {
 	public ObservableList<Employee> giveActemiumEmployees() {
 		return actemium.giveActemiumEmployees();
     }
+
+    public String getNameByID(long id) {
+		return actemium.getNameByID(id);
+	}
 	
 }

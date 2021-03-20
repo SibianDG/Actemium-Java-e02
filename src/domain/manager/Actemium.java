@@ -160,6 +160,10 @@ public class Actemium {
 		return userDaoJpa.findByUsername(username);
 	}
 
+	public String getNameByID(long id) {
+		return String.format("%s %s", userDaoJpa.get(id).getFirstName(), userDaoJpa.get(id).getLastName());
+	}
+
 	public void signIn(String username, String password) {
 		UserModel user = findByUsername(username);
 		
