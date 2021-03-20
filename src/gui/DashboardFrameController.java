@@ -61,6 +61,7 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
 	private ContractViewModel contractViewModel;
 	private KnowledgeBaseViewModel knowledgeBaseViewModel;
 	private ProfileViewModel profileViewModel;
+	private ChartViewModel chartViewModel;
 	
 	//LoginController
 	private LoginController loginController;
@@ -129,6 +130,7 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         this.contractViewModel = new ContractViewModel(contractFacade);    
         this.knowledgeBaseViewModel = new KnowledgeBaseViewModel(knowledgeBaseFacade, ticketFacade);
         this.profileViewModel = new ProfileViewModel(userFacade);
+        this.chartViewModel = new ChartViewModel(ticketFacade, userFacade, contractTypeFacade, contractFacade);
 
         this.loginController = loginController;
 
@@ -320,6 +322,10 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         } else if ((name.toLowerCase().contains(LanguageResource.getString("manage").toLowerCase()) || name.toLowerCase().contains(LanguageResource.getString("consult").toLowerCase()) ) && name.toLowerCase().contains(LanguageResource.getString("knowledge").toLowerCase())) {
         	tableViewPanelCompanion = new TableViewPanelCompanion<>(this, knowledgeBaseViewModel, GUIEnum.KNOWLEDGEBASE, EmployeeRole.valueOf(userFacade.giveUserRole()));
         	switchToManageScreen(name, tableViewPanelCompanion, knowledgeBaseViewModel);
+        } else if (name.toLowerCase().contains("statistics")) {
+            resetGridpane(gridContent);
+            initializeGridPane(1, 1, 600, 600);
+            gridContent.add(new ChartController(this, chartViewModel), 0, 0);
         } else if (name.toLowerCase().contains(LanguageResource.getString("statistics"))) {
             if (goToStatisticsConfirmationAlert())
             Desktop.getDesktop().open(new File("src/powerBi/PowerBiTest.pbix"));
@@ -477,6 +483,7 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         confirmed = result.get() == ButtonType.OK;
         return confirmed;
     }    
+
 
     @Override
     public void invalidated(Observable observable) {
