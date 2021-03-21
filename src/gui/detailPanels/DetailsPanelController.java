@@ -1,4 +1,4 @@
-package gui;
+package gui.detailPanels;
 
 import static javafx.scene.paint.Color.BLACK;
 

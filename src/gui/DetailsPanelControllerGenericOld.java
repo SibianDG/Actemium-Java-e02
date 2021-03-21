@@ -28,6 +28,7 @@ import domain.enums.TicketType;
 import domain.enums.Timestamp;
 import domain.enums.UserStatus;
 import exceptions.InformationRequiredException;
+import gui.detailPanels.TicketHistoryPanelController;
 import gui.viewModels.ContractTypeViewModel;
 import gui.viewModels.ContractViewModel;
 import gui.viewModels.KnowledgeBaseViewModel;

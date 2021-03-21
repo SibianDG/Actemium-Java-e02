@@ -1,4 +1,4 @@
-package gui;
+package gui.detailPanels;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,6 +9,7 @@ import java.util.Set;
 import domain.Ticket;
 import domain.enums.KbItemType;
 import exceptions.InformationRequiredException;
+import gui.GUIEnum;
 import gui.viewModels.KnowledgeBaseViewModel;
 import gui.viewModels.ViewModel;
 import javafx.beans.Observable;

@@ -1,4 +1,4 @@
-package gui;
+package gui.detailPanels;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +10,7 @@ import domain.Contract;
 import domain.enums.EmployeeRole;
 import domain.enums.UserStatus;
 import exceptions.InformationRequiredException;
+import gui.GUIEnum;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
 import javafx.beans.Observable;

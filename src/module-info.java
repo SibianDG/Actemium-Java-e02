@@ -23,6 +23,8 @@ module E02.Project2.Java {
     exports domain.manager;
     exports exceptions;
     exports gui;
+    exports gui.detailPanels;
+    exports gui.tableViewPanels;
     exports languages;
     exports main;
     exports repository;
@@ -31,6 +33,8 @@ module E02.Project2.Java {
     
     opens start to javafx.graphics, javafx.fxml;
     opens gui to javafx.graphics, javafx.fxml;
+    opens gui.detailPanels to javafx.graphics, javafx.fxml;
+    opens gui.tableViewPanels to javafx.graphics, javafx.fxml;
     
     opens domain;
     

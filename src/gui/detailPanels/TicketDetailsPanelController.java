@@ -1,4 +1,4 @@
-package gui;
+package gui.detailPanels;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,6 +15,7 @@ import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import exceptions.InformationRequiredException;
+import gui.GUIEnum;
 import gui.viewModels.TicketViewModel;
 import gui.viewModels.ViewModel;
 import javafx.beans.Observable;

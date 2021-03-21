@@ -1,4 +1,4 @@
-package gui;
+package gui.detailPanels;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -10,6 +10,7 @@ import java.util.Set;
 
 import domain.enums.ContractStatus;
 import exceptions.InformationRequiredException;
+import gui.GUIEnum;
 import gui.viewModels.ContractViewModel;
 import gui.viewModels.ViewModel;
 import javafx.beans.Observable;

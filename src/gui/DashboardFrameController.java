@@ -1,10 +1,12 @@
 package gui;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import domain.enums.EmployeeRole;
 import domain.enums.TicketStatus;
@@ -14,7 +16,27 @@ import domain.facades.KnowledgeBaseFacade;
 import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
 import gui.controllers.GuiController;
-import gui.viewModels.*;
+import gui.detailPanels.ContractDetailsPanelController;
+import gui.detailPanels.ContractTypeDetailsPanelController;
+import gui.detailPanels.DetailsPanelController;
+import gui.detailPanels.KnowledgeBaseDetailsPanelController;
+import gui.detailPanels.TicketDetailsPanelController;
+import gui.detailPanels.UserDetailsPanelController;
+import gui.tableViewPanels.ContractTableViewPanelController;
+import gui.tableViewPanels.ContractTypeTableViewPanelController;
+import gui.tableViewPanels.CustomerTableViewPanelController;
+import gui.tableViewPanels.EmployeeTableViewPanelController;
+import gui.tableViewPanels.KnowledgeBaseTableViewPanelController;
+import gui.tableViewPanels.TableViewPanelController;
+import gui.tableViewPanels.TicketTableViewPanelController;
+import gui.viewModels.ChartViewModel;
+import gui.viewModels.ContractTypeViewModel;
+import gui.viewModels.ContractViewModel;
+import gui.viewModels.KnowledgeBaseViewModel;
+import gui.viewModels.ProfileViewModel;
+import gui.viewModels.TicketViewModel;
+import gui.viewModels.UserViewModel;
+import gui.viewModels.ViewModel;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.fxml.FXML;
@@ -42,8 +64,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import languages.LanguageResource;
-
-import java.awt.Desktop;
 
 public class DashboardFrameController <T,E> extends GuiController implements InvalidationListener {
 	
@@ -98,7 +118,7 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
 
     private Set<DashboardTile> dashboardTiles = new HashSet<>();
 
-    private TableViewPanelCompanion<T,E> tableViewPanelCompanion;
+    private TableViewPanelController<T,E> tableViewPanelCompanion;
     private DetailsPanelController detailsPanelController;
     private ProfilePanelController profilePanelController;
 
@@ -300,27 +320,27 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
 
         if (name.toLowerCase().contains(LanguageResource.getString("manage").toLowerCase()) && name.toLowerCase().contains(LanguageResource.getString("employee").toLowerCase())) {
             //Todo weird => fixed? or still weird?
-            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.EMPLOYEE, EmployeeRole.valueOf(userFacade.giveUserRole()));
+            tableViewPanelCompanion = new EmployeeTableViewPanelController<>(this, userViewModel, GUIEnum.EMPLOYEE, EmployeeRole.valueOf(userFacade.giveUserRole()));
             switchToManageScreen(name, tableViewPanelCompanion, userViewModel);
         } else if (name.toLowerCase().contains(LanguageResource.getString("manage").toLowerCase()) && name.toLowerCase().contains(LanguageResource.getString("customer").toLowerCase())) {
-            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, userViewModel, GUIEnum.CUSTOMER, EmployeeRole.valueOf(userFacade.giveUserRole()));
+            tableViewPanelCompanion = new CustomerTableViewPanelController<>(this, userViewModel, GUIEnum.CUSTOMER, EmployeeRole.valueOf(userFacade.giveUserRole()));
             switchToManageScreen(name, tableViewPanelCompanion, userViewModel);
         } else if (name.toLowerCase().contains(LanguageResource.getString("ticket").toLowerCase()) && name.toLowerCase().contains(LanguageResource.getString("outstanding").toLowerCase())) {
             TicketStatus.setOutstanding(true);
-            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, ticketViewModel, GUIEnum.TICKET, EmployeeRole.valueOf(userFacade.giveUserRole()));
+            tableViewPanelCompanion = new TicketTableViewPanelController<>(this, ticketViewModel, GUIEnum.TICKET, EmployeeRole.valueOf(userFacade.giveUserRole()));
             switchToManageScreen(name, tableViewPanelCompanion, ticketViewModel);
         } else if (name.toLowerCase().contains(LanguageResource.getString("ticket").toLowerCase()) && name.toLowerCase().contains(LanguageResource.getString("resolved").toLowerCase())) {
             TicketStatus.setOutstanding(false);
-            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, ticketViewModel, GUIEnum.TICKET, EmployeeRole.valueOf(userFacade.giveUserRole()));
+            tableViewPanelCompanion = new TicketTableViewPanelController<>(this, ticketViewModel, GUIEnum.TICKET, EmployeeRole.valueOf(userFacade.giveUserRole()));
             switchToManageScreen(name, tableViewPanelCompanion, ticketViewModel);
         } else if (name.toLowerCase().contains(LanguageResource.getString("manage").toLowerCase()) && name.toLowerCase().contains(LanguageResource.getString("contract_type").toLowerCase())) {
-            tableViewPanelCompanion = new TableViewPanelCompanion<>(this, contractTypeViewModel, GUIEnum.CONTRACTTYPE, EmployeeRole.valueOf(userFacade.giveUserRole()));
+            tableViewPanelCompanion = new ContractTypeTableViewPanelController<>(this, contractTypeViewModel, GUIEnum.CONTRACTTYPE, EmployeeRole.valueOf(userFacade.giveUserRole()));
             switchToManageScreen(name, tableViewPanelCompanion, contractTypeViewModel);
         } else if (name.toLowerCase().contains(LanguageResource.getString("manage").toLowerCase()) && name.toLowerCase().contains(LanguageResource.getString("contracts").toLowerCase())) {
-        	tableViewPanelCompanion = new TableViewPanelCompanion<>(this, contractViewModel, GUIEnum.CONTRACT, EmployeeRole.valueOf(userFacade.giveUserRole()));
+        	tableViewPanelCompanion = new ContractTableViewPanelController<>(this, contractViewModel, GUIEnum.CONTRACT, EmployeeRole.valueOf(userFacade.giveUserRole()));
         	switchToManageScreen(name, tableViewPanelCompanion, contractViewModel);
         } else if ((name.toLowerCase().contains(LanguageResource.getString("manage").toLowerCase()) || name.toLowerCase().contains(LanguageResource.getString("consult").toLowerCase()) ) && name.toLowerCase().contains(LanguageResource.getString("knowledge").toLowerCase())) {
-        	tableViewPanelCompanion = new TableViewPanelCompanion<>(this, knowledgeBaseViewModel, GUIEnum.KNOWLEDGEBASE, EmployeeRole.valueOf(userFacade.giveUserRole()));
+        	tableViewPanelCompanion = new KnowledgeBaseTableViewPanelController<>(this, knowledgeBaseViewModel, GUIEnum.KNOWLEDGEBASE, EmployeeRole.valueOf(userFacade.giveUserRole()));
         	switchToManageScreen(name, tableViewPanelCompanion, knowledgeBaseViewModel);
         } else if (name.toLowerCase().contains(LanguageResource.getString("statistics"))) {
             resetGridpane(gridContent);
@@ -331,7 +351,7 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         }
     }
 
-	private void switchToManageScreen(String name, TableViewPanelCompanion<T,E> tableViewPanelCompanion, ViewModel viewModel) {
+	private void switchToManageScreen(String name, TableViewPanelController<T,E> tableViewPanelCompanion, ViewModel viewModel) {
     	// Necessary!!
     	// if listener is never removed when you press the home button
         // everytime you press an item in the tableView

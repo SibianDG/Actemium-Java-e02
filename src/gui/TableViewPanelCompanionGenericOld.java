@@ -64,7 +64,7 @@ import javafx.stage.Stage;
 import languages.LanguageResource;
 
 
-public class TableViewPanelCompanion<T,E> extends GridPane {
+public class TableViewPanelCompanionGenericOld<T,E> extends GridPane {
 
 	//---------ALL THE CASES FOR THE FILTERS WITH LanguageResource ---------------//
 	//enum employee { firstname(LanguageResource.getString("firstname")}
@@ -107,7 +107,7 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 	private FilteredList<T> tableViewData;
 	private SortedList<T> tableViewDataSorted;
 	
-	public TableViewPanelCompanion(DashboardFrameController dashboardFrameController, ViewModel viewModel, GUIEnum currentState, EmployeeRole employeeRole) {
+	public TableViewPanelCompanionGenericOld(DashboardFrameController dashboardFrameController, ViewModel viewModel, GUIEnum currentState, EmployeeRole employeeRole) {
 		this.dashboardFrameController = dashboardFrameController;
 		this.viewModel = viewModel;
 		this.currentState = currentState;

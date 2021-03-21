@@ -1,4 +1,4 @@
-package gui;
+package gui.detailPanels;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +10,7 @@ import domain.enums.ContractStatus;
 import domain.enums.ContractTypeStatus;
 import domain.enums.Timestamp;
 import exceptions.InformationRequiredException;
+import gui.GUIEnum;
 import gui.viewModels.ContractTypeViewModel;
 import gui.viewModels.ViewModel;
 import javafx.beans.Observable;

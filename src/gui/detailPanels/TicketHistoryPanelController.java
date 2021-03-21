@@ -1,4 +1,4 @@
-package gui;
+package gui.detailPanels;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
