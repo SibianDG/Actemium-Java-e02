@@ -43,7 +43,8 @@ public class TicketDetailsPanelController extends DetailsPanelController {
     private TicketHistoryPanelController ticketHistoryPanelController;
 
     public TicketDetailsPanelController(ViewModel viewModel, GridPane gridContent)  {
-        super(viewModel, gridContent);        
+        super(viewModel, gridContent);     
+        this.ticketHistoryPanelController = new TicketHistoryPanelController((TicketViewModel) viewModel, gridContent);
     }
 
     @Override
@@ -71,7 +72,6 @@ public class TicketDetailsPanelController extends DetailsPanelController {
     				.stream().forEach(System.out::println);;
     	System.out.println("===============END==============\n");    	
     	
-    	ticketHistoryPanelController = new TicketHistoryPanelController((TicketViewModel) viewModel, gridContent);
 		gridContent.add(ticketHistoryPanelController, 1, 0);
     }
 
