@@ -13,6 +13,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import domain.ActemiumTicket;
 import domain.Contract;
 import domain.ContractType;
 import domain.Customer;
@@ -37,6 +38,7 @@ import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
 import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -155,24 +157,25 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 //				this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTickets();
 				
 				if (TicketStatus.isOutstanding()) {
-					if(employeeRole.equals(EmployeeRole.TECHNICIAN)) {
-						this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTicketsOutstandingAssignedToTechnician();
-					} else {
 						this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTicketsOutstanding();
-					}
-					int amountOfP1Tickets = this.mainData.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P1 )).collect(Collectors.toList()).size();
-					int amountOfP2Tickets = this.mainData.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P2 )).collect(Collectors.toList()).size();
-					int amountOfP3Tickets = this.mainData.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P3 )).collect(Collectors.toList()).size();
 					
-					System.out.println(amountOfP1Tickets + " " + amountOfP2Tickets + " " + amountOfP3Tickets);
-					
-					btnP1.setText(String.valueOf(amountOfP1Tickets));		
-					btnP2.setText(String.valueOf(amountOfP2Tickets));
-					btnP3.setText(String.valueOf(amountOfP3Tickets));
-					btnP1.setVisible(true);
-					btnP2.setVisible(true);
-					btnP3.setVisible(true);	
-					
+					initTicketPriorityButtons();
+								
+					this.mainData.addListener(new ListChangeListener<T>() {					
+						@Override
+						public void onChanged(Change<? extends T> c) {						
+							while(c.next()) {
+								if(c.wasAdded()) {
+									changeTicketPriorityButtons(c.getList());
+									
+								} else if(c.wasRemoved()) {
+									changeTicketPriorityButtons(c.getList());
+								}
+							}
+						}											
+					});
+															
+								
 				} else {
 					this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTicketsResolved();
 					btnAdd.setVisible(false);
@@ -219,6 +222,32 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 
 		initializeFilters();
 		initializeTableView();
+	}
+	
+	private void changeTicketPriorityButtons(ObservableList<? extends T> observableList) {
+		int amountOfP1Tickets, amountOfP2Tickets, amountOfP3Tickets;
+		amountOfP1Tickets = observableList.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P1 )).collect(Collectors.toList()).size();
+		amountOfP2Tickets = observableList.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P2 )).collect(Collectors.toList()).size();
+		amountOfP3Tickets = observableList.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P3 )).collect(Collectors.toList()).size();
+		
+		btnP1.setText(String.valueOf(amountOfP1Tickets));		
+		btnP2.setText(String.valueOf(amountOfP2Tickets));
+		btnP3.setText(String.valueOf(amountOfP3Tickets));
+	}
+	
+	private void initTicketPriorityButtons( ) {
+		int amountOfP1Tickets, amountOfP2Tickets, amountOfP3Tickets;
+		amountOfP1Tickets = this.mainData.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P1 )).collect(Collectors.toList()).size();
+		amountOfP2Tickets = this.mainData.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P2 )).collect(Collectors.toList()).size();
+		amountOfP3Tickets = this.mainData.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P3 )).collect(Collectors.toList()).size();
+		
+		btnP1.setText(String.valueOf(amountOfP1Tickets));		
+		btnP2.setText(String.valueOf(amountOfP2Tickets));
+		btnP3.setText(String.valueOf(amountOfP3Tickets));
+		
+		btnP1.setVisible(true);
+		btnP2.setVisible(true);
+		btnP3.setVisible(true);	
 	}
 
 	@FXML

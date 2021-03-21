@@ -124,6 +124,7 @@ public class TicketViewModel extends ViewModel {
     public void setCurrentState(GUIEnum currentState) {
         this.currentState = currentState;
     }
+    
 
     @Override
     public void delete() throws InformationRequiredException {

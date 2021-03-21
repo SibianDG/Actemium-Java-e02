@@ -37,6 +37,6 @@ public abstract class ViewModel implements Observable {
 		this.fieldModified = fieldModified;
 	}
 
-    public abstract void delete() throws InformationRequiredException;
+    public abstract void delete( ) throws InformationRequiredException;
 
 }

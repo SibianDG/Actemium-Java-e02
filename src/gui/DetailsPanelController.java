@@ -128,6 +128,7 @@ public abstract class DetailsPanelController extends GridPane implements Invalid
         	if(deleteConfirmationAlert()) {
         		viewModel.delete();
         		showPopupMessage("popupDelete", LanguageResource.getString("succesfully_deleted_item"));
+        		clearDetailPane();
         	}
         } catch (InformationRequiredException ire) {
             StringBuilder errorMessage = new StringBuilder();
