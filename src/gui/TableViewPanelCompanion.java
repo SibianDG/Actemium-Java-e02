@@ -155,7 +155,11 @@ public class TableViewPanelCompanion<T,E> extends GridPane {
 //				this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTickets();
 				
 				if (TicketStatus.isOutstanding()) {
-					this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTicketsOutstanding();
+					if(employeeRole.equals(EmployeeRole.TECHNICIAN)) {
+						this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTicketsOutstandingAssignedToTechnician();
+					} else {
+						this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTicketsOutstanding();
+					}
 					int amountOfP1Tickets = this.mainData.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P1 )).collect(Collectors.toList()).size();
 					int amountOfP2Tickets = this.mainData.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P2 )).collect(Collectors.toList()).size();
 					int amountOfP3Tickets = this.mainData.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P3 )).collect(Collectors.toList()).size();
