@@ -1,6 +1,6 @@
 package gui.viewModels;
 
-import domain.Employee;
+import domain.Ticket;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import domain.facades.ContractFacade;
@@ -9,7 +9,9 @@ import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ChartViewModel{
 
@@ -127,6 +129,18 @@ public class ChartViewModel{
                 });
 
         return mapMonthlyContracts;
+    }
+
+    public long chartAverageTimeNeededToSolveTickets() {
+        List<Ticket> completedTickets = ticketFacade.giveActemiumTicketsResolved()
+                .stream()
+                .filter(t -> t.getStatus().equals(TicketStatus.COMPLETED))
+                .collect(Collectors.toList());
+
+        long secondsNeeded = completedTickets.stream().mapToLong(t -> ChronoUnit.SECONDS.between(t.getDateAndTimeOfCreation(), t.getDateAndTimeOfCompletion())).sum();
+
+        System.out.println(secondsNeeded);
+        return secondsNeeded/completedTickets.size();
     }
 
 }

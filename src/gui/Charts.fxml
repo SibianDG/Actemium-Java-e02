@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root fx:id="gridContent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="895.0" prefWidth="970.0" style="-fx-background-color: #ffffff;" styleClass="bg-rounded" stylesheets="@../start/styles.css" type="GridPane" xmlns="http://javafx.com/javafx/14.0.2.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="gridContent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="895.0" prefWidth="970.0" style="-fx-background-color: #ffffff;" styleClass="bg-rounded" stylesheets="@../start/styles.css" type="GridPane" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="80.0" />
@@ -47,10 +47,14 @@
                   <Insets bottom="25.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="btnTechnician" alignment="BOTTOM_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnTechnicianOnAction" prefWidth="150.0" styleClass="btn-blue" text="Technicians" />
+            <Button fx:id="btnTechnician" alignment="BOTTOM_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnTechnicianOnAction" prefWidth="150.0" styleClass="btn-blue" text="Technicians">
+               <VBox.margin>
+                  <Insets bottom="25.0" />
+               </VBox.margin></Button>
+            <Button fx:id="btnAverageTimeTicket" alignment="BOTTOM_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnAverageTimeTicketOnAction" prefWidth="150.0" styleClass="btn-blue" text="Avg Ticket Time" />
             <Button fx:id="btnPowerBi" alignment="BOTTOM_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#btnPowerBiOnAction" styleClass="btn-blue" text="PowerBI">
                <VBox.margin>
-                  <Insets top="400.0" />
+                  <Insets top="325.0" />
                </VBox.margin>
             </Button>
          </children>

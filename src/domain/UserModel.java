@@ -32,7 +32,7 @@ import languages.LanguageResource;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
 		@NamedQuery(name = "User.findByUsername",
-				query = "SELECT u FROM UserModel u WHERE u.username = :username")
+				query = "SELECT u FROM UserModel u WHERE u.username = :username"),
 })
 public abstract class UserModel implements User, Serializable {
 

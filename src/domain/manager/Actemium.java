@@ -3,6 +3,7 @@ package domain.manager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
@@ -160,13 +161,28 @@ public class Actemium {
 		return userDaoJpa.findByUsername(username);
 	}
 
+	public UserModel findByEmail(String email) {
+		return userDaoJpa.findByEmail(email);
+	}
+
+	public UserModel findbyID(String id) {
+		return userDaoJpa.get(Long.parseLong(id));
+	}
+
 	public String getNameByID(long id) {
 		return String.format("%s %s", userDaoJpa.get(id).getFirstName(), userDaoJpa.get(id).getLastName());
 	}
 
-	public void signIn(String username, String password) {
-		UserModel user = findByUsername(username);
-		
+	public void signIn(String usernameIDorEmail, String password) {
+		UserModel user;
+		 if(usernameIDorEmail.contains("@"))
+			user = findByEmail(usernameIDorEmail);
+		 else if(Pattern.matches("[0-9]+", usernameIDorEmail))
+			user = findbyID(usernameIDorEmail);
+		 else
+		 	user = findByUsername(usernameIDorEmail);
+
+
 		if (user instanceof Customer) {
 			throw new AccessException(LanguageResource.getString("no_customer"));
 		}

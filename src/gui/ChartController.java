@@ -62,6 +62,9 @@ public class ChartController extends GuiController {
     @FXML
     private GridPane gridCharts;
 
+    @FXML
+    private Button btnAverageTimeTicket;
+
     private DashboardFrameController dashboardFrameController;
     private ChartViewModel chartViewModel;
 
@@ -291,6 +294,33 @@ public class ChartController extends GuiController {
 
     private void resetActiveButtonStyle(){
         hboxAllButtons.getChildren().forEach(b -> b.getStyleClass().remove("btn-blue-active"));
+    }
+
+    @FXML
+    void btnAverageTimeTicketOnAction(ActionEvent event) {
+        resetActiveButtonStyle();
+        btnAverageTimeTicket.getStyleClass().add("btn-blue-active");
+        gridCharts.getChildren().clear();
+
+        CategoryAxis xAxis = new CategoryAxis();
+        xAxis.setLabel("Ticket");
+        xAxis.setTickLabelsVisible(false);
+
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("Avarage time in seconds");
+
+        BarChart<String, Double> barChart = new BarChart(xAxis, yAxis);
+        barChart.setTitle("Average Time per Ticket");
+
+        double data = chartViewModel.chartAverageTimeNeededToSolveTickets();
+        System.out.println(data);
+
+        XYChart.Series<String, Double> dataSeries = new XYChart.Series<>();
+        dataSeries.setName("Average time needed to solve a ticket in seconds");
+        dataSeries.getData().add(new XYChart.Data("Ticket", data));
+        barChart.getData().add(dataSeries);
+
+        gridCharts.add(barChart, 0,0);
     }
 
 }

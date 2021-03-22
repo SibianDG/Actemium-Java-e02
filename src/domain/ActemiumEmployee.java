@@ -8,16 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.ManyToMany;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import domain.enums.EmployeeRole;
 import domain.enums.RequiredElement;
@@ -27,6 +18,10 @@ import javafx.beans.property.StringProperty;
 
 @Entity
 @Access(AccessType.FIELD)
+@NamedQueries({
+		@NamedQuery(name = "Employee.findByEmail",
+				query = "SELECT e FROM ActemiumEmployee e WHERE e.emailAddress = :emailAdress"),
+})
 public class ActemiumEmployee extends UserModel implements Employee, Seniority, Serializable, Comparable {
 
 	@Serial
