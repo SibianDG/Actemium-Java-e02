@@ -153,6 +153,7 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         this.chartViewModel = new ChartViewModel(ticketFacade, userFacade, contractTypeFacade, contractFacade);
 
         this.loginController = loginController;
+        this.profilePanelController = new ProfilePanelController(profileViewModel, this);
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
@@ -224,15 +225,16 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
             button.setOnMouseClicked(e -> {
                 if(tableViewPanelCompanion != null)
                     tableViewPanelCompanion.alertChangesOnTabelView();
-                if (profilePanelController != null)
-                    profilePanelController.alertChanges();
+             
+                if (profilePanelController != null) 
+                    profilePanelController.alertChanges();   
+                              
                 if (enabled) {
                     try {
                         buttonMenusClicked(text);
                     } catch (IOException ioException) {
-                        ioException.printStackTrace();
                     }
-                }
+                }                               
             });
             hboxMenu.getChildren().add(button);
             i++;
@@ -280,7 +282,7 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
             try {
                 buttonMenusClicked(name);
             } catch (IOException ioException) {
-                ioException.printStackTrace();
+
             }
         });
         dashboardTiles.add(dashboardTile);
@@ -297,13 +299,9 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
                 child.getStyleClass().remove("menuButton-active");
                 try {
                     String text = ((Button) child).getText();
-                    System.out.println("TEXT: "+text.replace("\n", " "));
-                    System.out.println(textToImageMap.get(text.replace("\n", " ")));
                     ((Button)child).setGraphic(createImageView(textToImageMap.get(text.replace("\n", " ")), 1, 35));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
+                } catch (FileNotFoundException e) {                }
+            }             
         });
         hboxMenu.getChildren().forEach(child -> {
             if (((Button) child).getText().replace("\n", " ").toLowerCase().contains(name.toLowerCase())) {
@@ -311,7 +309,6 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
                 try {
                     ((Button)child).setGraphic(createImageView(textToImageMap.get(name), 0, 35));
                 } catch (FileNotFoundException e) {
-                    e.printStackTrace();
                 }
 
             }
@@ -458,9 +455,17 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
 //    	vbProfile.getChildren().addAll(gridProfile);
 
         //TODO as attribute?
-        this.profilePanelController = new ProfilePanelController(profileViewModel, this);
+        
     	gridContent.add(this.profilePanelController, 0, 0);
-        hboxMenu.getChildren().forEach(child -> child.getStyleClass().remove("menuButton-active"));
+        hboxMenu.getChildren().forEach(child -> {
+        		child.getStyleClass().remove("menuButton-active");
+                String text = ((Button) child).getText();
+                try {
+					((Button)child).setGraphic(createImageView(textToImageMap.get(text.replace("\n", " ")), 1, 35));
+				} catch (FileNotFoundException e) {
+
+				}
+        	});
     }
 
     @FXML

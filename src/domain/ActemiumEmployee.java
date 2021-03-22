@@ -14,6 +14,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 
@@ -31,7 +33,7 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 	private static final long serialVersionUID = 1L;
 
 	//ToDo: when on SQL SERVER Turn on
-	// @GeneratedValue(strategy = GenerationType.IDENTITY)
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int employeeNr;
 
 	private String address;
