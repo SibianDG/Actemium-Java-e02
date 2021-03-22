@@ -74,8 +74,10 @@ public class ActemiumTicket implements Ticket, Serializable {
 
 	@ManyToOne
 	private ActemiumCompany company;
-	private String remarks;
+	@ManyToMany(cascade = CascadeType.PERSIST)
+	private List<ActemiumTicketComment> comments = new ArrayList<>();
 	private String attachments;	
+//	private List<String> attachments;	
 	// List of technicians contain all the technicians assigned to the ticket
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	private List<ActemiumEmployee> technicians = new ArrayList<>();
@@ -151,7 +153,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 		this.title.set(builder.title);
 		this.description = builder.description;
 		this.customer = builder.customer;
-		this.remarks = builder.remarks;
+		this.comments = builder.comments;
 		this.solution = builder.solution;
 		this.quality = builder.quality;
 		this.supportNeeded = builder.supportNeeded;
@@ -290,19 +292,36 @@ public class ActemiumTicket implements Ticket, Serializable {
 		checkAttributes();
 	}
 
-	public String getRemarks() {
-		return remarks;
+	public List<TicketComment> giveComments() {
+		return (List<TicketComment>)(Object) comments;
+	}
+	
+	public List<ActemiumTicketComment> getComments() {
+		return comments;
 	}
 
-	public void setRemarks(String remarks) {
+	public void setComments(List<ActemiumTicketComment> comments) {
 		// Optional, can be null or blank
-		this.remarks = remarks;
+		this.comments = comments;
+	}
+	
+	public void addTicketComment(ActemiumTicketComment comment) {
+		comments.add(comment);
 	}
 
+//	public List<String> getAttachments() {
+//		return attachments;
+//	}
+//
+//	public void setAttachments(List<String> attachments) {
+//		// Optional, can be null or blank
+//		this.attachments = attachments;
+//	}
+	
 	public String getAttachments() {
 		return attachments;
 	}
-
+	
 	public void setAttachments(String attachments) {
 		// Optional, can be null or blank
 		this.attachments = attachments;
@@ -420,7 +439,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 		//private int ticketIdInt;
 		//private ActemiumCompany company;
 
-
 		private TicketStatus ticketStatus;
 		private TicketPriority ticketPriority;
 		private TicketType ticketType;
@@ -430,15 +448,15 @@ public class ActemiumTicket implements Ticket, Serializable {
 		private String title;
 		private String description;
 		private ActemiumCustomer customer;
-		private String remarks;
+		private List<ActemiumTicketComment> comments;
 		private String attachments;
+//		private List<String> attachments;
 		private String solution;
 		private String quality;
 		private String supportNeeded;
 		private List<ActemiumEmployee> technicians = new ArrayList<>();
 
 		private Set<RequiredElement> requiredElements;
-
 
 		public TicketBuilder ticketPriority(TicketPriority priority){
 			this.ticketPriority = priority;
@@ -465,7 +483,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 			this.ticketStatus = ticketStatus;
 			return this;
 		}
-
 		public TicketBuilder dateOfCreation(LocalDate dateOfCreation){
 			this.dateOfCreation = dateOfCreation;
 			return this;
@@ -478,8 +495,10 @@ public class ActemiumTicket implements Ticket, Serializable {
 			this.dateAndTimeOfCompletion = dateAndTimeOfCompletion;
 			return this;
 		}
-		public TicketBuilder remarks(String remarks){
-			this.remarks = remarks;
+		public TicketBuilder comments(List<ActemiumTicketComment> comments){
+//			if (comments == null)
+//				this.comments = new ArrayList<ActemiumTicketComment>();
+			this.comments = comments;
 			return this;
 		}
 		public TicketBuilder attachments(String attachments){
@@ -535,8 +554,11 @@ public class ActemiumTicket implements Ticket, Serializable {
 				this.quality = String.format("(%s)", LanguageResource.getString("not_filled_in_yet"));
 			if (supportNeeded == null)
 				this.supportNeeded = String.format("(%s)", LanguageResource.getString("not_filled_in_yet"));
-			if (remarks == null)
-				this.remarks = String.format("(%s)", LanguageResource.getString("none"));
+			//TODO
+//			if (comments == null)
+//				this.comments = String.format("(%s)", LanguageResource.getString("none"));
+			if (comments == null)
+				this.comments = new ArrayList<ActemiumTicketComment>();
 			if (attachments == null)
 				this.attachments = String.format("(%s)", LanguageResource.getString("none"));
 			if (!requiredElements.isEmpty()) {
@@ -544,7 +566,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 				throw new InformationRequiredException(requiredElements);
 			}
 		}
-
 	}
 
 	public ActemiumTicket clone() throws CloneNotSupportedException {
@@ -558,7 +579,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 					.title(this.getTitle())
 					.description(this.getDescription())
 					.customer(this.getCustomer())
-					.remarks(this.getRemarks())
+					.comments(this.getComments())
 					.attachments(this.getAttachments())
 					.solution(this.getSolution())
 					.quality(this.getQuality())

@@ -5,6 +5,7 @@ import java.util.*;
 
 import domain.ActemiumEmployee;
 import domain.ActemiumTicket;
+import domain.ActemiumTicketComment;
 import domain.Employee;
 import domain.Ticket;
 import domain.enums.TicketPriority;
@@ -66,7 +67,7 @@ public class TicketViewModel extends ViewModel {
     public ArrayList<String> getDetailsNewTicket(){
         return new ArrayList<String>(Arrays.asList(LanguageResource.getString("title"), LanguageResource.getString("creation_date"),
                 LanguageResource.getString("priority"), LanguageResource.getString("type"), LanguageResource.getString("customer_id"),
-                LanguageResource.getString("description"), LanguageResource.getString("remarks"), LanguageResource.getString("attachments")));
+                LanguageResource.getString("description"), LanguageResource.getString("comments"), LanguageResource.getString("attachments")));
     }
 
     public Map<String, Map<Boolean, Object>> getDetails() {
@@ -86,7 +87,8 @@ public class TicketViewModel extends ViewModel {
         details.put(LanguageResource.getString("description"), Collections.singletonMap(editable, ticket.getDescription()));
         details.put(LanguageResource.getString("customer/company"), Collections.singletonMap(false, ticket.giveCustomer().giveCompany().getName()));
         details.put(LanguageResource.getString("technicians"), Collections.singletonMap(editable, ticket.giveTechnicians()));
-        details.put(LanguageResource.getString("remarks"), Collections.singletonMap(editable, ticket.getRemarks()));
+        //TODO
+        details.put(LanguageResource.getString("comments"), Collections.singletonMap(editable, ticket.giveComments().get(0).getCommentText()));
         details.put(LanguageResource.getString("attachments"), Collections.singletonMap(editable, ticket.getAttachments()));
         if (!TicketStatus.isOutstanding()) {
         	details.put(LanguageResource.getString("solution"), Collections.singletonMap(true, ticket.getSolution()));
@@ -101,16 +103,16 @@ public class TicketViewModel extends ViewModel {
     }
 
     public void registerTicket(TicketPriority priority, TicketType ticketType, String title, String description,
-                               String remarks, String attachments, long customerId) throws InformationRequiredException {
-        ticketFacade.registerTicket(priority, ticketType, title, description, remarks, attachments, customerId);
+    						String commentText, String attachments, long customerId) throws InformationRequiredException {
+        ticketFacade.registerTicket(priority, ticketType, title, description, commentText, attachments, customerId);
         setSelectedTicket(ticketFacade.getLastAddedTicket());
     }
 
     // TODO
     // Cannot modify customer of the ticket, needs to be unmodifiable field
     public void modifyTicketOutstanding(TicketPriority priority, TicketType ticketType, TicketStatus status, String title, String description,
-                                     String remarks, String attachments, List<ActemiumEmployee> technicians) throws InformationRequiredException {
-        ticketFacade.modifyTicketOutstanding((ActemiumTicket) selectedTicket, priority, ticketType, status, title, description, remarks, attachments, technicians);
+    								String commentText, String attachments, List<ActemiumEmployee> technicians) throws InformationRequiredException {
+        ticketFacade.modifyTicketOutstanding((ActemiumTicket) selectedTicket, priority, ticketType, status, title, description, commentText, attachments, technicians);
     }
 
     public void modifyTicketResolved(String solution, String quality, String supportNeeded) throws InformationRequiredException {

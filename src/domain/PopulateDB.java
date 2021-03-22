@@ -2,6 +2,7 @@ package domain;
 
 import java.security.SecureRandom;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import domain.enums.ContractTypeStatus;
 import domain.enums.EmployeeRole;
@@ -374,7 +375,7 @@ public class PopulateDB {
                                                     .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
                                                     .customer(barak)
                                                     .build();
-
+        ticket01.addTicketComment(createTicketComment(ticket01, tech2, String.format("(%s)", LanguageResource.getString("none"))));
         ActemiumTicket ticket02 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.HARDWARE)
@@ -382,6 +383,7 @@ public class PopulateDB {
                 .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
                 .customer(jeff)
                 .build();
+        ticket02.addTicketComment(createTicketComment(ticket02, tech2, String.format("(%s)", LanguageResource.getString("none"))));
         ActemiumTicket ticket03 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.INFRASTRUCTURE)
@@ -389,6 +391,7 @@ public class PopulateDB {
                 .description("I was smoking these meats with sweet baby rays saus and suddenly my BBQ stopped working")
                 .customer(mark)
                 .build();
+        ticket03.addTicketComment(createTicketComment(ticket03, tech2, String.format("(%s)", LanguageResource.getString("none"))));
         ActemiumTicket ticket04 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.NETWORK)
@@ -396,6 +399,7 @@ public class PopulateDB {
                 .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
                 .customer(bill)
                 .build();
+        ticket04.addTicketComment(createTicketComment(ticket04, tech2, String.format("(%s)", LanguageResource.getString("none"))));
         ActemiumTicket ticket05 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.SOFTWARE)
@@ -403,24 +407,25 @@ public class PopulateDB {
                 .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
                 .customer(larry)
                 .build();
+        ticket05.addTicketComment(createTicketComment(ticket05, tech2, String.format("(%s)", LanguageResource.getString("none"))));
         ActemiumTicket ticket06 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.SOFTWARE)
                 .title("Ticket6")
                 .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
                 .customer(elon)
-                .build();
-
+                .build();        
+        ticket06.addTicketComment(createTicketComment(ticket06, tech2, String.format("(%s)", LanguageResource.getString("none"))));       
+        
         ticket05.setStatus(TicketStatus.COMPLETED);
 
-
         barak.addTicket(ticket01);
-
         jeff.addTicket(ticket02);
         mark.addTicket(ticket03);
         bill.addTicket(ticket04);
         larry.addTicket(ticket05);
         elon.addTicket(ticket06);
+        
         ticket01.addTechnician(tech);
         ticket02.addTechnician(tech);
         ticket03.addTechnician(tech);
@@ -428,6 +433,7 @@ public class PopulateDB {
         ticket05.addTechnician(tech2);
         ticket06.addTechnician(tech);
         ticket06.addTechnician(tech2);
+        
         userDao.insert( new ActemiumEmployee.EmployeeBuilder()
                 .username("Admin123")
                 .password("Passwd123&")
@@ -468,7 +474,6 @@ public class PopulateDB {
                 .emailAddress("thomas.dirven@hogent.be")
                 .role(EmployeeRole.ADMINISTRATOR)
                 .build());
-
         userDao.insert( new ActemiumEmployee.EmployeeBuilder()
                 .username("isaac123")
                 .password("Passwd123&")
@@ -602,12 +607,15 @@ public class PopulateDB {
                                                     .title(String.format("%s %d", LanguageResource.getString("title_random"), i))
                                                     .description(String.format("%s %d", LanguageResource.getString("description"), i))
                                                     .customer(bill)
-                                                    .remarks(String.format("%s %d", LanguageResource.getString("remark"), i))
+                                                    .comments(null)
                                                     .attachments(String.format("%s%d.png", LanguageResource.getString("screenshot"), i))
                                                     .build();
             t.setStatus(status[randomGen.nextInt(status.length)]);
+            t.addTicketComment(createTicketComment(t, tech2, String.format("%s %d", LanguageResource.getString("remark"), i)));
             mark.addTicket(t);
+            System.out.println(t);
         }
+                
         userDao.insert(bill);
 
         userDao.commitTransaction();
@@ -647,5 +655,21 @@ public class PopulateDB {
 		kbItemDao.commitTransaction();
 		
     }
+
+	private ActemiumTicketComment createTicketComment(ActemiumTicket ticket, ActemiumEmployee tech, String commentText) {
+		try {
+			return new ActemiumTicketComment.TicketCommentBuilder()
+					.ticket(ticket)
+					.user(tech)
+					.userRole(tech.getRole().toString())
+					.dateTimeOfComment(LocalDateTime.now())
+					.commentText(commentText)
+					.build();
+		} catch (InformationRequiredException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}    
 
 }

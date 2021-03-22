@@ -9,6 +9,7 @@ import domain.ActemiumCustomer;
 import domain.ActemiumEmployee;
 import domain.ActemiumTicket;
 import domain.ActemiumTicketChange;
+import domain.ActemiumTicketComment;
 import domain.Employee;
 import domain.Ticket;
 import domain.enums.EmployeeRole;
@@ -31,7 +32,7 @@ public class TicketFacade implements Facade {
 	}
 
 	public void registerTicket(TicketPriority priority, TicketType ticketType, String title, String description,
-							   String remarks, String attachments, long customerId) throws InformationRequiredException {
+							String commentText, String attachments, long customerId) throws InformationRequiredException {
 		// check to see if signed in user is Support Manger
 		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
 		ActemiumCustomer customer = (ActemiumCustomer) actemium.findUserById(customerId);
@@ -41,10 +42,12 @@ public class TicketFacade implements Facade {
 							.ticketType(ticketType)
 							.description(description)
 							.customer(customer)
-							.remarks(remarks)
+//							.comments(comments)
 							.attachments(attachments)
 							.build();
 
+		ticket.addTicketComment(createTicketComment(ticket, commentText));
+		
 		List<String> changeList = new ArrayList<>();
 		changeList.add(String.format("Ticket was added for customer: \"%s\".", ticket.getCustomer().getCompany().getName()));
 		changeList.add(String.format("Ticket Priority was set to \"%s\".", priority));
@@ -52,8 +55,8 @@ public class TicketFacade implements Facade {
 		changeList.add(String.format("Ticket Status was initialized as \"%s\".", ticket.getStatus()));
 		changeList.add(String.format("Ticket Title was set to \"%s\".", title));
 		changeList.add(String.format("Ticket Description was added."));
-		if (!remarks.equals("(none)")) {
-			changeList.add(String.format("Ticket Remarks were added."));
+		if (!commentText.equals("(none)")) {
+			changeList.add(String.format("Ticket Remark/Comment was added."));
 		}
 		if (!attachments.equals("(none)")) {
 			changeList.add(String.format("Ticket Attachments were added."));
@@ -70,7 +73,7 @@ public class TicketFacade implements Facade {
 	}
 
 	public void modifyTicketOutstanding(ActemiumTicket ticket, TicketPriority priority, TicketType ticketType,
-			TicketStatus status, String title, String description, String remarks, String attachments,
+			TicketStatus status, String title, String description, String commentText, String attachments,
 			List<ActemiumEmployee> technicians) throws InformationRequiredException {
 		try {
 			ActemiumTicket ticketClone = ticket.clone();
@@ -82,7 +85,7 @@ public class TicketFacade implements Facade {
 			ticketClone.setStatus(status);
 			ticketClone.setTitle(title);
 			ticketClone.setDescription(description);
-			ticketClone.setRemarks(remarks);
+//			ticketClone.setComments(commentText);
 			ticketClone.setAttachments(attachments);
 			
 			ticketClone.checkAttributes();
@@ -109,9 +112,9 @@ public class TicketFacade implements Facade {
 				changeList.add(String.format("%s.", LanguageResource.getString("ticket_description_changed")));
 				ticket.setDescription(description);
 			}
-			if (!ticket.getRemarks().equals(remarks)) {
-				changeList.add(String.format("%s.", LanguageResource.getString("ticket_remarks_changed")));
-				ticket.setRemarks(remarks);
+			if (!commentText.equals("(none)") || !commentText.isBlank() || commentText != null) {
+				changeList.add(String.format("%s.", LanguageResource.getString("ticket_comment_added")));
+				ticket.addTicketComment(createTicketComment(ticket, commentText));
 			}
 			if (!ticket.getAttachments().equals(attachments)) {
 				changeList.add(String.format("%s.", LanguageResource.getString("ticket_attachments_changed")));
@@ -201,6 +204,16 @@ public class TicketFacade implements Facade {
 				.dateTimeOfChange(LocalDateTime.now())
 				.changeDescription(changeDescription.toString())
 				.changeContent(changeList)
+				.build();
+	}
+	
+	private ActemiumTicketComment createTicketComment(ActemiumTicket ticket, String commentText) throws InformationRequiredException {				
+		return new ActemiumTicketComment.TicketCommentBuilder()
+				.ticket(ticket)
+				.user(actemium.getSignedInUser())
+				.userRole(actemium.giveUserRole())
+				.dateTimeOfComment(LocalDateTime.now())
+				.commentText(commentText)
 				.build();
 	}
 	

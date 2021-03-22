@@ -250,44 +250,44 @@ public class DetailsPanelControllerGenericOld extends GridPane implements Invali
                     }
                 }
             } else if (viewModel instanceof TicketViewModel) {
-                if (editing) {
-                    if(viewModel.isFieldModified() && TicketStatus.isOutstanding()){
-                        ((TicketViewModel) viewModel).modifyTicketOutstanding(
-                                // priority, ticketType, title, description, remarks, attachments, technicians
-                                TicketPriority.valueOf(getTextFromGridItem(3))
-                                , TicketType.valueOf(getTextFromGridItem(4))
-                                , TicketStatus.valueOf(getTextFromGridItem(5))
-                                , getTextFromGridItem(0)
-                                , getTextFromGridItem(6)
-                                , getTextFromGridItem(9)
-                                , getTextFromGridItem(10)
-                                , ((TicketViewModel) viewModel).getTechniciansAsignedToTicket()
-                        );
-						showPopupMessage("popupSuccess", LanguageResource.getString("ticketEdited_succes"));
-                    } else if (viewModel.isFieldModified() && !TicketStatus.isOutstanding()){
-                        ((TicketViewModel) viewModel).modifyTicketResolved(
-                                // solution, quality, supportNeeded
-                                getTextFromGridItem(13)
-                                , getTextFromGridItem(14)
-                                , getTextFromGridItem(15)
-                        );
-						showPopupMessage("popupSuccess", LanguageResource.getString("ticketEdited_succes"));
-                    } else {
-						showPopupMessage("popupWarning", LanguageResource.getString("unchangedMessage"));
-                    }
-                } else {
-                    ((TicketViewModel) viewModel).registerTicket(
-                            // priority, ticketType, title, description, remarks, attachments, customerId
-                            TicketPriority.valueOf(getTextFromGridItem(2))
-                            , TicketType.valueOf(getTextFromGridItem(3))
-                            , getTextFromGridItem(0)
-                            , getTextFromGridItem(5)
-                            , getTextFromGridItem(6)
-                            , getTextFromGridItem(7)
-                            , Long.parseLong(getTextFromGridItem(4))
-                    );
-                    showPopupMessageAddItem("popupSuccess", LanguageResource.getString("ticket_created_success"));
-                }
+//                if (editing) {
+//                    if(viewModel.isFieldModified() && TicketStatus.isOutstanding()){
+//                        ((TicketViewModel) viewModel).modifyTicketOutstanding(
+//                                // priority, ticketType, title, description, remarks, attachments, technicians
+//                                TicketPriority.valueOf(getTextFromGridItem(3))
+//                                , TicketType.valueOf(getTextFromGridItem(4))
+//                                , TicketStatus.valueOf(getTextFromGridItem(5))
+//                                , getTextFromGridItem(0)
+//                                , getTextFromGridItem(6)
+//                                , getTextFromGridItem(9)
+//                                , getTextFromGridItem(10)
+//                                , ((TicketViewModel) viewModel).getTechniciansAsignedToTicket()
+//                        );
+//						showPopupMessage("popupSuccess", LanguageResource.getString("ticketEdited_succes"));
+//                    } else if (viewModel.isFieldModified() && !TicketStatus.isOutstanding()){
+//                        ((TicketViewModel) viewModel).modifyTicketResolved(
+//                                // solution, quality, supportNeeded
+//                                getTextFromGridItem(13)
+//                                , getTextFromGridItem(14)
+//                                , getTextFromGridItem(15)
+//                        );
+//						showPopupMessage("popupSuccess", LanguageResource.getString("ticketEdited_succes"));
+//                    } else {
+//						showPopupMessage("popupWarning", LanguageResource.getString("unchangedMessage"));
+//                    }
+//                } else {
+//                    ((TicketViewModel) viewModel).registerTicket(
+//                            // priority, ticketType, title, description, remarks, attachments, customerId
+//                            TicketPriority.valueOf(getTextFromGridItem(2))
+//                            , TicketType.valueOf(getTextFromGridItem(3))
+//                            , getTextFromGridItem(0)
+//                            , getTextFromGridItem(5)
+//                            , getTextFromGridItem(6)
+//                            , getTextFromGridItem(7)
+//                            , Long.parseLong(getTextFromGridItem(4))
+//                    );
+//                    showPopupMessageAddItem("popupSuccess", LanguageResource.getString("ticket_created_success"));
+//                }
             } else if (viewModel instanceof ContractTypeViewModel) {
                 if (editing) {
                     if(viewModel.isFieldModified()){

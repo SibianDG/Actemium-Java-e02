@@ -13,6 +13,7 @@
         <class>domain.ActemiumContractType</class>
         <class>domain.ActemiumKbItem</class>
         <class>domain.ActemiumTicketChange</class>
+        <class>domain.ActemiumTicketComment</class>
 
         <properties>          
         	<property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=ticketsysteme02;integratedSecurity=true;"/>

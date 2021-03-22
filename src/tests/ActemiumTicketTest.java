@@ -163,7 +163,7 @@ public class ActemiumTicketTest implements Attributes {
 										.title(title)
 										.description(description)
 										.customer(customer)
-										.remarks(remarks)
+//										.comments(remarks)
 										.attachments(attachments)
 										.build());
 	}
@@ -179,7 +179,7 @@ public class ActemiumTicketTest implements Attributes {
 										.title(title)
 										.description(description)
 										.customer(customer)
-										.remarks(remarks)
+//										.comments(remarks)
 										.attachments(attachments)
 										.build());
 	}

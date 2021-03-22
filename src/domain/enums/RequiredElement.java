@@ -218,4 +218,34 @@ public enum RequiredElement {
             return LanguageResource.getString("kbItemText_invalid");
         }
     }
+    , UserRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("userRequired");
+        }
+    }
+    , DateTimeofChangeRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("dateTimeofChangeRequired");
+        }
+    }
+    , ChangeDescriptionRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("changeDescriptionRequired");
+        }
+    }
+    , DateTimeOfCommentRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("dateTimeOfCommentRequired");
+        }
+    }
+    , CommentTextRequired {
+        @Override
+        public String toString() {
+            return LanguageResource.getString("commentTextRequired");
+        }
+    }
 }

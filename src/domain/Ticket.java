@@ -40,9 +40,10 @@ public interface Ticket {
 
 	public Customer giveCustomer();
 
-	public String getRemarks();
+	public List<TicketComment> giveComments();
 
 	public String getAttachments();
+//	public List<String> getAttachments();
 	
 	public ObservableList<Employee> giveTechnicians();
 	

@@ -165,16 +165,16 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 
 		private void checkAttributesKbItemBuiler() throws InformationRequiredException {
 			// we dont really need to check anything here
-//			if (user == null)
-//				requiredElements.add(RequiredElement.KbItemTitleRequired);
-//			if(dateTimeOfChange == null)
-//				requiredElements.add(RequiredElement.KbItemTypeRequired);
-//			if(changeDescription == null || changeDescription.isBlank())
-//				requiredElements.add(RequiredElement.KbItemKeywordsRequired);
-//			// changeContent is optional
-//
-//			if (!requiredElements.isEmpty())
-//				throw new InformationRequiredException(requiredElements);
+			if (user == null)
+				requiredElements.add(RequiredElement.UserRequired);
+			if(dateTimeOfChange == null)
+				requiredElements.add(RequiredElement.DateTimeofChangeRequired);
+			if(changeDescription == null || changeDescription.isBlank())
+				requiredElements.add(RequiredElement.ChangeDescriptionRequired);
+			// changeContent is optional
+
+			if (!requiredElements.isEmpty())
+				throw new InformationRequiredException(requiredElements);
 		}
 	}
 
@@ -198,7 +198,6 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 
 	@Override
 	public String toString() {
-		// Stringbuilder
 		StringBuilder ticketChange = new StringBuilder();
 		ticketChange.append(String.format("%s: %s %s%n", getUserRole(), user.getFirstName(), user.getLastName()));
 		ticketChange.append(String.format("%s: %s%n", LanguageResource.getString("date"), getDateTimeOfChange().format(DateTimeFormatter.ISO_DATE)));
