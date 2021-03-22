@@ -276,6 +276,8 @@ public class TicketDetailsPanelController extends DetailsPanelController {
                 // all the text that is written in description
 	            detail.setEditable(editable);
                 detail.setPromptText(key);
+                
+                detail.setWrapText(true);
 
 	            node = detail;
             } else {
@@ -286,8 +288,8 @@ public class TicketDetailsPanelController extends DetailsPanelController {
 	            });
 	            detail.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
 	
-	                //detail.setPadding(new Insets(0, 0, 0, 15));
-	                detail.setId("textFieldWithPadding");
+                //detail.setPadding(new Insets(0, 0, 0, 15));
+                detail.setId("textFieldWithPadding");
 	            
 	            detail.setDisable(disable);
 //	            detail.setEditable(editable);

@@ -7,12 +7,14 @@ import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Transient;
 
 import domain.enums.KbItemType;
@@ -20,7 +22,6 @@ import domain.enums.RequiredElement;
 import exceptions.InformationRequiredException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.ObservableList;
 
 @Entity
 @Access(AccessType.FIELD)
@@ -39,6 +40,8 @@ public class ActemiumKbItem implements KbItem, Serializable {
 	private StringProperty type = new SimpleStringProperty();
 	
 	private String keywords;
+	@Lob
+	@Column
 	private String text;
 	
 	public ActemiumKbItem() {
