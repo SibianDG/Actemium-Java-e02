@@ -2,6 +2,7 @@ package gui.viewModels;
 
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import domain.ActemiumEmployee;
 import domain.ActemiumTicket;
@@ -88,7 +89,8 @@ public class TicketViewModel extends ViewModel {
         details.put(LanguageResource.getString("customer/company"), Collections.singletonMap(false, ticket.giveCustomer().giveCompany().getName()));
         details.put(LanguageResource.getString("technicians"), Collections.singletonMap(editable, ticket.giveTechnicians()));
         //TODO
-        details.put(LanguageResource.getString("comments"), Collections.singletonMap(editable, ticket.giveComments().get(0).getCommentText()));
+        details.put(LanguageResource.getString("comments"), Collections.singletonMap(false, ticket.giveComments().stream().map(c->c.toString()).collect(Collectors.joining("\n"))));
+        details.put(LanguageResource.getString("new_comment"), Collections.singletonMap(editable, "(none)"));
         details.put(LanguageResource.getString("attachments"), Collections.singletonMap(editable, ticket.getAttachments()));
         if (!TicketStatus.isOutstanding()) {
         	details.put(LanguageResource.getString("solution"), Collections.singletonMap(true, ticket.getSolution()));

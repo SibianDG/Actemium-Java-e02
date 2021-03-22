@@ -613,7 +613,6 @@ public class PopulateDB {
             t.setStatus(status[randomGen.nextInt(status.length)]);
             t.addTicketComment(createTicketComment(t, tech2, String.format("%s %d", LanguageResource.getString("remark"), i)));
             mark.addTicket(t);
-            System.out.println(t);
         }
                 
         userDao.insert(bill);

@@ -69,7 +69,7 @@ public class TicketDetailsPanelController extends DetailsPanelController {
     	System.out.println("==============BEGIN=============\n");
     	System.out.println("History" + txtDetailsTitle.getText().substring(7) + "\n");
     	((TicketViewModel) viewModel).getSelectedTicket().giveTicketChanges()
-    				.stream().forEach(System.out::println);;
+    				.stream().forEach(System.out::println);
     	System.out.println("===============END==============\n");    	
     	
     	ticketHistoryPanelController = new TicketHistoryPanelController((TicketViewModel) super.viewModel, super.gridContent);
@@ -88,17 +88,17 @@ public class TicketDetailsPanelController extends DetailsPanelController {
 	                        , TicketStatus.valueOf(getTextFromGridItem(5))
 	                        , getTextFromGridItem(0)
 	                        , getTextFromGridItem(6)
-	                        , getTextFromGridItem(9)
 	                        , getTextFromGridItem(10)
+	                        , getTextFromGridItem(11)
 	                        , ((TicketViewModel) viewModel).getTechniciansAsignedToTicket()
 	                );
 					showPopupMessage("popupSuccess", LanguageResource.getString("ticketEdited_succes"));
 	            } else if (viewModel.isFieldModified() && !TicketStatus.isOutstanding()){
 	                ((TicketViewModel) viewModel).modifyTicketResolved(
 	                        // solution, quality, supportNeeded
-	                        getTextFromGridItem(13)
-	                        , getTextFromGridItem(14)
+	                        getTextFromGridItem(14)
 	                        , getTextFromGridItem(15)
+	                        , getTextFromGridItem(16)
 	                );
 					showPopupMessage("popupSuccess", LanguageResource.getString("ticketEdited_succes"));
 	            } else {
@@ -253,12 +253,10 @@ public class TicketDetailsPanelController extends DetailsPanelController {
 
         if (o instanceof String) {
             String string = (String) o;
-            if (key.equalsIgnoreCase(LanguageResource.getString("password"))){
-                string = "********";
-            }
-            
+                        
             //TODO transform into generic method
-            if(key.equalsIgnoreCase(LanguageResource.getString("description"))) {
+            if(key.equalsIgnoreCase(LanguageResource.getString("description"))
+            		|| key.equalsIgnoreCase(LanguageResource.getString("comments"))) {
             	TextArea detail = new TextArea(string);
             	
             	detail.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -302,8 +300,8 @@ public class TicketDetailsPanelController extends DetailsPanelController {
 	            node = detail;
 	        }
         } else if (o instanceof Enum) {
-            node = makeComboBox(o);
-            node.setDisable(disable);
+        	node = makeComboBox(o);
+        	node.setDisable(disable);
         } else if (o instanceof Boolean) {
             node = makeComboBox(o);
             node.setDisable(disable);
