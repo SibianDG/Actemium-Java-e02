@@ -470,7 +470,9 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         // everytime you press an item in the tableView
         // it will run setDetailOnModifying() multiple times instead of once
     	// if you find a cleaner way to do this, please let me know xoxo
-        detailsPanelController.getViewModel().removeListener(detailsPanelController);
+    	if (detailsPanelController != null) {
+    		detailsPanelController.getViewModel().removeListener(detailsPanelController);
+    	}
         initializeDashboard();
     }
 
