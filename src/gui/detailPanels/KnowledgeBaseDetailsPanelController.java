@@ -140,7 +140,7 @@ public class KnowledgeBaseDetailsPanelController extends DetailsPanelController 
     private void addItemsToGridNewKbItem(ArrayList<String> fields){
         initGridDetails();
 
-        Map<Integer, String> randomValues = Map.of(
+        Map<Integer, String> demoValues = Map.of(
                 0, "How to Solve Network Problems"
                 , 1, KbItemType.OTHER.toString()
                 , 2, "Sample text"
@@ -154,7 +154,7 @@ public class KnowledgeBaseDetailsPanelController extends DetailsPanelController 
             Node node;
             if (fields.get(i).toLowerCase().contains(LanguageResource.getString("text").toLowerCase())) {
             	TextArea textArea;
-            	textArea = new TextArea(randomValues.get(i));
+            	textArea = new TextArea(demoValues.get(i));
             	textArea.setFont(Font.font("Arial", 14));
             	textArea.setPromptText(fields.get(i));
                 node = textArea;
@@ -162,7 +162,7 @@ public class KnowledgeBaseDetailsPanelController extends DetailsPanelController 
                 node = makeComboBox(KbItemType.OTHER);
             } else {
                 TextField textField;
-                textField = new TextField(randomValues.get(i));
+                textField = new TextField(demoValues.get(i));
                 textField.setFont(Font.font("Arial", 14));
                 textField.setPromptText(fields.get(i));
                 node = textField;

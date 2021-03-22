@@ -18,7 +18,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -139,30 +138,26 @@ public class ContractDetailsPanelController extends DetailsPanelController {
     private void addItemsToGridNewContract(ArrayList<String> fields){
         initGridDetails();
 
-        Map<Integer, String> randomValues = Map.of(
+        Map<Integer, String> demoValues = Map.of(
                 0, "006"
-                , 1, "BasicPhoneSupport"
+                , 1, "002"
 //                , 2, LocalDate.now().toString()
                 , 2, "3"
         );
 
-        int randomValuesCounter = 0;
-
+        int demoValuesCounter = 0;
+        
         for (int i = 0; i < fields.size(); i++) {
-            String itemName = fields.get(i);
+        	gridDetails.addRow(i);
 
-            gridDetails.addRow(i);
-
-            gridDetails.add(makeNewLabel(itemName, true), 0, i);
-
-            itemName = itemName.toLowerCase();
+            gridDetails.add(makeNewLabel(fields.get(i), true), 0, i);
 
             Node node;
-            if (itemName.contains(LanguageResource.getString("start").toLowerCase())) {
+            if (fields.get(i).toLowerCase().contains((LanguageResource.getString("start")).toLowerCase())) {
                 node = makeDatePicker(LocalDate.now());
             } else {
                 TextField textField;
-                textField = new TextField(randomValues.get(randomValuesCounter++));
+                textField = new TextField(demoValues.get(demoValuesCounter++));
                 textField.setFont(Font.font("Arial", 14));
                 textField.setPromptText(fields.get(i));
                 node = textField;
@@ -205,13 +200,8 @@ public class ContractDetailsPanelController extends DetailsPanelController {
             });
             detail.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
 
-            if (string.equals("")){
-                detail.setVisible(false);
-                detail.setPadding(new Insets(15, 0, 0, 0));
-            } else {
-                //detail.setPadding(new Insets(0, 0, 0, 15));
-                detail.setId("textFieldWithPadding");
-            }
+            detail.setId("textFieldWithPadding");
+
             detail.setDisable(disable);
             detail.setPromptText(key);
 

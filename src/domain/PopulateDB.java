@@ -375,7 +375,7 @@ public class PopulateDB {
                                                     .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
                                                     .customer(barak)
                                                     .build();
-        ticket01.addTicketComment(createTicketComment(ticket01, tech2, String.format("(%s)", LanguageResource.getString("none"))));
+        ticket01.addTicketComment(createTicketComment(ticket01, tech, String.format("(%s)", LanguageResource.getString("none"))));
         ActemiumTicket ticket02 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.HARDWARE)
@@ -383,7 +383,7 @@ public class PopulateDB {
                 .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
                 .customer(jeff)
                 .build();
-        ticket02.addTicketComment(createTicketComment(ticket02, tech2, String.format("(%s)", LanguageResource.getString("none"))));
+        ticket02.addTicketComment(createTicketComment(ticket02, tech, String.format("(%s)", LanguageResource.getString("none"))));
         ActemiumTicket ticket03 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.INFRASTRUCTURE)
@@ -391,7 +391,7 @@ public class PopulateDB {
                 .description("I was smoking these meats with sweet baby rays saus and suddenly my BBQ stopped working")
                 .customer(mark)
                 .build();
-        ticket03.addTicketComment(createTicketComment(ticket03, tech2, String.format("(%s)", LanguageResource.getString("none"))));
+        ticket03.addTicketComment(createTicketComment(ticket03, tech, String.format("(%s)", LanguageResource.getString("none"))));
         ActemiumTicket ticket04 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.NETWORK)
@@ -399,7 +399,7 @@ public class PopulateDB {
                 .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
                 .customer(bill)
                 .build();
-        ticket04.addTicketComment(createTicketComment(ticket04, tech2, String.format("(%s)", LanguageResource.getString("none"))));
+        ticket04.addTicketComment(createTicketComment(ticket04, tech, String.format("(%s)", LanguageResource.getString("none"))));
         ActemiumTicket ticket05 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.SOFTWARE)
@@ -407,7 +407,7 @@ public class PopulateDB {
                 .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
                 .customer(larry)
                 .build();
-        ticket05.addTicketComment(createTicketComment(ticket05, tech2, String.format("(%s)", LanguageResource.getString("none"))));
+        ticket05.addTicketComment(createTicketComment(ticket05, tech, String.format("(%s)", LanguageResource.getString("none"))));
         ActemiumTicket ticket06 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.SOFTWARE)
@@ -415,7 +415,7 @@ public class PopulateDB {
                 .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
                 .customer(elon)
                 .build();        
-        ticket06.addTicketComment(createTicketComment(ticket06, tech2, String.format("(%s)", LanguageResource.getString("none"))));       
+        ticket06.addTicketComment(createTicketComment(ticket06, tech, String.format("(%s)", LanguageResource.getString("none"))));       
         
         ticket05.setStatus(TicketStatus.COMPLETED);
 
@@ -611,7 +611,7 @@ public class PopulateDB {
                                                     .attachments(String.format("%s%d.png", LanguageResource.getString("screenshot"), i))
                                                     .build();
             t.setStatus(status[randomGen.nextInt(status.length)]);
-            t.addTicketComment(createTicketComment(t, tech2, String.format("%s %d", LanguageResource.getString("remark"), i)));
+            t.addTicketComment(createTicketComment(t, tech, String.format("%s %d", LanguageResource.getString("remark"), i)));
             mark.addTicket(t);
         }
                 

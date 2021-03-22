@@ -45,7 +45,7 @@ public class ContractViewModel extends ViewModel {
     }
 
 	public ArrayList<String> getDetailsNewContract() {
-		return new ArrayList<String>(Arrays.asList(LanguageResource.getString("customer_ID"), LanguageResource.getString("contract_type_name"), LanguageResource.getString("start_date"), LanguageResource.getString("duration_iy")));
+		return new ArrayList<String>(Arrays.asList(LanguageResource.getString("customer_ID"), LanguageResource.getString("contract_type_ID"), LanguageResource.getString("start_date"), LanguageResource.getString("duration_iy")));
 	}
 
     public Map<String, Map<Boolean, Object>> getDetails() {

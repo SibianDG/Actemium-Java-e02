@@ -96,9 +96,9 @@ public class TicketDetailsPanelController extends DetailsPanelController {
 	            } else if (viewModel.isFieldModified() && !TicketStatus.isOutstanding()){
 	                ((TicketViewModel) viewModel).modifyTicketResolved(
 	                        // solution, quality, supportNeeded
-	                        getTextFromGridItem(14)
+	                        getTextFromGridItem(13)
+	                        , getTextFromGridItem(14)
 	                        , getTextFromGridItem(15)
-	                        , getTextFromGridItem(16)
 	                );
 					showPopupMessage("popupSuccess", LanguageResource.getString("ticketEdited_succes"));
 	            } else {
@@ -191,7 +191,7 @@ public class TicketDetailsPanelController extends DetailsPanelController {
     private void addItemsToGridNewTicket(ArrayList<String> fields){
         initGridDetails();
 
-        Map<Integer, String> randomValues = Map.of(
+        Map<Integer, String> demoValues = Map.of(
                 0, "WieldingRobot05 Defect"
                 , 1, LocalDate.now().toString()
                 , 2, TicketPriority.P3.toString()
@@ -214,7 +214,7 @@ public class TicketDetailsPanelController extends DetailsPanelController {
                 node = makeComboBox(TicketType.OTHER);
             } else {
                 TextField textField;
-                textField = new TextField(randomValues.get(i));
+                textField = new TextField(demoValues.get(i));
                 textField.setFont(Font.font("Arial", 14));
                 textField.setPromptText(fields.get(i));
                 if(fields.get(i).equals(LanguageResource.getString("creation_date"))) {
@@ -286,13 +286,9 @@ public class TicketDetailsPanelController extends DetailsPanelController {
 	            });
 	            detail.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
 	
-	            if (string.equals("")){
-	                detail.setVisible(false);
-	                detail.setPadding(new Insets(15, 0, 0, 0));
-	            } else {
 	                //detail.setPadding(new Insets(0, 0, 0, 15));
 	                detail.setId("textFieldWithPadding");
-	            }
+	            
 	            detail.setDisable(disable);
 //	            detail.setEditable(editable);
 	            detail.setPromptText(key);

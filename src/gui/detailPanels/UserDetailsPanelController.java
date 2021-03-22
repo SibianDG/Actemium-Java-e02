@@ -188,7 +188,7 @@ public class UserDetailsPanelController extends DetailsPanelController {
     private void addItemsToGridNewUser(ArrayList<String> fields){
         initGridDetails();
 
-        Map<Integer, String> randomValues = Map.of(
+        Map<Integer, String> demoValues = Map.of(
                 0, "Username9999"
                 , 1, "FirstNameeee"
                 , 2, "LastNameeee"
@@ -197,7 +197,7 @@ public class UserDetailsPanelController extends DetailsPanelController {
                 , 5, "094812384"
                 , 6, EmployeeRole.SUPPORT_MANAGER.toString()
         );
-        int randomValuesCounter = 0;
+
         for (int i = 0; i < fields.size(); i++) {
             gridDetails.addRow(i);
 
@@ -208,8 +208,8 @@ public class UserDetailsPanelController extends DetailsPanelController {
                 node = makeComboBox(EmployeeRole.ADMINISTRATOR);
             } else {
                 TextField textField;
-                if(fields.size() <= randomValues.size()){
-                    textField = new TextField(randomValues.get(randomValuesCounter++));
+                if(fields.size() <= demoValues.size()){
+                    textField = new TextField(demoValues.get(i));
                 } else {
                     textField = new TextField();
                 }

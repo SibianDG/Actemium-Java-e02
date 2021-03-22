@@ -90,7 +90,9 @@ public class TicketViewModel extends ViewModel {
         details.put(LanguageResource.getString("technicians"), Collections.singletonMap(editable, ticket.giveTechnicians()));
         //TODO
         details.put(LanguageResource.getString("comments"), Collections.singletonMap(false, ticket.giveComments().stream().map(c->c.toString()).collect(Collectors.joining("\n"))));
-        details.put(LanguageResource.getString("new_comment"), Collections.singletonMap(editable, "(none)"));
+        if (TicketStatus.isOutstanding()) {
+        	details.put(LanguageResource.getString("new_comment"), Collections.singletonMap(editable, ""));
+        }
         details.put(LanguageResource.getString("attachments"), Collections.singletonMap(editable, ticket.getAttachments()));
         if (!TicketStatus.isOutstanding()) {
         	details.put(LanguageResource.getString("solution"), Collections.singletonMap(true, ticket.getSolution()));

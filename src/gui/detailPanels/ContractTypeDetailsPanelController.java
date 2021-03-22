@@ -150,14 +150,14 @@ public class ContractTypeDetailsPanelController extends DetailsPanelController {
     private void addItemsToGridNewContractType(ArrayList<String> fields){
         initGridDetails();
 
-        Map<Integer, String> randomValues = Map.of(
+        Map<Integer, String> demoValues = Map.of(
                 0, "ContractTypeeeeee"
                 , 1, "12"
                 , 2, "2"
                 , 3, "500"
         );
 
-        int randomValuesCounter = 0;
+        int demoValuesCounter = 0;
 
         for (int i = 0; i < fields.size(); i++) {
             String itemName = fields.get(i);
@@ -179,7 +179,7 @@ public class ContractTypeDetailsPanelController extends DetailsPanelController {
                 node = makeComboBox(false);
             } else {
                 TextField textField;
-                textField = new TextField(randomValues.get(randomValuesCounter++));
+                textField = new TextField(demoValues.get(demoValuesCounter++));
                 textField.setFont(Font.font("Arial", 14));
                 textField.setPromptText(fields.get(i));
                 node = textField;
