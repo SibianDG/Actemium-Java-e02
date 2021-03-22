@@ -29,20 +29,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Font;
 import languages.LanguageResource;
 
 
 public class ContractTableViewPanelController<T,E> extends TableViewPanelController {
 	
-//  @FXML
-//  private TableView<T> tableView;
-	
 	private Map<String, Function<T, Property<E>>> propertyMap = new LinkedHashMap<>();
 
 	private ObservableList<T> mainData;
-//	private FilteredList<T> tableViewData;
-//	private SortedList<T> tableViewDataSorted;
 	
 	public ContractTableViewPanelController(DashboardFrameController dashboardFrameController, ViewModel viewModel, GUIEnum currentState, EmployeeRole employeeRole) {
 		super(dashboardFrameController, viewModel, currentState, employeeRole);				
@@ -71,16 +65,12 @@ public class ContractTableViewPanelController<T,E> extends TableViewPanelControl
 		Map<GUIEnum, ArrayList<Object>> filterMap = new HashMap<>();
 		filterMap.put(GUIEnum.CONTRACT, new ArrayList<>(Arrays.asList(LanguageResource.getString("contractId"), LanguageResource.getString("company_name"), LanguageResource.getString("contract_type_name"), ContractStatus.CURRENT)));
 		
-		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createElementDetailGridpane(o)));
+		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createFilterNode(o)));
 	}
 
-	private Node createElementDetailGridpane(Object o) {
+	private Node createFilterNode(Object o) {
 		if (o instanceof String) {
-			String string = (String) o;
-			TextField filter = new TextField();
-			filter.setPromptText(string);
-			filter.setPrefWidth(145);
-			filter.setFont(Font.font("Arial", 14));
+			TextField filter = createTextFieldFilter((String) o);
 			filter.setOnKeyTyped(event -> {
 				checkFilters();
 			});
@@ -162,10 +152,7 @@ public class ContractTableViewPanelController<T,E> extends TableViewPanelControl
 			tableView.getColumns().add(c);
 		});
 
-		tableViewDataSorted = tableViewData.sorted();
-		tableViewDataSorted.comparatorProperty().bind(tableView.comparatorProperty());
-		
-		tableView.setItems(tableViewDataSorted);
+		initializeTableViewSuper();
 		
 		tableView.setOnMouseClicked((MouseEvent m) -> {
 			if (alertChangesOnTabelView()) {
@@ -173,20 +160,12 @@ public class ContractTableViewPanelController<T,E> extends TableViewPanelControl
 				((ContractViewModel) viewModel).setSelectedContract((Contract) data);
 			}
 		});
-
-		/*tableView.setOnKeyPressed( keyEvent -> {
-			if (keyEvent.getCode().equals(KeyCode.DELETE)) {
-				viewModel.delete();
-			}
-		});*/
 	}
 
 	private Predicate giveFilterPredicate(String fieldName, String filterText){
-		fieldName = fieldName.toLowerCase();
-		
+		fieldName = fieldName.toLowerCase();		
 			if (fieldName.length() > 0 && !filterText.toLowerCase().contains(LanguageResource.getString("select"))){
 				Predicate<Contract> newPredicate;
-
 				if (fieldName.equalsIgnoreCase("contract id")){
 					newPredicate = e -> e.getContractIdString().equals(filterText);
 				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("company_name")) || fieldName.equalsIgnoreCase("timestamp")){
@@ -197,17 +176,7 @@ public class ContractTableViewPanelController<T,E> extends TableViewPanelControl
 					newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
 				} else {
 					throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
-				}
-
-				//switch (fieldName) {
-				//	case "contract id" -> newPredicate = e -> e.getContractIdString().equals(filterText);
-				//	case "company name" -> newPredicate = e -> e.giveCustomer().giveCompany().getName().toLowerCase().contains(filterText);
-				//	case "contract type name" -> newPredicate = e -> e.giveContractType().getName().toLowerCase().contains(filterText);
-				//	case "contractstatus" -> newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
-//				//	case "StartDate" -> newPredicate = e -> e.getStartDate().toString().contains(filterText);
-//				//	case "EndDate" -> newPredicate = e -> e.getEndDate().toString().contains(filterText);
-				//	default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
-				//}
+				}				
 				return newPredicate;				
 			}
 		return null;

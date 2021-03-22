@@ -29,36 +29,28 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Font;
 import languages.LanguageResource;
 
 
 public class CustomerTableViewPanelController<T,E> extends TableViewPanelController {
 	
-//  @FXML
-//  private TableView<T> tableView;
-	
 	private Map<String, Function<T, Property<E>>> propertyMap = new LinkedHashMap<>();
 
 	private ObservableList<T> mainData;
-//	private FilteredList<T> tableViewData;
-//	private SortedList<T> tableViewDataSorted;
 	
 	public CustomerTableViewPanelController(DashboardFrameController dashboardFrameController, ViewModel viewModel, GUIEnum currentState, EmployeeRole employeeRole) {
 		super(dashboardFrameController, viewModel, currentState, employeeRole);			
 		
 		this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).giveCustomers();
 		this.tableViewData = new FilteredList<>(mainData);
-//				tableViewData.sorted((Comparator<T>) Comparator.comparing(c -> ((Customer) c).giveCompany().getName().toLowerCase()).thenComparing(c -> ((User) c).getFirstName().toLowerCase()).thenComparing(c -> ((User) c).getLastName().toLowerCase()));
 		propertyMap.put(LanguageResource.getString("company"), item -> (Property<E>)((Customer)item).giveCompany().nameProperty());
 		propertyMap.put(LanguageResource.getString("status"), item -> (Property<E>)((Customer)item).statusProperty());
 		propertyMap.put(LanguageResource.getString("firstname"), item -> (Property<E>)((Customer)item).firstNameProperty());
 		propertyMap.put(LanguageResource.getString("lastname"), item -> (Property<E>)((Customer)item).lastNameProperty());
-//				propertyMap.put("Username", item -> ((Customer)item).usernameProperty());
 		btnAdd.setText(String.format("%s %s", LanguageResource.getString("add"), currentState.toString().toLowerCase()));			
 
 		initializeFilters();
-		initializeTableView();
+		initializeTableViewSub();
 	}
 	
 	@FXML
@@ -73,17 +65,12 @@ public class CustomerTableViewPanelController<T,E> extends TableViewPanelControl
 		Map<GUIEnum, ArrayList<Object>> filterMap = new HashMap<>();
 		filterMap.put(GUIEnum.CUSTOMER, new ArrayList<>(Arrays.asList(LanguageResource.getString("company"), UserStatus.ACTIVE, LanguageResource.getString("firstname"), LanguageResource.getString("lastname"))));
 		
-		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createElementDetailGridpane(o)));
+		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createFilterNode(o)));
 	}
 
-	private Node createElementDetailGridpane(Object o) {
-
+	private Node createFilterNode(Object o) {
 		if (o instanceof String) {
-			String string = (String) o;
-			TextField filter = new TextField();
-			filter.setPromptText(string);
-			filter.setPrefWidth(145);
-			filter.setFont(Font.font("Arial", 14));
+			TextField filter = createTextFieldFilter((String) o);
 			filter.setOnKeyTyped(event -> {
 				checkFilters();
 			});
@@ -147,7 +134,6 @@ public class CustomerTableViewPanelController<T,E> extends TableViewPanelControl
 				ComboBox comboBox = (ComboBox) object;
 
 				if (comboBox.getSelectionModel().getSelectedItem() != null &&  !comboBox.getSelectionModel().getSelectedItem().toString().contains("SELECT")) {
-
 					ArrayList<UserStatus> userStatusArrayList = new ArrayList<>(Arrays.asList(UserStatus.values()));
 					List<String> userStatusStringArray = userStatusArrayList.stream().map(UserStatus::toString).collect(Collectors.toList());
 					
@@ -171,16 +157,13 @@ public class CustomerTableViewPanelController<T,E> extends TableViewPanelControl
 		predicates.forEach(p -> setPredicateForFilteredList(p));
 	}
 
-	private void initializeTableView() {
+	private void initializeTableViewSub() {
 		propertyMap.forEach((key, prop) -> {
 			TableColumn<T, E> c = createColumn(key, prop);
 			tableView.getColumns().add(c);
 		});
 
-		tableViewDataSorted = tableViewData.sorted();
-		tableViewDataSorted.comparatorProperty().bind(tableView.comparatorProperty());
-		
-		tableView.setItems(tableViewDataSorted);
+		initializeTableViewSuper();
 		
 		tableView.setOnMouseClicked((MouseEvent m) -> {
 			if (alertChangesOnTabelView()) {
@@ -188,12 +171,6 @@ public class CustomerTableViewPanelController<T,E> extends TableViewPanelControl
 				((UserViewModel) viewModel).setSelectedUser((User) data);				
 			}
 		});
-
-		/*tableView.setOnKeyPressed( keyEvent -> {
-			if (keyEvent.getCode().equals(KeyCode.DELETE)) {
-				viewModel.delete();
-			}
-		});*/
 	}
 
 	private Predicate giveFilterPredicate(String fieldName, String filterText){
@@ -212,14 +189,6 @@ public class CustomerTableViewPanelController<T,E> extends TableViewPanelControl
 				} else {
 					throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 				}
-
-				//switch (fieldName) {
-				//	case "company" -> newPredicate = e -> e.giveCompany().getName().toLowerCase().contains(filterText);
-				//	case "userstatus" -> newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
-				//	case "firstname" -> newPredicate = e -> e.getFirstName().toLowerCase().contains(filterText);
-				//	case "lastname" -> newPredicate = e -> e.getLastName().toLowerCase().contains(filterText);
-				//	default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
-				//}
 				return newPredicate;				
 			}		
 		return null;

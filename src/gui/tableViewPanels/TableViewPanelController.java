@@ -22,16 +22,18 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import languages.LanguageResource;
 
 
-public abstract class TableViewPanelController<T,E> extends GridPane {
+public abstract class TableViewPanelController<T, E> extends GridPane {
 
 	//---------ALL THE CASES FOR THE FILTERS WITH LanguageResource ---------------//
 	//enum employee { firstname(LanguageResource.getString("firstname")}
@@ -134,45 +136,21 @@ public abstract class TableViewPanelController<T,E> extends GridPane {
 	}
 	
 	//TODO
-//	protected Node createElementDetailGridpane(Object o) {
-//
-//		if (o instanceof String) {
-//			String string = (String) o;
-//			TextField filter = new TextField();
-//			filter.setPromptText(string);
-//			filter.setPrefWidth(145);
-//			filter.setFont(Font.font("Arial", 14));
-//			filter.setOnKeyTyped(event -> {
-//				checkFilters();
-//			});
-//			return filter;
-//		} else if (o instanceof Enum) {
-//			return makeComboBox(o);
-//		}
-//		return null;
-//	}
-//
-//	private Node makeComboBox(Object o) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	private void checkFilters() {
-//		// TODO Auto-generated method stub
-//		
-//	}
-	
-//	protected void initializeTableView() {
-//		propertyMap.forEach((key, prop) -> {
-//			TableColumn<T, E> c = createColumn(key, prop);
-//			tableView.getColumns().add(c);
-//		});
-//
-//		tableViewDataSorted = tableViewData.sorted();
-//		tableViewDataSorted.comparatorProperty().bind(tableView.comparatorProperty());
-//		
-//		tableView.setItems(tableViewDataSorted);
-//	}
+	protected TextField createTextFieldFilter(String o) {
+		String string = o;
+		TextField filter = new TextField();
+		filter.setPromptText(string);
+		filter.setPrefWidth(145);
+		filter.setFont(Font.font("Arial", 14));
+		return filter;		
+	}
+
+	protected void initializeTableViewSuper() {
+		// For column header sort
+		tableViewDataSorted = tableViewData.sorted();
+		tableViewDataSorted.comparatorProperty().bind(tableView.comparatorProperty());		
+		tableView.setItems(tableViewDataSorted);
+	}
 	
 	public boolean alertChangesOnTabelView() {
 		boolean showNewObject = true;

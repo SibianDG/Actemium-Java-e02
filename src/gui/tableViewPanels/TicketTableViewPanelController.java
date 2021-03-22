@@ -32,31 +32,20 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Font;
 import languages.LanguageResource;
 
 
-public class TicketTableViewPanelController<T,E> extends TableViewPanelController {
-
-	//---------ALL THE CASES FOR THE FILTERS WITH LanguageResource ---------------//
-	//enum employee { firstname(LanguageResource.getString("firstname")}
-	//----------------------------------------------------------------------------//
-
-//    @FXML
-//    private TableView<T> tableView;
+public class TicketTableViewPanelController<T, E> extends TableViewPanelController {
     
+	// T = Ticket
+	// E = StringProperty or IntegerProperty
 	private Map<String, Function<T, Property<E>>> propertyMap = new LinkedHashMap<>();
 
 	private ObservableList<T> mainData;
-//	private FilteredList<T> tableViewData;
-//	private SortedList<T> tableViewDataSorted;
 	
 	@SuppressWarnings("unchecked")
 	public TicketTableViewPanelController(DashboardFrameController dashboardFrameController, ViewModel viewModel, GUIEnum currentState, EmployeeRole employeeRole) {
 		super(dashboardFrameController, viewModel, currentState, employeeRole);
-			
-		// obsolete, but just in case we want all the tickets in the future
-//				this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTickets();
 		
 		if (TicketStatus.isOutstanding()) {
 			this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTicketsOutstanding();
@@ -81,10 +70,7 @@ public class TicketTableViewPanelController<T,E> extends TableViewPanelControlle
 			btnAdd.setVisible(false);
 		}
 		
-//				this.tableView.setPrefWidth(1000.0);
-		//this.tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 		this.tableViewData = new FilteredList<>(mainData);
-		//propertyMap.put("Number", item -> ((ActemiumTicket) item).numberProperty());
 		propertyMap.put(LanguageResource.getString("ID"), item -> (Property<E>)((Ticket) item).ticketIdProperty()); // IntegerProperty
 		propertyMap.put(LanguageResource.getString("type"), item -> (Property<E>)((Ticket) item).ticketTypeProperty());
 		propertyMap.put(LanguageResource.getString("priority"), item -> (Property<E>)((Ticket) item).priorityProperty());
@@ -125,17 +111,17 @@ public class TicketTableViewPanelController<T,E> extends TableViewPanelControlle
 	@FXML
 	void showFilterOnBtnP1(MouseEvent event) {
 		Predicate<Ticket>  newPredicate = e -> e.getPriority().equals(TicketPriority.P1);
-		tableViewData.setPredicate((Predicate<? super T>) newPredicate);
+		tableViewData.setPredicate((Predicate<T>) newPredicate);
 	}
 	@FXML
 	void showFilterOnBtnP2(MouseEvent event) {
 		Predicate<Ticket>  newPredicate = e -> e.getPriority().equals(TicketPriority.P2);
-		tableViewData.setPredicate((Predicate<? super T>) newPredicate);
+		tableViewData.setPredicate((Predicate<T>) newPredicate);
 	}
 	@FXML
 	void showFilterOnBtnP3(MouseEvent event) {
 		Predicate<Ticket>  newPredicate = e -> e.getPriority().equals(TicketPriority.P3);
-		tableViewData.setPredicate((Predicate<? super T>) newPredicate);
+		tableViewData.setPredicate((Predicate<T>) newPredicate);
 	}
 		
 	@FXML
@@ -150,16 +136,12 @@ public class TicketTableViewPanelController<T,E> extends TableViewPanelControlle
 		Map<GUIEnum, ArrayList<Object>> filterMap = new HashMap<>();
 		filterMap.put(GUIEnum.TICKET, new ArrayList<>(Arrays.asList(LanguageResource.getString("ID"), TicketType.SOFTWARE, TicketPriority.P1, LanguageResource.getString("title"), TicketStatus.CREATED)));
 		
-		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createElementDetailGridpane(o)));
+		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createFilterNode(o)));
 	}
 
-	private Node createElementDetailGridpane(Object o) {
+	private Node createFilterNode(Object o) {
 		if (o instanceof String) {
-			String string = (String) o;
-			TextField filter = new TextField();
-			filter.setPromptText(string);
-			filter.setPrefWidth(145);
-			filter.setFont(Font.font("Arial", 14));
+			TextField filter = createTextFieldFilter((String) o);
 			filter.setOnKeyTyped(event -> {
 				checkFilters();
 			});
@@ -222,10 +204,8 @@ public class TicketTableViewPanelController<T,E> extends TableViewPanelControlle
 		return c;
 	}
 
-	private void checkFilters(){
-		
+	private void checkFilters() {		
 		List<Predicate> predicates = new ArrayList<>();
-
 
 		hboxFilterSection.getChildren().forEach(object -> {
 			if (object instanceof TextField) {
@@ -267,18 +247,12 @@ public class TicketTableViewPanelController<T,E> extends TableViewPanelControlle
 	}
 
 	private void initializeTableViewSub() {
-		
-//		initializeTableView();
-		
 		propertyMap.forEach((key, prop) -> {
 			TableColumn<T, E> c = createColumn(key, prop);
 			tableView.getColumns().add(c);
 		});
 
-		tableViewDataSorted = tableViewData.sorted();
-		tableViewDataSorted.comparatorProperty().bind(tableView.comparatorProperty());
-		
-		tableView.setItems(tableViewDataSorted);
+		initializeTableViewSuper();
 		
 		tableView.setOnMouseClicked((MouseEvent m) -> {
 			if (alertChangesOnTabelView()) {
@@ -286,16 +260,10 @@ public class TicketTableViewPanelController<T,E> extends TableViewPanelControlle
 				((TicketViewModel) viewModel).setSelectedTicket((Ticket) data);				
 			}
 		});
-
-		/*tableView.setOnKeyPressed( keyEvent -> {
-			if (keyEvent.getCode().equals(KeyCode.DELETE)) {
-				viewModel.delete();
-			}
-		});*/
 	}
 
 	private Predicate giveFilterPredicate(String fieldName, String filterText){
-		fieldName = fieldName.toLowerCase();		
+		fieldName = fieldName.toLowerCase();
 			//TODO
 			if (fieldName.length() > 0 && !filterText.toLowerCase().contains(LanguageResource.getString("select"))){
 				System.out.println("FIELDNAME: "+fieldName);
@@ -314,19 +282,6 @@ public class TicketTableViewPanelController<T,E> extends TableViewPanelControlle
 				} else {
 					throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 				}
-				
-				//switch (fieldName) {
-				//	case "id" -> newPredicate = e -> e.getTicketIdString().equals(filterText);
-				//	case "tickettype" -> newPredicate = e -> e.getTicketTypeAsString().toLowerCase().equals(filterText);
-				//	case "ticketpriority" -> newPredicate = e -> e.getPriorityAsString().toLowerCase().contains(filterText);
-				//	case "title" -> newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);
-				//	case "ticketstatus" -> newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
-				//	//TODO how will we display Company name in our observableList?
-//				//	case "Company" -> {
-//				//		newPredicate = e -> e.getCustomer().getCompany().getName().toLowerCase().contains(filterText);
-//				//	}
-				//	default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
-				//}
 				return newPredicate;				
 			}		
 		return null;

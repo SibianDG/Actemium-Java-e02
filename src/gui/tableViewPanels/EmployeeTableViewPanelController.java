@@ -29,35 +29,22 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Font;
 import languages.LanguageResource;
 
 
 public class EmployeeTableViewPanelController<T,E> extends TableViewPanelController {
-
-	//---------ALL THE CASES FOR THE FILTERS WITH LanguageResource ---------------//
-	//enum employee { firstname(LanguageResource.getString("firstname")}
-	//----------------------------------------------------------------------------//
-
-
-//    @FXML
-//    private TableView<T> tableView;
 	
 	private Map<String, Function<T, Property<E>>> propertyMap = new LinkedHashMap<>();
 
 	private ObservableList<T> mainData;
-//	private FilteredList<T> tableViewData;
-//	private SortedList<T> tableViewDataSorted;
 	
 	public EmployeeTableViewPanelController(DashboardFrameController dashboardFrameController, ViewModel viewModel, GUIEnum currentState, EmployeeRole employeeRole) {
 		super(dashboardFrameController, viewModel, currentState, employeeRole);
 		
 		this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).giveEmployees();
 		this.tableViewData = new FilteredList<>(mainData);
-//				tableViewDataSorted = tableViewData.sorted((Comparator<T>) Comparator.comparing(c -> ((User) c).getFirstName().toLowerCase()).thenComparing(c -> ((User) c).getLastName().toLowerCase()));
 		propertyMap.put(LanguageResource.getString("firstname"), item -> (Property<E>)((Employee)item).firstNameProperty());
 		propertyMap.put(LanguageResource.getString("lastname"), item -> (Property<E>)((Employee)item).lastNameProperty());
-//				propertyMap.put("Username", item -> ((Employee)item).usernameProperty());
 		propertyMap.put(LanguageResource.getString("role"), item -> (Property<E>)((Employee)item).roleProperty());
 		propertyMap.put(LanguageResource.getString("status"), item -> (Property<E>)((Employee)item).statusProperty());
 		btnAdd.setText(String.format("%s %s", LanguageResource.getString("add"), currentState.toString().toLowerCase()));		
@@ -74,33 +61,16 @@ public class EmployeeTableViewPanelController<T,E> extends TableViewPanelControl
 		}
 	}
 	
-//	private <T> TableColumn<T, E> createColumn(String title, Function<T, Property<E>> prop) {
-//		
-//		TableColumn<T, E> column = new TableColumn<>(title);
-//		column.setCellValueFactory(cellData -> prop.apply(cellData.getValue()));
-//		// Resize policy for Title column in Tickets TableView
-//		if(title.equalsIgnoreCase(LanguageResource.getString("title"))) {
-//			//TODO
-//			column.setPrefWidth(320.00);
-//		}
-//		return column;	
-//	}
-	
 	private void initializeFilters() {
 		Map<GUIEnum, ArrayList<Object>> filterMap = new HashMap<>();
 		filterMap.put(GUIEnum.EMPLOYEE, new ArrayList<>(Arrays.asList(LanguageResource.getString("firstname"), LanguageResource.getString("lastname"), EmployeeRole.ADMINISTRATOR, UserStatus.ACTIVE)));
 		
-		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createElementDetailGridpane(o)));
+		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createFilterNode(o)));
 	}
 
-	private Node createElementDetailGridpane(Object o) {
-
+	private Node createFilterNode(Object o) {
 		if (o instanceof String) {
-			String string = (String) o;
-			TextField filter = new TextField();
-			filter.setPromptText(string);
-			filter.setPrefWidth(145);
-			filter.setFont(Font.font("Arial", 14));
+			TextField filter = createTextFieldFilter((String) o);
 			filter.setOnKeyTyped(event -> {
 				checkFilters();
 			});
@@ -153,10 +123,8 @@ public class EmployeeTableViewPanelController<T,E> extends TableViewPanelControl
 		return c;
 	}
 
-	private void checkFilters(){
-		
+	private void checkFilters(){		
 		List<Predicate> predicates = new ArrayList<>();
-
 
 		hboxFilterSection.getChildren().forEach(object -> {
 			if (object instanceof TextField) {
@@ -191,19 +159,13 @@ public class EmployeeTableViewPanelController<T,E> extends TableViewPanelControl
 		predicates.forEach(p -> setPredicateForFilteredList(p));
 	}
 
-	private void initializeTableViewSub() {		
-
-//		initializeTableView();
-		
+	private void initializeTableViewSub() {				
 		propertyMap.forEach((key, prop) -> {
 			TableColumn<T, E> c = createColumn(key, prop);
 			tableView.getColumns().add(c);
 		});
 
-		tableViewDataSorted = tableViewData.sorted();
-		tableViewDataSorted.comparatorProperty().bind(tableView.comparatorProperty());
-		
-		tableView.setItems(tableViewDataSorted);
+		initializeTableViewSuper();
 		
 		tableView.setOnMouseClicked((MouseEvent m) -> {
 			if (alertChangesOnTabelView()) {
@@ -211,12 +173,6 @@ public class EmployeeTableViewPanelController<T,E> extends TableViewPanelControl
 				((UserViewModel) viewModel).setSelectedUser((User) data);
 			}
 		});
-
-		/*tableView.setOnKeyPressed( keyEvent -> {
-			if (keyEvent.getCode().equals(KeyCode.DELETE)) {
-				viewModel.delete();
-			}
-		});*/
 	}
 
 	private Predicate giveFilterPredicate(String fieldName, String filterText){
@@ -236,14 +192,6 @@ public class EmployeeTableViewPanelController<T,E> extends TableViewPanelControl
 			} else {
 				throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 			}
-
-			//switch (fieldName) {
-			//	case "firstname" -> newPredicate = e -> e.getFirstName().toLowerCase().contains(filterText);
-			//	case "lastname" -> newPredicate = e -> e.getLastName().toLowerCase().contains(filterText);
-			//	case "userstatus" -> newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
-			//	case "employeerole" -> newPredicate = e -> e.getRoleAsString().toLowerCase().contains(filterText);
-			//	default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
-			//}
 			return newPredicate;				
 		}
 		return null;

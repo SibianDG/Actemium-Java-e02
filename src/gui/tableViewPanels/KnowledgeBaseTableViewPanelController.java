@@ -33,16 +33,11 @@ import javafx.scene.text.Font;
 import languages.LanguageResource;
 
 
-public class KnowledgeBaseTableViewPanelController<T,E> extends TableViewPanelController {
-	
-//  @FXML
-//  private TableView<T> tableView;
+public class KnowledgeBaseTableViewPanelController<T,E> extends TableViewPanelController {	
 	
 	private Map<String, Function<T, Property<E>>> propertyMap = new LinkedHashMap<>();
 
 	private ObservableList<T> mainData;
-//	private FilteredList<T> tableViewData;
-//	private SortedList<T> tableViewDataSorted;
 	
 	public KnowledgeBaseTableViewPanelController(DashboardFrameController dashboardFrameController, ViewModel viewModel, GUIEnum currentState, EmployeeRole employeeRole) {
 		super(dashboardFrameController, viewModel, currentState, employeeRole);				
@@ -69,16 +64,12 @@ public class KnowledgeBaseTableViewPanelController<T,E> extends TableViewPanelCo
 		Map<GUIEnum, ArrayList<Object>> filterMap = new HashMap<>();
 		filterMap.put(GUIEnum.KNOWLEDGEBASE, new ArrayList<>(Arrays.asList(LanguageResource.getString("title"), KbItemType.DATABASE, LanguageResource.getString("keywords"), LanguageResource.getString("FullSearch"))));
 
-		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createElementDetailGridpane(o)));
+		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createFilterNode(o)));
 	}
 
-	private Node createElementDetailGridpane(Object o) {
+	private Node createFilterNode(Object o) {
 		if (o instanceof String) {
-			String string = (String) o;
-			TextField filter = new TextField();
-			filter.setPromptText(string);
-			filter.setPrefWidth(145);
-			filter.setFont(Font.font("Arial", 14));
+			TextField filter = createTextFieldFilter((String) o);
 			filter.setOnKeyTyped(event -> {
 				checkFilters();
 			});
@@ -160,11 +151,8 @@ public class KnowledgeBaseTableViewPanelController<T,E> extends TableViewPanelCo
 			TableColumn<T, E> c = createColumn(key, prop);
 			tableView.getColumns().add(c);
 		});
-
-		tableViewDataSorted = tableViewData.sorted();
-		tableViewDataSorted.comparatorProperty().bind(tableView.comparatorProperty());
 		
-		tableView.setItems(tableViewDataSorted);
+		initializeTableViewSuper();
 		
 		tableView.setOnMouseClicked((MouseEvent m) -> {
 			if (alertChangesOnTabelView()) {
@@ -172,19 +160,12 @@ public class KnowledgeBaseTableViewPanelController<T,E> extends TableViewPanelCo
 				((KnowledgeBaseViewModel) viewModel).setSelectedKbItem((KbItem) data);				
 			}
 		});
-
-		/*tableView.setOnKeyPressed( keyEvent -> {
-			if (keyEvent.getCode().equals(KeyCode.DELETE)) {
-				viewModel.delete();
-			}
-		});*/
 	}
 
 	private Predicate giveFilterPredicate(String fieldName, String filterText){
 		fieldName = fieldName.toLowerCase();		
 
 		if (fieldName.length() > 0 && !filterText.toLowerCase().contains(LanguageResource.getString("select"))){
-
 			Predicate<KbItem> newPredicate;
 
 			if (fieldName.equalsIgnoreCase(LanguageResource.getString("title")) || fieldName.equalsIgnoreCase("title")){
@@ -201,19 +182,6 @@ public class KnowledgeBaseTableViewPanelController<T,E> extends TableViewPanelCo
 			} else {
 				throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 			}
-			
-			//switch (fieldName) {
-			//	case "title" -> newPredicate = e -> e.getTitle().toLowerCase().contains(filterText);
-			//	case "kbitemtype" -> newPredicate = e -> e.getTypeAsString().toLowerCase().contains(filterText);
-			//	case "keywords" -> newPredicate = e -> e.getKeywords().toLowerCase().contains(filterText);
-			//	case "fullsearch" -> {
-			//		newPredicate = e -> e.getText()
-			//								.concat(" " + e.getTitle() + " " + e.getTypeAsString() + " " + e.getKeywords())
-			//								.toLowerCase()
-			//								.contains(filterText);
-			//	}
-			//	default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
-			//}
 			System.out.println(newPredicate.toString());
 			return newPredicate;				
 		}

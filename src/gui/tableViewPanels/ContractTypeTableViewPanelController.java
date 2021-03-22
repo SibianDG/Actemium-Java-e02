@@ -30,20 +30,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Font;
 import languages.LanguageResource;
 
 
 public class ContractTypeTableViewPanelController<T,E> extends TableViewPanelController {
 	
-//  @FXML
-//  private TableView<T> tableView;
-	
 	private Map<String, Function<T, Property<E>>> propertyMap = new LinkedHashMap<>();
 
 	private ObservableList<T> mainData;
-//	private FilteredList<T> tableViewData;
-//	private SortedList<T> tableViewDataSorted;
 	
 	public ContractTypeTableViewPanelController(DashboardFrameController dashboardFrameController, ViewModel viewModel, GUIEnum currentState, EmployeeRole employeeRole) {
 		super(dashboardFrameController, viewModel, currentState, employeeRole);				
@@ -53,7 +47,6 @@ public class ContractTypeTableViewPanelController<T,E> extends TableViewPanelCon
 		propertyMap.put(LanguageResource.getString("name"), item -> (Property<E>)((ContractType) item).contractTypeNameProperty());
 		propertyMap.put(LanguageResource.getString("timestamp"), item -> (Property<E>)((ContractType) item).contractTypestampProperty());
 		propertyMap.put(LanguageResource.getString("status"), item -> (Property<E>)((ContractType) item).contractTypeStatusProperty());
-		//propertyMap.put("Number Active Contracts", item -> ((ContractType) item));
 		btnAdd.setText(String.format("%s %s", LanguageResource.getString("add"), currentState.toString().toLowerCase()));
 		
 		initializeFilters();
@@ -72,16 +65,12 @@ public class ContractTypeTableViewPanelController<T,E> extends TableViewPanelCon
 		Map<GUIEnum, ArrayList<Object>> filterMap = new HashMap<>();
 		filterMap.put(GUIEnum.CONTRACTTYPE, new ArrayList<>(Arrays.asList(LanguageResource.getString("name"), Timestamp.WORKINGHOURS, ContractTypeStatus.ACTIVE)));
 		
-		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createElementDetailGridpane(o)));
+		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createFilterNode(o)));
 	}
 
-	private Node createElementDetailGridpane(Object o) {
+	private Node createFilterNode(Object o) {
 		if (o instanceof String) {
-			String string = (String) o;
-			TextField filter = new TextField();
-			filter.setPromptText(string);
-			filter.setPrefWidth(145);
-			filter.setFont(Font.font("Arial", 14));
+			TextField filter = createTextFieldFilter((String) o);
 			filter.setOnKeyTyped(event -> {
 				checkFilters();
 			});
@@ -159,7 +148,6 @@ public class ContractTypeTableViewPanelController<T,E> extends TableViewPanelCon
 					} else if (timestampStringArray.contains(selectedItem)){
 						predicates.add(giveFilterPredicate("Timestamp", selectedItem.toLowerCase()));						
 					}
-
 				}
 			}
 		});
@@ -175,10 +163,7 @@ public class ContractTypeTableViewPanelController<T,E> extends TableViewPanelCon
 			tableView.getColumns().add(c);
 		});
 
-		tableViewDataSorted = tableViewData.sorted();
-		tableViewDataSorted.comparatorProperty().bind(tableView.comparatorProperty());
-		
-		tableView.setItems(tableViewDataSorted);
+		initializeTableViewSuper();
 		
 		tableView.setOnMouseClicked((MouseEvent m) -> {
 			if (alertChangesOnTabelView()) {
@@ -186,20 +171,12 @@ public class ContractTypeTableViewPanelController<T,E> extends TableViewPanelCon
 				((ContractTypeViewModel) viewModel).setSelectedContractType((ContractType) data);
 			}
 		});
-
-		/*tableView.setOnKeyPressed( keyEvent -> {
-			if (keyEvent.getCode().equals(KeyCode.DELETE)) {
-				viewModel.delete();
-			}
-		});*/
 	}
 
 	private Predicate giveFilterPredicate(String fieldName, String filterText){
 		fieldName = fieldName.toLowerCase();			
 			if (fieldName.length() > 0 && !filterText.toLowerCase().contains(LanguageResource.getString("select"))){
-
 				Predicate<ContractType> newPredicate;
-
 				if (fieldName.equalsIgnoreCase(LanguageResource.getString("name"))){
 					newPredicate = e -> e.getName().toLowerCase().contains(filterText);
 				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("timestamp")) || fieldName.equalsIgnoreCase("timestamp")){
@@ -209,13 +186,6 @@ public class ContractTypeTableViewPanelController<T,E> extends TableViewPanelCon
 				} else {
 					throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 				}
-
-				//switch (fieldName) {
-				//	case "name" -> newPredicate = e -> e.getName().toLowerCase().contains(filterText);
-				//	case "timestamp" -> newPredicate = e -> e.getTimestampAsString().toString().toLowerCase().equals(filterText);
-				//	case "contracttypestatus" -> newPredicate = e -> e.getContractTypeStatusAsString().toString().toLowerCase().equals(filterText);
-				//	default -> throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
-				//}
 				return newPredicate;				
 			}		
 		return null;
