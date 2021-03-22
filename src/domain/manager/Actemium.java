@@ -286,6 +286,18 @@ public class Actemium {
 					));
 		}
 	}
+	public void checkPermision(EmployeeRole role, EmployeeRole role2) {
+		if (!(giveUserRoleAsEnum().equals(role) || giveUserRoleAsEnum().equals(role2))) {
+			throw new AccessException(
+					String.format("%s %s %s/%s %s!"
+							, LanguageResource.getString("you_need_to_be")
+							, role.equals(EmployeeRole.ADMINISTRATOR) ? LanguageResource.getString("an") : LanguageResource.getString("a")
+									, role.toString().toLowerCase()
+									, role2.toString().toLowerCase()
+									, LanguageResource.getString("to_do_this")
+							));
+		}
+	}
 
 	public void checkPermisionForModifyEmployee(EmployeeRole role, String username) {
 		if (!signedInUser.getUsername().equals(username)){

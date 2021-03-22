@@ -112,7 +112,7 @@ public class TicketFacade implements Facade {
 				changeList.add(String.format("%s.", LanguageResource.getString("ticket_description_changed")));
 				ticket.setDescription(description);
 			}
-			if (!commentText.equals("(none)") || !commentText.isBlank() || commentText != null) {
+			if (!(commentText.equals("(none)") || commentText.isBlank() || commentText == null)) {
 				changeList.add(String.format("%s.", LanguageResource.getString("ticket_comment_added")));
 				ticket.addTicketComment(createTicketComment(ticket, commentText));
 			}
@@ -153,12 +153,50 @@ public class TicketFacade implements Facade {
 		
 	}
 	
+	//TODO duplicate code
+	public void modifyTicketOutstandingAsTechnician(ActemiumTicket ticket, TicketStatus status, 
+					String commentText, String attachments) throws InformationRequiredException {
+		try {
+			ActemiumTicket ticketClone = ticket.clone();
+			// check to see if signed in user is Support Manger
+			actemium.checkPermision(EmployeeRole.TECHNICIAN);			
+			
+			ticketClone.setStatus(status);
+			ticketClone.setAttachments(attachments);
+			
+			ticketClone.checkAttributes();
+
+			List<String> changeList = new ArrayList<>();			
+			
+			if (!ticket.getStatus().equals(status)) {
+				changeList.add(String.format("%s \"%s\" %s \"%s\".",LanguageResource.getString("ticket_priority_changed_from") , ticket.getStatus(), LanguageResource.getString("to"), status));
+				ticket.setStatus(status);
+			}			
+			if (!(commentText.equals("(none)") || commentText.isBlank() || commentText == null)) {
+				changeList.add(String.format("%s.", LanguageResource.getString("ticket_comment_added")));
+				ticket.addTicketComment(createTicketComment(ticket, commentText));
+			}
+			if (!ticket.getAttachments().equals(attachments)) {
+				changeList.add(String.format("%s.", LanguageResource.getString("ticket_attachments_changed")));
+				ticket.setAttachments(attachments);
+			}
+			
+			ticket.addTicketChange(createTicketChange(ticket, "modifyTicketOutstanding", changeList));
+			
+			actemium.modifyTicket(ticket);
+			
+		} catch (CloneNotSupportedException e) {
+			System.out.println(LanguageResource.getString("cannot_clone"));
+		}
+		
+	}
+	
 	public void modifyTicketResolved(ActemiumTicket ticket, String solution, String quality, String supportNeeded)
 			throws InformationRequiredException {
 		try {
 			ActemiumTicket ticketClone = ticket.clone();
 			// check to see if signed in user is Support Manger
-			actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
+			actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER, EmployeeRole.TECHNICIAN);
 			ticketClone.setSolution(solution);
 			ticketClone.setQuality(quality);
 			ticketClone.setSupportNeeded(supportNeeded);

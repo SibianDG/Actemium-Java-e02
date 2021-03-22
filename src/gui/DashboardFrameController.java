@@ -143,7 +143,7 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         this.knowledgeBaseFacade = knowledgeBaseFacade;
 
         this.userViewModel = new UserViewModel(userFacade);        
-        this.ticketViewModel = new TicketViewModel(ticketFacade);        
+        this.ticketViewModel = new TicketViewModel(ticketFacade, userFacade);        
         this.contractTypeViewModel = new ContractTypeViewModel(contractTypeFacade);    
         this.contractViewModel = new ContractViewModel(contractFacade);    
         this.knowledgeBaseViewModel = new KnowledgeBaseViewModel(knowledgeBaseFacade, ticketFacade);
@@ -360,7 +360,7 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
 		//tableViewPanelCompanion = new TableViewPanelCompanion(this, userViewModel, currentState);
 		switch(viewModel.getClass().getSimpleName()) {
 		case "UserViewModel" -> detailsPanelController = new UserDetailsPanelController(viewModel, gridContent);
-		case "TicketViewModel" -> detailsPanelController = new TicketDetailsPanelController(viewModel, gridContent);
+		case "TicketViewModel" -> detailsPanelController = new TicketDetailsPanelController(viewModel, gridContent, userFacade.getEmployeeRole());
 		case "ContractTypeViewModel" -> detailsPanelController = new ContractTypeDetailsPanelController(viewModel, gridContent);
 		case "ContractViewModel" -> detailsPanelController = new ContractDetailsPanelController(viewModel, gridContent);
 		case "KnowledgeBaseViewModel" -> detailsPanelController = new KnowledgeBaseDetailsPanelController(viewModel, gridContent);

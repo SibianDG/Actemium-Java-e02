@@ -9,7 +9,6 @@ module E02.Project2.Java {
     requires java.instrument;
     requires java.sql;
 
-
     requires org.mockito;
     requires mockito.junit.jupiter;
 //    requires org.junit.jupiter;

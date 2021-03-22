@@ -1,18 +1,24 @@
 package gui.viewModels;
 
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import domain.ActemiumEmployee;
 import domain.ActemiumTicket;
-import domain.ActemiumTicketComment;
 import domain.Employee;
 import domain.Ticket;
+import domain.enums.EmployeeRole;
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import domain.facades.TicketFacade;
+import domain.facades.UserFacade;
 import exceptions.InformationRequiredException;
 import gui.GUIEnum;
 import javafx.collections.ObservableList;
@@ -24,14 +30,14 @@ public class TicketViewModel extends ViewModel {
     private Ticket selectedTicket;
     //private ObservableList<Employee> techniciansForTicket;
     private final TicketFacade ticketFacade;
-    //private final UserFacade userFacade;
+    private final UserFacade userFacade;
 
     private List<ActemiumEmployee> techniciansAsignedToTicket = new ArrayList<>();
 
-    public TicketViewModel(TicketFacade ticketFacade) {
+    public TicketViewModel(TicketFacade ticketFacade, UserFacade userFacade) {
         super();
         this.ticketFacade = ticketFacade;
-        //this.userFacade = userFacade;
+        this.userFacade = userFacade;
         setCurrentState(GUIEnum.TICKET);
     }
 
@@ -74,7 +80,12 @@ public class TicketViewModel extends ViewModel {
     public Map<String, Map<Boolean, Object>> getDetails() {
         Ticket ticket = selectedTicket;        
         Map<String, Map<Boolean, Object>> details = new LinkedHashMap<>();
+        //TODO weird
+        boolean techPermissions = userFacade.getEmployeeRole().equals(EmployeeRole.TECHNICIAN) && TicketStatus.isOutstanding();
         boolean editable = TicketStatus.isOutstanding();
+        if(userFacade.getEmployeeRole().equals(EmployeeRole.TECHNICIAN)) {
+        	editable = !editable;
+        }
         details.put(LanguageResource.getString("title"), Collections.singletonMap(editable, ticket.getTitle()));
         details.put(LanguageResource.getString("creation_date"), Collections.singletonMap(false, ticket.getDateOfCreation().format(DateTimeFormatter.ISO_DATE)));
         details.put(LanguageResource.getString("creation_time"), Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_TIME)));
@@ -84,16 +95,16 @@ public class TicketViewModel extends ViewModel {
         }
         details.put(LanguageResource.getString("priority"), Collections.singletonMap(editable, ticket.getPriority()));
         details.put(LanguageResource.getString("type"), Collections.singletonMap(editable, ticket.getTicketType()));
-        details.put(LanguageResource.getString("status"), Collections.singletonMap(editable, ticket.getStatus()));
+        details.put(LanguageResource.getString("status"), Collections.singletonMap(editable || techPermissions, ticket.getStatus()));
         details.put(LanguageResource.getString("description"), Collections.singletonMap(editable, ticket.getDescription()));
         details.put(LanguageResource.getString("customer/company"), Collections.singletonMap(false, ticket.giveCustomer().giveCompany().getName()));
         details.put(LanguageResource.getString("technicians"), Collections.singletonMap(editable, ticket.giveTechnicians()));
         //TODO
         details.put(LanguageResource.getString("comments"), Collections.singletonMap(false, ticket.giveComments().stream().map(c->c.toString()).collect(Collectors.joining("\n"))));
         if (TicketStatus.isOutstanding()) {
-        	details.put(LanguageResource.getString("new_comment"), Collections.singletonMap(editable, ""));
+        	details.put(LanguageResource.getString("new_comment"), Collections.singletonMap(editable || techPermissions, ""));
         }
-        details.put(LanguageResource.getString("attachments"), Collections.singletonMap(editable, ticket.getAttachments()));
+        details.put(LanguageResource.getString("attachments"), Collections.singletonMap(editable || techPermissions, ticket.getAttachments()));
         if (!TicketStatus.isOutstanding()) {
         	details.put(LanguageResource.getString("solution"), Collections.singletonMap(true, ticket.getSolution()));
             details.put(LanguageResource.getString("quality"), Collections.singletonMap(true, ticket.getQuality()));
@@ -116,7 +127,11 @@ public class TicketViewModel extends ViewModel {
     // Cannot modify customer of the ticket, needs to be unmodifiable field
     public void modifyTicketOutstanding(TicketPriority priority, TicketType ticketType, TicketStatus status, String title, String description,
     								String commentText, String attachments, List<ActemiumEmployee> technicians) throws InformationRequiredException {
-        ticketFacade.modifyTicketOutstanding((ActemiumTicket) selectedTicket, priority, ticketType, status, title, description, commentText, attachments, technicians);
+        if (userFacade.getEmployeeRole().equals(EmployeeRole.TECHNICIAN)) {
+        	ticketFacade.modifyTicketOutstandingAsTechnician((ActemiumTicket) selectedTicket, status, commentText, attachments);
+        } else {
+        	ticketFacade.modifyTicketOutstanding((ActemiumTicket) selectedTicket, priority, ticketType, status, title, description, commentText, attachments, technicians);
+        } 
     }
 
     public void modifyTicketResolved(String solution, String quality, String supportNeeded) throws InformationRequiredException {

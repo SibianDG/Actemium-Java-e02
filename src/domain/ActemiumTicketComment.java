@@ -151,6 +151,7 @@ public class ActemiumTicketComment implements TicketComment, Serializable {
 				requiredElements.add(RequiredElement.UserRequired);
 			if(dateTimeOfComment == null)
 				requiredElements.add(RequiredElement.DateTimeOfCommentRequired);
+			//TODO
 			if(commentText == null || commentText.isBlank())
 				requiredElements.add(RequiredElement.CommentTextRequired);
 

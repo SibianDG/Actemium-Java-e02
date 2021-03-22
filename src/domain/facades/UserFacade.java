@@ -44,6 +44,10 @@ public class UserFacade implements Facade {
 //		return this;
 //	}
 	
+	public EmployeeRole getEmployeeRole() {
+		return actemium.giveUserRoleAsEnum();
+	}
+	
 	public String giveUserRole() {
 		return actemium.giveUserRole();
 	}

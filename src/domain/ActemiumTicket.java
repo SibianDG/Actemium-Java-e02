@@ -553,12 +553,14 @@ public class ActemiumTicket implements Ticket, Serializable {
 			if (dateAndTimeOfCreation == null)
 				this.dateAndTimeOfCreation = LocalDateTime.now();
 			if (solution == null)
-				this.solution = String.format("(%s)", LanguageResource.getString("not_filled_in_yet"));
+//				this.solution = String.format("(%s)", LanguageResource.getString("not_filled_in_yet"));
+				this.solution = "";
 			if (quality == null)
-				this.quality = String.format("(%s)", LanguageResource.getString("not_filled_in_yet"));
+//				this.quality = String.format("(%s)", LanguageResource.getString("not_filled_in_yet"));
+				this.quality = "";
 			if (supportNeeded == null)
-				this.supportNeeded = String.format("(%s)", LanguageResource.getString("not_filled_in_yet"));
-			//TODO
+//				this.supportNeeded = String.format("(%s)", LanguageResource.getString("not_filled_in_yet"));			
+				this.supportNeeded = "";
 //			if (comments == null)
 //				this.comments = String.format("(%s)", LanguageResource.getString("none"));
 			if (comments == null)

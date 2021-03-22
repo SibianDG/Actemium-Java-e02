@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import domain.Employee;
+import domain.enums.EmployeeRole;
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
@@ -41,10 +42,12 @@ import languages.LanguageResource;
 
 public class TicketDetailsPanelController extends DetailsPanelController {
     
+	private EmployeeRole signedInEmployeeRole;
     private TicketHistoryPanelController ticketHistoryPanelController;
 
-    public TicketDetailsPanelController(ViewModel viewModel, GridPane gridContent)  {
-        super(viewModel, gridContent);     
+    public TicketDetailsPanelController(ViewModel viewModel, GridPane gridContent, EmployeeRole signedInEmployeeRole)  {
+        super(viewModel, gridContent);
+        this.signedInEmployeeRole = signedInEmployeeRole;
     }
 
     @Override
@@ -372,7 +375,7 @@ public class TicketDetailsPanelController extends DetailsPanelController {
         listView.setSelectionModel(null);
         // only show menuButton when ticket is outstanding
         // hide it when ticket is resolved
-        if (!TicketStatus.isOutstanding()) {        	
+        if (!TicketStatus.isOutstanding() || !signedInEmployeeRole.equals(EmployeeRole.SUPPORT_MANAGER)) {        	
 			listView.setMinHeight(50);
 			vBox.getChildren().addAll(listView);
 		} else {
