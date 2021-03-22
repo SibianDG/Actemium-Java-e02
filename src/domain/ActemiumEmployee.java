@@ -33,7 +33,10 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 
 	private String address;
 	private String phoneNumber;
+
+	@Column(unique = true)
 	private String emailAddress;
+	
 	@Transient
 	private StringProperty role = new SimpleStringProperty();
 
