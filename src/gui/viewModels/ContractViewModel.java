@@ -65,8 +65,8 @@ public class ContractViewModel extends ViewModel {
         contractFacade.modifyContract((ActemiumContract) selectedContract, status);
     }
     
-    public void registerContract(Long customer, String contractTypeName, LocalDate startDate, int duration) throws InformationRequiredException {
-    	contractFacade.registerContract(customer, contractTypeName, startDate, duration);
+    public void registerContract(Long customer, long contractTypeId, LocalDate startDate, int duration) throws InformationRequiredException {
+    	contractFacade.registerContract(customer, contractTypeId, startDate, duration);
     	setSelectedContract(contractFacade.getLastAddedContract());
     }
 

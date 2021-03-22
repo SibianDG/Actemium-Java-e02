@@ -331,7 +331,7 @@ public class Actemium {
 
 	////////-USERFACADE-////////
 	
-	public ActemiumCompany findCompanyById(Long companyId){
+	public ActemiumCompany findCompanyById(long companyId){
 		return companyDaoJpa.get(companyId);
 	}	
 
@@ -504,7 +504,7 @@ public class Actemium {
 
 	////////-CONTRACTFACADE-////////
 	
-	public ActemiumContractType findContractTypeById(String contractTypeId){
+	public ActemiumContractType findContractTypeById(long contractTypeId){
 		return contractTypeDaoJpa.get(contractTypeId);
 	}	
 	

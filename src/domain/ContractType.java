@@ -10,9 +10,9 @@ public interface ContractType {
 	
 	public String getName();
 
-	public ContractTypeStatus getContractTypeStatus();
+	public ContractTypeStatus getStatus();
 	
-	public String getContractTypeStatusAsString();
+	public String getStatusAsString();
 
 	public boolean isHasEmail();
 

@@ -52,8 +52,8 @@ public class ContractTest {
 		try {
 			System.out.println(1);
 			contractType01 = new ActemiumContractType.ContractTypeBuilder()
-					.contractTypeName("BasisEmailSupport")
-					.contractTypeStatus(ContractTypeStatus.ACTIVE)
+					.name("BasisEmailSupport")
+					.status(ContractTypeStatus.ACTIVE)
 					.hasEmail(true)
 					.hasPhone(false)
 					.hasApplication(false)
@@ -64,8 +64,8 @@ public class ContractTest {
 					.build();
 			System.out.println(2);
 			contractType02 = new ActemiumContractType.ContractTypeBuilder()
-					.contractTypeName("FullAllSupport")
-					.contractTypeStatus(ContractTypeStatus.ACTIVE)
+					.name("FullAllSupport")
+					.status(ContractTypeStatus.ACTIVE)
 					.hasEmail(true)
 					.hasPhone(true)
 					.hasApplication(true)

@@ -107,8 +107,8 @@ public class ContractTypeTest {
 			Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) {
 
         Assertions.assertDoesNotThrow(() -> new ActemiumContractType.ContractTypeBuilder()
-				.contractTypeName(name)
-				.contractTypeStatus(contractTypeStatus)
+				.name(name)
+				.status(contractTypeStatus)
 				.hasEmail(hasEmail)
 				.hasPhone(hasPhone)
 				.hasApplication(hasApplication)
@@ -125,8 +125,8 @@ public class ContractTypeTest {
 			ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone, boolean hasApplication,
 			Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) {
 		Assertions.assertThrows(InformationRequiredException.class, () -> new ActemiumContractType.ContractTypeBuilder()
-				.contractTypeName(name)
-				.contractTypeStatus(contractTypeStatus)
+				.name(name)
+				.status(contractTypeStatus)
 				.hasEmail(hasEmail)
 				.hasPhone(hasPhone)
 				.hasApplication(hasApplication)

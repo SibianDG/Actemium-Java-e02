@@ -64,7 +64,7 @@ public class ContractDetailsPanelController extends DetailsPanelController {
                 ((ContractViewModel) viewModel).registerContract(
                         // customerId, contractTypeName, startDate, duration
                         Long.parseLong(getTextFromGridItem(0))
-                        , getTextFromGridItem(1)
+                        , Long.parseLong(getTextFromGridItem(1))
                         , LocalDate.parse(getTextFromGridItem(2)) //startDate DatePicker
                         , Integer.parseInt(getTextFromGridItem(3))
                 );

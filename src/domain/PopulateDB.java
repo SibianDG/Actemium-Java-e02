@@ -82,8 +82,7 @@ public class PopulateDB {
 
         ActemiumContractType bCtype = new ActemiumContractType.ContractTypeBuilder()
                 .name("BasicSupport")
-                .contractTypeName("BasicSupport")
-                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .status(ContractTypeStatus.ACTIVE)
                 .hasEmail(true)
                 .hasPhone(false)
                 .hasApplication(false)
@@ -95,8 +94,7 @@ public class PopulateDB {
 
         ActemiumContractType bCtype02 = new ActemiumContractType.ContractTypeBuilder()
                 .name("BasicEmailSupport")
-                .contractTypeName("BasicEmailSupport")
-                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .status(ContractTypeStatus.ACTIVE)
                 .hasEmail(true)
                 .hasPhone(false)
                 .hasApplication(false)
@@ -108,8 +106,7 @@ public class PopulateDB {
         
         ActemiumContractType cCtype = new ActemiumContractType.ContractTypeBuilder()
                 .name("BasicAppSupport")
-                .contractTypeName("BasicAppSupport")
-                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .status(ContractTypeStatus.ACTIVE)
                 .hasEmail(false)
                 .hasPhone(false)
                 .hasApplication(true)
@@ -121,8 +118,7 @@ public class PopulateDB {
 
         ActemiumContractType dCtype = new ActemiumContractType.ContractTypeBuilder()
                 .name("FullEmailSupport")
-                .contractTypeName("FullEmailSupport")
-                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .status(ContractTypeStatus.ACTIVE)
                 .hasEmail(true)
                 .hasPhone(false)
                 .hasApplication(false)
@@ -134,8 +130,7 @@ public class PopulateDB {
         
         ActemiumContractType eCtype = new ActemiumContractType.ContractTypeBuilder()
                 .name("FullPhoneSupport")
-                .contractTypeName("FullPhoneSupport")
-                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .status(ContractTypeStatus.ACTIVE)
                 .hasEmail(false)
                 .hasPhone(true)
                 .hasApplication(false)
@@ -147,8 +142,7 @@ public class PopulateDB {
 
         ActemiumContractType fCtype = new ActemiumContractType.ContractTypeBuilder()
                 .name("FullAppSupport")
-                .contractTypeName("FullAppSupport")
-                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .status(ContractTypeStatus.ACTIVE)
                 .hasEmail(false)
                 .hasPhone(false)
                 .hasApplication(true)
@@ -160,8 +154,7 @@ public class PopulateDB {
 
         ActemiumContractType gCtype = new ActemiumContractType.ContractTypeBuilder()
                 .name("BasicAllSupport")
-                .contractTypeName("BasicAllSupport")
-                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .status(ContractTypeStatus.ACTIVE)
                 .hasEmail(true)
                 .hasPhone(true)
                 .hasApplication(true)
@@ -173,8 +166,7 @@ public class PopulateDB {
 
         ActemiumContractType hCtype = new ActemiumContractType.ContractTypeBuilder()
                 .name("FullAllSupport")
-                .contractTypeName("FullAllSupport")
-                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .status(ContractTypeStatus.ACTIVE)
                 .hasEmail(true)
                 .hasPhone(true)
                 .hasApplication(true)
@@ -186,8 +178,7 @@ public class PopulateDB {
 
         ActemiumContractType jCtype = new ActemiumContractType.ContractTypeBuilder()
                 .name("AmazonSupport")
-                .contractTypeName("AmazonSupport")
-                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .status(ContractTypeStatus.ACTIVE)
                 .hasEmail(true)
                 .hasPhone(false)
                 .hasApplication(false)
@@ -199,8 +190,7 @@ public class PopulateDB {
 
         ActemiumContractType jCtype02 = new ActemiumContractType.ContractTypeBuilder()
                 .name("MonopolySupport")
-                .contractTypeName("MonopolySupport")
-                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .status(ContractTypeStatus.ACTIVE)
                 .hasEmail(true)
                 .hasPhone(true)
                 .hasApplication(true)
@@ -212,8 +202,7 @@ public class PopulateDB {
 
         ActemiumContractType pCtype = new ActemiumContractType.ContractTypeBuilder()
                 .name("BasicPhoneSupport")
-                .contractTypeName("BasicPhoneSupport")
-                .contractTypeStatus(ContractTypeStatus.ACTIVE)
+                .status(ContractTypeStatus.ACTIVE)
                 .hasEmail(false)
                 .hasPhone(true)
                 .hasApplication(false)
@@ -627,8 +616,7 @@ public class PopulateDB {
 
         contractTypeDao.insert(new ActemiumContractType.ContractTypeBuilder()
                 .name("ExperimentalSupport")
-                .contractTypeName("ExperimentalSupport")
-                .contractTypeStatus(ContractTypeStatus.INACTIVE)
+                .status(ContractTypeStatus.INACTIVE)
                 .hasEmail(true)
                 .hasPhone(true)
                 .hasApplication(true)

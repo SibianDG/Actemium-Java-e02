@@ -37,11 +37,11 @@ public class ContractFacade implements Facade {
 
     }
     
-	public void registerContract(Long customerId, String contractTypeName, LocalDate startDate,
+	public void registerContract(Long customerId, long contractTypeId, LocalDate startDate,
 			int duration) throws InformationRequiredException {
 		// check to see if signed in user is Support Manager
 		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
-		ActemiumContractType contractType = (ActemiumContractType) actemium.findContractTypeById(contractTypeName);
+		ActemiumContractType contractType = (ActemiumContractType) actemium.findContractTypeById(contractTypeId);
 		//if (contractType == null) {
 		//	throw new IllegalArgumentException("You must provide the name of an existing contractType");
 		//}

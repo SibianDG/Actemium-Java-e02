@@ -22,8 +22,8 @@ public class ContractTypeFacade implements Facade{
 		// check to see if signed in user is Support Manager
 		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
     	ActemiumContractType contractType = new ActemiumContractType.ContractTypeBuilder()
-                .contractTypeName(name)
-                .contractTypeStatus(contractTypeStatus)
+    			.name(name)
+                .status(contractTypeStatus)
                 .hasEmail(hasEmail)
                 .hasPhone(hasPhone)
                 .hasApplication(hasApplication)
@@ -35,7 +35,7 @@ public class ContractTypeFacade implements Facade{
         actemium.registerContractType(contractType);
     }
 
-    public void modifyContractType(ActemiumContractType contractType, String name, ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone,
+    public void modifyContractType(ActemiumContractType contractType, String name, ContractTypeStatus status, boolean hasEmail, boolean hasPhone,
                                    boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) throws InformationRequiredException {
 
         try {
@@ -45,7 +45,7 @@ public class ContractTypeFacade implements Facade{
             actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
 
             contractTypeClone.setName(name);
-            contractTypeClone.setContractTypeStatus(contractTypeStatus);
+            contractTypeClone.setStatus(status);
             contractTypeClone.setHasEmail(hasEmail);
             contractTypeClone.setHasPhone(hasPhone);
             contractTypeClone.setHasApplication(hasApplication);
@@ -56,8 +56,8 @@ public class ContractTypeFacade implements Facade{
 
             contractTypeClone.checkAttributes();
 
-//            contractType.setName(name);
-            contractType.setContractTypeStatus(contractTypeStatus);
+            contractType.setName(name);
+            contractType.setStatus(status);
             contractType.setHasEmail(hasEmail);
             contractType.setHasPhone(hasPhone);
             contractType.setHasApplication(hasApplication);
@@ -76,7 +76,7 @@ public class ContractTypeFacade implements Facade{
     public void delete(ActemiumContractType contractType) {
 		// check to see if signed in user is Support Manager
 		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
-    	contractType.setContractTypeStatus(ContractTypeStatus.INACTIVE);
+    	contractType.setStatus(ContractTypeStatus.INACTIVE);
         actemium.modifyContractType(contractType);
     }
 

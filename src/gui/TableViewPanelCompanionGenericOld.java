@@ -63,6 +63,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import languages.LanguageResource;
 
+//This class is not used anymore, will be deleted right before deadline
 
 public class TableViewPanelCompanionGenericOld<T,E> extends GridPane {
 
@@ -688,7 +689,7 @@ public class TableViewPanelCompanionGenericOld<T,E> extends GridPane {
 				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("timestamp")) || fieldName.equalsIgnoreCase("timestamp")){
 					newPredicate = e -> e.getTimestampAsString().toLowerCase().equals(filterText);
 				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("select_status")) || fieldName.equalsIgnoreCase("contracttypestatus")){
-					newPredicate = e -> e.getContractTypeStatusAsString().toLowerCase().equals(filterText);
+					newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
 				} else {
 					throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 				}

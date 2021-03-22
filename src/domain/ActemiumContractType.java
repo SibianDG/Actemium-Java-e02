@@ -20,21 +20,16 @@ import javax.persistence.*;
 public class ActemiumContractType implements ContractType, Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
-	
-	//TODO
-	// Name is primary key so it cannot be changed
-	// This could be a good thing
-	// this means if you want to change a contract type name
-	// it's better to set the old contract type to inactive
-	// and create a new contractype with a new name
+		
 	@Id
-	private String name;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long contractTypeId;
 
 	@Transient
-	private StringProperty contractTypeName = new SimpleStringProperty();
+	private StringProperty name = new SimpleStringProperty();
 
 	@Transient
-	private StringProperty contractTypeStatus = new SimpleStringProperty();
+	private StringProperty status = new SimpleStringProperty();
 
 	private boolean hasEmail;
 	private boolean hasPhone;
@@ -55,9 +50,8 @@ public class ActemiumContractType implements ContractType, Serializable {
 	}
 
 	public ActemiumContractType(ContractTypeBuilder builder){
-		this.name = (builder.name);
-		this.contractTypeName.set(builder.contractTypeName);
-		this.contractTypeStatus.set(String.valueOf(builder.contractTypeStatus));
+		this.name.set(builder.name);
+		this.status.set(String.valueOf(builder.status));
 		this.hasEmail = builder.hasEmail;
 		this.hasPhone = builder.hasPhone;
 		this.hasApplication = builder.hasApplication;
@@ -82,39 +76,29 @@ public class ActemiumContractType implements ContractType, Serializable {
 		setMaxHandlingTime(maxHandlingTime);
 		setMinThroughputTime(minThroughputTime);
 		setPrice(price);
-	}*/
+	}*/	
 
+	@Access(AccessType.PROPERTY)
 	public String getName() {
-		return name;
+		return name.get();
 	}
 
 	public void setName(String name) {
-		////TODO no naming rules yet
-		//if (name == null || name.isBlank()) {
-		//	throw new IllegalArgumentException(LanguageResource.getString("name_invalid"));
-		//}
-		////TODO check if contractTypeName is not already taken,
-		//// two contractTypes can't have the same name
-		this.name = name;
-		setContractTypeName();
-	}
-	
-	private void setContractTypeName() {
-		this.contractTypeName.set(name);
+		this.name.set(name);
 	}
 
-	public String getContractTypeStatusAsString() {
-		return contractTypeStatus.get();
+	public String getStatusAsString() {
+		return status.get();
 	}
 
 	@Access(AccessType.PROPERTY)
 	@Enumerated(EnumType.STRING)
-	public ContractTypeStatus getContractTypeStatus() {
-		return ContractTypeStatus.valueOf(contractTypeStatus.get());
+	public ContractTypeStatus getStatus() {
+		return ContractTypeStatus.valueOf(status.get());
 	}
 
-	public void setContractTypeStatus(ContractTypeStatus contractTypeStatus) {
-		this.contractTypeStatus.set(contractTypeStatus.toString());
+	public void setStatus(ContractTypeStatus contractTypeStatus) {
+		this.status.set(contractTypeStatus.toString());
 	}
 
 	public boolean isHasEmail() {
@@ -208,12 +192,11 @@ public class ActemiumContractType implements ContractType, Serializable {
 	}
 	
 	public StringProperty contractTypeNameProperty() {
-		setContractTypeName();
-		return contractTypeName;
+		return name;
 	}
 	
 	public StringProperty contractTypeStatusProperty() {
-		return contractTypeStatus;
+		return status;
 	}
 	
 	public StringProperty contractTypestampProperty() {
@@ -224,8 +207,7 @@ public class ActemiumContractType implements ContractType, Serializable {
 		// Ms. Malfait her idea
 		new ContractTypeBuilder()
 				.name(this.getName())
-				.contractTypeName(this.getName())
-				.contractTypeStatus(this.getContractTypeStatus())
+				.status(this.getStatus())
 				.hasEmail(this.hasEmail)
 				.hasPhone(this.hasPhone)
 				.hasApplication(this.hasApplication)
@@ -238,8 +220,7 @@ public class ActemiumContractType implements ContractType, Serializable {
 
 	public static class ContractTypeBuilder {
 		private String name;
-		private String contractTypeName;
-		private ContractTypeStatus contractTypeStatus;
+		private ContractTypeStatus status;
 		private boolean hasEmail;
 		private boolean hasPhone;
 		private boolean hasApplication;
@@ -255,13 +236,8 @@ public class ActemiumContractType implements ContractType, Serializable {
 			return this;
 		}
 
-		public ContractTypeBuilder contractTypeName(String contractTypeName) {
-			this.contractTypeName = contractTypeName;
-			return this;
-		}
-
-		public ContractTypeBuilder contractTypeStatus(ContractTypeStatus contractTypeStatus) {
-			this.contractTypeStatus = contractTypeStatus;
+		public ContractTypeBuilder status(ContractTypeStatus status) {
+			this.status = status;
 			return this;
 		}
 
@@ -307,9 +283,9 @@ public class ActemiumContractType implements ContractType, Serializable {
 		}
 
 		private void checkAttributesEmployeeBuiler() throws InformationRequiredException {
-			if (contractTypeName == null || contractTypeName.isBlank())
+			if (name == null || name.isBlank())
 				requiredElements.add(RequiredElement.ContractTypeNameRequired);
-			if (contractTypeStatus == null)
+			if (status == null)
 				requiredElements.add(RequiredElement.ContractTypeStatusRequired);
 			if (timestamp == null)
 				requiredElements.add(RequiredElement.ContractTypeStatusRequired);
@@ -345,8 +321,7 @@ public class ActemiumContractType implements ContractType, Serializable {
 		try {
 			cloned = new ContractTypeBuilder()
 					.name(this.getName())
-					.contractTypeName(this.getName())
-					.contractTypeStatus(this.getContractTypeStatus())
+					.status(this.getStatus())
 					.hasEmail(this.isHasEmail())
 					.hasPhone(this.isHasPhone())
 					.hasPhone(this.isHasPhone())

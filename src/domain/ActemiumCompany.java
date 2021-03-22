@@ -22,7 +22,6 @@ import domain.enums.RequiredElement;
 import exceptions.InformationRequiredException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import languages.LanguageResource;
 
 @Entity
 @Access(AccessType.FIELD)
@@ -256,8 +255,6 @@ public class ActemiumCompany implements Company, Serializable {
 				throw new InformationRequiredException(requiredElements);
 			}
 		}
-
-
 	}
 
 	public ActemiumCompany clone() throws CloneNotSupportedException {

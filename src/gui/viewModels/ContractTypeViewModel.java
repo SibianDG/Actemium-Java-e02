@@ -48,8 +48,9 @@ public class ContractTypeViewModel extends ViewModel {
     public Map<String, Map<Boolean, Object>> getDetails() {
         ContractType contractType = selectedContractType;
         Map<String,Map<Boolean, Object>> details = new LinkedHashMap<>();
-        details.put(LanguageResource.getString("name"), Collections.singletonMap(false, contractType.getName()));
-        details.put(LanguageResource.getString("status"), Collections.singletonMap(true, contractType.getContractTypeStatus()));
+//        details.put(LanguageResource.getString("name"), Collections.singletonMap(true, contractType.getName()));
+        details.put(LanguageResource.getString("name"), Collections.singletonMap(true, contractType.getName()));
+        details.put(LanguageResource.getString("status"), Collections.singletonMap(true, contractType.getStatus()));
         details.put(LanguageResource.getString("email"), Collections.singletonMap(true, (Boolean) contractType.isHasEmail()));
         details.put(LanguageResource.getString("phone"), Collections.singletonMap(true, (Boolean) contractType.isHasPhone()));
         details.put(LanguageResource.getString("application"), Collections.singletonMap(true, (Boolean) contractType.isHasApplication()));

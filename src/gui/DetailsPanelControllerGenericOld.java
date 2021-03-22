@@ -78,6 +78,7 @@ import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import languages.LanguageResource;
 
+// This class is not used anymore, will be deleted right before deadline
 
 public class DetailsPanelControllerGenericOld extends GridPane implements InvalidationListener {
 
@@ -339,7 +340,7 @@ public class DetailsPanelControllerGenericOld extends GridPane implements Invali
                     ((ContractViewModel) viewModel).registerContract(
                             // customerId, contractTypeName, startDate, duration
                             Long.parseLong(getTextFromGridItem(0))
-                            , getTextFromGridItem(1)
+                            , Long.parseLong(getTextFromGridItem(1))
                             , LocalDate.parse(getTextFromGridItem(2)) //startDate DatePicker
                             , Integer.parseInt(getTextFromGridItem(3))
                     );

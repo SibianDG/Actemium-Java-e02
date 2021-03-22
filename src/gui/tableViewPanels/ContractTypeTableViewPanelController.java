@@ -182,7 +182,7 @@ public class ContractTypeTableViewPanelController<T,E> extends TableViewPanelCon
 				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("timestamp")) || fieldName.equalsIgnoreCase("timestamp")){
 					newPredicate = e -> e.getTimestampAsString().toLowerCase().equals(filterText);
 				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("select_status")) || fieldName.equalsIgnoreCase("contracttypestatus")){
-					newPredicate = e -> e.getContractTypeStatusAsString().toLowerCase().equals(filterText);
+					newPredicate = e -> e.getStatusAsString().toLowerCase().equals(filterText);
 				} else {
 					throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 				}
