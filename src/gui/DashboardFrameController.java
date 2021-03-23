@@ -174,6 +174,24 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
 
         imgLogo.setCursor(Cursor.HAND);
         imgMyAccount.setCursor(Cursor.HAND);
+        if (((Employee) userViewModel.getLoginUser()).getRole() == EmployeeRole.ADMINISTRATOR) {
+            imgNotifications.setVisible(false);
+            imgNotifications.setDisable(true);
+        }
+
+        if (((Employee) userViewModel.getLoginUser()).getRole() == EmployeeRole.SUPPORT_MANAGER) {
+            if ((int) userViewModel.giveCustomers().stream().filter(c -> c.getStatus() == UserStatus.IN_REQUEST).count() == 0 &&
+                    (int) ticketViewModel.giveTicketsOutstanding().stream().filter(t -> t.giveTechnicians().size() == 0).count() == 0)
+                imgNotifications.setImage(new Image("file:src/pictures/dashboard/icon_bell.png"));
+            else
+                imgNotifications.setImage(new Image("file:src/pictures/dashboard/icon_bell_notification.png"));
+        } else if (((Employee) userViewModel.getLoginUser()).getRole() == EmployeeRole.TECHNICIAN) {
+            if (ticketViewModel.giveTicketsOutstandingAssignedToTechnician().size() == 0)
+                imgNotifications.setImage(new Image("file:src/pictures/dashboard/icon_bell.png"));
+            else
+                imgNotifications.setImage(new Image("file:src/pictures/dashboard/icon_bell_notification.png"));
+        }
+
         imgNotifications.setCursor(Cursor.HAND);
         imgLogout.setCursor(Cursor.HAND);
     }
@@ -454,6 +472,8 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
         alert.showAndWait();
     }
+
+
 
     @FXML
     void btnProfileAction(MouseEvent event) {
