@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 import java.util.Map;
 
@@ -41,6 +42,7 @@ public class DashboardTile extends VBox {
         this.setSpacing(25);
         text.setFont(Font.font("Arial", FontWeight.BOLD, 25));
         text.setFill(textColor);
+        text.setTextAlignment(TextAlignment.CENTER);
         this.setBackground(new Background(new BackgroundFill(backgroundColor, new CornerRadii(50), null)));
     }
 

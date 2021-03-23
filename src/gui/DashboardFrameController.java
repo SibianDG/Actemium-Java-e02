@@ -6,8 +6,11 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import domain.Ticket;
 import domain.enums.EmployeeRole;
+import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.facades.ContractFacade;
 import domain.facades.ContractTypeFacade;
@@ -207,7 +210,21 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         }
         	
         for(int i = 0; i < itemNames.length; i++) {
+        	if(itemNames[i].equals("outstanding tickets")) {
+        		StringBuilder text = new StringBuilder();
+        		text.append(itemNames[i]);
+        		
+        		int amountOfP1Tickets, amountOfP2Tickets, amountOfP3Tickets;
+        		amountOfP1Tickets = ticketViewModel.giveTicketsOutstanding().stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P1 )).collect(Collectors.toList()).size();
+        		amountOfP2Tickets = ticketViewModel.giveTicketsOutstanding().stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P2 )).collect(Collectors.toList()).size();
+        		amountOfP3Tickets = ticketViewModel.giveTicketsOutstanding().stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P3 )).collect(Collectors.toList()).size();
+        		
+        		text.append(String.format("%n(P1: %d, P2: %d, P3: %d)", amountOfP1Tickets, amountOfP2Tickets, amountOfP3Tickets));
+        	    		
+        		addDashboardItem(text.toString(), createImageView(textToImageMap.get(itemNames[i]),i%2, 130), i%3, i/3, i);
+        	}  else {     	
             addDashboardItem(itemNames[i], createImageView(textToImageMap.get(itemNames[i]),i%2, 130), i%3, i/3, i);
+        	}
         }
         createGridMenu(itemNames);
     }
