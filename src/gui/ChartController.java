@@ -129,13 +129,13 @@ public class ChartController extends GuiController {
         gridCharts.getChildren().clear();
 
         CategoryAxis xAxis = new CategoryAxis();
-        xAxis.setLabel("Months");
+        xAxis.setLabel(LanguageResource.getString("months"));
 
         NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Amount of Contracts");
+        yAxis.setLabel(LanguageResource.getString("amountOfContracts"));
 
         BarChart<String, Integer> barChart = new BarChart(xAxis, yAxis);
-        barChart.setTitle("Contracts created per month for " + LocalDate.now().getYear());
+        barChart.setTitle(LanguageResource.getString("contractsPerMonth") + LocalDate.now().getYear());
 
         Map<String, Integer> data = chartViewModel.barChartMonthlyContracts();
 
@@ -154,18 +154,18 @@ public class ChartController extends GuiController {
         gridCharts.getChildren().clear();
 
         CategoryAxis xAxis = new CategoryAxis();
-        xAxis.setLabel("Contract Types");
+        xAxis.setLabel(LanguageResource.getString("contractTypes"));
 
         NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Amount of Contracts");
+        yAxis.setLabel(LanguageResource.getString("amountOfContracts"));
 
         BarChart<String, Integer> barChart = new BarChart(xAxis, yAxis);
-        barChart.setTitle("Amount of Contract per Type");
+        barChart.setTitle(LanguageResource.getString("amountofContractperType"));
 
         Map<String, Integer> data = chartViewModel.barChartAmountOfContractsPerType();
 
         XYChart.Series<String, Integer> dataSeries = new XYChart.Series<>();
-        dataSeries.setName("Amount of contracts");
+        dataSeries.setName(LanguageResource.getString("amountOfContracts"));
         data.forEach((k, v) -> {
             dataSeries.getData().add(new XYChart.Data(k, v));
         });
@@ -182,26 +182,26 @@ public class ChartController extends GuiController {
         gridCharts.getChildren().clear();
 
         CategoryAxis xAxis = new CategoryAxis();
-        xAxis.setLabel("Technicians");
+        xAxis.setLabel(LanguageResource.getString("technicians"));
 
         NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Amount of Tickets");
+        yAxis.setLabel(LanguageResource.getString("amountOfTickets"));
 
         StackedBarChart<String, Integer> barChart = new StackedBarChart(xAxis, yAxis);
-        barChart.setTitle("Amount of tickets asigned to a Technician");
+        barChart.setTitle(LanguageResource.getString("ticketsTechnician"));
 
         Map<Long, Integer> data1 = chartViewModel.barChartDataAmountOfResolvedTicketsAsignedToTechnician();
         Map<Long, Integer> data2 = chartViewModel.barChartDataAmountOfOutstandingTicketsAsignedToTechnician();
 
         XYChart.Series<String, Integer> dataSeries1 = new XYChart.Series<>();
-        dataSeries1.setName("Resolved");
+        dataSeries1.setName(LanguageResource.getString("resolved"));
         data1.forEach((k, v) -> {
             dataSeries1.getData().add(new XYChart.Data(chartViewModel.getnameOftechnicianByID(k), v));
         });
         barChart.getData().add(dataSeries1);
 
         XYChart.Series<String, Integer> dataSeries2 = new XYChart.Series<>();
-        dataSeries2.setName("Outstanding");
+        dataSeries2.setName(LanguageResource.getString("outstanding"));
         data2.forEach((k, v) -> {
             dataSeries2.getData().add(new XYChart.Data(chartViewModel.getnameOftechnicianByID(k), v));
         });
@@ -218,14 +218,14 @@ public class ChartController extends GuiController {
         gridCharts.getChildren().clear();
 
         CategoryAxis xAxis = new CategoryAxis();
-        xAxis.setLabel("Ticket Statuses");
+        xAxis.setLabel(LanguageResource.getString("ticket_status"));
         xAxis.setTickLabelsVisible(false);
 
         NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Amount of Tickets");
+        yAxis.setLabel(LanguageResource.getString("amountOfTickets"));
 
         BarChart<String, Integer> barChart = new BarChart(xAxis, yAxis);
-        barChart.setTitle("Amount of tickets per status");
+        barChart.setTitle(LanguageResource.getString("amountOfTicketsPerStatus"));
 
         Map<String, Integer> data = chartViewModel.barChartDataAmountOfTicketsPerStatus();
 
@@ -246,13 +246,13 @@ public class ChartController extends GuiController {
         gridCharts.getChildren().clear();
 
         CategoryAxis xAxis = new CategoryAxis();
-        xAxis.setLabel("Months");
+        xAxis.setLabel(LanguageResource.getString("months"));
 
         NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Amount of Tickets");
+        yAxis.setLabel(LanguageResource.getString("amountOfTickets"));
 
         BarChart<String, Integer> barChart = new BarChart(xAxis, yAxis);
-        barChart.setTitle("Tickets per month for " + LocalDate.now().getYear());
+        barChart.setTitle(LanguageResource.getString("ticketsPerMonth") + LocalDate.now().getYear());
 
         Map<String, Integer> data = chartViewModel.barChartMonthlyTickets();
 
@@ -271,14 +271,14 @@ public class ChartController extends GuiController {
         gridCharts.getChildren().clear();
 
         CategoryAxis xAxis = new CategoryAxis();
-        xAxis.setLabel("Ticket Types");
+        xAxis.setLabel(LanguageResource.getString("ticket_type"));
         xAxis.setTickLabelsVisible(false);
 
         NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Amount of Tickets");
+        yAxis.setLabel(LanguageResource.getString("amountOfTickets"));
 
         BarChart<String, Integer> barChart = new BarChart(xAxis, yAxis);
-        barChart.setTitle("Tickets per Type");
+        barChart.setTitle(LanguageResource.getString("ticketsperType"));
 
         Map<String, Integer> data = chartViewModel.barChartTicketType();
 
@@ -303,21 +303,21 @@ public class ChartController extends GuiController {
         gridCharts.getChildren().clear();
 
         CategoryAxis xAxis = new CategoryAxis();
-        xAxis.setLabel("Ticket");
+        xAxis.setLabel(LanguageResource.getString("ticket"));
         xAxis.setTickLabelsVisible(false);
 
         NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Avarage time in seconds");
+        yAxis.setLabel(LanguageResource.getString("AverageTime"));
 
         BarChart<String, Double> barChart = new BarChart(xAxis, yAxis);
-        barChart.setTitle("Average Time per Ticket");
+        barChart.setTitle(LanguageResource.getString("AverageTimeTicket"));
 
         double data = chartViewModel.chartAverageTimeNeededToSolveTickets();
         System.out.println(data);
 
         XYChart.Series<String, Double> dataSeries = new XYChart.Series<>();
-        dataSeries.setName("Average time needed to solve a ticket in seconds");
-        dataSeries.getData().add(new XYChart.Data("Ticket", data));
+        dataSeries.setName(LanguageResource.getString("solveTicket"));
+        dataSeries.getData().add(new XYChart.Data(LanguageResource.getString("ticket"), data));
         barChart.getData().add(dataSeries);
 
         gridCharts.add(barChart, 0,0);
