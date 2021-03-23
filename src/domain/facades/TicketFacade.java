@@ -294,7 +294,7 @@ public class TicketFacade implements Facade {
 	public ObservableList<Employee> getAllTechnicians() {
 		return FXCollections.observableArrayList(actemium.giveActemiumEmployees()
 				.stream()
-				.filter(t -> t.getRole() == EmployeeRole.TECHNICIAN)
+				.filter(t -> t.getRole().equals(EmployeeRole.TECHNICIAN))
 				.collect(Collectors.toList()));
 	}
 
@@ -305,42 +305,42 @@ public class TicketFacade implements Facade {
 			ticketsOfSameType = FXCollections.observableArrayList(
 					giveActemiumTicketsCompleted()
 					.stream()
-					.filter(t -> t.getTicketType() == TicketType.HARDWARE)
+					.filter(t -> t.getTicketType().equals(TicketType.HARDWARE))
 					.collect(Collectors.toList()));
 		}
 		case SOFTWARE -> {
 			ticketsOfSameType = FXCollections.observableArrayList(
 					giveActemiumTicketsCompleted()
 					.stream()
-					.filter(t -> t.getTicketType() == TicketType.SOFTWARE)
+					.filter(t -> t.getTicketType().equals(TicketType.SOFTWARE))
 					.collect(Collectors.toList()));
 		}
 		case INFRASTRUCTURE -> {
 			ticketsOfSameType = FXCollections.observableArrayList(
 					giveActemiumTicketsCompleted()
 					.stream()
-					.filter(t -> t.getTicketType() == TicketType.INFRASTRUCTURE)
+					.filter(t -> t.getTicketType().equals(TicketType.INFRASTRUCTURE))
 					.collect(Collectors.toList()));
 		}
 		case DATABASE -> {
 			ticketsOfSameType = FXCollections.observableArrayList(
 					giveActemiumTicketsCompleted()
 					.stream()
-					.filter(t -> t.getTicketType() == TicketType.DATABASE)
+					.filter(t -> t.getTicketType().equals(TicketType.DATABASE))
 					.collect(Collectors.toList()));
 		}
 		case NETWORK -> {
 			ticketsOfSameType = FXCollections.observableArrayList(
 					giveActemiumTicketsCompleted()
 					.stream()
-					.filter(t -> t.getTicketType() == TicketType.NETWORK)
+					.filter(t -> t.getTicketType().equals(TicketType.NETWORK))
 					.collect(Collectors.toList()));
 		}
 		default -> {
 			ticketsOfSameType = FXCollections.observableArrayList(
 					giveActemiumTicketsCompleted()
 					.stream()
-					.filter(t -> t.getTicketType() == TicketType.OTHER)
+					.filter(t -> t.getTicketType().equals(TicketType.OTHER))
 					.collect(Collectors.toList()));
 		}
 		}

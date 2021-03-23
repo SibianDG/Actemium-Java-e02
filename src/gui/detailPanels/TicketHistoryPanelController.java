@@ -124,7 +124,7 @@ public class TicketHistoryPanelController extends GridPane implements Invalidati
     	changeDateTime.add(String.format("%s", time.substring(0, time.lastIndexOf("."))));
 
         return changeDateTime.stream()
-                .map(dt -> createDateTimeNode(dt))
+                .map(this::createDateTimeNode)
                 .collect(Collectors.toList());
     }
     
