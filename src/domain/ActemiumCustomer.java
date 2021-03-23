@@ -7,12 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import domain.enums.RequiredElement;
 import exceptions.InformationRequiredException;
@@ -30,8 +25,8 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	//@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int customerNr;
+	//@GeneratedValue(strategy = GenerationType.AUTO)
+	//private int customerNr;
 	
 	@OneToMany(mappedBy = "customer",
 			   cascade = CascadeType.PERSIST)
@@ -67,13 +62,9 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 
 
 	public int getCustomerNr() {
-		return customerNr;
+		return (int) super.getUserId();
 	}
 
-	public void setCustomerNr(int customerNr) {
-		this.customerNr = customerNr;
-	}
-	
 	public List<ActemiumContract> getContracts() {
 		return contracts;
 	}

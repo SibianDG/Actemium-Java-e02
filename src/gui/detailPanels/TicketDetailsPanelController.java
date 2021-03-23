@@ -372,7 +372,8 @@ public class TicketDetailsPanelController extends DetailsPanelController {
         listView.setMaxHeight(((TicketViewModel) viewModel).getTechniciansAsignedToTicket().size()*25+25);		
         listView.getStylesheets().add("file:src/start/styles.css");
         listView.setId("list-view");
-        listView.setSelectionModel(null);
+        //listView.setMouseTransparent(true);
+        //listView.setSelectionModel(null);
         // only show menuButton when ticket is outstanding
         // hide it when ticket is resolved
         if (!TicketStatus.isOutstanding() || !signedInEmployeeRole.equals(EmployeeRole.SUPPORT_MANAGER)) {        	

@@ -439,6 +439,7 @@ public class Actemium {
 		ticketDaoJpa.startTransaction();
 		ticketDaoJpa.update(ticket);
 		ticketDaoJpa.commitTransaction();
+
 		// change ticket to completed, it will move to resolved tickets
 		if (TicketStatus.isOutstanding() &&
 				(ticket.getStatus().equals(TicketStatus.COMPLETED)
@@ -446,6 +447,7 @@ public class Actemium {
 			actemiumTicketsResolved.add(ticket);
 			actemiumTicketsOutstanding.remove(ticket);
 		}
+
 		// change ticket to not-completed, it will move to outstanding tickets
 		if (!TicketStatus.isOutstanding() &&
 				!(ticket.getStatus().equals(TicketStatus.COMPLETED)

@@ -52,19 +52,16 @@ public class TicketTableViewPanelController<T, E> extends TableViewPanelControll
 			
 			initTicketPriorityButtons();
 						
-			this.mainData.addListener(new ListChangeListener<T>() {					
-				@Override
-				public void onChanged(Change<? extends T> c) {						
-					while(c.next()) {
-						if(c.wasAdded()) {
-							changeTicketPriorityButtons(c.getList());
-							
-						} else if(c.wasRemoved()) {
-							changeTicketPriorityButtons(c.getList());
-						}
+			this.mainData.addListener((ListChangeListener<T>) c -> {
+				while(c.next()) {
+					if(c.wasAdded()) {
+						changeTicketPriorityButtons(c.getList());
+
+					} else if(c.wasRemoved()) {
+						changeTicketPriorityButtons(c.getList());
 					}
-				}											
-			});		
+				}
+			});
 		} else {
 			this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTicketsResolved();
 			btnAdd.setVisible(false);
@@ -87,7 +84,7 @@ public class TicketTableViewPanelController<T, E> extends TableViewPanelControll
 		amountOfP1Tickets = observableList.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P1 )).collect(Collectors.toList()).size();
 		amountOfP2Tickets = observableList.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P2 )).collect(Collectors.toList()).size();
 		amountOfP3Tickets = observableList.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P3 )).collect(Collectors.toList()).size();
-		
+
 		btnP1.setText(String.valueOf(amountOfP1Tickets));		
 		btnP2.setText(String.valueOf(amountOfP2Tickets));
 		btnP3.setText(String.valueOf(amountOfP3Tickets));

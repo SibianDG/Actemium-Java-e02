@@ -28,15 +28,15 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 	private static final long serialVersionUID = 1L;
 
 	//ToDo: when on SQL SERVER Turn on
-	//@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int employeeNr;
+	//@GeneratedValue(strategy = GenerationType.AUTO)
+	//private String employeeNr;
 
 	private String address;
 	private String phoneNumber;
 
 	@Column(unique = true)
 	private String emailAddress;
-	
+
 	@Transient
 	private StringProperty role = new SimpleStringProperty();
 
@@ -77,11 +77,7 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 	}
 
 	public int getEmployeeNr() {
-		return employeeNr;
-	}
-
-	public void setEmployeeNr(int employeeNr) {
-		this.employeeNr = employeeNr;
+		return (int) super.getUserId();
 	}
 
 	public String getAddress() {
