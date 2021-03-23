@@ -108,6 +108,10 @@ public class UserViewModel extends ViewModel {
 		return selectedUser.getFirstName() + " " + selectedUser.getLastName();
 	}
 
+	public User getLoginUser() {
+        return userFacade.getLoginUser();
+    }
+
 	public void registerEmployee(String username, String lastName, String firstName, String address,
 			String emailAddress, String phoneNumber, EmployeeRole role) throws InformationRequiredException {
 		userFacade.registerEmployee(username, "Passwd123&", firstName, lastName, address, phoneNumber, emailAddress, role);

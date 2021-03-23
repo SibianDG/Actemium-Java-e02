@@ -8,10 +8,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import domain.Employee;
 import domain.Ticket;
 import domain.enums.EmployeeRole;
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
+import domain.enums.UserStatus;
 import domain.facades.ContractFacade;
 import domain.facades.ContractTypeFacade;
 import domain.facades.KnowledgeBaseFacade;
@@ -213,16 +215,16 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         	if(itemNames[i].equals("outstanding tickets")) {
         		StringBuilder text = new StringBuilder();
         		text.append(itemNames[i]);
-        		
+
         		int amountOfP1Tickets, amountOfP2Tickets, amountOfP3Tickets;
-        		amountOfP1Tickets = ticketViewModel.giveTicketsOutstanding().stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P1 )).collect(Collectors.toList()).size();
-        		amountOfP2Tickets = ticketViewModel.giveTicketsOutstanding().stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P2 )).collect(Collectors.toList()).size();
-        		amountOfP3Tickets = ticketViewModel.giveTicketsOutstanding().stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P3 )).collect(Collectors.toList()).size();
-        		
+        		amountOfP1Tickets = ticketViewModel.giveTicketsOutstanding().stream().filter((t -> t.getPriority() == TicketPriority.P1 )).collect(Collectors.toList()).size();
+        		amountOfP2Tickets = ticketViewModel.giveTicketsOutstanding().stream().filter((t -> t.getPriority() == TicketPriority.P2 )).collect(Collectors.toList()).size();
+        		amountOfP3Tickets = ticketViewModel.giveTicketsOutstanding().stream().filter((t -> t.getPriority() == TicketPriority.P3 )).collect(Collectors.toList()).size();
+
         		text.append(String.format("%n(P1: %d, P2: %d, P3: %d)", amountOfP1Tickets, amountOfP2Tickets, amountOfP3Tickets));
-        	    		
+
         		addDashboardItem(text.toString(), createImageView(textToImageMap.get(itemNames[i]),i%2, 130), i%3, i/3, i);
-        	}  else {     	
+        	}  else {
             addDashboardItem(itemNames[i], createImageView(textToImageMap.get(itemNames[i]),i%2, 130), i%3, i/3, i);
         	}
         }
@@ -435,7 +437,22 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
 
     @FXML
     void btnNotificationAction(MouseEvent event) {
-        makePopUp("Notifications");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Notifications");
+
+        if (((Employee) userViewModel.getLoginUser()).getRole() == EmployeeRole.SUPPORT_MANAGER)
+            alert.setContentText(String.format("Customers in Request: %d%nTickets with unassigned technicians: %d%n",
+                    (int) userViewModel.giveCustomers().stream().filter(c -> c.getStatus() == UserStatus.IN_REQUEST).count(),
+                    (int) ticketViewModel.giveTicketsOutstanding().stream().filter(t -> t.giveTechnicians().size() == 0).count()
+            ));
+        else if (((Employee) userViewModel.getLoginUser()).getRole() == EmployeeRole.TECHNICIAN)
+            alert.setContentText(String.format("Outstanding tickets: %d%n",
+                    ticketViewModel.giveTicketsOutstandingAssignedToTechnician().size()
+            ));
+
+        alert.getDialogPane().getStylesheets().add("file:src/start/styles.css");
+        alert.getDialogPane().getStyleClass().add("alert");
+        ((Stage)alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
+        alert.showAndWait();
     }
 
     @FXML

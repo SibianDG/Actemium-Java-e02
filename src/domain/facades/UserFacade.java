@@ -304,5 +304,8 @@ public class UserFacade implements Facade {
     public String getNameByID(long id) {
 		return actemium.getNameByID(id);
 	}
-	
+
+    public User getLoginUser() {
+		return actemium.getSignedInUser();
+    }
 }
