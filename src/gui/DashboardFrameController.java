@@ -78,13 +78,13 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
     private final KnowledgeBaseFacade knowledgeBaseFacade;
 
     // ViewModels
-    private UserViewModel userViewModel;
-	private TicketViewModel ticketViewModel;
-	private ContractTypeViewModel contractTypeViewModel;
-	private ContractViewModel contractViewModel;
-	private KnowledgeBaseViewModel knowledgeBaseViewModel;
-	private ProfileViewModel profileViewModel;
-	private ChartViewModel chartViewModel;
+    private final UserViewModel userViewModel;
+	private final TicketViewModel ticketViewModel;
+	private final ContractTypeViewModel contractTypeViewModel;
+	private final ContractViewModel contractViewModel;
+	private final KnowledgeBaseViewModel knowledgeBaseViewModel;
+	private final ProfileViewModel profileViewModel;
+	private final ChartViewModel chartViewModel;
 	
 	//LoginController
 	private LoginController loginController;
@@ -119,11 +119,11 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
     @FXML
     private GridPane gridContent;
 
-    private Set<DashboardTile> dashboardTiles = new HashSet<>();
+    private final Set<DashboardTile> dashboardTiles = new HashSet<>();
 
     private TableViewPanelController<T,E> tableViewPanelCompanion;
     private DetailsPanelController detailsPanelController;
-    private ProfilePanelController profilePanelController;
+    private final ProfilePanelController profilePanelController;
 
     private final Map<String, String> textToImageMap = Map.of(
             LanguageResource.getString("manage_employees"), "icon_manage_user"
@@ -235,9 +235,9 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         		text.append(itemNames[i]);
 
         		int amountOfP1Tickets, amountOfP2Tickets, amountOfP3Tickets;
-        		amountOfP1Tickets = ticketViewModel.giveTicketsOutstanding().stream().filter((t -> t.getPriority() == TicketPriority.P1 )).collect(Collectors.toList()).size();
-        		amountOfP2Tickets = ticketViewModel.giveTicketsOutstanding().stream().filter((t -> t.getPriority() == TicketPriority.P2 )).collect(Collectors.toList()).size();
-        		amountOfP3Tickets = ticketViewModel.giveTicketsOutstanding().stream().filter((t -> t.getPriority() == TicketPriority.P3 )).collect(Collectors.toList()).size();
+        		amountOfP1Tickets = (int) ticketViewModel.giveTicketsOutstanding().stream().filter((t -> t.getPriority() == TicketPriority.P1)).count();
+        		amountOfP2Tickets = (int) ticketViewModel.giveTicketsOutstanding().stream().filter((t -> t.getPriority() == TicketPriority.P2)).count();
+        		amountOfP3Tickets = (int) ticketViewModel.giveTicketsOutstanding().stream().filter((t -> t.getPriority() == TicketPriority.P3)).count();
 
         		text.append(String.format("%n(P1: %d, P2: %d, P3: %d)", amountOfP1Tickets, amountOfP2Tickets, amountOfP3Tickets));
 
@@ -267,7 +267,7 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
                 if (enabled) {
                     try {
                         buttonMenusClicked(text);
-                    } catch (IOException ioException) {
+                    } catch (IOException ignored) {
                     }
                 }                               
             });
@@ -316,7 +316,7 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         dashboardTile.setOnMouseClicked(e -> {
             try {
                 buttonMenusClicked(name);
-            } catch (IOException ioException) {
+            } catch (IOException ignored) {
 
             }
         });
@@ -335,7 +335,7 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
                 try {
                     String text = ((Button) child).getText();
                     ((Button)child).setGraphic(createImageView(textToImageMap.get(text.replace("\n", " ")), 1, 35));
-                } catch (FileNotFoundException e) {                }
+                } catch (FileNotFoundException ignored) {                }
             }             
         });
         hboxMenu.getChildren().forEach(child -> {
@@ -343,7 +343,7 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
                 child.getStyleClass().add("menuButton-active");
                 try {
                     ((Button)child).setGraphic(createImageView(textToImageMap.get(name), 0, 35));
-                } catch (FileNotFoundException e) {
+                } catch (FileNotFoundException ignored) {
                 }
 
             }
@@ -513,7 +513,7 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
                 String text = ((Button) child).getText();
                 try {
 					((Button)child).setGraphic(createImageView(textToImageMap.get(text.replace("\n", " ")), 1, 35));
-				} catch (FileNotFoundException e) {
+				} catch (FileNotFoundException ignored) {
 
 				}
         	});

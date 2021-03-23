@@ -257,11 +257,12 @@ public class ActemiumCompany implements Company, Serializable {
 		}
 	}
 
+	@Override
 	public ActemiumCompany clone() throws CloneNotSupportedException {
 
 		ActemiumCompany cloned = null;
 		try {
-			cloned = new ActemiumCompany.CompanyBuilder()
+			cloned = new CompanyBuilder()
 					.name(this.getName())
 					.country(this.getCountry())
 					.city(this.getCity())

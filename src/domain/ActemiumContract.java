@@ -303,6 +303,7 @@ public class ActemiumContract implements Contract, Serializable {
 
 	}
 
+	@Override
 	public ActemiumContract clone() throws CloneNotSupportedException {
 
 		ActemiumContract cloned = null;

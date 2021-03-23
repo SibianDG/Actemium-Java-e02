@@ -11,7 +11,7 @@ import javafx.collections.ObservableList;
 
 public class ContractTypeFacade implements Facade{
 
-    private Actemium actemium;
+    private final Actemium actemium;
 
     public ContractTypeFacade(Actemium actemium) {
         this.actemium = actemium;

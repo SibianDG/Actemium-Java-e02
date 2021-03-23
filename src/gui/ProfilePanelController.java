@@ -282,6 +282,7 @@ public class ProfilePanelController extends GridPane  {
     }
 
 
+    //TODO: make void?
     public boolean alertChanges() {
         boolean showNewObject = true;
         if(profileViewModel.isFieldModified()) {

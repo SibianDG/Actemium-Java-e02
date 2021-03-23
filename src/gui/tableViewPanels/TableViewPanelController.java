@@ -138,9 +138,8 @@ public abstract class TableViewPanelController<T, E> extends GridPane {
 	
 	//TODO
 	protected TextField createTextFieldFilter(String o) {
-		String string = o;
 		TextField filter = new TextField();
-		filter.setPromptText(string);
+		filter.setPromptText(o);
 		filter.setPrefWidth(145);
 		filter.setFont(Font.font("Arial", 14));
 		return filter;		

@@ -157,6 +157,7 @@ public class ActemiumKbItem implements KbItem, Serializable {
 		}
 	}
 
+	@Override
 	public ActemiumKbItem clone() throws CloneNotSupportedException {
 
 		ActemiumKbItem cloned = null;

@@ -34,7 +34,7 @@ public class TicketTableViewPanelController<T, E> extends TableViewPanelControll
     
 	// T = Ticket
 	// E = StringProperty or IntegerProperty
-	private Map<String, Function<T, Property<E>>> propertyMap = new LinkedHashMap<>();
+	private final Map<String, Function<T, Property<E>>> propertyMap = new LinkedHashMap<>();
 
 	private ObservableList<T> mainData;
 	
@@ -81,9 +81,9 @@ public class TicketTableViewPanelController<T, E> extends TableViewPanelControll
 	
 	private void changeTicketPriorityButtons(ObservableList<? extends T> observableList) {
 		int amountOfP1Tickets, amountOfP2Tickets, amountOfP3Tickets;
-		amountOfP1Tickets = observableList.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P1 )).collect(Collectors.toList()).size();
-		amountOfP2Tickets = observableList.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P2 )).collect(Collectors.toList()).size();
-		amountOfP3Tickets = observableList.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P3 )).collect(Collectors.toList()).size();
+		amountOfP1Tickets = (int) observableList.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P1)).count();
+		amountOfP2Tickets = (int) observableList.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P2)).count();
+		amountOfP3Tickets = (int) observableList.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P3)).count();
 
 		btnP1.setText(String.valueOf(amountOfP1Tickets));		
 		btnP2.setText(String.valueOf(amountOfP2Tickets));
@@ -226,7 +226,7 @@ public class TicketTableViewPanelController<T, E> extends TableViewPanelControll
 		// Reset all filters
 		tableViewData.setPredicate(p -> true);
 		// Create one combined predicate by iterating over the list
-		predicates.forEach(p -> setPredicateForFilteredList(p));
+		predicates.forEach(this::setPredicateForFilteredList);
 	}
 
 	protected void initializeTableViewSub() {

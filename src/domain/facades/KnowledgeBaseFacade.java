@@ -10,7 +10,7 @@ import javafx.collections.ObservableList;
 
 public class KnowledgeBaseFacade implements Facade {
 
-    private Actemium actemium;
+    private final Actemium actemium;
 
     public KnowledgeBaseFacade(Actemium actemium) {
         this.actemium = actemium;

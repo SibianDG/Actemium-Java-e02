@@ -74,8 +74,7 @@ public class TicketDetailsPanelController extends DetailsPanelController {
     	System.out.println("=============HISTORY============\n");
     	System.out.println("==============BEGIN=============\n");
     	System.out.println("History" + txtDetailsTitle.getText().substring(7) + "\n");
-    	((TicketViewModel) viewModel).getSelectedTicket().giveTicketChanges()
-    				.stream().forEach(System.out::println);
+    	((TicketViewModel) viewModel).getSelectedTicket().giveTicketChanges().forEach(System.out::println);
     	System.out.println("===============END==============\n");    	
     	
     	ticketHistoryPanelController = new TicketHistoryPanelController((TicketViewModel) super.viewModel, super.gridContent);
@@ -186,8 +185,6 @@ public class TicketDetailsPanelController extends DetailsPanelController {
             fields = ((TicketViewModel) viewModel).getDetailsNewTicket();
             txtDetailsTitle.setText(LanguageResource.getString("addTicket"));
             btnModify.setText(LanguageResource.getString("addTicket"));
-        } else {
-            fields = null;
         }
         btnModify.setVisible(true);
         assert fields != null;

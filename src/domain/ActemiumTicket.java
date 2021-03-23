@@ -574,6 +574,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 		}
 	}
 
+	@Override
 	public ActemiumTicket clone() throws CloneNotSupportedException {
 
 		ActemiumTicket cloned = null;

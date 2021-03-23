@@ -278,6 +278,7 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 
 	}
 
+	@Override
 	public ActemiumEmployee clone() throws CloneNotSupportedException {
 
 		ActemiumEmployee cloned = null;

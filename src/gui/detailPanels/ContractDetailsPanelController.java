@@ -127,8 +127,6 @@ public class ContractDetailsPanelController extends DetailsPanelController {
             fields = ((ContractViewModel) viewModel).getDetailsNewContract();
             txtDetailsTitle.setText(LanguageResource.getString("addContract"));
             btnModify.setText(LanguageResource.getString("addContract"));
-        } else {
-            fields = null;
         }
         btnModify.setVisible(true);
         assert fields != null;
@@ -236,7 +234,7 @@ public class ContractDetailsPanelController extends DetailsPanelController {
         String pattern = "yyyy-MM-dd";
         datePicker.setPromptText(pattern.toLowerCase());
         datePicker.setConverter(new StringConverter<LocalDate>() {
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+            final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
             @Override
             public String toString(LocalDate date) {
                 if (date != null) {

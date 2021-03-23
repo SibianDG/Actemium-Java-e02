@@ -128,8 +128,6 @@ public class KnowledgeBaseDetailsPanelController extends DetailsPanelController 
             fields = ((KnowledgeBaseViewModel) viewModel).getDetailsNewKbItem();
             txtDetailsTitle.setText(LanguageResource.getString("addKbItem"));
             btnModify.setText(LanguageResource.getString("addKbItem"));
-        } else {
-            fields = null;
         }
         btnModify.setVisible(true);
         assert fields != null;

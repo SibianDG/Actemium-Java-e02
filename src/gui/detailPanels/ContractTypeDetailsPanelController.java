@@ -139,8 +139,6 @@ public class ContractTypeDetailsPanelController extends DetailsPanelController {
             fields = ((ContractTypeViewModel) viewModel).getDetailsNewContractType();
             txtDetailsTitle.setText(LanguageResource.getString("addContractType"));
             btnModify.setText(LanguageResource.getString("addContractType"));
-        } else {
-            fields = null;
         }
         btnModify.setVisible(true);
         assert fields != null;

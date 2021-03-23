@@ -40,6 +40,7 @@ public abstract class GuiController extends GridPane {
 	/*
 	 * Injections return "this" after injecting to make chainable
 	 */
+	//TODO: make those void?
 
 	protected GuiController injectParentController(GuiController controller) {
 		this.parentController = controller;

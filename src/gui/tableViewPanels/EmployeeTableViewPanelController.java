@@ -34,7 +34,7 @@ import languages.LanguageResource;
 
 public class EmployeeTableViewPanelController<T,E> extends TableViewPanelController {
 	
-	private Map<String, Function<T, Property<E>>> propertyMap = new LinkedHashMap<>();
+	private final Map<String, Function<T, Property<E>>> propertyMap = new LinkedHashMap<>();
 
 	private ObservableList<T> mainData;
 	
@@ -109,9 +109,7 @@ public class EmployeeTableViewPanelController<T,E> extends TableViewPanelControl
 		ComboBox c = new ComboBox(list);
 		
 		switch(itemText) {
-	        case "UserStatus" -> {
-	        	c.getSelectionModel().select("SELECT STATUS");
-	        }
+	        case "UserStatus" -> c.getSelectionModel().select("SELECT STATUS");
 	        case "EmployeeRole" -> c.getSelectionModel().select(LanguageResource.getString("select_status").toUpperCase());
 	        default -> c.getSelectionModel().select(LanguageResource.getString("select").toUpperCase());
 	    } 
@@ -156,7 +154,7 @@ public class EmployeeTableViewPanelController<T,E> extends TableViewPanelControl
 		// Reset all filters
 		tableViewData.setPredicate(p -> true);
 		// Create one combined predicate by iterating over the list
-		predicates.forEach(p -> setPredicateForFilteredList(p));
+		predicates.forEach(this::setPredicateForFilteredList);
 	}
 
 	protected void initializeTableViewSub() {				

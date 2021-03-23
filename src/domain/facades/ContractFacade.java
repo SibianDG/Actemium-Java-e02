@@ -15,7 +15,7 @@ import languages.LanguageResource;
 
 public class ContractFacade implements Facade {
 
-    private Actemium actemium;
+    private final Actemium actemium;
 
     public ContractFacade(Actemium actemium) {
         this.actemium = actemium;

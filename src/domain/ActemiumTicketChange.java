@@ -176,6 +176,7 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 		}
 	}
 
+	@Override
 	public ActemiumTicketChange clone() throws CloneNotSupportedException {
 
 		ActemiumTicketChange cloned = null;

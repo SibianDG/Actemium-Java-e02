@@ -21,7 +21,7 @@ public class UserFacade implements Facade {
 	// - SignedInUserManagaer in domain.facades
 	// - ...	
 	
-	private Actemium actemium;
+	private final Actemium actemium;
 		
 	public UserFacade(Actemium actemium) {
 		this.actemium = actemium;

@@ -176,8 +176,6 @@ public class UserDetailsPanelController extends DetailsPanelController {
             fields = ((UserViewModel) viewModel).getDetailsNewCustomer();
             txtDetailsTitle.setText(LanguageResource.getString("addCustomer"));
             btnModify.setText(LanguageResource.getString("addCustomer"));
-        } else {
-            fields = null;
         }
         btnModify.setVisible(true);
         assert fields != null;

@@ -25,7 +25,7 @@ import languages.LanguageResource;
 
 public class TicketFacade implements Facade {
 	
-	private Actemium actemium;
+	private final Actemium actemium;
 
 	public TicketFacade(Actemium actemium) {
 		this.actemium = actemium;
@@ -113,7 +113,7 @@ public class TicketFacade implements Facade {
 				changeList.add(String.format("%s.", LanguageResource.getString("ticket_description_changed")));
 				ticket.setDescription(description);
 			}
-			if (!(commentText.equals("(none)") || commentText.isBlank() || commentText == null)) {
+			if (commentText == null || !(commentText.equals("(none)") || commentText.isBlank())) {
 				changeList.add(String.format("%s.", LanguageResource.getString("ticket_comment_added")));
 				ticket.addTicketComment(createTicketComment(ticket, commentText));
 			}
@@ -123,7 +123,7 @@ public class TicketFacade implements Facade {
 			}
 			// Had to stream the list in order for the removeAll to work properly
 			if (!ticket.getTechnicians().equals(technicians)) {
-				List<ActemiumEmployee> originalTechnicians = ticket.getTechnicians().stream().collect(Collectors.toList());
+				List<ActemiumEmployee> originalTechnicians = new ArrayList<>(ticket.getTechnicians());
 				originalTechnicians.removeAll(technicians);
 				if (originalTechnicians.size() != 0) {
 					for (ActemiumEmployee technician : originalTechnicians) {
@@ -131,12 +131,12 @@ public class TicketFacade implements Facade {
 								technician.getFirstName(), technician.getLastName(), LanguageResource.getString("with_id") ,technician.getUserId(), LanguageResource.getString("got_removed_from_the_ticket")));
 					}
 				}
-				originalTechnicians = ticket.getTechnicians().stream().collect(Collectors.toList());
-				List<ActemiumEmployee> newTechnicians = technicians.stream().collect(Collectors.toList());
+				originalTechnicians = new ArrayList<>(ticket.getTechnicians());
+				List<ActemiumEmployee> newTechnicians = new ArrayList<>(technicians);
 				newTechnicians.removeAll(originalTechnicians);
 				if (newTechnicians.size() != 0) {
 					for (ActemiumEmployee technician : newTechnicians) {
-						changeList.add(String.format("%s \"%s %s\" %s: %d got added to the ticket.", "Technician"/*(LanguageResource.getString("TECHNICIAN").substring(0,1).toUpperCase() + LanguageResource.getString("TECHNICIAN").substring(1).toLowerCase())*/,
+						changeList.add(String.format("%s \"%s %s\" %s: %d %s.", "Technician"/*(LanguageResource.getString("TECHNICIAN").substring(0,1).toUpperCase() + LanguageResource.getString("TECHNICIAN").substring(1).toLowerCase())*/,
 								technician.getFirstName(), technician.getLastName(), LanguageResource.getString("with_id") ,technician.getUserId(), LanguageResource.getString("got_added_to_the_ticket")));
 					}
 				}
@@ -173,7 +173,7 @@ public class TicketFacade implements Facade {
 				changeList.add(String.format("%s \"%s\" %s \"%s\".",LanguageResource.getString("ticket_priority_changed_from") , ticket.getStatus(), LanguageResource.getString("to"), status));
 				ticket.setStatus(status);
 			}			
-			if (!(commentText.equals("(none)") || commentText.isBlank() || commentText == null)) {
+			if (commentText == null || !(commentText.equals("(none)") || commentText.isBlank())) {
 				changeList.add(String.format("%s.", LanguageResource.getString("ticket_comment_added")));
 				ticket.addTicketComment(createTicketComment(ticket, commentText));
 			}

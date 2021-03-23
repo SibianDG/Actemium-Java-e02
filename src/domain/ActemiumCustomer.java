@@ -185,6 +185,7 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 		}
 	}
 
+	@Override
 	public ActemiumCustomer clone() throws CloneNotSupportedException {
 
 		ActemiumCustomer cloned = null;

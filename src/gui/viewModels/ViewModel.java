@@ -10,7 +10,7 @@ public abstract class ViewModel implements Observable {
 	
 	private boolean fieldModified = false;
 
-    private ArrayList<InvalidationListener> listeners = new ArrayList<>();
+    private final ArrayList<InvalidationListener> listeners = new ArrayList<>();
 
     protected void fireInvalidationEvent() {
         for (InvalidationListener listener : listeners) {

@@ -34,13 +34,13 @@ import languages.LanguageResource;
 
 public class ContractTableViewPanelController<T,E> extends TableViewPanelController {
 	
-	private Map<String, Function<T, Property<E>>> propertyMap = new LinkedHashMap<>();
+	private final Map<String, Function<T, Property<E>>> propertyMap = new LinkedHashMap<>();
 
 	private ObservableList<T> mainData;
-	
+
 	public ContractTableViewPanelController(DashboardFrameController dashboardFrameController, ViewModel viewModel, GUIEnum currentState, EmployeeRole employeeRole) {
-		super(dashboardFrameController, viewModel, currentState, employeeRole);				
-		
+		super(dashboardFrameController, viewModel, currentState, employeeRole);
+
 		this.mainData = (ObservableList<T>) ((ContractViewModel) viewModel).giveContracts();
 		this.tableViewData = new FilteredList<>(mainData);
 		propertyMap.put(LanguageResource.getString("ID"), item -> (Property<E>)((Contract) item).contractIdProperty()); // IntegerProperty
@@ -86,8 +86,8 @@ public class ContractTableViewPanelController<T,E> extends TableViewPanelControl
 		ArrayList<String> stringArrayList;
 
 		ObservableList list;
-		
-	    switch(o.getClass().getSimpleName()) {	        
+
+	    switch(o.getClass().getSimpleName()) {
 		    case "ContractStatus" -> {
 		    	stringArrayList = new ArrayList<>(Collections.singleton(LanguageResource.getString("select_status").toUpperCase()));
 				Arrays.asList(ContractStatus.values()).forEach(string -> stringArrayList.add(string.toString()));
@@ -98,7 +98,7 @@ public class ContractTableViewPanelController<T,E> extends TableViewPanelControl
 				Arrays.asList(UserStatus.values()).forEach(string -> stringArrayList.add(string.toString()));
 				itemText = "Status";
 	        }
-	    } 	
+	    }
 	    
 		list = FXCollections.observableList(stringArrayList);
 		ComboBox c = new ComboBox(list);
@@ -143,7 +143,7 @@ public class ContractTableViewPanelController<T,E> extends TableViewPanelControl
 		// Reset all filters
 		tableViewData.setPredicate(p -> true);
 		// Create one combined predicate by iterating over the list
-		predicates.forEach(p -> setPredicateForFilteredList(p));
+		predicates.forEach(this::setPredicateForFilteredList);
 	}
 
 	protected void initializeTableViewSub() {

@@ -74,7 +74,7 @@ public class TableViewPanelCompanionGenericOld<T,E> extends GridPane {
 	//private UserFacade userFacade;
 	private final DashboardFrameController dashboardFrameController;
 	private final ViewModel viewModel;
-	private GUIEnum currentState;
+	private final GUIEnum currentState;
 	private EmployeeRole employeeRole;
 
 	@FXML
@@ -101,7 +101,7 @@ public class TableViewPanelCompanionGenericOld<T,E> extends GridPane {
     @FXML
     private TableView<T> tableView;
     
-	private Map<String, Function<T, Property<E>>> propertyMap = new LinkedHashMap<>();
+	private final Map<String, Function<T, Property<E>>> propertyMap = new LinkedHashMap<>();
 
 	private ObservableList<T> mainData;
 	private FilteredList<T> tableViewData;
@@ -226,9 +226,9 @@ public class TableViewPanelCompanionGenericOld<T,E> extends GridPane {
 	
 	private void changeTicketPriorityButtons(ObservableList<? extends T> observableList) {
 		int amountOfP1Tickets, amountOfP2Tickets, amountOfP3Tickets;
-		amountOfP1Tickets = observableList.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P1 )).collect(Collectors.toList()).size();
-		amountOfP2Tickets = observableList.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P2 )).collect(Collectors.toList()).size();
-		amountOfP3Tickets = observableList.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P3 )).collect(Collectors.toList()).size();
+		amountOfP1Tickets = (int) observableList.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P1)).count();
+		amountOfP2Tickets = (int) observableList.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P2)).count();
+		amountOfP3Tickets = (int) observableList.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P3)).count();
 		
 		btnP1.setText(String.valueOf(amountOfP1Tickets));		
 		btnP2.setText(String.valueOf(amountOfP2Tickets));
@@ -237,9 +237,9 @@ public class TableViewPanelCompanionGenericOld<T,E> extends GridPane {
 	
 	private void initTicketPriorityButtons( ) {
 		int amountOfP1Tickets, amountOfP2Tickets, amountOfP3Tickets;
-		amountOfP1Tickets = this.mainData.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P1 )).collect(Collectors.toList()).size();
-		amountOfP2Tickets = this.mainData.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P2 )).collect(Collectors.toList()).size();
-		amountOfP3Tickets = this.mainData.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P3 )).collect(Collectors.toList()).size();
+		amountOfP1Tickets = (int) this.mainData.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P1)).count();
+		amountOfP2Tickets = (int) this.mainData.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P2)).count();
+		amountOfP3Tickets = (int) this.mainData.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P3)).count();
 		
 		btnP1.setText(String.valueOf(amountOfP1Tickets));		
 		btnP2.setText(String.valueOf(amountOfP2Tickets));
@@ -511,7 +511,7 @@ public class TableViewPanelCompanionGenericOld<T,E> extends GridPane {
 		// Reset all filters
 		tableViewData.setPredicate(p -> true);
 		// Create one combined predicate by iterating over the list
-		predicates.forEach(p -> setPredicateForFilteredList(p));
+		predicates.forEach(this::setPredicateForFilteredList);
 	}
 
 	private void initializeTableView() {

@@ -497,7 +497,7 @@ public class Actemium {
 	
 	public ObservableList<Ticket> giveActemiumTicketsOutstandingAssignedToTechnician() {
 		return FXCollections.observableArrayList(actemiumTicketsOutstanding.stream()
-				.filter(t -> t.giveTechnicians().stream().collect(Collectors.toList()).contains(getSignedInUser()))
+				.filter(t -> new ArrayList<>(t.giveTechnicians()).contains(getSignedInUser()))
 				.collect(Collectors.toList()));
 	}
 

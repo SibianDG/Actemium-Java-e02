@@ -36,6 +36,7 @@ public class TicketHistoryPanelController extends GridPane implements Invalidati
     @FXML
     private Button btnClose;    
 
+    @FXML
     private GridPane gridContent; 
 
     public TicketHistoryPanelController(TicketViewModel ticketViewModel, GridPane gridContent) {
@@ -108,12 +109,11 @@ public class TicketHistoryPanelController extends GridPane implements Invalidati
     	
 		changeInfo.add(String.format("%s: %s %s", change.getUserRole(), change.getUser().getFirstName(), change.getUser().getLastName()));
 		changeInfo.add(String.format("%s", change.getChangeDescription()));
-		change.getChangeContent().forEach(c -> changeInfo.add(c));
-		
-    	List<Node> ciNodeList = changeInfo.stream()
-    			.map(dt -> createChangeInfoNode(dt))
-    			.collect(Collectors.toList());
-		return ciNodeList;
+        changeInfo.addAll(change.getChangeContent());
+
+        return changeInfo.stream()
+                .map(this::createChangeInfoNode)
+                .collect(Collectors.toList());
     }
     
     private List<Node> createDateTimeNodeList(TicketChange change) {
@@ -122,11 +122,10 @@ public class TicketHistoryPanelController extends GridPane implements Invalidati
     	changeDateTime.add(String.format("%s", change.getDateTimeOfChange().format(DateTimeFormatter.ISO_DATE)));
     	String time = change.getDateTimeOfChange().format(DateTimeFormatter.ISO_TIME);
     	changeDateTime.add(String.format("%s", time.substring(0, time.lastIndexOf("."))));
-    	
-    	List<Node> dtNodeList = changeDateTime.stream()
-    			.map(dt -> createDateTimeNode(dt))
-    			.collect(Collectors.toList());
-    	return dtNodeList;    	
+
+        return changeDateTime.stream()
+                .map(dt -> createDateTimeNode(dt))
+                .collect(Collectors.toList());
     }
     
     private Node createDateTimeNode(String string) {
@@ -134,16 +133,14 @@ public class TicketHistoryPanelController extends GridPane implements Invalidati
 	    detail.setEditable(false);	
 	    detail.getStyleClass().clear();
 	    detail.setAlignment(Pos.CENTER_RIGHT);
-	    Node node = detail;
-        return node;
+        return detail;
     }
     
     private Node createChangeInfoNode(String string) {
     	TextField detail = new TextField(string);	
     	detail.setEditable(false);	
     	detail.getStyleClass().clear();
-    	Node node = detail;
-    	return node;
+        return detail;
     }
 
     private void initGridDetails() {

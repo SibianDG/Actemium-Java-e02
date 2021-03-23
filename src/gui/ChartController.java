@@ -66,7 +66,7 @@ public class ChartController extends GuiController {
     private Button btnAverageTimeTicket;
 
     private DashboardFrameController dashboardFrameController;
-    private ChartViewModel chartViewModel;
+    private final ChartViewModel chartViewModel;
 
     public ChartController(DashboardFrameController dashboardFrameController, ChartViewModel chartViewModel) {
         super();

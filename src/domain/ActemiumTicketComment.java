@@ -160,6 +160,7 @@ public class ActemiumTicketComment implements TicketComment, Serializable {
 		}
 	}
 
+	@Override
 	public ActemiumTicketComment clone() throws CloneNotSupportedException {
 
 		ActemiumTicketComment cloned = null;

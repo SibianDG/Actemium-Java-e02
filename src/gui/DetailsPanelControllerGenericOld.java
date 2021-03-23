@@ -105,7 +105,8 @@ public class DetailsPanelControllerGenericOld extends GridPane implements Invali
 
     @FXML
 	protected Text txtErrorMessage;
-    
+
+    @FXML
     private GridPane gridContent;
     
     private TicketHistoryPanelController ticketHistoryPanelController;
@@ -157,8 +158,7 @@ public class DetailsPanelControllerGenericOld extends GridPane implements Invali
     	System.out.println("=============HISTORY============\n");
     	System.out.println("==============BEGIN=============\n");
     	System.out.println("History" + txtDetailsTitle.getText().substring(7) + "\n");
-    	((TicketViewModel) viewModel).getSelectedTicket().giveTicketChanges()
-    				.stream().forEach(System.out::println);;
+    	((TicketViewModel) viewModel).getSelectedTicket().giveTicketChanges().forEach(System.out::println);;
     	System.out.println("===============END==============\n");    	
     	
     	ticketHistoryPanelController = new TicketHistoryPanelController((TicketViewModel) viewModel, gridContent);
@@ -487,8 +487,6 @@ public class DetailsPanelControllerGenericOld extends GridPane implements Invali
                 fields = ((UserViewModel) viewModel).getDetailsNewCustomer();
                 txtDetailsTitle.setText(LanguageResource.getString("addCustomer"));
                 btnModify.setText(LanguageResource.getString("addCustomer"));
-            } else {
-                fields = null;
             }
             btnModify.setVisible(true);
             assert fields != null;
@@ -498,8 +496,6 @@ public class DetailsPanelControllerGenericOld extends GridPane implements Invali
                 fields = ((TicketViewModel) viewModel).getDetailsNewTicket();
                 txtDetailsTitle.setText(LanguageResource.getString("addTicket"));
                 btnModify.setText(LanguageResource.getString("addTicket"));
-            } else {
-                fields = null;
             }
             btnModify.setVisible(true);
             assert fields != null;
@@ -509,8 +505,6 @@ public class DetailsPanelControllerGenericOld extends GridPane implements Invali
                 fields = ((ContractTypeViewModel) viewModel).getDetailsNewContractType();
                 txtDetailsTitle.setText(LanguageResource.getString("addContractType"));
                 btnModify.setText(LanguageResource.getString("addContractType"));
-            } else {
-                fields = null;
             }
             btnModify.setVisible(true);
             assert fields != null;
@@ -520,8 +514,6 @@ public class DetailsPanelControllerGenericOld extends GridPane implements Invali
                 fields = ((ContractViewModel) viewModel).getDetailsNewContract();
                 txtDetailsTitle.setText(LanguageResource.getString("addContract"));
                 btnModify.setText(LanguageResource.getString("addContract"));
-            } else {
-                fields = null;
             }
             btnModify.setVisible(true);
             assert fields != null;
@@ -531,8 +523,6 @@ public class DetailsPanelControllerGenericOld extends GridPane implements Invali
                 fields = ((KnowledgeBaseViewModel) viewModel).getDetailsNewKbItem();
                 txtDetailsTitle.setText(LanguageResource.getString("addKbItem"));
                 btnModify.setText(LanguageResource.getString("addKbItem"));
-            } else {
-                fields = null;
             }
             btnModify.setVisible(true);
             assert fields != null;
@@ -755,7 +745,7 @@ public class DetailsPanelControllerGenericOld extends GridPane implements Invali
         // Using LinkedHashSet so the order of the map values doesn't change
         Set<String> keys = new LinkedHashSet<String>(details.keySet());
         for (String key : keys) {
-            Label label = makeNewLabel(key, true);
+            //Label label = makeNewLabel(key, true);
 
             Node detail = createElementDetailGridpane(details.get(key), key);
             if (key.toLowerCase().contains(LanguageResource.getString("contracts").toLowerCase())
@@ -1043,7 +1033,7 @@ public class DetailsPanelControllerGenericOld extends GridPane implements Invali
         datePicker.setPromptText(pattern.toLowerCase());
 
         datePicker.setConverter(new StringConverter<LocalDate>() {
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+            final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
 
             @Override
             public String toString(LocalDate date) {

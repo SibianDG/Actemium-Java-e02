@@ -34,7 +34,7 @@ import languages.LanguageResource;
 
 public class CustomerTableViewPanelController<T,E> extends TableViewPanelController {
 	
-	private Map<String, Function<T, Property<E>>> propertyMap = new LinkedHashMap<>();
+	private final Map<String, Function<T, Property<E>>> propertyMap = new LinkedHashMap<>();
 
 	private ObservableList<T> mainData;
 	
@@ -154,7 +154,7 @@ public class CustomerTableViewPanelController<T,E> extends TableViewPanelControl
 		// Reset all filters
 		tableViewData.setPredicate(p -> true);
 		// Create one combined predicate by iterating over the list
-		predicates.forEach(p -> setPredicateForFilteredList(p));
+		predicates.forEach(this::setPredicateForFilteredList);
 	}
 
 	protected void initializeTableViewSub() {

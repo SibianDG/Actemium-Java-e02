@@ -31,11 +31,11 @@ public class LoginController extends GuiController {
 		
 
     private DashboardFrameController dashboardFrameController;
-    private UserFacade userFacade;
-	private TicketFacade ticketFacade;
-    private ContractTypeFacade contractTypeFacade;
-    private ContractFacade contractFacade;
-    private KnowledgeBaseFacade knowledgeBaseFacade;
+    private final UserFacade userFacade;
+	private final TicketFacade ticketFacade;
+    private final ContractTypeFacade contractTypeFacade;
+    private final ContractFacade contractFacade;
+    private final KnowledgeBaseFacade knowledgeBaseFacade;
 	
     @FXML
     private Text txtTitle;
