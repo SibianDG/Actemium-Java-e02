@@ -2,11 +2,14 @@ package domain.facades;
 
 import domain.*;
 import domain.enums.EmployeeRole;
+import domain.enums.TicketType;
 import domain.enums.UserStatus;
 import domain.manager.Actemium;
 import exceptions.InformationRequiredException;
 import javafx.collections.ObservableList;
 import languages.LanguageResource;
+
+import java.util.Set;
 
 public class UserFacade implements Facade {
 
@@ -217,7 +220,7 @@ public class UserFacade implements Facade {
 	}
 
 	public void modifyEmployee(ActemiumEmployee employee, String username, String password, String firstName, String lastName, String address,
-							   String phoneNumber, String emailAddress, EmployeeRole role, UserStatus status) throws InformationRequiredException {
+							   String phoneNumber, String emailAddress, EmployeeRole role, UserStatus status, Set<TicketType> specialties) throws InformationRequiredException {
 		try {
 
 			// check to see if signed in user is Admin
@@ -244,6 +247,7 @@ public class UserFacade implements Facade {
 			cloneEmployee.setEmailAddress(emailAddress);
 			cloneEmployee.setRole(role);
 			cloneEmployee.setStatus(status);
+			cloneEmployee.setSpecialties(specialties);
 
 			cloneEmployee.checkAttributes();
 
@@ -256,6 +260,8 @@ public class UserFacade implements Facade {
 			employee.setEmailAddress(emailAddress);
 			employee.setRole(role);
 			employee.setStatus(status);
+			employee.setSpecialties(specialties);
+
 
 			actemium.modifyEmployee(employee);
 		} catch (CloneNotSupportedException e){
@@ -266,7 +272,7 @@ public class UserFacade implements Facade {
 
 	public void modifyProfileOfEmployee(String username, String password, String firstName, String lastName, String address, String phoneNumber, String emailAddress) throws InformationRequiredException {
 		ActemiumEmployee profile = (ActemiumEmployee) actemium.findByUsername(username);
-		modifyEmployee(profile, profile.getUsername(), password, firstName, lastName, address, phoneNumber, emailAddress, profile.getRole(), profile.getStatus());
+		modifyEmployee(profile, profile.getUsername(), password, firstName, lastName, address, phoneNumber, emailAddress, profile.getRole(), profile.getStatus(), profile.getSpecialties());
 	}
 
 	public void deleteUser(UserModel user) {

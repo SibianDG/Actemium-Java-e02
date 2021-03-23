@@ -4,6 +4,7 @@ import java.util.*;
 
 import domain.*;
 import domain.enums.EmployeeRole;
+import domain.enums.TicketType;
 import domain.enums.UserStatus;
 import domain.facades.UserFacade;
 import exceptions.InformationRequiredException;
@@ -16,6 +17,7 @@ public class UserViewModel extends ViewModel {
     private GUIEnum currentState;
     private final UserFacade userFacade;
     private User selectedUser;
+    private Set<TicketType> specialties;
     
     public UserViewModel(UserFacade userFacade) {
     	super();
@@ -36,6 +38,8 @@ public class UserViewModel extends ViewModel {
         	// substring(8) to remove ACTEMIUM
             setCurrentState(GUIEnum.valueOf(user.getClass().getSimpleName().substring(8).toUpperCase()));
         }
+        if (user instanceof Employee)
+            this.specialties = ((Employee) user).getSpecialties();
         fireInvalidationEvent();
     }
 
@@ -67,6 +71,7 @@ public class UserViewModel extends ViewModel {
                 detailsMap.put(LanguageResource.getString("company_seniority"), Collections.singletonMap(false, String.valueOf(employee.giveSeniority())));
                 detailsMap.put(LanguageResource.getString("role"), Collections.singletonMap(true, employee.getRole()));
                 detailsMap.put(LanguageResource.getString("status"), Collections.singletonMap(true, employee.getStatus()));
+                detailsMap.put(LanguageResource.getString("specialties"), Collections.singletonMap(true, employee.getSpecialties()));
                 return detailsMap;
             }
             case "customer" -> {
@@ -110,9 +115,9 @@ public class UserViewModel extends ViewModel {
 	}
 
 	public void modifyEmployee(String username, String password, String firstName, String lastName, String address,
-			String phoneNumber, String emailAddress, EmployeeRole role, UserStatus status) throws InformationRequiredException {
+                               String phoneNumber, String emailAddress, EmployeeRole role, UserStatus status) throws InformationRequiredException {
 		userFacade.modifyEmployee((ActemiumEmployee) selectedUser, username, password, firstName, lastName, address,
-				phoneNumber, emailAddress, role, status);
+				phoneNumber, emailAddress, role, status, this.specialties);
 	}
 
 	public void registerCustomer(String username, String firstName, String lastName, String companyName,
@@ -139,4 +144,16 @@ public class UserViewModel extends ViewModel {
 	public void setCurrentState(GUIEnum currentState) {
 		this.currentState = currentState;
 	}
+
+    public void addSpecialty(TicketType ticketType){
+        specialties.add(ticketType);
+    }
+
+    public void removeSpecialty(TicketType ticketType){
+        specialties.remove(ticketType);
+    }
+
+    public Set<TicketType> getSpecialties() {
+        return specialties;
+    }
 }

@@ -2,8 +2,10 @@ package domain;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import domain.enums.EmployeeRole;
+import domain.enums.TicketType;
 import javafx.beans.property.StringProperty;
 
 public interface Employee extends User {
@@ -29,5 +31,7 @@ public interface Employee extends User {
 //	public List<Ticket> giveTickets();
 	
 	public StringProperty roleProperty();
+
+	public Set<TicketType> getSpecialties();
 
 }

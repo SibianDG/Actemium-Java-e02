@@ -141,7 +141,7 @@ public class UserFacadeTest {
 		assertThrows(IllegalArgumentException.class,
 				() -> userFacade.modifyEmployee((ActemiumEmployee) tech, ADMINUSERNAME, PASSWORD, "John", "Smith",
 						"Address 78", "0458634795", "john.smith@student.hogent.be", EmployeeRole.ADMINISTRATOR,
-						UserStatus.ACTIVE));
+						UserStatus.ACTIVE, null));
 		Mockito.verify(userRepoDummy, Mockito.times(2)).findByUsername(ADMINUSERNAME);
      }
     
@@ -183,7 +183,7 @@ public class UserFacadeTest {
     	initUserFacadeAdmin();
 		assertDoesNotThrow(() -> userFacade.modifyEmployee((ActemiumEmployee) tech, USERNAMEAVAILABLE, PASSWORD, "John",
 				"Smith", "Address 78", "0032458634795", "john.smith@student.hogent.be", EmployeeRole.ADMINISTRATOR,
-				UserStatus.ACTIVE));
+				UserStatus.ACTIVE, null));
 		Mockito.verify(userRepoDummy).findByUsername(ADMINUSERNAME);
     	Mockito.verify(userRepoDummy).findByUsername(USERNAMEAVAILABLE);
     }    
