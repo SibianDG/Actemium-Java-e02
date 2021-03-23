@@ -18,6 +18,7 @@ import domain.enums.TicketType;
 import exceptions.InformationRequiredException;
 import gui.GUIEnum;
 import gui.viewModels.TicketViewModel;
+import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -115,10 +116,10 @@ public class TicketDetailsPanelController extends DetailsPanelController {
 	                    TicketPriority.valueOf(getTextFromGridItem(2))
 	                    , TicketType.valueOf(getTextFromGridItem(3))
 	                    , getTextFromGridItem(0)
-	                    , getTextFromGridItem(5)
 	                    , getTextFromGridItem(6)
 	                    , getTextFromGridItem(7)
-	                    , Long.parseLong(getTextFromGridItem(4))
+	                    , getTextFromGridItem(8)
+	                    , Long.parseLong(getTextFromGridItem(5))
 	            );
 	            showPopupMessageAddItem("popupSuccess", LanguageResource.getString("ticket_created_success"));
 	        }            
@@ -201,10 +202,10 @@ public class TicketDetailsPanelController extends DetailsPanelController {
                 , 1, LocalDate.now().toString()
                 , 2, TicketPriority.P3.toString()
                 , 3, TicketType.OTHER.toString()
-                , 4, "001"
-                , 5, "WieldingRobot stopped functioning this morning at 9am."
-                , 6, "Call me asap 094812384"
-                , 7, "brokenRobot.png"
+                , 5, "001"
+                , 6, "WieldingRobot stopped functioning this morning at 9am."
+                , 7, "Call me asap 094812384"
+                , 8, "brokenRobot.png"
         );
 
         for (int i = 0; i < fields.size(); i++) {
@@ -217,6 +218,8 @@ public class TicketDetailsPanelController extends DetailsPanelController {
                 node = makeComboBox(TicketPriority.P3);
             } else if (fields.get(i).toLowerCase().contains(LanguageResource.getString("type").toLowerCase())) {
                 node = makeComboBox(TicketType.OTHER);
+            }  else if (fields.get(i).toLowerCase().contains(LanguageResource.getString("technicians").toLowerCase())){
+                node = makeViewTechnicians(null);
             } else {
                 TextField textField;
                 textField = new TextField(demoValues.get(i));
@@ -316,7 +319,10 @@ public class TicketDetailsPanelController extends DetailsPanelController {
     
     private <T> Node makeViewTechnicians(Object o) {
         VBox vBox = new VBox();
-        ObservableList<Employee> technicians = (ObservableList<Employee>) o;
+        ObservableList<Employee> technicians = null;
+        if (o != null){
+            technicians = (ObservableList<Employee>) o;
+        }
         ObservableList<String> stringsList = FXCollections.observableArrayList();
         ObservableList<Employee> allTechnicians = ((TicketViewModel) viewModel).getAllTechnicians();
         List<CheckMenuItem> listTechicians = new ArrayList<>();
@@ -324,26 +330,31 @@ public class TicketDetailsPanelController extends DetailsPanelController {
 
         ListView<String> listView = new ListView<>(stringsList);
 
-        allTechnicians = allTechnicians.stream().filter(t -> {
-            TicketType ticketType = ((TicketViewModel)super.viewModel).getSelectedTicket().getTicketType();
-            return t.getSpecialties().contains(ticketType);
-        }).collect(Collectors.collectingAndThen(toList(), FXCollections::observableArrayList));
+        if (o != null) {
+            allTechnicians = allTechnicians.stream().filter(t -> {
+                TicketType ticketType = ((TicketViewModel) super.viewModel).getSelectedTicket().getTicketType();
+                return t.getSpecialties().contains(ticketType);
+            }).collect(Collectors.collectingAndThen(toList(), FXCollections::observableArrayList));
+        }
+
 
         allTechnicians.forEach(item -> {
             listTechicians.add(new CheckMenuItem(item.getFirstName() + " " + item.getLastName()));
             namesAndTechs.put(item.getFirstName() + " " + item.getLastName(), item);
         });
 
-        //set the technicians already asigned to ticket marked
-        for (Employee tech: technicians) {
-            String name = tech.getFirstName() + " " + tech.getLastName();
-            listTechicians.forEach(item ->  {
-                if (item.getText().equals(name)) {
-                    item.setSelected(true);
-                    stringsList.add(name);
-                    ((TicketViewModel) viewModel).addTechnicianToTicket(tech);
-                }
-            });
+        if (o != null) {
+            //set the technicians already asigned to ticket marked
+            for (Employee tech : technicians) {
+                String name = tech.getFirstName() + " " + tech.getLastName();
+                listTechicians.forEach(item -> {
+                    if (item.getText().equals(name)) {
+                        item.setSelected(true);
+                        stringsList.add(name);
+                        ((TicketViewModel) viewModel).addTechnicianToTicket(tech);
+                    }
+                });
+            }
         }
 
         //create dropdown with all possible employees
@@ -352,6 +363,7 @@ public class TicketDetailsPanelController extends DetailsPanelController {
         menuButton.getItems().addAll(listTechicians);
 
         for (final CheckMenuItem tech : listTechicians) {
+            ObservableList<Employee> finalTechnicians = technicians;
             tech.selectedProperty().addListener((observableValue, oldValue, newValue) -> {
                 if (newValue) {
                     //technicians.add(((TicketViewModel) viewModel).getEmployeeByName(tech.getText()));
@@ -366,10 +378,12 @@ public class TicketDetailsPanelController extends DetailsPanelController {
                     //add technician to ticket
                     ((TicketViewModel) viewModel).removeTechnician(namesAndTechs.get(tech.getText()));
                 }
-                // prevents an unnecessary modifyTicket and prevents a useless entry in tickethistory  
-                if(((TicketViewModel) viewModel).getTechniciansAsignedToTicket().stream().sorted().collect(toList())
-                		.equals(technicians.stream().sorted().collect(toList()))){
-                	viewModel.setFieldModified(false);
+                if (o != null) {
+                    // prevents an unnecessary modifyTicket and prevents a useless entry in tickethistory
+                    if (((TicketViewModel) viewModel).getTechniciansAsignedToTicket().stream().sorted().collect(toList())
+                            .equals(finalTechnicians.stream().sorted().collect(toList()))) {
+                        viewModel.setFieldModified(false);
+                    }
                 }
                 listView.setMaxHeight(((TicketViewModel) viewModel).getTechniciansAsignedToTicket().size()*25+25);
             });

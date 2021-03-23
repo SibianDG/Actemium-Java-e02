@@ -72,9 +72,10 @@ public class TicketViewModel extends ViewModel {
     }
 
     public ArrayList<String> getDetailsNewTicket(){
-        return new ArrayList<String>(Arrays.asList(LanguageResource.getString("title"), LanguageResource.getString("creation_date"),
-                LanguageResource.getString("priority"), LanguageResource.getString("type"), LanguageResource.getString("customer_id"),
-                LanguageResource.getString("description"), LanguageResource.getString("comments"), LanguageResource.getString("attachments")));
+        return new ArrayList<String>(Arrays.asList(LanguageResource.getString("title"), LanguageResource.getString("creation_date")
+                , LanguageResource.getString("priority"), LanguageResource.getString("type"), LanguageResource.getString("technicians")
+                , LanguageResource.getString("customer_id"), LanguageResource.getString("description")
+                , LanguageResource.getString("comments"), LanguageResource.getString("attachments")));
     }
 
     public Map<String, Map<Boolean, Object>> getDetails() {
@@ -119,7 +120,7 @@ public class TicketViewModel extends ViewModel {
 
     public void registerTicket(TicketPriority priority, TicketType ticketType, String title, String description,
     						String commentText, String attachments, long customerId) throws InformationRequiredException {
-        ticketFacade.registerTicket(priority, ticketType, title, description, commentText, attachments, customerId);
+        ticketFacade.registerTicket(priority, ticketType, title, description, commentText, attachments, customerId, techniciansAsignedToTicket);
         setSelectedTicket(ticketFacade.getLastAddedTicket());
     }
 

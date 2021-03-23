@@ -32,7 +32,7 @@ public class TicketFacade implements Facade {
 	}
 
 	public void registerTicket(TicketPriority priority, TicketType ticketType, String title, String description,
-							String commentText, String attachments, long customerId) throws InformationRequiredException {
+							String commentText, String attachments, long customerId, List<ActemiumEmployee> techniciansAsignedToTicket) throws InformationRequiredException {
 		// check to see if signed in user is Support Manger
 		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
 		ActemiumCustomer customer = (ActemiumCustomer) actemium.findUserById(customerId);
@@ -45,6 +45,7 @@ public class TicketFacade implements Facade {
 //							.comments(comments)
 							.attachments(attachments)
 							.build();
+		ticket.setTechnicians(techniciansAsignedToTicket);
 
 		ticket.addTicketComment(createTicketComment(ticket, commentText));
 		
