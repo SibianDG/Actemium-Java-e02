@@ -56,6 +56,10 @@ public class TicketFacade implements Facade {
 		changeList.add(String.format("Ticket Status was initialized as \"%s\".", ticket.getStatus()));
 		changeList.add(String.format("Ticket Title was set to \"%s\".", title));
 		changeList.add(String.format("Ticket Description was added."));
+		for (ActemiumEmployee technician : techniciansAsignedToTicket) {
+			changeList.add(String.format("%s \"%s %s\" %s: %d %s.", "Technician"/*(LanguageResource.getString("TECHNICIAN").substring(0,1).toUpperCase() + LanguageResource.getString("TECHNICIAN").substring(1).toLowerCase())*/,
+					technician.getFirstName(), technician.getLastName(), LanguageResource.getString("with_id") ,technician.getUserId(), LanguageResource.getString("got_removed_from_the_ticket")));
+		}
 		if (!commentText.equals("(none)")) {
 			changeList.add(String.format("Ticket Remark/Comment was added."));
 		}
@@ -75,11 +79,16 @@ public class TicketFacade implements Facade {
 
 	public void modifyTicketOutstanding(ActemiumTicket ticket, TicketPriority priority, TicketType ticketType,
 			TicketStatus status, String title, String description, String commentText, String attachments,
-			List<ActemiumEmployee> technicians) throws InformationRequiredException {
+			List<ActemiumEmployee> technicians) throws InformationRequiredException {		
+		EmployeeRole signedInEmployeeRole = ((Employee) actemium.getSignedInUser()).getRole();
+		if(signedInEmployeeRole.equals(EmployeeRole.TECHNICIAN) || signedInEmployeeRole.equals(EmployeeRole.SUPPORT_MANAGER)) {		
 		try {
-			ActemiumTicket ticketClone = ticket.clone();
-			// check to see if signed in user is Support Manger
-			actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
+			ActemiumTicket ticketClone = ticket.clone();			
+
+			List<String> changeList = new ArrayList<>();
+
+			// part only for support manager
+			if(signedInEmployeeRole.equals(EmployeeRole.SUPPORT_MANAGER)) {
 			
 			ticketClone.setPriority(priority);
 			ticketClone.setTicketType(ticketType);
@@ -90,9 +99,7 @@ public class TicketFacade implements Facade {
 			ticketClone.setAttachments(attachments);
 			
 			ticketClone.checkAttributes();
-
-			List<String> changeList = new ArrayList<>();
-			
+				
 			if (!ticket.getPriority().equals(priority)) {
 				changeList.add(String.format("%s \"%s\" %s \"%s\".",LanguageResource.getString("ticket_priority_changed_from"), ticket.getPriority(), LanguageResource.getString("to"), priority));
 				ticket.setPriority(priority);
@@ -100,10 +107,6 @@ public class TicketFacade implements Facade {
 			if (!ticket.getTicketType().equals(ticketType)) {
 				changeList.add(String.format("%s \"%s\" %s \"%s\".",LanguageResource.getString("ticket_priority_changed_from") , ticket.getTicketType(), LanguageResource.getString("to"), ticketType));
 				ticket.setTicketType(ticketType);
-			}
-			if (!ticket.getStatus().equals(status)) {
-				changeList.add(String.format("%s \"%s\" %s \"%s\".",LanguageResource.getString("ticket_priority_changed_from") , ticket.getStatus(), LanguageResource.getString("to"), status));
-				ticket.setStatus(status);
 			}
 			if (!ticket.getTitle().equals(title)) {
 				changeList.add(String.format("%s \"%s\" %s \"%s\".",LanguageResource.getString("ticket_priority_changed_from") , ticket.getTitle(), LanguageResource.getString("to"), title));
@@ -113,15 +116,6 @@ public class TicketFacade implements Facade {
 				changeList.add(String.format("%s.", LanguageResource.getString("ticket_description_changed")));
 				ticket.setDescription(description);
 			}
-			if (commentText == null || !(commentText.equals("(none)") || commentText.isBlank())) {
-				changeList.add(String.format("%s.", LanguageResource.getString("ticket_comment_added")));
-				ticket.addTicketComment(createTicketComment(ticket, commentText));
-			}
-			if (!ticket.getAttachments().equals(attachments)) {
-				changeList.add(String.format("%s.", LanguageResource.getString("ticket_attachments_changed")));
-				ticket.setAttachments(attachments);
-			}
-			// Had to stream the list in order for the removeAll to work properly
 			if (!ticket.getTechnicians().equals(technicians)) {
 				List<ActemiumEmployee> originalTechnicians = new ArrayList<>(ticket.getTechnicians());
 				originalTechnicians.removeAll(technicians);
@@ -143,31 +137,13 @@ public class TicketFacade implements Facade {
 				ticket.setTechnicians(new ArrayList<>());
 				technicians.forEach(ticket::addTechnician);	
 			}		
-			
-			ticket.addTicketChange(createTicketChange(ticket, "modifyTicketOutstanding", changeList));
-			
-			actemium.modifyTicket(ticket);
-			
-		} catch (CloneNotSupportedException e) {
-			System.out.println(LanguageResource.getString("cannot_clone"));
-		}
-		
-	}
-	
-	//TODO duplicate code
-	public void modifyTicketOutstandingAsTechnician(ActemiumTicket ticket, TicketStatus status, 
-					String commentText, String attachments) throws InformationRequiredException {
-		try {
-			ActemiumTicket ticketClone = ticket.clone();
-			// check to see if signed in user is Support Manger
-			actemium.checkPermision(EmployeeRole.TECHNICIAN);			
+			}
+			// common part for technician and support manager
+			if(signedInEmployeeRole.equals(EmployeeRole.SUPPORT_MANAGER) || signedInEmployeeRole.equals(EmployeeRole.TECHNICIAN)) {	
 			
 			ticketClone.setStatus(status);
-			ticketClone.setAttachments(attachments);
-			
-			ticketClone.checkAttributes();
-
-			List<String> changeList = new ArrayList<>();			
+			ticketClone.setAttachments(attachments);			
+			ticketClone.checkAttributes();			
 			
 			if (!ticket.getStatus().equals(status)) {
 				changeList.add(String.format("%s \"%s\" %s \"%s\".",LanguageResource.getString("ticket_priority_changed_from") , ticket.getStatus(), LanguageResource.getString("to"), status));
@@ -185,19 +161,19 @@ public class TicketFacade implements Facade {
 			ticket.addTicketChange(createTicketChange(ticket, "modifyTicketOutstanding", changeList));
 			
 			actemium.modifyTicket(ticket);
-			
+			}
 		} catch (CloneNotSupportedException e) {
 			System.out.println(LanguageResource.getString("cannot_clone"));
 		}
-		
+		}
 	}
 	
 	public void modifyTicketResolved(ActemiumTicket ticket, String solution, String quality, String supportNeeded)
 			throws InformationRequiredException {
+		EmployeeRole signedInEmployeeRole = ((Employee) actemium.getSignedInUser()).getRole();
+		if(signedInEmployeeRole.equals(EmployeeRole.TECHNICIAN) || signedInEmployeeRole.equals(EmployeeRole.SUPPORT_MANAGER)) {	
 		try {
 			ActemiumTicket ticketClone = ticket.clone();
-			// check to see if signed in user is Support Manger
-			actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER, EmployeeRole.TECHNICIAN);
 			ticketClone.setSolution(solution);
 			ticketClone.setQuality(quality);
 			ticketClone.setSupportNeeded(supportNeeded);
@@ -224,6 +200,7 @@ public class TicketFacade implements Facade {
 			
 		} catch (CloneNotSupportedException e) {
 			System.out.println(LanguageResource.getString("cannot_clone"));
+		}
 		}
 	}
 	
@@ -273,10 +250,6 @@ public class TicketFacade implements Facade {
 	
 	public ObservableList<Ticket> giveActemiumTicketsOutstanding() {
 		return actemium.giveActemiumTicketsOutstanding();
-	}
-	
-	public ObservableList<Ticket> giveActemiumTicketsOutstandingAssignedToTechnician() {
-		return actemium.giveActemiumTicketsOutstandingAssignedToTechnician();
 	}
 	
 	public ObservableList<Ticket> giveActemiumTicketsResolved() {

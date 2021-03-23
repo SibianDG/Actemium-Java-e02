@@ -108,8 +108,8 @@ public class UserViewModel extends ViewModel {
 		return selectedUser.getFirstName() + " " + selectedUser.getLastName();
 	}
 
-	public User getLoginUser() {
-        return userFacade.getLoginUser();
+	public User getSignedInUser() {
+        return userFacade.getSignedInUser();
     }
 
 	public void registerEmployee(String username, String lastName, String firstName, String address,

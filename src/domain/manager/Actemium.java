@@ -272,8 +272,6 @@ public class Actemium {
 		return null;
 	}
 
-	//TODO Actemium knows role
-
 	// signedInUser right permissions check
 	public void checkPermision(EmployeeRole role) {
 		if (!giveEmployeeRoleAsEnum().equals(role)) {
@@ -301,7 +299,6 @@ public class Actemium {
 
 	public void checkPermisionForModifyEmployee(EmployeeRole role, String username) {
 		if (!signedInUser.getUsername().equals(username)){
-
 			checkPermision(role);
 		}
 	}
@@ -489,15 +486,15 @@ public class Actemium {
 	public ObservableList<Ticket> giveActemiumTicketsOutstanding() {
 		if (signedInUser instanceof Employee) {
 			if (((Employee) signedInUser).getRole() == EmployeeRole.TECHNICIAN) {
-				return giveActemiumTicketsOutstandingAssignedToTechnician();
+				return FXCollections.unmodifiableObservableList(giveActemiumTicketsOutstandingAssignedToTechnician());
 			}
 		} // else
 		return FXCollections.unmodifiableObservableList(actemiumTicketsOutstanding);
 	}
 	
-	public ObservableList<Ticket> giveActemiumTicketsOutstandingAssignedToTechnician() {
+	private ObservableList<Ticket> giveActemiumTicketsOutstandingAssignedToTechnician() {
 		return FXCollections.observableArrayList(actemiumTicketsOutstanding.stream()
-				.filter(t -> new ArrayList<>(t.giveTechnicians()).contains(getSignedInUser()))
+				.filter(t -> new ArrayList<>(t.giveTechnicians()).contains((Employee) getSignedInUser()))
 				.collect(Collectors.toList()));
 	}
 

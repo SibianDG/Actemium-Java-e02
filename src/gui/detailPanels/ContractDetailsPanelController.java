@@ -31,8 +31,8 @@ import languages.LanguageResource;
 
 
 public class ContractDetailsPanelController extends DetailsPanelController {
-        
-    public ContractDetailsPanelController(ViewModel viewModel, GridPane gridContent) {
+
+	public ContractDetailsPanelController(ViewModel viewModel, GridPane gridContent) {
         super(viewModel, gridContent);        
     }
 

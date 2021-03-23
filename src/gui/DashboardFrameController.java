@@ -174,19 +174,19 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
 
         imgLogo.setCursor(Cursor.HAND);
         imgMyAccount.setCursor(Cursor.HAND);
-        if (((Employee) userViewModel.getLoginUser()).getRole() == EmployeeRole.ADMINISTRATOR) {
+        if (((Employee) userViewModel.getSignedInUser()).getRole() == EmployeeRole.ADMINISTRATOR) {
             imgNotifications.setVisible(false);
             imgNotifications.setDisable(true);
         }
 
-        if (((Employee) userViewModel.getLoginUser()).getRole() == EmployeeRole.SUPPORT_MANAGER) {
+        if (((Employee) userViewModel.getSignedInUser()).getRole() == EmployeeRole.SUPPORT_MANAGER) {
             if ((int) userViewModel.giveCustomers().stream().filter(c -> c.getStatus() == UserStatus.IN_REQUEST).count() == 0 &&
                     (int) ticketViewModel.giveTicketsOutstanding().stream().filter(t -> t.giveTechnicians().size() == 0).count() == 0)
                 imgNotifications.setImage(new Image("file:src/pictures/dashboard/icon_bell.png"));
             else
                 imgNotifications.setImage(new Image("file:src/pictures/dashboard/icon_bell_notification.png"));
-        } else if (((Employee) userViewModel.getLoginUser()).getRole() == EmployeeRole.TECHNICIAN) {
-            if (ticketViewModel.giveTicketsOutstandingAssignedToTechnician().size() == 0)
+        } else if (((Employee) userViewModel.getSignedInUser()).getRole() == EmployeeRole.TECHNICIAN) {
+            if (ticketViewModel.giveTicketsOutstanding().size() == 0)
                 imgNotifications.setImage(new Image("file:src/pictures/dashboard/icon_bell.png"));
             else
                 imgNotifications.setImage(new Image("file:src/pictures/dashboard/icon_bell_notification.png"));
@@ -465,14 +465,14 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Notifications");
         alert.setTitle("Notifications");
 
-        if (((Employee) userViewModel.getLoginUser()).getRole() == EmployeeRole.SUPPORT_MANAGER)
+        if (((Employee) userViewModel.getSignedInUser()).getRole() == EmployeeRole.SUPPORT_MANAGER)
             alert.setContentText(String.format("Customers in Request: %d%nTickets with unassigned technicians: %d%n",
                     (int) userViewModel.giveCustomers().stream().filter(c -> c.getStatus() == UserStatus.IN_REQUEST).count(),
                     (int) ticketViewModel.giveTicketsOutstanding().stream().filter(t -> t.giveTechnicians().size() == 0).count()
             ));
-        else if (((Employee) userViewModel.getLoginUser()).getRole() == EmployeeRole.TECHNICIAN)
+        else if (((Employee) userViewModel.getSignedInUser()).getRole() == EmployeeRole.TECHNICIAN)
             alert.setContentText(String.format("Outstanding tickets: %d%n",
-                    ticketViewModel.giveTicketsOutstandingAssignedToTechnician().size()
+                    ticketViewModel.giveTicketsOutstanding().size()
             ));
 
         alert.getDialogPane().getStylesheets().add("file:src/start/styles.css");

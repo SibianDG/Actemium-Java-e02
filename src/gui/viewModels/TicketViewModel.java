@@ -49,9 +49,9 @@ public class TicketViewModel extends ViewModel {
         return ticketFacade.giveActemiumTicketsOutstanding();
     }
     
-    public ObservableList<Ticket> giveTicketsOutstandingAssignedToTechnician() {
-    	return ticketFacade.giveActemiumTicketsOutstandingAssignedToTechnician();
-    }
+//    public ObservableList<Ticket> giveTicketsOutstandingAssignedToTechnician() {
+//    	return ticketFacade.giveActemiumTicketsOutstandingAssignedToTechnician();
+//    }
 
     public ObservableList<Ticket> giveTicketsResolved() {
         return ticketFacade.giveActemiumTicketsResolved();
@@ -124,15 +124,9 @@ public class TicketViewModel extends ViewModel {
         setSelectedTicket(ticketFacade.getLastAddedTicket());
     }
 
-    // TODO
-    // Cannot modify customer of the ticket, needs to be unmodifiable field
     public void modifyTicketOutstanding(TicketPriority priority, TicketType ticketType, TicketStatus status, String title, String description,
     								String commentText, String attachments, List<ActemiumEmployee> technicians) throws InformationRequiredException {
-        if (userFacade.getEmployeeRole().equals(EmployeeRole.TECHNICIAN)) {
-        	ticketFacade.modifyTicketOutstandingAsTechnician((ActemiumTicket) selectedTicket, status, commentText, attachments);
-        } else {
-        	ticketFacade.modifyTicketOutstanding((ActemiumTicket) selectedTicket, priority, ticketType, status, title, description, commentText, attachments, technicians);
-        } 
+        ticketFacade.modifyTicketOutstanding((ActemiumTicket) selectedTicket, priority, ticketType, status, title, description, commentText, attachments, technicians);
     }
 
     public void modifyTicketResolved(String solution, String quality, String supportNeeded) throws InformationRequiredException {
