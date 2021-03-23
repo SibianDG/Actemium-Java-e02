@@ -50,7 +50,7 @@ public class TicketTableViewPanelController<T, E> extends TableViewPanelControll
 		if (TicketStatus.isOutstanding()) {
 			this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTicketsOutstanding();
 			
-			initTicketPriorityButtons();
+			changeTicketPriorityButtons(this.mainData);
 						
 			this.mainData.addListener((ListChangeListener<T>) c -> {
 				while(c.next()) {
@@ -62,10 +62,15 @@ public class TicketTableViewPanelController<T, E> extends TableViewPanelControll
 					}
 				}
 			});
+			
+			btnP1.setVisible(true);
+			btnP2.setVisible(true);
+			btnP3.setVisible(true);	
+			
 		} else {
 			this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTicketsResolved();
 			btnAdd.setVisible(false);
-		}
+		}				
 		
 		this.tableViewData = new FilteredList<>(mainData);
 		propertyMap.put(LanguageResource.getString("ID"), item -> (Property<E>)((Ticket) item).ticketIdProperty()); // IntegerProperty
@@ -90,20 +95,6 @@ public class TicketTableViewPanelController<T, E> extends TableViewPanelControll
 		btnP3.setText(String.valueOf(amountOfP3Tickets));
 	}
 	
-	private void initTicketPriorityButtons( ) {
-		int amountOfP1Tickets, amountOfP2Tickets, amountOfP3Tickets;
-		amountOfP1Tickets = mainData.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P1 )).collect(Collectors.toList()).size();
-		amountOfP2Tickets = mainData.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P2 )).collect(Collectors.toList()).size();
-		amountOfP3Tickets = mainData.stream().filter((t -> ((Ticket) t).getPriority() == TicketPriority.P3 )).collect(Collectors.toList()).size();
-		
-		btnP1.setText(String.valueOf(amountOfP1Tickets));		
-		btnP2.setText(String.valueOf(amountOfP2Tickets));
-		btnP3.setText(String.valueOf(amountOfP3Tickets));
-		
-		btnP1.setVisible(true);
-		btnP2.setVisible(true);
-		btnP3.setVisible(true);	
-	}
 
 	@FXML
 	void showFilterOnBtnP1(MouseEvent event) {
