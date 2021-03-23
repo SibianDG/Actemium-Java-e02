@@ -53,15 +53,15 @@ public class ContractTypeDetailsPanelController extends DetailsPanelController {
                             //        (String name, ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone,
                             //boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price)
                             // priority, ticketType, title, description, remarks, attachments, technicians
-                            getTextFromGridItem(0), //name
-                            ContractTypeStatus.valueOf(getTextFromGridItem(1)), //staus
-                            Boolean.parseBoolean(getTextFromGridItem(2)), //email
-                            Boolean.parseBoolean(getTextFromGridItem(3)), //phone
-                            Boolean.parseBoolean(getTextFromGridItem(4)), //application
-                            Timestamp.valueOf(getTextFromGridItem(5)), //Timestamp
-                            Integer.parseInt(getTextFromGridItem(6)), //max hand time
-                            Integer.parseInt(getTextFromGridItem(7)), //min troughputtime contract
-                            Double.parseDouble(getTextFromGridItem(8).replace(",", ".")) //price contract
+                            getTextFromGridItem(1), //name
+                            ContractTypeStatus.valueOf(getTextFromGridItem(2)), //staus
+                            Boolean.parseBoolean(getTextFromGridItem(3)), //email
+                            Boolean.parseBoolean(getTextFromGridItem(4)), //phone
+                            Boolean.parseBoolean(getTextFromGridItem(5)), //application
+                            Timestamp.valueOf(getTextFromGridItem(6)), //Timestamp
+                            Integer.parseInt(getTextFromGridItem(7)), //max hand time
+                            Integer.parseInt(getTextFromGridItem(8)), //min troughputtime contract
+                            Double.parseDouble(getTextFromGridItem(9).replace(",", ".")) //price contract
                     );
 					showPopupMessage("popupSuccess", LanguageResource.getString("contractTypeEdited_succes"));
                 } else {

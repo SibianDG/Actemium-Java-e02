@@ -78,6 +78,10 @@ public class ActemiumContractType implements ContractType, Serializable {
 		setPrice(price);
 	}*/	
 
+	public long getContractTypeId() {
+		return contractTypeId;
+	}
+
 	@Access(AccessType.PROPERTY)
 	public String getName() {
 		return name.get();
@@ -295,16 +299,16 @@ public class ActemiumContractType implements ContractType, Serializable {
 				requiredElements.add(RequiredElement.ContractTypeMinTroughPutTimeRequired);
 			if (price <= 0)
 				requiredElements.add(RequiredElement.ContractTypePriceRequired);
-			//TODO
-			// very weird small bug
-			// set hasEmail and hasPhone to false
-			// set hasApplication to true
-			// modify contractType
-			// success
-			// set hasApplication to false
-			// set hasPhone to true
-			// modify contractType
-			// error -> clone == null
+//			TODO
+//			 very weird small bug
+//			 set hasEmail and hasPhone to false
+//			 set hasApplication to true
+//			 modify contractType
+//			 success
+//			 set hasApplication to false
+//			 set hasPhone to true
+//			 modify contractType
+//			 error -> clone == null
 			if (!(hasEmail || hasPhone || hasApplication))
 				requiredElements.add(RequiredElement.ContractTypeWayRequired);
 

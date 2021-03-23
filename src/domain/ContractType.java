@@ -8,6 +8,8 @@ public interface ContractType {
 	
 	// getters 
 	
+	public long getContractTypeId();
+	
 	public String getName();
 
 	public ContractTypeStatus getStatus();
