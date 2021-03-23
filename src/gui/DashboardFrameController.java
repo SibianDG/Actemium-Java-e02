@@ -266,9 +266,9 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
                               
                 if (enabled) {
                     try {
+                        System.out.println("Clicked: "+text);
                         buttonMenusClicked(text);
-                    } catch (IOException ignored) {
-                    }
+                    } catch (IOException ignored) { }
                 }                               
             });
             hboxMenu.getChildren().add(button);
@@ -328,7 +328,7 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         gridContent.setVgap(35);
     }
 
-    private void buttonMenusClicked(String name) throws IOException {
+    private void resetMenuButtons(){
         hboxMenu.getChildren().forEach(child -> {
             if (child.getStyleClass().contains("menuButton-active")){
                 child.getStyleClass().remove("menuButton-active");
@@ -336,13 +336,20 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
                     String text = ((Button) child).getText();
                     ((Button)child).setGraphic(createImageView(textToImageMap.get(text.replace("\n", " ")), 1, 35));
                 } catch (FileNotFoundException ignored) {                }
-            }             
+            }
         });
+    }
+
+    private void buttonMenusClicked(String name) throws IOException {
+        if (name.toLowerCase().contains("outstanding tickets"))
+            name = "outstanding tickets";
+        resetMenuButtons();
+        String finalName = name;
         hboxMenu.getChildren().forEach(child -> {
-            if (((Button) child).getText().replace("\n", " ").toLowerCase().contains(name.toLowerCase())) {
+            if (((Button) child).getText().replace("\n", " ").toLowerCase().contains(finalName.toLowerCase())) {
                 child.getStyleClass().add("menuButton-active");
                 try {
-                    ((Button)child).setGraphic(createImageView(textToImageMap.get(name), 0, 35));
+                    ((Button)child).setGraphic(createImageView(textToImageMap.get(finalName), 0, 35));
                 } catch (FileNotFoundException ignored) {
                 }
 
@@ -456,6 +463,7 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
     @FXML
     void btnNotificationAction(MouseEvent event) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Notifications");
+        alert.setTitle("Notifications");
 
         if (((Employee) userViewModel.getLoginUser()).getRole() == EmployeeRole.SUPPORT_MANAGER)
             alert.setContentText(String.format("Customers in Request: %d%nTickets with unassigned technicians: %d%n",
