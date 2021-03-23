@@ -7,6 +7,7 @@ import domain.facades.ContractFacade;
 import domain.facades.ContractTypeFacade;
 import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
+import languages.LanguageResource;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -19,6 +20,12 @@ public class ChartViewModel{
     private final TicketFacade ticketFacade;
     private final ContractTypeFacade contractTypeFacade;
     private final ContractFacade contractFacade;
+    private final List<String> months = Arrays.asList(LanguageResource.getString("jan")
+            , LanguageResource.getString("feb"), LanguageResource.getString("mar"), LanguageResource.getString("apr")
+            , LanguageResource.getString("may"), LanguageResource.getString("jun"), LanguageResource.getString("jul")
+            , LanguageResource.getString("aug"), LanguageResource.getString("sep"), LanguageResource.getString("oct")
+            , LanguageResource.getString("nov"), LanguageResource.getString("dec"));
+
 
     public ChartViewModel(TicketFacade facade, UserFacade userFacade, ContractTypeFacade contractTypeFacade, ContractFacade contractFacade) {
         this.userFacade = userFacade;
@@ -29,8 +36,6 @@ public class ChartViewModel{
 
     public Map<String, Integer> barChartMonthlyTickets() {
         Map<String, Integer> mapMonthly = new HashMap<>();
-        List<String> months = Arrays.asList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
-
         months.forEach(m -> mapMonthly.put(m, 0));
 
         ticketFacade.giveActemiumTickets()
@@ -116,7 +121,6 @@ public class ChartViewModel{
 
     public Map<String, Integer> barChartMonthlyContracts() {
         Map<String, Integer> mapMonthlyContracts = new HashMap<>();
-        List<String> months = Arrays.asList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
 
         months.forEach(m -> mapMonthlyContracts.put(m, 0));
 
