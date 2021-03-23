@@ -15,14 +15,9 @@ import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -115,6 +110,12 @@ public abstract class TableViewPanelController<T, E> extends GridPane {
 	@FXML
 	void resetFiltersOnMouseClicked(MouseEvent event) {
 		tableViewData.setPredicate(p -> true);
+		hboxFilterSection.getChildren().forEach(f -> {
+			if (f instanceof ComboBox)
+				((ComboBox<?>) f).getSelectionModel().select(0);
+			else if (f instanceof TextField)
+				((TextField) f).setText("");
+		});
 	}
 	
 	@FXML
