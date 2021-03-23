@@ -1,16 +1,11 @@
 package gui.tableViewPanels;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import domain.ActemiumTicket;
 import domain.Ticket;
 import domain.enums.EmployeeRole;
 import domain.enums.TicketPriority;
@@ -70,8 +65,8 @@ public class TicketTableViewPanelController<T, E> extends TableViewPanelControll
 		} else {
 			this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTicketsResolved();
 			btnAdd.setVisible(false);
-		}				
-		
+		}
+
 		this.tableViewData = new FilteredList<>(mainData);
 		propertyMap.put(LanguageResource.getString("ID"), item -> (Property<E>)((Ticket) item).ticketIdProperty()); // IntegerProperty
 		propertyMap.put(LanguageResource.getString("type"), item -> (Property<E>)((Ticket) item).ticketTypeProperty());
@@ -123,7 +118,7 @@ public class TicketTableViewPanelController<T, E> extends TableViewPanelControll
 	protected void initializeFilters() {
 		Map<GUIEnum, ArrayList<Object>> filterMap = new HashMap<>();
 		filterMap.put(GUIEnum.TICKET, new ArrayList<>(Arrays.asList(LanguageResource.getString("ID"), TicketType.SOFTWARE, TicketPriority.P1, LanguageResource.getString("title"), TicketStatus.CREATED)));
-		
+
 		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createFilterNode(o)));
 	}
 
@@ -238,10 +233,13 @@ public class TicketTableViewPanelController<T, E> extends TableViewPanelControll
 		propertyMap.forEach((key, prop) -> {
 			TableColumn<T, E> c = createColumn(key, prop);
 			tableView.getColumns().add(c);
+			if (key.contains(LanguageResource.getString("priority")))
+				tableView.getSortOrder().add(c);
 		});
 
 		initializeTableViewSuper();
-		
+		tableView.sort();
+
 		tableView.setOnMouseClicked((MouseEvent m) -> {
 			if (alertChangesOnTabelView()) {
 				T data = (T) tableView.getSelectionModel().selectedItemProperty().get();				
