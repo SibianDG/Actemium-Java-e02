@@ -35,7 +35,7 @@
                     <children>
                         <ImageView fx:id="imgNotifications" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#btnNotificationAction" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../pictures/dashboard/icon_bell.png" />
+                                <Image url="@../pictures/dashboard/icon_bell_notification.png" />
                             </image>
                             <HBox.margin>
                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
