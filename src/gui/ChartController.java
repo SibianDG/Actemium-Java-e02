@@ -100,6 +100,7 @@ public class ChartController extends GuiController {
         btnContractType.setText(LanguageResource.getString("contract_types"));
         btnContract.setText(LanguageResource.getString("contracts"));
         btnTechnician.setText(LanguageResource.getString("technicians"));
+        btnAverageTimeTicket.setText(LanguageResource.getString("averageTicketTimeButton"));
     }
 
     @FXML
