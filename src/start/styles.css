@@ -8,7 +8,7 @@
 }
 
 .button:default {
-    -fx-font-size: 17px;
+    -fx-font-size: 16px;
     -fx-background-radius: 30px;
     -fx-background-color: #1d3d78;
     -fx-text-fill: #ffffff;
@@ -57,6 +57,10 @@
     -fx-border-color: #1D3D78;
     -fx-border-width: 3px;
     -fx-border-radius: 50px;
+}
+
+.btn-blue {
+    -fx-font-size: 14px;
 }
 
 .btn-blue:hover {
