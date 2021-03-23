@@ -345,25 +345,30 @@ public class PopulateDB {
         ActemiumEmployee tech = new ActemiumEmployee.EmployeeBuilder()
                 .username("joe123")
                 .password("Passwd123&")
-                .firstName("Joe")
+                .firstName("Joe (HARDWARE)")
                 .lastName("Biden")
                 .address("Overwale 42")
                 .phoneNumber("091354864")
                 .emailAddress("1@hogent.be")
                 .role(EmployeeRole.TECHNICIAN)
                 .build();
+        tech.addSpecialty(TicketType.HARDWARE);
+        tech.addSpecialty(TicketType.OTHER);
 
         //("Technician", "Passwd123&", "Joe", "Biden","Overwale 42","091354864","2@hogent.be", EmployeeRole.TECHNICIAN);
         ActemiumEmployee tech2 = new ActemiumEmployee.EmployeeBuilder()
                 .username("don123")
                 .password("Passwd123&")
-                .firstName("Donald")
+                .firstName("Donald(Soft)")
                 .lastName("Trump")
                 .address("Overwale 42")
                 .phoneNumber("091354864")
                 .emailAddress("3@hogent.be")
                 .role(EmployeeRole.TECHNICIAN)
                 .build();
+        tech2.addSpecialty(TicketType.SOFTWARE);
+        tech2.addSpecialty(TicketType.OTHER);
+
         //ActemiumEmployee tech2 = new ActemiumEmployee("Technician", "Passwd123&", "Donald", "Trump","Overwale 42","091354864","4@hogent.be", EmployeeRole.TECHNICIAN);
 
         userDao.insert(tech);
@@ -454,16 +459,20 @@ public class PopulateDB {
                 .emailAddress("6@hogent.be")
                 .role(EmployeeRole.SUPPORT_MANAGER)
                 .build());
-        userDao.insert( new ActemiumEmployee.EmployeeBuilder()
+        ActemiumEmployee tech3 = new ActemiumEmployee.EmployeeBuilder()
                 .username("Tech123")
                 .password("Passwd123&")
-                .firstName("Tech")
+                .firstName("Tech(DB)")
                 .lastName("Nician")
                 .address("Overwale 42")
                 .phoneNumber("091354864")
                 .emailAddress("7@hogent.be")
                 .role(EmployeeRole.TECHNICIAN)
-                .build());
+                .build();
+        tech3.addSpecialty(TicketType.DATABASE);
+        tech3.addSpecialty(TicketType.OTHER);
+
+        userDao.insert(tech3);
         userDao.insert( new ActemiumEmployee.EmployeeBuilder()
                 .username("thomas123")
                 .password("Passwd123&")
@@ -550,17 +559,32 @@ public class PopulateDB {
                 .lastName("Naessens")
                 .company(naessensNV)
                 .build());
-        userDao.insert(
-                new ActemiumEmployee.EmployeeBuilder()
-                        .username("tech01Donald")
-                        .password("Passwd123&")
-                        .firstName("Bob")
-                        .lastName("The Builder")
-                        .address("Stationstraat 56")
-                        .phoneNumber("092548736")
-                        .emailAddress("bob.thebuilder@hogent.be")
-                        .role(EmployeeRole.TECHNICIAN)
-                        .build());
+        ActemiumEmployee tech4 = new ActemiumEmployee.EmployeeBuilder()
+                .username("BObieTHeBuilder")
+                .password("Passwd123&")
+                .firstName("Bob(infra)")
+                .lastName("The Builder")
+                .address("Stationstraat 56")
+                .phoneNumber("092548736")
+                .emailAddress("bob.thebuilder@hogent.be")
+                .role(EmployeeRole.TECHNICIAN)
+                .build();
+        tech4.addSpecialty(TicketType.INFRASTRUCTURE);
+        tech4.addSpecialty(TicketType.OTHER);
+        ActemiumEmployee tech5 = new ActemiumEmployee.EmployeeBuilder()
+                .username("theInternet")
+                .password("Passwd123&")
+                .firstName("LAN(network)")
+                .lastName("The Cable")
+                .address("Stationstraat 56")
+                .phoneNumber("092548736")
+                .emailAddress("lan.thecable@hogent.be")
+                .role(EmployeeRole.TECHNICIAN)
+                .build();
+        tech5.addSpecialty(TicketType.NETWORK);
+        tech5.addSpecialty(TicketType.OTHER);
+        userDao.insert(tech4);
+        userDao.insert(tech5);
         userDao.insert(
                 new ActemiumEmployee.EmployeeBuilder()
                         .username("supman01John")

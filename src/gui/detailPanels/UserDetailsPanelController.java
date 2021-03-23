@@ -1,16 +1,17 @@
 package gui.detailPanels;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import domain.Contract;
+import domain.Employee;
 import domain.enums.EmployeeRole;
+import domain.enums.TicketStatus;
+import domain.enums.TicketType;
 import domain.enums.UserStatus;
 import exceptions.InformationRequiredException;
 import gui.GUIEnum;
+import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
 import javafx.beans.Observable;
@@ -20,15 +21,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import languages.LanguageResource;
+
+import static java.util.stream.Collectors.toList;
 
 //TODO
 // this class can be split up in :
@@ -282,8 +282,80 @@ public class UserDetailsPanelController extends DetailsPanelController {
                 node = makeTableViewContractsInCustomers(o);
             else
                 node = makeNewLabel(LanguageResource.getString("no_items_available"), false);            
-        } 
+        } else if (o instanceof Set) {
+            node = makeViewSpecialties(o);
+
+        }
         return node;
+    }
+
+    private Node makeViewSpecialties(Object o) {
+        VBox vBox = new VBox();
+        Set<TicketType> currentSpecialtiesSet = (Set<TicketType>) o;
+        ObservableList<String> currentSpecialtiesObservableList = FXCollections.observableArrayList();
+        ObservableList<TicketType> currentSpecialtiesTicketTypeObservableList = FXCollections.observableArrayList();
+
+        List<CheckMenuItem> specialtyListCheckMenuItem = new ArrayList<>();
+        ObservableList<TicketType> allSpecialties = FXCollections.observableArrayList(TicketType.values());
+
+        //Map<String, Employee> namesAndTechs = new HashMap<>();
+        currentSpecialtiesSet.forEach(s -> {
+            currentSpecialtiesObservableList.add(s.toString());
+            currentSpecialtiesTicketTypeObservableList.add(s);
+        });
+        allSpecialties.forEach(s -> specialtyListCheckMenuItem.add(new CheckMenuItem(s.toString())));
+
+        //set the technicians already asigned to ticket marked
+        for (CheckMenuItem check: specialtyListCheckMenuItem) {
+            currentSpecialtiesSet.forEach(s ->  {
+                if (check.getText().equals(s.toString())) {
+                    System.out.println("equal: "+s);
+                    check.setSelected(true);
+                }
+            });
+        }
+
+        ListView<String> listView = new ListView<>(currentSpecialtiesObservableList);
+
+        //create dropdown with all possible employees
+        MenuButton menuButton = new MenuButton(LanguageResource.getString("select_specialty").toUpperCase());
+        menuButton.setId("menu-bar");
+        menuButton.getItems().addAll(specialtyListCheckMenuItem);
+
+        for (final CheckMenuItem specialty : specialtyListCheckMenuItem) {
+            specialty.selectedProperty().addListener((observableValue, oldValue, newValue) -> {
+                if (newValue) {
+                    //technicians.add(((TicketViewModel) viewModel).getEmployeeByName(tech.getText()));
+                    currentSpecialtiesObservableList.add(specialty.getText());
+                    viewModel.setFieldModified(true);
+                    //add technician to ticket
+                    ((UserViewModel) viewModel).addSpecialty(TicketType.valueOf(specialty.getText()));
+                } else {
+                    //technicians.remove(((TicketViewModel) viewModel).getEmployeeByName(tech.getText()));
+                    currentSpecialtiesObservableList.remove(specialty.getText());
+                    viewModel.setFieldModified(true);
+                    //add technician to ticket
+                    ((UserViewModel) viewModel).removeSpecialty(TicketType.valueOf(specialty.getText()));
+                }
+
+                // prevents an unnecessary modifyTicket and prevents a useless entry in tickethistory
+                if(((UserViewModel) viewModel).getSpecialties().stream().sorted().collect(toList())
+                        .equals(currentSpecialtiesTicketTypeObservableList.stream().sorted().collect(toList()))){
+                    viewModel.setFieldModified(false);
+                }
+                listView.setMaxHeight(((UserViewModel)viewModel).getSpecialties().size()*25+25);
+            });
+        }
+
+
+
+        //create Listview for technicians for ticket
+        listView.setMaxHeight(currentSpecialtiesSet.size()*25+25);
+        listView.getStylesheets().add("file:src/start/styles.css");
+        listView.setId("list-view");
+        listView.setMinHeight(50);
+        vBox.getChildren().addAll(menuButton, listView);
+        return vBox;
     }
 
     private <T> Node makeTableViewContractsInCustomers(Object o) {

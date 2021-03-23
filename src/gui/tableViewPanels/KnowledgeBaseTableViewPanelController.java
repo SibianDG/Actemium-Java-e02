@@ -29,7 +29,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Font;
 import languages.LanguageResource;
 
 
@@ -46,7 +45,7 @@ public class KnowledgeBaseTableViewPanelController<T,E> extends TableViewPanelCo
 		this.tableViewData = new FilteredList<>(mainData);
 		propertyMap.put(LanguageResource.getString("title"), item -> (Property<E>)((KbItem) item).titleProperty());
 		propertyMap.put(LanguageResource.getString("type"), item -> (Property<E>)((KbItem) item).typeProperty());
-		btnAdd.setText(String.format("%s %s", LanguageResource.getString("add"), currentState.toString().toLowerCase()));
+		btnAdd.setText(String.format("%s %s %s", LanguageResource.getString("add"), currentState.toString().toLowerCase(), "item"));
 			
 		initializeFilters();
 		initializeTableViewSub();

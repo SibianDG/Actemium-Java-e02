@@ -39,6 +39,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import languages.LanguageResource;
 
+import static java.util.stream.Collectors.toList;
+
 
 public class TicketDetailsPanelController extends DetailsPanelController {
     
@@ -322,6 +324,11 @@ public class TicketDetailsPanelController extends DetailsPanelController {
 
         ListView<String> listView = new ListView<>(stringsList);
 
+        allTechnicians = allTechnicians.stream().filter(t -> {
+            TicketType ticketType = ((TicketViewModel)super.viewModel).getSelectedTicket().getTicketType();
+            return t.getSpecialties().contains(ticketType);
+        }).collect(Collectors.collectingAndThen(toList(), FXCollections::observableArrayList));
+
         allTechnicians.forEach(item -> {
             listTechicians.add(new CheckMenuItem(item.getFirstName() + " " + item.getLastName()));
             namesAndTechs.put(item.getFirstName() + " " + item.getLastName(), item);
@@ -360,8 +367,8 @@ public class TicketDetailsPanelController extends DetailsPanelController {
                     ((TicketViewModel) viewModel).removeTechnician(namesAndTechs.get(tech.getText()));
                 }
                 // prevents an unnecessary modifyTicket and prevents a useless entry in tickethistory  
-                if(((TicketViewModel) viewModel).getTechniciansAsignedToTicket().stream().sorted().collect(Collectors.toList())
-                		.equals(technicians.stream().sorted().collect(Collectors.toList()))){
+                if(((TicketViewModel) viewModel).getTechniciansAsignedToTicket().stream().sorted().collect(toList())
+                		.equals(technicians.stream().sorted().collect(toList()))){
                 	viewModel.setFieldModified(false);
                 }
                 listView.setMaxHeight(((TicketViewModel) viewModel).getTechniciansAsignedToTicket().size()*25+25);

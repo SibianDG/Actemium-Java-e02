@@ -12,6 +12,7 @@ import javax.persistence.*;
 
 import domain.enums.EmployeeRole;
 import domain.enums.RequiredElement;
+import domain.enums.TicketType;
 import exceptions.InformationRequiredException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -41,6 +42,10 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 	private StringProperty role = new SimpleStringProperty();
 
 	private LocalDate registrationDate;
+
+	@ElementCollection(targetClass = TicketType.class)
+	@Enumerated(EnumType.STRING)
+	private Set<TicketType> specialties;
 	
 //	@ManyToMany(mappedBy = "technicians", cascade = CascadeType.PERSIST)
 //	private List<ActemiumTicket> tickets = new ArrayList<>();
@@ -65,6 +70,7 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 		this.emailAddress = builder.emailAddress;
 		this.roleProperty().set(String.valueOf(builder.role));
 		this.registrationDate = builder.registrationDate;
+		this.specialties = new HashSet<>();
 	}
 
 	public ActemiumEmployee() {
@@ -143,7 +149,19 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 		this.roleProperty().set(role.toString());
 	}
 
-//	public List<ActemiumTicket> getTickets() {
+	public Set<TicketType> getSpecialties() {
+		return specialties;
+	}
+
+	public void setSpecialties(Set<TicketType> specialties) {
+		this.specialties = specialties;
+	}
+
+	public void addSpecialty (TicketType ticketType){
+		this.specialties.add(ticketType);
+	}
+
+	//	public List<ActemiumTicket> getTickets() {
 //		return tickets;
 //	}
 //	
