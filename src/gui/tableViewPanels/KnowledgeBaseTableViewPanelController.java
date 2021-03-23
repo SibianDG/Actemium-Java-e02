@@ -60,14 +60,14 @@ public class KnowledgeBaseTableViewPanelController<T,E> extends TableViewPanelCo
 		}
 	}
 		
-	private void initializeFilters() {
+	protected void initializeFilters() {
 		Map<GUIEnum, ArrayList<Object>> filterMap = new HashMap<>();
 		filterMap.put(GUIEnum.KNOWLEDGEBASE, new ArrayList<>(Arrays.asList(LanguageResource.getString("title"), KbItemType.DATABASE, LanguageResource.getString("keywords"), LanguageResource.getString("FullSearch"))));
 
 		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createFilterNode(o)));
 	}
 
-	private Node createFilterNode(Object o) {
+	protected Node createFilterNode(Object o) {
 		if (o instanceof String) {
 			TextField filter = createTextFieldFilter((String) o);
 			filter.setOnKeyTyped(event -> {
@@ -81,7 +81,7 @@ public class KnowledgeBaseTableViewPanelController<T,E> extends TableViewPanelCo
 	}
 
 	//TODO
-	private ComboBox makeComboBox(Object o){
+	protected ComboBox makeComboBox(Object o){
 		String itemText;
 		ArrayList<String> stringArrayList;
 
@@ -115,7 +115,7 @@ public class KnowledgeBaseTableViewPanelController<T,E> extends TableViewPanelCo
 		return c;
 	}
 
-	private void checkFilters(){		
+	protected void checkFilters(){		
 		List<Predicate> predicates = new ArrayList<>();
 
 		hboxFilterSection.getChildren().forEach(object -> {
@@ -146,7 +146,7 @@ public class KnowledgeBaseTableViewPanelController<T,E> extends TableViewPanelCo
 		predicates.forEach(p -> setPredicateForFilteredList(p));
 	}
 
-	private void initializeTableViewSub() {
+	protected void initializeTableViewSub() {
 		propertyMap.forEach((key, prop) -> {
 			TableColumn<T, E> c = createColumn(key, prop);
 			tableView.getColumns().add(c);
@@ -162,7 +162,7 @@ public class KnowledgeBaseTableViewPanelController<T,E> extends TableViewPanelCo
 		});
 	}
 
-	private Predicate giveFilterPredicate(String fieldName, String filterText){
+	protected Predicate giveFilterPredicate(String fieldName, String filterText){
 		fieldName = fieldName.toLowerCase();		
 
 		if (fieldName.length() > 0 && !filterText.toLowerCase().contains(LanguageResource.getString("select"))){

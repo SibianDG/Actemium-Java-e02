@@ -61,14 +61,14 @@ public class CustomerTableViewPanelController<T,E> extends TableViewPanelControl
 		}
 	}	
 	
-	private void initializeFilters() {
+	protected void initializeFilters() {
 		Map<GUIEnum, ArrayList<Object>> filterMap = new HashMap<>();
 		filterMap.put(GUIEnum.CUSTOMER, new ArrayList<>(Arrays.asList(LanguageResource.getString("company"), UserStatus.ACTIVE, LanguageResource.getString("firstname"), LanguageResource.getString("lastname"))));
 		
 		filterMap.get(currentState).forEach(o -> hboxFilterSection.getChildren().add(createFilterNode(o)));
 	}
 
-	private Node createFilterNode(Object o) {
+	protected Node createFilterNode(Object o) {
 		if (o instanceof String) {
 			TextField filter = createTextFieldFilter((String) o);
 			filter.setOnKeyTyped(event -> {
@@ -81,7 +81,7 @@ public class CustomerTableViewPanelController<T,E> extends TableViewPanelControl
 		return null;
 	}
 
-	private ComboBox makeComboBox(Object o){
+	protected ComboBox makeComboBox(Object o){
 		String itemText;
 		ArrayList<String> stringArrayList;
 
@@ -121,7 +121,7 @@ public class CustomerTableViewPanelController<T,E> extends TableViewPanelControl
 		return c;
 	}
 
-	private void checkFilters(){		
+	protected void checkFilters(){		
 		List<Predicate> predicates = new ArrayList<>();
 
 		hboxFilterSection.getChildren().forEach(object -> {
@@ -157,7 +157,7 @@ public class CustomerTableViewPanelController<T,E> extends TableViewPanelControl
 		predicates.forEach(p -> setPredicateForFilteredList(p));
 	}
 
-	private void initializeTableViewSub() {
+	protected void initializeTableViewSub() {
 		propertyMap.forEach((key, prop) -> {
 			TableColumn<T, E> c = createColumn(key, prop);
 			tableView.getColumns().add(c);
@@ -173,7 +173,7 @@ public class CustomerTableViewPanelController<T,E> extends TableViewPanelControl
 		});
 	}
 
-	private Predicate giveFilterPredicate(String fieldName, String filterText){
+	protected Predicate giveFilterPredicate(String fieldName, String filterText){
 		fieldName = fieldName.toLowerCase();		
 			if (fieldName.length() > 0 && !filterText.toLowerCase().contains(LanguageResource.getString("select"))){
 				Predicate<Customer> newPredicate;

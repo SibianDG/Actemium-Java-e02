@@ -203,4 +203,17 @@ public abstract class TableViewPanelController<T, E> extends GridPane {
 		tableViewData.setPredicate((Predicate<? super T>) resultPredicate);
 	}
 	
+	
+	protected abstract void initializeFilters();
+	
+	protected abstract Node createFilterNode(Object o);
+	
+	protected abstract ComboBox makeComboBox(Object o);
+	
+	protected abstract void checkFilters();
+	
+	protected abstract Predicate giveFilterPredicate(String fieldName, String filterText);
+	
+	protected abstract void initializeTableViewSub();
+	
 }
