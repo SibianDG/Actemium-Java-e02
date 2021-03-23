@@ -299,16 +299,6 @@ public class ActemiumContractType implements ContractType, Serializable {
 				requiredElements.add(RequiredElement.ContractTypeMinTroughPutTimeRequired);
 			if (price <= 0)
 				requiredElements.add(RequiredElement.ContractTypePriceRequired);
-//			TODO
-//			 very weird small bug
-//			 set hasEmail and hasPhone to false
-//			 set hasApplication to true
-//			 modify contractType
-//			 success
-//			 set hasApplication to false
-//			 set hasPhone to true
-//			 modify contractType
-//			 error -> clone == null
 			if (!(hasEmail || hasPhone || hasApplication))
 				requiredElements.add(RequiredElement.ContractTypeWayRequired);
 
@@ -328,7 +318,7 @@ public class ActemiumContractType implements ContractType, Serializable {
 					.status(this.getStatus())
 					.hasEmail(this.isHasEmail())
 					.hasPhone(this.isHasPhone())
-					.hasPhone(this.isHasPhone())
+					.hasEmail(this.isHasEmail())
 					.timestamp(this.getTimestamp())
 					.maxHandlingTime(this.getMaxHandlingTime())
 					.minThroughputTime(this.getMinThroughputTime())
