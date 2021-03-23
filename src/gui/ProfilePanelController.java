@@ -130,6 +130,7 @@ public class ProfilePanelController extends GridPane  {
         
         lblProfile.setText(LanguageResource.getString("your_profile"));
         txtErrorMessage.setVisible(false);
+        btnModifyAccount.setText(LanguageResource.getString("modify"));
         initializeGridProfile();
 	}
 

@@ -19,6 +19,12 @@
     -fx-cursor: hand;
 }
 
+#list-view .list-cell:filled:selected:focused, #list-view .list-cell:filled:selected, #list-view .list-cell:filled:selected:focused {
+    /*ignore selected row (on top of file so it can be overruled*/
+    -fx-background-color: transparent;
+    -fx-text-background-color: #292929;
+}
+
 .button-red {
 	-fx-background-color: #c41010;
     -fx-text-fill: black;

@@ -985,15 +985,15 @@ public class DetailsPanelControllerGenericOld extends GridPane implements Invali
         listView.setId("list-view");
         //TODO
         //For disable clicking it
-        listView.setMouseTransparent( true );
-        listView.setFocusTraversable( false );
-        listView.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {});
-        listView.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {});
-        listView.addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {});
-        listView.setSelectionModel(null);
-        listView.getSelectionModel()
-                .selectedIndexProperty()
-                .addListener((observable, oldvalue, newValue) -> Platform.runLater(() -> listView.getSelectionModel().clearSelection()));
+        //listView.setMouseTransparent( true );
+        //listView.setFocusTraversable( false );
+        //listView.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {});
+        //listView.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {});
+        //listView.addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {});
+        //listView.setSelectionModel(null);
+        //listView.getSelectionModel()
+        //        .selectedIndexProperty()
+        //        .addListener((observable, oldvalue, newValue) -> Platform.runLater(() -> listView.getSelectionModel().clearSelection()));
 
         // only show menuButton when ticket is outstanding
         // hide it when ticket is resolved
