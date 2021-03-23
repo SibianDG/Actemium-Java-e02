@@ -45,7 +45,7 @@ public class UserFacade implements Facade {
 //	}
 	
 	public EmployeeRole getEmployeeRole() {
-		return actemium.giveUserRoleAsEnum();
+		return actemium.giveEmployeeRoleAsEnum();
 	}
 	
 	public String giveUserRole() {
@@ -219,10 +219,13 @@ public class UserFacade implements Facade {
 	public void modifyEmployee(ActemiumEmployee employee, String username, String password, String firstName, String lastName, String address,
 							   String phoneNumber, String emailAddress, EmployeeRole role, UserStatus status) throws InformationRequiredException {
 		try {
-			ActemiumEmployee cloneEmployee = employee.clone();
 
 			// check to see if signed in user is Admin
 			actemium.checkPermisionForModifyEmployee(EmployeeRole.ADMINISTRATOR, username);
+			actemium.checkAdminDontEditOwnRole(employee, role);
+
+			ActemiumEmployee cloneEmployee = employee.clone();
+
 			// only needs to be checked if you changed the username
 			if (!cloneEmployee.getUsername().equals(username)) {
 				actemium.existingUsername(username);

@@ -265,7 +265,7 @@ public class Actemium {
 	}
 	
 	// necessary for signedInUser right permissions check
-	public EmployeeRole giveUserRoleAsEnum() {
+	public EmployeeRole giveEmployeeRoleAsEnum() {
 		if (signedInUser instanceof Employee) {
 			return ((Employee) signedInUser).getRole();
 		}
@@ -276,7 +276,7 @@ public class Actemium {
 
 	// signedInUser right permissions check
 	public void checkPermision(EmployeeRole role) {
-		if (!giveUserRoleAsEnum().equals(role)) {
+		if (!giveEmployeeRoleAsEnum().equals(role)) {
 			throw new AccessException(
 					String.format("%s %s %s %s!"
 							, LanguageResource.getString("you_need_to_be")
@@ -287,7 +287,7 @@ public class Actemium {
 		}
 	}
 	public void checkPermision(EmployeeRole role, EmployeeRole role2) {
-		if (!(giveUserRoleAsEnum().equals(role) || giveUserRoleAsEnum().equals(role2))) {
+		if (!(giveEmployeeRoleAsEnum().equals(role) || giveEmployeeRoleAsEnum().equals(role2))) {
 			throw new AccessException(
 					String.format("%s %s %s/%s %s!"
 							, LanguageResource.getString("you_need_to_be")
@@ -580,5 +580,13 @@ public class Actemium {
 
 	public ObservableList<KbItem> giveActemiumKbItems() {
 		return FXCollections.unmodifiableObservableList(actemiumKbItems);
+	}
+
+	public void checkAdminDontEditOwnRole(ActemiumEmployee employee, EmployeeRole role) {
+		if (employee.getUserId() == signedInUser.getUserId()){
+			if (!giveEmployeeRoleAsEnum().equals(role)){
+				throw new IllegalArgumentException(LanguageResource.getString("admin_cant_edit_own_role"));
+			}
+		}
 	}
 }
