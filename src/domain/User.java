@@ -9,7 +9,6 @@ import javafx.beans.property.StringProperty;
 public interface User {
 
 	// getters
-//	public List<LoginAttempt> getLoginAttempts();
 
 	/**
 	 * Gets user id.

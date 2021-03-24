@@ -71,8 +71,6 @@ public interface Employee extends User {
 	 */
 	EmployeeRole getRole();
 
-//	List<Ticket> giveTickets();
-
 	/**
 	 * Role property string property.
 	 *

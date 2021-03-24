@@ -46,7 +46,7 @@ public class LoginAttempt implements Serializable {
 	 * @param userModel   the user model
 	 * @param loginStatus the login status
 	 */
-// LoginAttempts for nonExisting usernames are not logged in the database
+
 	public LoginAttempt(UserModel userModel, LoginStatus loginStatus) {
 		super();
 		this.dateAndTime = LocalDateTime.now();

@@ -43,8 +43,6 @@ public class ActemiumContract implements Contract, Serializable {
 
 	@Transient
 	private IntegerProperty contractIdInt = new SimpleIntegerProperty();
-//	@Transient
-//	private StringProperty contractIdString = new SimpleStringProperty();
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	private ActemiumContractType contractType;
@@ -64,8 +62,6 @@ public class ActemiumContract implements Contract, Serializable {
 	private StringProperty startDate = new SimpleStringProperty();
 	@Transient
 	private StringProperty endDate = new SimpleStringProperty();
-	//private LocalDate startDate;
-	//private LocalDate endDate;
 
 	/**
 	 * Instantiates a new Actemium contract.
@@ -87,33 +83,6 @@ public class ActemiumContract implements Contract, Serializable {
 		this.startDate.set(String.valueOf(builder.startDate));
 		this.endDate.set(String.valueOf(builder.endDate));
 	}
-
-	//TODO
-	// Customer should be able to request a contract in the future
-	// For example:
-	// Current contract will expire next week
-	// Customer can already request a contract that will start next week
-	// This is added to the UC Sign New Contract - More Info Needed
-	/*public ActemiumContract(ActemiumContractType contractType, ActemiumCustomer customer, LocalDate startDate, LocalDate endDate) {
-		setContractType(contractType);
-		setCustomer(customer);
-		setStartDate(startDate);
-		if (startDate.isEqual(LocalDate.now())) {
-			setStatus(ContractStatus.CURRENT);
-		} else {
-			setStatus(ContractStatus.IN_REQUEST);
-		}
-		setEndDate(endDate);
-	}
-	 */
-
-	//TODO
-	// Does anyone need to approve the contract after it has been signed by the customer?
-	// In other words, can the contract be initialized with status CURRENT
-	// or can it only be initialized with status IN_REQUEST ?
-	/*public ActemiumContract(ActemiumContractType contractType, ActemiumCustomer customer, LocalDate endDate) {
-		this(contractType, customer, LocalDate.now(), endDate);
-	}*/
 
 	/**
 	 * Gets contract Id.
@@ -255,9 +224,6 @@ public class ActemiumContract implements Contract, Serializable {
 	 * @param startDate the start date
 	 */
 	public void setStartDate(LocalDate startDate) {
-		//if (startDate.isBefore(LocalDate.now())) {
-		//	throw new IllegalArgumentException(LanguageResource.getString("startDate_invalid"));
-		//}
 		this.startDate.set(String.valueOf(startDate));
 	}
 
@@ -286,15 +252,6 @@ public class ActemiumContract implements Contract, Serializable {
 	 * @param endDate the end date
 	 */
 	public void setEndDate(LocalDate endDate) {
-		//LocalDate starDate = getStartDate();
-		//if (endDate.isBefore(starDate)) {
-		//	throw new IllegalArgumentException(LanguageResource.getString("endDate_invalid1"));
-		//}
-		//if (!(endDate.minusYears(1).equals(starDate)
-		//		|| endDate.minusYears(2).equals(starDate)
-		//		|| endDate.minusYears(3).equals(starDate))) {
-		//	throw new IllegalArgumentException(LanguageResource.getString("endDate_invalid2"));
-		//}
 		this.endDate.set(String.valueOf(endDate));
 	}
 

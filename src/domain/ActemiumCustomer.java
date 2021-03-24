@@ -27,9 +27,6 @@ import javafx.collections.ObservableList;
 public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	@Serial
 	private static final long serialVersionUID = 1L;
-
-	//@GeneratedValue(strategy = GenerationType.AUTO)
-	//private int customerNr;
 	
 	@OneToMany(mappedBy = "customer",
 			   cascade = CascadeType.PERSIST)
@@ -51,13 +48,7 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 		super();
 	}
 	
-	/*public ActemiumCustomer(String username, String password, String firstName, String lastName, ActemiumCompany company) {
-		super(username, password, firstName, lastName);
-		setCompany(company);
-		setRegistrationDate(LocalDate.now());
-	}
 
-	 */
 
 	/**
 	 * Instantiates a new Actemium customer.
@@ -186,7 +177,6 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	 * @throws InformationRequiredException the information required exception
 	 */
 	public void checkAttributes() throws InformationRequiredException {
-		// Ms. Malfait her idea
 		new CustomerBuilder()
 				.username(super.usernameProperty().get())
 				.password(super.getPassword())
@@ -326,11 +316,9 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 					.password(this.getPassword())
 					.firstName(this.firstNameProperty().get())
 					.lastName(this.lastNameProperty().get())
-					//TODO: clone company as well
 					.company(this.getCompany())
 					.build();
 		} catch (InformationRequiredException e) {
-			//this should be a good Employee
 			e.printStackTrace();
 		}
 		return cloned;

@@ -39,7 +39,6 @@ public class ActemiumTicketComment implements TicketComment, Serializable {
 
 	@ManyToOne
 	private UserModel user;
-//	private String username;
 	private String userRole;
 
 	private LocalDateTime dateTimeOfComment;
@@ -252,14 +251,12 @@ public class ActemiumTicketComment implements TicketComment, Serializable {
 		}
 
 		private void checkAttributesKbItemBuiler() throws InformationRequiredException {
-			// we dont really need to check anything here
 			if (ticket == null)
 				requiredElements.add(RequiredElement.TicketTitleRequired);
 			if (user == null)
 				requiredElements.add(RequiredElement.UserRequired);
 			if(dateTimeOfComment == null)
-				requiredElements.add(RequiredElement.DateTimeOfCommentRequired);
-			//TODO
+				requiredElements.add(RequiredElement.DateTimeOfCommentRequired);	
 			if(commentText == null || commentText.isBlank())
 				requiredElements.add(RequiredElement.CommentTextRequired);
 
@@ -286,7 +283,6 @@ public class ActemiumTicketComment implements TicketComment, Serializable {
 					.commentText(this.getCommentText())
 					.build();
 		} catch (InformationRequiredException e) {
-			// this should be a good Employee
 			e.printStackTrace();
 		}
 		return cloned;

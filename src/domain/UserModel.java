@@ -54,7 +54,6 @@ public abstract class UserModel implements User, Serializable {
 	)
 	private List<LoginAttempt> loginAttempts = new ArrayList<>();
 
-//	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -107,10 +106,6 @@ public abstract class UserModel implements User, Serializable {
 	 */
 	public void increaseFailedLoginAttempts() {
 		failedLoginAttempts++;
-//		if (failedLoginAttempts > USER_LOGIN_MAX_ATTEMPTS) {
-//			throw new IllegalArgumentException("User has reached more than 5 failed login attempts, account has been blocked.");
-//		}
-
 	}
 
 	/**
@@ -156,10 +151,6 @@ public abstract class UserModel implements User, Serializable {
 	 * @param username the username
 	 */
 	public void setUsername(String username) {
-		//String usernameRegex = "[A-Za-z0-9]+";
-		//if(username == null || username.isBlank() || !username.matches(usernameRegex)) {
-		//	throw new IllegalArgumentException(LanguageResource.getString("username_invalid"));
-		//}
 		this.username.set(username);
 	}
 
@@ -178,10 +169,6 @@ public abstract class UserModel implements User, Serializable {
 	 * @param password the password
 	 */
 	public void setPassword(String password) {
-		//String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()â€“{}:;',.?/*~$^+=<>]).{8,}$";
-		//if(password == null || password.isBlank() || !password.matches(passwordRegex)){
-		//	throw new IllegalArgumentException(LanguageResource.getString("password_invalid"));
-		//}
 		this.password = password;
 	}
 
@@ -201,10 +188,6 @@ public abstract class UserModel implements User, Serializable {
 	 * @param firstName the first name
 	 */
 	public void setFirstName(String firstName) {
-		//String firstNameRegex = "[^0-9]+";
-		//if(firstName == null || firstName.isBlank() || !firstName.matches(firstNameRegex)){
-		//	throw new IllegalArgumentException(LanguageResource.getString("firstname_invalid"));
-		//}
 		this.firstName.set(firstName);
 	}
 
@@ -224,10 +207,6 @@ public abstract class UserModel implements User, Serializable {
 	 * @param lastName the last name
 	 */
 	public void setLastName(String lastName) {
-		//String lastNameRegex = "[^0-9]+";
-		//if(lastName == null || lastName.isBlank() || !lastName.matches(lastNameRegex)){
-		//	throw new IllegalArgumentException(LanguageResource.getString("lastname_invalid"));
-		//}
 		this.lastName.set(lastName);
 	}
 

@@ -53,8 +53,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long ticketId;
 	
-//	@Transient
-//	private StringProperty ticketIdString = new SimpleStringProperty();
 	@Transient
 	private IntegerProperty ticketIdInt = new SimpleIntegerProperty();
 
@@ -67,7 +65,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 	@Transient
 	private StringProperty completionDate = new SimpleStringProperty();
 
-	// For statistics
 	private LocalDateTime dateAndTimeOfCreation;
 	private LocalDateTime dateAndTimeOfCompletion;
 
@@ -84,7 +81,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	private List<ActemiumTicketComment> comments = new ArrayList<>();
 	private String attachments;	
-//	private List<String> attachments;	
+	
 	// List of technicians contain all the technicians assigned to the ticket
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	private List<ActemiumEmployee> technicians = new ArrayList<>();
@@ -119,38 +116,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 	}
 
 
-	//TODO:
-	//remove CTOR & setters
-	/*
-	public ActemiumTicket(TicketPriority ticketPriority, TicketType ticketType, String title, String description, ActemiumCustomer customer,
-			String remarks, String attachments) {
-		super();
-		// new ticket always gets TicketStatus CREATED
-		setStatus(TicketStatus.CREATED);
-		setTicketType(ticketType);
-		setPriority(ticketPriority);
-		setDateOfCreation(LocalDate.now());
-		setDateAndTimeOfCreation(LocalDateTime.now());
-		setTitle(title);
-		setDescription(description);
-		setCustomer(customer);
-		setRemarks(remarks);
-		setAttachments(attachments);
-		setSolution("(not filled in yet)");
-		setQuality("(not filled in yet)");
-		setSupportNeeded("(not filled in yet)");
-	}
-	 */
-
-	//TODO:
-	//remove CTOR & setters
-	// remarks and attachments are optional ( (none) is used so the field can be modified in gui)
-	/*
-	public ActemiumTicket(TicketPriority ticketPriority, TicketType ticketType, String title, String description, ActemiumCustomer customer) {
-		this(ticketPriority, ticketType, title, description, customer, "(none)", "(none)");
-	}
-
-	 */
 
 	/**
 	 * Instantiates a new Actemium ticket via the builder pattern.
@@ -264,8 +229,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 	 */
 	public void setPriority(TicketPriority priority) throws InformationRequiredException {
 		this.priority.set(String.valueOf(priority));
-
-		//checkAttributes();
 	}
 
 	/**
@@ -296,9 +259,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 	 */
 	public void setTicketType(TicketType ticketType) throws InformationRequiredException {
 		this.ticketType.set(String.valueOf(ticketType));
-
-		//@Transient
-		//checkAttributes();
 	}
 
 	/**
@@ -372,11 +332,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 	 * @throws InformationRequiredException the information required exception
 	 */
 	public void setTitle(String title) throws InformationRequiredException {
-		//if (title == null || title.isBlank()) {
-		//	throw new IllegalArgumentException(LanguageResource.getString("ticketTitle_invalid"));
-		//}
 		this.title.set(title);
-		//checkAttributes();
 	}
 
 	/**
@@ -395,11 +351,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 	 * @throws InformationRequiredException the information required exception
 	 */
 	public void setDescription(String description) throws InformationRequiredException {
-		//if (description == null || description.isBlank()) {
-		//	throw new IllegalArgumentException(LanguageResource.getString("description_invalid"));
-		//}
 		this.description = description;
-		//checkAttributes();
 	}
 
 	/**
@@ -428,9 +380,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 	 * @throws InformationRequiredException the information required exception
 	 */
 	public void setCustomer(ActemiumCustomer customer) throws InformationRequiredException {
-		//if (customer == null) {
-		//	throw new IllegalArgumentException(LanguageResource.getString("customerAssigned_invalid"));
-		//}
 		this.customer = customer;
 		checkAttributes();
 	}
@@ -471,15 +420,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 	public void addTicketComment(ActemiumTicketComment comment) {
 		comments.add(comment);
 	}
-
-//	public List<String> getAttachments() {
-//		return attachments;
-//	}
-//
-//	public void setAttachments(List<String> attachments) {
-//		// Optional, can be null or blank
-//		this.attachments = attachments;
-//	}
 
 	/**
 	 * Gets the attachments string.
@@ -660,7 +600,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 	 * @return ticket id property
 	 */
 	public IntegerProperty ticketIdProperty() {
-		// must be set right before requesting the ticketIdProperty
 		setTicketIdInt();
 		return ticketIdInt;
 	}
@@ -690,9 +629,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 	 * @throws InformationRequiredException the information required exception
 	 */
 	public void checkAttributes() throws InformationRequiredException {
-		//TODO: maybe not check all?
-		//if you make a new TicketBuilder with the current set attributes, it will throw exception.
-		// Ms. Malfait her idea
 		new TicketBuilder()
 				.ticketPriority(getPriority())
 				.ticketStatus(getStatus())
@@ -700,14 +636,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 				.title(this.title.get())
 				.description(this.description)
 				.customer(this.customer)
-				//.dateOfCreation(this.dateOfCreation)
-				//.dateAndTimeOfCreation(this.dateAndTimeOfCreation)
-				//.dateAndTimeOfCompletion(this.dateAndTimeOfCompletion)
-				//.remarks(this.remarks)
-				//.attachments(this.attachments)
-				//.solution(this.solution)
-				//.quality(this.quality)
-				//.supportNeeded(this.supportNeeded)
 				.build();
 
 	}
@@ -716,9 +644,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 	 * The type Ticket builder.
 	 */
 	public static class TicketBuilder {
-		//private int ticketIdInt;
-		//private ActemiumCompany company;
-
+		
 		private TicketStatus ticketStatus;
 		private TicketPriority ticketPriority;
 		private TicketType ticketType;
@@ -844,8 +770,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 		 * @return the ticket builder
 		 */
 		public TicketBuilder comments(List<ActemiumTicketComment> comments){
-//			if (comments == null)
-//				this.comments = new ArrayList<ActemiumTicketComment>();
 			this.comments = comments;
 			return this;
 		}
@@ -943,22 +867,16 @@ public class ActemiumTicket implements Ticket, Serializable {
 			if (dateAndTimeOfCreation == null)
 				this.dateAndTimeOfCreation = LocalDateTime.now();
 			if (solution == null)
-//				this.solution = String.format("(%s)", LanguageResource.getString("not_filled_in_yet"));
 				this.solution = "";
 			if (quality == null)
-//				this.quality = String.format("(%s)", LanguageResource.getString("not_filled_in_yet"));
 				this.quality = "";
 			if (supportNeeded == null)
-//				this.supportNeeded = String.format("(%s)", LanguageResource.getString("not_filled_in_yet"));			
 				this.supportNeeded = "";
-//			if (comments == null)
-//				this.comments = String.format("(%s)", LanguageResource.getString("none"));
 			if (comments == null)
 				this.comments = new ArrayList<ActemiumTicketComment>();
 			if (attachments == null)
 				this.attachments = String.format("(%s)", LanguageResource.getString("none"));
 			if (!requiredElements.isEmpty()) {
-				//requiredElements.forEach(element -> System.out.println(element));
 				throw new InformationRequiredException(requiredElements);
 			}
 		}
@@ -989,7 +907,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 					.supportNeeded(this.getSupportNeeded())
 					.build();
 		} catch (InformationRequiredException e) {
-			//this should be a good Employee
 			e.printStackTrace();
 		}
 		return cloned;

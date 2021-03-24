@@ -22,7 +22,6 @@ public interface Ticket {
 	 * @return the ticket id string
 	 */
 	String getTicketIdString();
-//	int getTicketIdInt();
 
 	/**
 	 * Gets status as string.
@@ -121,7 +120,6 @@ public interface Ticket {
 	 * @return the attachments
 	 */
 	String getAttachments();
-//	List<String> getAttachments();
 
 	/**
 	 * Give technicians observable list.
@@ -184,7 +182,6 @@ public interface Ticket {
 	 *
 	 * @return the integer property
 	 */
-//	StringProperty ticketIdProperty();
 	IntegerProperty ticketIdProperty();
 
 	/**

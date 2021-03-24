@@ -38,7 +38,6 @@ public class ActemiumKbItem implements KbItem, Serializable {
 
 	@Transient
 	private StringProperty title = new SimpleStringProperty();
-	// using the same type as ticketType
 	@Transient
 	private StringProperty type = new SimpleStringProperty();
 	
@@ -282,7 +281,6 @@ public class ActemiumKbItem implements KbItem, Serializable {
 					.text(this.getText())
 					.build();
 		} catch (InformationRequiredException e) {
-			//this should be a good Employee
 			e.printStackTrace();
 		}
 		return cloned;

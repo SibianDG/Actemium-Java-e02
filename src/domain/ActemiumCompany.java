@@ -85,19 +85,6 @@ public class ActemiumCompany implements Company, Serializable {
 		this.phoneNumber = builder.phoneNumber;
 		this.registrationDate = builder.registrationDate;
 	}
-	
-	/*public ActemiumCompany(String name, String country, String city,
-						   String address, String phoneNumber) {
-		setName(name);
-		setCountry(country);
-		setCity(city);
-		setAddress(address);
-		setPhoneNumber(phoneNumber);
-		setRegistrationDate(LocalDate.now());
-	}
-
-	 */
-
 
 	/**
 	 * Gets name.
@@ -123,9 +110,6 @@ public class ActemiumCompany implements Company, Serializable {
 	 * @param name the name
 	 */
 	public void setName(String name) {
-		//if (name == null || name.isBlank()) {
-		//	throw new IllegalArgumentException(LanguageResource.getString("companyName_invalid"));
-		//}
 		this.name.set(name);
 	}
 
@@ -143,9 +127,6 @@ public class ActemiumCompany implements Company, Serializable {
 	 * @param country the country
 	 */
 	public void setCountry(String country) {
-		//if (country == null || country.isBlank()) {
-		//	throw new IllegalArgumentException(LanguageResource.getString("empty_country"));
-		//}
 		this.country = country;
 	}
 
@@ -163,9 +144,6 @@ public class ActemiumCompany implements Company, Serializable {
 	 * @param city the city
 	 */
 	public void setCity(String city) {
-		//if (city == null || city.isBlank()) {
-		//	throw new IllegalArgumentException(LanguageResource.getString("empty_city"));
-		//}
 		this.city = city;
 	}
 
@@ -183,9 +161,6 @@ public class ActemiumCompany implements Company, Serializable {
 	 * @param address the address
 	 */
 	public void setAddress(String address) {
-		//if (address == null || address.isBlank()) {
-		//	throw new IllegalArgumentException(LanguageResource.getString("empty_address"));
-		//}
 		this.address = address;
 	}
 
@@ -203,12 +178,6 @@ public class ActemiumCompany implements Company, Serializable {
 	 * @param phoneNumber the phone number
 	 */
 	public void setPhoneNumber(String phoneNumber) {
-		//TODO fix phoneNumberRegex
-//		String phoneNumberRegex = "[0-9 /-]+";
-//		if (phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches(phoneNumberRegex)) {
-		//if (phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches(".*\\d.*")) {
-		//	throw new IllegalArgumentException(LanguageResource.getString("phonenumber_invalid"));
-		//}
 		this.phoneNumber = phoneNumber;
 	}
 
@@ -429,7 +398,6 @@ public class ActemiumCompany implements Company, Serializable {
 					.registrationDate(this.getRegistrationDate())
 					.build();
 		} catch (InformationRequiredException e) {
-			//this should be a good Employee
 			e.printStackTrace();
 		}
 		return cloned;

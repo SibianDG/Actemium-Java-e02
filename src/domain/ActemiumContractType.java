@@ -40,9 +40,6 @@ public class ActemiumContractType implements ContractType, Serializable {
 
 	@Transient
 	private StringProperty timestamp = new SimpleStringProperty();
-	//TODO
-	// Does the integer represent:
-	// Days, Hours, Minutes?
 	private int maxHandlingTime;
 	private int minThroughputTime;
 	// Price per year?
@@ -465,7 +462,6 @@ public class ActemiumContractType implements ContractType, Serializable {
 				requiredElements.add(RequiredElement.ContractTypeMinTroughPutTimeRequired);
 			if (price <= 0)
 				requiredElements.add(RequiredElement.ContractTypePriceRequired);
-			// Ensures that at least 1 ticket creation method is selected
 			if (!(hasEmail || hasPhone || hasApplication))
 				requiredElements.add(RequiredElement.ContractTypeWayRequired);
 
@@ -499,7 +495,6 @@ public class ActemiumContractType implements ContractType, Serializable {
 					.price(this.getPrice())
 					.build();
 		} catch (InformationRequiredException e) {
-			//this should be a good Employee
 			e.printStackTrace();
 		}
 		return cloned;

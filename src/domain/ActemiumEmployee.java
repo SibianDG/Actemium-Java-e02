@@ -31,10 +31,6 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	//ToDo: when on SQL SERVER Turn on
-	//@GeneratedValue(strategy = GenerationType.AUTO)
-	//private String employeeNr;
-
 	private String address;
 	private String phoneNumber;
 
@@ -49,22 +45,6 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 	@ElementCollection(targetClass = TicketType.class)
 	@Enumerated(EnumType.STRING)
 	private Set<TicketType> specialties;
-	
-//	@ManyToMany(mappedBy = "technicians", cascade = CascadeType.PERSIST)
-//	private List<ActemiumTicket> tickets = new ArrayList<>();
-	
-//	@ManyToMany
-//	private List<Customer> customers;
-
-	/*public ActemiumEmployee(String username, String password, String firstName, String lastName, String address,
-			String phoneNumber, String emailAddress, EmployeeRole role) {
-		super(username, password, firstName, lastName);
-		setAddress(address);
-		setPhoneNumber(phoneNumber);
-		setEmailAddress(emailAddress);
-		setRole(role);
-		setRegistrationDate(LocalDate.now());
-	}*/
 
 	/**
 	 * Instantiates a new Actemium employee.
@@ -122,10 +102,6 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 	 * @param address the address
 	 */
 	public void setAddress(String address) {
-		//String usernameRegex = "[A-Za-z0-9 _-]+";
-		//if (address == null || address.isBlank() || !address.matches(usernameRegex)) {
-		//	throw new IllegalArgumentException(LanguageResource.getString("address_invalid"));
-		//}
 		this.address = address;
 	}
 
@@ -144,12 +120,6 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 	 * @param emailAddress the email address
 	 */
 	public void setEmailAddress(String emailAddress) {
-		//String emailRegex = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+[.][a-zA-Z0-9-]{2,4}$";
-		////TODO the regex below doesn't work because we create employees with a false email according to this regex in PopulateDB
-		//// "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
-		//if (emailAddress == null || emailAddress.isBlank() || !emailAddress.matches(emailRegex)) {
-		//	throw new IllegalArgumentException(LanguageResource.getString("email_invalid"));
-		//}
 		this.emailAddress = emailAddress;
 	}
 
@@ -168,10 +138,6 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 	 * @param phoneNumber the phone number
 	 */
 	public void setPhoneNumber(String phoneNumber) {
-		//String usernameRegex = "[0-9 /-]+";
-		//if (phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches(usernameRegex)) {
-		//	throw new IllegalArgumentException(LanguageResource.getString("phonenumber_invalid"));
-		//}
 		this.phoneNumber = phoneNumber;
 	}
 
@@ -219,9 +185,6 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 	 * @param role the role
 	 */
 	public void setRole(EmployeeRole role) {
-		//if (role == null) {
-		//	throw new IllegalArgumentException(LanguageResource.getString("role_invalid"));
-		//}
 		this.roleProperty().set(role.toString());
 	}
 
@@ -252,18 +215,6 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 		this.specialties.add(ticketType);
 	}
 
-	//	public List<ActemiumTicket> getTickets() {
-//		return tickets;
-//	}
-//	
-//	public List<Ticket> giveTickets() {
-//		return (List<Ticket>) (Object) tickets;
-//	}
-//
-//	public void setTickets(List<ActemiumTicket> tickets) {
-//		this.tickets = tickets;
-//	}
-
 	/**
 	 *	Gets the property role.
 	 *
@@ -279,7 +230,6 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 	 * @throws InformationRequiredException the information required exception
 	 */
 	public void checkAttributes() throws InformationRequiredException {
-		// Ms. Malfait her idea
 		new EmployeeBuilder()
 				.username(super.usernameProperty().get())
 				.password(super.getPassword())
@@ -472,7 +422,6 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 					.role(this.getRole())
 					.build();
 		} catch (InformationRequiredException e) {
-			//this should be a good Employee
 			e.printStackTrace();
 		}
 		return cloned;
