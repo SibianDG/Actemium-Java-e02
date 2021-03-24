@@ -2,24 +2,25 @@ package domain.enums;
 
 import languages.LanguageResource;
 
+/**
+ * The enum Employee role.
+ */
 public enum EmployeeRole {
-    ADMINISTRATOR /*{
-        @Override
-        public String toString() {
-            return LanguageResource.getString("ADMINISTRATOR");
-        }
-    }*/
+    /**
+     * Administrator employee role.
+     */
+    ADMINISTRATOR
 
-    , TECHNICIAN /*{
-        @Override
-        public String toString() {
-            return LanguageResource.getString("TECHNICIAN");
-        }
-    }*/
-    , SUPPORT_MANAGER /*{
-        @Override
-        public String toString() {
-            return LanguageResource.getString("ADMINISTRATOR");
-        }
-    }*/
+    ,
+    /**
+     * Technician employee role.
+     */
+    TECHNICIAN
+
+    ,
+    /**
+     * Support manager employee role.
+     */
+    SUPPORT_MANAGER
+
 }

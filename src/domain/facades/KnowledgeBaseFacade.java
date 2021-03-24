@@ -8,17 +8,34 @@ import domain.manager.Actemium;
 import exceptions.InformationRequiredException;
 import javafx.collections.ObservableList;
 
+/**
+ * The type Knowledge base facade.
+ */
 public class KnowledgeBaseFacade implements Facade {
 
     private final Actemium actemium;
 
+    /**
+     * Instantiates a new Knowledge base facade.
+     *
+     * @param actemium the actemium
+     */
     public KnowledgeBaseFacade(Actemium actemium) {
         this.actemium = actemium;
     }
 
+    /**
+     * Register kb item.
+     *
+     * @param title    the title
+     * @param type     the type
+     * @param keywords the keywords
+     * @param text     the text
+     * @throws InformationRequiredException the information required exception
+     */
     public void registerKbItem(String title, KbItemType type, String keywords, String text) throws InformationRequiredException {
 		// check to see if signed in user is Support Manager
-		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
+		actemium.checkPermission(EmployeeRole.SUPPORT_MANAGER);
     	ActemiumKbItem kbItem = new ActemiumKbItem.KbItemBuilder()
                 .title(title)
                 .type(type)
@@ -28,13 +45,23 @@ public class KnowledgeBaseFacade implements Facade {
         actemium.registerKbItem(kbItem);
     }
 
+    /**
+     * Modify kb item.
+     *
+     * @param kbItem   the kb item
+     * @param title    the title
+     * @param type     the type
+     * @param keywords the keywords
+     * @param text     the text
+     * @throws InformationRequiredException the information required exception
+     */
     public void modifyKbItem(ActemiumKbItem kbItem, String title, KbItemType type, String keywords, String text) throws InformationRequiredException {
 
         try {
             ActemiumKbItem kbItemClone = kbItem.clone();
 
             // check to see if signed in user is Support Manager
-            actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
+            actemium.checkPermission(EmployeeRole.SUPPORT_MANAGER);
 
             kbItemClone.setTitle(title);
             kbItemClone.setType(type);
@@ -55,17 +82,32 @@ public class KnowledgeBaseFacade implements Facade {
 
     }
 
+    /**
+     * Delete.
+     *
+     * @param kbItem the kb item
+     */
     public void delete(ActemiumKbItem kbItem) {
 		// check to see if signed in user is Support Manager
-		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
+		actemium.checkPermission(EmployeeRole.SUPPORT_MANAGER);
 		// physical delete for kb item?
         actemium.modifyKbItem(kbItem);
     }
 
+    /**
+     * Give actemium kb items observable list.
+     *
+     * @return the observable list
+     */
     public ObservableList<KbItem> giveActemiumKbItems() {
         return actemium.giveActemiumKbItems();
     }
 
+    /**
+     * Gets last added kb item.
+     *
+     * @return the last added kb item
+     */
     public KbItem getLastAddedKbItem() {
         return actemium.getLastAddedKbItem();
     }

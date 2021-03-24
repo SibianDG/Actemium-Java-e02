@@ -23,6 +23,9 @@ import exceptions.InformationRequiredException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+/**
+ * The type Actemium company.
+ */
 @Entity
 @Access(AccessType.FIELD)
 public class ActemiumCompany implements Company, Serializable {
@@ -62,10 +65,18 @@ public class ActemiumCompany implements Company, Serializable {
 				   cascade = CascadeType.PERSIST)
 	private List<ActemiumTicket> actemiumTickets = new ArrayList<>();
 
-	public ActemiumCompany() {		
+	/**
+	 * Instantiates a new Actemium company.
+	 */
+	public ActemiumCompany() {
 		super();
 	}
 
+	/**
+	 * Instantiates a new Actemium company.
+	 *
+	 * @param builder the builder
+	 */
 	public ActemiumCompany(CompanyBuilder builder) {
 		this.name.set(builder.name);
 		this.country = builder.country;
@@ -87,48 +98,90 @@ public class ActemiumCompany implements Company, Serializable {
 
 	 */
 
+
+	/**
+	 * Gets name.
+	 *
+	 * @return name
+	 */
 	@Access(AccessType.PROPERTY)
 	public String getName() {
 		return name.get();
 	}
 
+	/**
+	 *
+	 * @return nameProperty
+	 */
 	public StringProperty nameProperty() {
 		return name;
 	}
 
+	/**
+	 * Sets name.
+	 *
+	 * @param name the name
+	 */
 	public void setName(String name) {
 		//if (name == null || name.isBlank()) {
 		//	throw new IllegalArgumentException(LanguageResource.getString("companyName_invalid"));
 		//}
 		this.name.set(name);
 	}
-	
+
+	/**
+	 *
+	 * @return country
+	 */
 	public String getCountry() {
 		return country;
 	}
 
+	/**
+	 * Sets country.
+	 *
+	 * @param country the country
+	 */
 	public void setCountry(String country) {
 		//if (country == null || country.isBlank()) {
 		//	throw new IllegalArgumentException(LanguageResource.getString("empty_country"));
 		//}
 		this.country = country;
 	}
-	
+
+	/**
+	 *
+	 * @return city
+	 */
 	public String getCity() {
 		return city;
 	}
 
+	/**
+	 * Sets city.
+	 *
+	 * @param city the city
+	 */
 	public void setCity(String city) {
 		//if (city == null || city.isBlank()) {
 		//	throw new IllegalArgumentException(LanguageResource.getString("empty_city"));
 		//}
 		this.city = city;
 	}
-	
+
+	/**
+	 *
+	 * @return address
+	 */
 	public String getAddress() {
 		return address;
 	}
 
+	/**
+	 * Sets address.
+	 *
+	 * @param address the address
+	 */
 	public void setAddress(String address) {
 		//if (address == null || address.isBlank()) {
 		//	throw new IllegalArgumentException(LanguageResource.getString("empty_address"));
@@ -136,10 +189,19 @@ public class ActemiumCompany implements Company, Serializable {
 		this.address = address;
 	}
 
+	/**
+	 *
+	 * @return phone number
+	 */
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
+	/**
+	 * Sets phone number.
+	 *
+	 * @param phoneNumber the phone number
+	 */
 	public void setPhoneNumber(String phoneNumber) {
 		//TODO fix phoneNumberRegex
 //		String phoneNumberRegex = "[0-9 /-]+";
@@ -150,38 +212,78 @@ public class ActemiumCompany implements Company, Serializable {
 		this.phoneNumber = phoneNumber;
 	}
 
+	/**
+	 *
+	 * @return registration date
+	 */
 	public LocalDate getRegistrationDate() {
 		return registrationDate;
 	}
 
+	/**
+	 * Sets registration date.
+	 *
+	 * @param registrationDate the registration date
+	 */
 	public void setRegistrationDate(LocalDate registrationDate) {
 		this.registrationDate = registrationDate;
 	}
 
+	/**
+	 * Gets contact persons.
+	 *
+	 * @return the contact persons
+	 */
 	public List<ActemiumCustomer> getContactPersons() {
 		return contactPersons;
 	}
-	
+
+	/**
+	 * give contact persons
+	 *
+	 * @return contact persons list
+	 */
 	public List<Customer> giveContactPersons() {
 		return (List<Customer>) (Object) contactPersons;
-	}	
+	}
 
+	/**
+	 * Add contact person.
+	 *
+	 * @param contactPerson the contact person
+	 */
 	public void addContactPerson(ActemiumCustomer contactPerson) {
 		this.contactPersons.add(contactPerson);
 	}
 
+	/**
+	 * Gets actemium tickets.
+	 *
+	 * @return the actemium tickets
+	 */
 	public List<ActemiumTicket> getActemiumTickets() {
 		return actemiumTickets;
 	}
-	
+
+	/**
 	public List<Ticket> giveTickets() {
 		return (List<Ticket>) (Object) actemiumTickets;
 	}
 
+	/**
+	 * Add actemium ticket.
+	 *
+	 * @param ticket the ticket
+	 */
 	public void addActemiumTicket(ActemiumTicket ticket) {
 		this.actemiumTickets.add(ticket);
 	}
 
+	/**
+	 * Check attributes. This method is when you make changes to the object, that the attributes are indeed valid.
+	 *
+	 * @throws InformationRequiredException the information required exception
+	 */
 	public void checkAttributes() throws InformationRequiredException {
 		// Ms. Malfait her idea
 		new ActemiumCompany.CompanyBuilder()
@@ -194,6 +296,9 @@ public class ActemiumCompany implements Company, Serializable {
 				.build();
 	}
 
+	/**
+	 * The type Company builder.
+	 */
 	public static class CompanyBuilder {
 		private String name;
 		private String country;
@@ -205,31 +310,78 @@ public class ActemiumCompany implements Company, Serializable {
 
 		private Set<RequiredElement> requiredElements;
 
+		/**
+		 * Name company builder.
+		 *
+		 * @param name the name
+		 * @return the company builder
+		 */
 		public CompanyBuilder name(String name){
 			this.name = name;
 			return this;
 		}
+
+		/**
+		 * Country company builder.
+		 *
+		 * @param country the country
+		 * @return the company builder
+		 */
 		public CompanyBuilder country(String country){
 			this.country = country;
 			return this;
 		}
+
+		/**
+		 * City company builder.
+		 *
+		 * @param city the city
+		 * @return the company builder
+		 */
 		public CompanyBuilder city(String city){
 			this.city = city;
 			return this;
 		}
+
+		/**
+		 * Address company builder.
+		 *
+		 * @param address the address
+		 * @return the company builder
+		 */
 		public CompanyBuilder address(String address){
 			this.address = address;
 			return this;
 		}
+
+		/**
+		 * Phone number company builder.
+		 *
+		 * @param phoneNumber the phone number
+		 * @return the company builder
+		 */
 		public CompanyBuilder phoneNumber(String phoneNumber){
 			this.phoneNumber = phoneNumber;
 			return this;
 		}
+
+		/**
+		 * Registration date company builder.
+		 *
+		 * @param registrationDate the registration date
+		 * @return the company builder
+		 */
 		public CompanyBuilder registrationDate(LocalDate registrationDate){
 			this.registrationDate = registrationDate;
 			return this;
 		}
 
+		/**
+		 * Build actemium company.
+		 *
+		 * @return the actemium company
+		 * @throws InformationRequiredException the information required exception
+		 */
 		public ActemiumCompany build() throws InformationRequiredException {
 			requiredElements = new HashSet<>();
 			checkAttributesEmployeeBuiler();
@@ -257,6 +409,12 @@ public class ActemiumCompany implements Company, Serializable {
 		}
 	}
 
+	/**
+	 * This clones an actemium company.
+	 *
+	 * @return Actemium Company
+	 * @throws CloneNotSupportedException throws a clone not supported exception
+	 */
 	@Override
 	public ActemiumCompany clone() throws CloneNotSupportedException {
 

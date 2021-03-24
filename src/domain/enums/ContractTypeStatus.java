@@ -2,21 +2,21 @@ package domain.enums;
 
 import languages.LanguageResource;
 
+/**
+ * The enum Contract type status.
+ */
 public enum ContractTypeStatus {
-	// Original UC - by HoGent lectors
-	ACTIVE /*{
-		@Override
-		public String toString() {
-			return LanguageResource.getString("ACTIVE");
-		}
-	}*/
+	/**
+	 * The Active.
+	 */
+// Original UC - by HoGent lectors
+	ACTIVE
 
-	, INACTIVE /*{
-		@Override
-		public String toString() {
-			return LanguageResource.getString("INACTIVE");
-		}
-	}*/
+	,
+	/**
+	 * Inactive contract type status.
+	 */
+	INACTIVE
 	
 	// Most recent update by Product Owner (Actemium)
 	// No changes yet

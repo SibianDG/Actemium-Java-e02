@@ -5,6 +5,9 @@ import java.util.List;
 
 import javafx.beans.property.StringProperty;
 
+/**
+ * The interface Company.
+ */
 public interface Company {
 
 	// getters
@@ -17,13 +20,13 @@ public interface Company {
 
 	public String getAddress();
 
-	public String getPhoneNumber();	
+	public String getPhoneNumber();
 
 	public LocalDate getRegistrationDate();
 
 	public StringProperty nameProperty();
-	
+
 	public List<Customer> giveContactPersons();
-	
+
 	public List<Ticket> giveTickets();
 }

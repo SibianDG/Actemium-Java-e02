@@ -37,6 +37,9 @@ import repository.GenericDao;
 import repository.UserDao;
 import repository.UserDaoJpa;
 
+/**
+ * The type Actemium.
+ */
 public class Actemium {
 	
 	// This class is a manager?
@@ -63,8 +66,13 @@ public class Actemium {
 	// User (Employee, Customer) that is signed in
 	private UserModel signedInUser;
 	private static final int USER_LOGIN_MAX_ATTEMPTS = 5;
-	
-	// Contrutor for domainTest
+
+	/**
+	 * Instantiates a new Actemium.
+	 *
+	 * @param userDaoJpa the user dao jpa
+	 */
+// Contrutor for domainTest
 	// will change in the future
 	public Actemium(UserDao userDaoJpa) {
 		this.userDaoJpa = userDaoJpa; 
@@ -72,8 +80,18 @@ public class Actemium {
 		// Fill up ObservableLists
 		fillInUserLists();
 	}
-	
-	public Actemium(UserDao userDaoJpa, GenericDao<ActemiumCompany> companyRepo, GenericDao<ActemiumTicket> ticketRepo, 
+
+	/**
+	 * Instantiates a new Actemium.
+	 *
+	 * @param userDaoJpa      the user dao jpa
+	 * @param companyRepo     the company repo
+	 * @param ticketRepo      the ticket repo
+	 * @param contactTypeRepo the contact type repo
+	 * @param contractRepo    the contract repo
+	 * @param kbItemDaoJpa    the kb item dao jpa
+	 */
+	public Actemium(UserDao userDaoJpa, GenericDao<ActemiumCompany> companyRepo, GenericDao<ActemiumTicket> ticketRepo,
 			GenericDao<ActemiumContractType> contactTypeRepo, GenericDao<ActemiumContract> contractRepo,
 			GenericDao<ActemiumKbItem> kbItemDaoJpa) {
 		
@@ -107,7 +125,10 @@ public class Actemium {
 		this.actemiumCustomers = FXCollections.observableArrayList((List<Customer>)(Object)customerList);
 		this.actemiumEmployees = FXCollections.observableArrayList((List<Employee>)(Object)employeeList);
 	}
-	
+
+	/**
+	 * Fill ticket list.
+	 */
 	public void fillTicketList() {
 		List<ActemiumTicket> ticketList = ticketDaoJpa.findAll();
 		this.actemiumTickets = FXCollections.observableArrayList((List<Ticket>)(Object)ticketList);
@@ -123,32 +144,54 @@ public class Actemium {
                 .collect(Collectors.toList()));
 	}
 
+	/**
+	 * Fill contract type list.
+	 */
 	public void fillContractTypeList() {
 		List<ActemiumContractType> contractTypeList = contractTypeDaoJpa.findAll();
 		this.actemiumContractTypes = FXCollections.observableArrayList((List<ContractType>)(Object)contractTypeList);
 	}
-	
+
+	/**
+	 * Fill contract list.
+	 */
 	public void fillContractList() {
 		List<ActemiumContract> contractList = contractDaoJpa.findAll();
 		this.actemiumContracts = FXCollections.observableArrayList((List<Contract>)(Object)contractList);
 	}
-	
+
+	/**
+	 * Fill kb item list.
+	 */
 	public void fillKbItemList() {
 		List<ActemiumKbItem> kbItemList = kbItemDaoJpa.findAll();
 		this.actemiumKbItems = FXCollections.observableArrayList((List<KbItem>)(Object)kbItemList);
 	}
-	
-	//TODO constructor vs setter injection?
+
+	/**
+	 * Instantiates a new Actemium.
+	 */
+//TODO constructor vs setter injection?
 	public Actemium() {
 		//TODO What type should we give to GenericDaoJpa?
 		this(new UserDaoJpa());
 //		setUserRepo(new UserDaoJpa());
 	}
 
+	/**
+	 * Sets user repo.
+	 *
+	 * @param mock the mock
+	 */
 	public void setUserRepo(UserDao mock) {
 		userDaoJpa = mock;
 	}
-		
+
+	/**
+	 * Gets signed in user.
+	 *
+	 * @return the signed in user
+	 */
 	public UserModel getSignedInUser() {
 		return signedInUser;
 	}
@@ -157,22 +200,52 @@ public class Actemium {
 		this.signedInUser = signedInEmployee;
 	}
 
+	/**
+	 * Find by username user model.
+	 *
+	 * @param username the username
+	 * @return the user model
+	 */
 	public UserModel findByUsername(String username){
 		return userDaoJpa.findByUsername(username);
 	}
 
+	/**
+	 * Find by email user model.
+	 *
+	 * @param email the email
+	 * @return the user model
+	 */
 	public UserModel findByEmail(String email) {
 		return userDaoJpa.findByEmail(email);
 	}
 
+	/**
+	 * Findby id user model.
+	 *
+	 * @param id the id
+	 * @return the user model
+	 */
 	public UserModel findbyID(String id) {
 		return userDaoJpa.get(Long.parseLong(id));
 	}
 
+	/**
+	 * Gets name by id.
+	 *
+	 * @param id the id
+	 * @return the name by id
+	 */
 	public String getNameByID(long id) {
 		return String.format("%s %s", userDaoJpa.get(id).getFirstName(), userDaoJpa.get(id).getLastName());
 	}
 
+	/**
+	 * Signs in and sets signed in user in this class.
+	 *
+	 * @param usernameIDorEmail the username ID or email
+	 * @param password          the password
+	 */
 	public void signIn(String usernameIDorEmail, String password) {
 		UserModel user;
 		 if(usernameIDorEmail.contains("@"))
@@ -256,15 +329,25 @@ public class Actemium {
 		System.out.println("Just signed in: " + signedInUser.getUsername());
 	}
 
-	// Dashboard signedInUser necessities
+	/**
+	 * Give user role string.
+	 *
+	 * @return the string
+	 */
+// Dashboard signedInUser necessities
 	public String giveUserRole() {
 		if (signedInUser instanceof Employee) {
 			return ((Employee) signedInUser).getRoleAsString().toString();
 		}
 		return "Customer";
 	}
-	
-	// necessary for signedInUser right permissions check
+
+	/**
+	 * Give employee role as enum employee role.
+	 *
+	 * @return the employee role
+	 */
+// necessary for signedInUser right permissions check
 	public EmployeeRole giveEmployeeRoleAsEnum() {
 		if (signedInUser instanceof Employee) {
 			return ((Employee) signedInUser).getRole();
@@ -272,8 +355,13 @@ public class Actemium {
 		return null;
 	}
 
-	// signedInUser right permissions check
-	public void checkPermision(EmployeeRole role) {
+	/**
+	 * Check permissions.
+	 *
+	 * @param role the role
+	 */
+// signedInUser right permissions check
+	public void checkPermission(EmployeeRole role) {
 		if (!giveEmployeeRoleAsEnum().equals(role)) {
 			throw new AccessException(
 					String.format("%s %s %s %s!"
@@ -284,7 +372,14 @@ public class Actemium {
 					));
 		}
 	}
-	public void checkPermision(EmployeeRole role, EmployeeRole role2) {
+
+	/**
+	 * Check permision.
+	 *
+	 * @param role  the role
+	 * @param role2 the role 2
+	 */
+	/*public void checkPermission(EmployeeRole role, EmployeeRole role2) {
 		if (!(giveEmployeeRoleAsEnum().equals(role) || giveEmployeeRoleAsEnum().equals(role2))) {
 			throw new AccessException(
 					String.format("%s %s %s/%s %s!"
@@ -295,55 +390,116 @@ public class Actemium {
 									, LanguageResource.getString("to_do_this")
 							));
 		}
-	}
+	}*/
 
+	/**
+	 * Check permision for modify employee.
+	 *
+	 * @param role     the role
+	 * @param username the username
+	 */
 	public void checkPermisionForModifyEmployee(EmployeeRole role, String username) {
 		if (!signedInUser.getUsername().equals(username)){
-			checkPermision(role);
+			checkPermission(role);
 		}
 	}
-	
+
+	/**
+	 * Give user status string.
+	 *
+	 * @return the string
+	 */
 	public String giveUserStatus() {
 		return signedInUser.getStatusAsString();
 	}
 
+	/**
+	 * Give username string.
+	 *
+	 * @return the string
+	 */
 	public String giveUsername() {
 		return signedInUser.getUsername();
 	}
 
+	/**
+	 * Give user first name string.
+	 *
+	 * @return the string
+	 */
 	public String giveUserFirstName() {
 		return signedInUser.getFirstName();
 	}
 
+	/**
+	 * Give user last name string.
+	 *
+	 * @return the string
+	 */
 	public String giveUserLastName() {
 		return signedInUser.getLastName();
 	}
-	
+
+	/**
+	 * Give user employee id string.
+	 *
+	 * @return the string
+	 */
 	public String giveUserEmployeeId() {
 		return String.valueOf(((Employee)signedInUser).getEmployeeNr());
 	}
-	
+
+	/**
+	 * Give user email address string.
+	 *
+	 * @return the string
+	 */
 	public String giveUserEmailAddress() {
 		return ((Employee) signedInUser).getEmailAddress();
 	}
-	
+
+	/**
+	 * Give user phone number string.
+	 *
+	 * @return the string
+	 */
 	public String giveUserPhoneNumber() {
 		return ((Employee) signedInUser).getPhoneNumber();
 	}
-	
+
+	/**
+	 * Give user address string.
+	 *
+	 * @return the string
+	 */
 	public String giveUserAddress() {
 		return ((Employee) signedInUser).getAddress();
 	}
-	
+
+	/**
+	 * Give user seniority string.
+	 *
+	 * @return the string
+	 */
 	public String giveUserSeniority() {
 		return String.valueOf(((Employee) signedInUser).giveSeniority());
 	}
-	
+
+	/**
+	 * Give user password string.
+	 *
+	 * @return the string
+	 */
 	public String giveUserPassword() {
 		return signedInUser.getPassword();
 	}
 
-	// Check needed for register and modify user
+	/**
+	 * Existing username.
+	 *
+	 * @param username the username
+	 */
+// Check needed for register and modify user
 	public void existingUsername(String username) {
 		try {
 			if (userDaoJpa.findByUsername(username) != null) {
@@ -355,11 +511,22 @@ public class Actemium {
 	}	
 
 	////////-USERFACADE-////////
-	
+
+	/**
+	 * Find company by id actemium company.
+	 *
+	 * @param companyId the company id
+	 * @return the actemium company
+	 */
 	public ActemiumCompany findCompanyById(long companyId){
 		return companyDaoJpa.get(companyId);
-	}	
+	}
 
+	/**
+	 * Register customer.
+	 *
+	 * @param newCustomer the new customer
+	 */
 	public void registerCustomer(ActemiumCustomer newCustomer) {
 		userDaoJpa.startTransaction();
 		userDaoJpa.insert(newCustomer);
@@ -367,6 +534,11 @@ public class Actemium {
 		actemiumCustomers.add(newCustomer);
 	}
 
+	/**
+	 * Register employee.
+	 *
+	 * @param newEmployee the new employee
+	 */
 	public void registerEmployee(ActemiumEmployee newEmployee) {
 		userDaoJpa.startTransaction();
 		userDaoJpa.insert(newEmployee);
@@ -374,12 +546,22 @@ public class Actemium {
 		actemiumEmployees.add(newEmployee);
 	}
 
+	/**
+	 * Modify customer.
+	 *
+	 * @param modifiedCustomer the modified customer
+	 */
 	public void modifyCustomer(ActemiumCustomer modifiedCustomer) {
 		userDaoJpa.startTransaction();
 		userDaoJpa.update(modifiedCustomer);
 		userDaoJpa.commitTransaction();
 	}
 
+	/**
+	 * Modify employee.
+	 *
+	 * @param modifiedEmployee the modified employee
+	 */
 	public void modifyEmployee(ActemiumEmployee modifiedEmployee) {
 		userDaoJpa.startTransaction();
 		userDaoJpa.update(modifiedEmployee);
@@ -396,21 +578,43 @@ public class Actemium {
 		else
 			actemiumCustomers.remove(user);
 	}*/
-	
+
+	/**
+	 * Gets last added customer.
+	 *
+	 * @return the last added customer
+	 */
 	public Customer getLastAddedCustomer() {
 		return actemiumCustomers.get(actemiumCustomers.size()-1);
 	}
-	
+
+	/**
+	 * Gets last added employee.
+	 *
+	 * @return the last added employee
+	 */
 	public Employee getLastAddedEmployee() {
 		return actemiumEmployees.get(actemiumEmployees.size()-1);
 	}
 		
 	////////-TICKETFACADE-////////
-	
+
+	/**
+	 * Find user by id user model.
+	 *
+	 * @param userId the user id
+	 * @return the user model
+	 */
 	public UserModel findUserById(long userId){
 		return userDaoJpa.get(userId);
 	}
-	
+
+	/**
+	 * Register ticket.
+	 *
+	 * @param ticket   the ticket
+	 * @param customer the customer
+	 */
 	public void registerTicket(ActemiumTicket ticket, ActemiumCustomer customer) {
 		userDaoJpa.startTransaction();
 		customer.addTicket(ticket);
@@ -422,7 +626,12 @@ public class Actemium {
 			actemiumTicketsResolved.add(ticket);
 		}
 	}
-	
+
+	/**
+	 * Modify ticket.
+	 *
+	 * @param ticket the ticket
+	 */
 	public void modifyTicket(ActemiumTicket ticket) {
 		ObservableList<Employee> technicansAsignedToTicket = ticket.giveTechnicians();
 		ticket.setTechnicians(new ArrayList<>());
@@ -462,27 +671,57 @@ public class Actemium {
 		ticketDaoJpa.commitTransaction();
 		actemiumTickets.remove(ticket);
 	}*/
-	
+
+	/**
+	 * Gets last added ticket.
+	 *
+	 * @return the last added ticket
+	 */
 	public Ticket getLastAddedTicket() {
 		return actemiumTickets.get(actemiumTickets.size()-1);
 	}
 
+	/**
+	 * Give actemium customers observable list.
+	 *
+	 * @return the observable list
+	 */
 	public ObservableList<Customer> giveActemiumCustomers() {
 		return FXCollections.unmodifiableObservableList(actemiumCustomers);
 	}
 
+	/**
+	 * Give actemium employees observable list.
+	 *
+	 * @return the observable list
+	 */
 	public ObservableList<Employee> giveActemiumEmployees() {
 		return FXCollections.unmodifiableObservableList(actemiumEmployees);
 	}
 
+	/**
+	 * Give actemium tickets observable list.
+	 *
+	 * @return the observable list
+	 */
 	public ObservableList<Ticket> giveActemiumTickets() {
 		return FXCollections.unmodifiableObservableList(actemiumTickets);
 	}
 
+	/**
+	 * Give actemium tickets resolved observable list.
+	 *
+	 * @return the observable list
+	 */
 	public ObservableList<Ticket> giveActemiumTicketsResolved() {
 		return FXCollections.unmodifiableObservableList(actemiumTicketsResolved);
 	}
 
+	/**
+	 * Give actemium tickets outstanding observable list.
+	 *
+	 * @return the observable list
+	 */
 	public ObservableList<Ticket> giveActemiumTicketsOutstanding() {
 		if (signedInUser instanceof Employee) {
 			if (((Employee) signedInUser).getRole() == EmployeeRole.TECHNICIAN) {
@@ -500,6 +739,11 @@ public class Actemium {
 
 	////////-CONTRACTTYPEFACADE-////////
 
+	/**
+	 * Register contract type.
+	 *
+	 * @param newContractType the new contract type
+	 */
 	public void registerContractType(ActemiumContractType newContractType) {
 		contractTypeDaoJpa.startTransaction();
 		contractTypeDaoJpa.insert(newContractType);
@@ -507,6 +751,11 @@ public class Actemium {
 		actemiumContractTypes.add(newContractType);
 	}
 
+	/**
+	 * Modify contract type.
+	 *
+	 * @param contractType the contract type
+	 */
 	public void modifyContractType(ActemiumContractType contractType) {
 		contractTypeDaoJpa.startTransaction();
 		contractTypeDaoJpa.update(contractType);
@@ -521,64 +770,126 @@ public class Actemium {
 		actemiumContractTypes.remove(contractType);
 	}*/
 
+	/**
+	 * Give actemium contract types observable list.
+	 *
+	 * @return the observable list
+	 */
 	public ObservableList<ContractType> giveActemiumContractTypes() {
 		return FXCollections.unmodifiableObservableList(actemiumContractTypes);
 	}
 
+	/**
+	 * Gets last added contract type.
+	 *
+	 * @return the last added contract type
+	 */
 	public ContractType getLastAddedContractType() {
 		return actemiumContractTypes.get(actemiumContractTypes.size()-1);
 	}
 
 	////////-CONTRACTFACADE-////////
-	
+
+	/**
+	 * Find contract type by id actemium contract type.
+	 *
+	 * @param contractTypeId the contract type id
+	 * @return the actemium contract type
+	 */
 	public ActemiumContractType findContractTypeById(long contractTypeId){
 		return contractTypeDaoJpa.get(contractTypeId);
-	}	
-	
+	}
+
+	/**
+	 * Register contract.
+	 *
+	 * @param contract the contract
+	 */
 	public void registerContract(ActemiumContract contract) {
 		contractDaoJpa.startTransaction();
 		contractDaoJpa.insert(contract);
 		contractDaoJpa.commitTransaction();
 		actemiumContracts.add(contract);
 	}
-	
+
+	/**
+	 * Modify contract.
+	 *
+	 * @param contract the contract
+	 */
 	public void modifyContract(ActemiumContract contract) {
 		contractDaoJpa.startTransaction();
 		contractDaoJpa.update(contract);
 		contractDaoJpa.commitTransaction();
 	}
 
+	/**
+	 * Gets last added contract.
+	 *
+	 * @return the last added contract
+	 */
 	public Contract getLastAddedContract() {
 		return actemiumContracts.get(actemiumContracts.size()-1);
 	}
 
+	/**
+	 * Give actemium contracts observable list.
+	 *
+	 * @return the observable list
+	 */
 	public ObservableList<Contract> giveActemiumContracts() {
 		return FXCollections.unmodifiableObservableList(actemiumContracts);
 	}
 	
 	////////-KNOWLEDGEBASEFACADE-////////
-	
+
+	/**
+	 * Register kb item.
+	 *
+	 * @param kbItem the kb item
+	 */
 	public void registerKbItem(ActemiumKbItem kbItem) {
 		kbItemDaoJpa.startTransaction();
 		kbItemDaoJpa.insert(kbItem);
 		kbItemDaoJpa.commitTransaction();
 		actemiumKbItems.add(kbItem);
 	}
-	
+
+	/**
+	 * Modify kb item.
+	 *
+	 * @param kbItem the kb item
+	 */
 	public void modifyKbItem(ActemiumKbItem kbItem) {
 		kbItemDaoJpa.startTransaction();
 		kbItemDaoJpa.update(kbItem);
 		kbItemDaoJpa.commitTransaction();
 	}
 
+	/**
+	 * Gets last added kb item.
+	 *
+	 * @return the last added kb item
+	 */
 	public KbItem getLastAddedKbItem() {
 		return actemiumKbItems.get(actemiumKbItems.size()-1);
 	}
 
+	/**
+	 * Give actemium kb items observable list.
+	 *
+	 * @return the observable list
+	 */
 	public ObservableList<KbItem> giveActemiumKbItems() {
 		return FXCollections.unmodifiableObservableList(actemiumKbItems);
 	}
 
+	/**
+	 * Check admin dont edit own role.
+	 *
+	 * @param employee the employee
+	 * @param role     the role
+	 */
 	public void checkAdminDontEditOwnRole(ActemiumEmployee employee, EmployeeRole role) {
 		if (employee.getUserId() == signedInUser.getUserId()){
 			if (!giveEmployeeRoleAsEnum().equals(role)){

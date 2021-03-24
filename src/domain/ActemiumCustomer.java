@@ -19,6 +19,9 @@ import javafx.collections.ObservableList;
 // we will use the name Customer for contactPerson
 // Could be changed if we realy have to
 
+/**
+ * The type Actemium customer.
+ */
 @Entity
 @Access(AccessType.FIELD)
 public class ActemiumCustomer extends UserModel implements Customer, Seniority {
@@ -41,6 +44,9 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 
 	private LocalDate registrationDate;
 
+	/**
+	 * Instantiates a new Actemium customer.
+	 */
 	public ActemiumCustomer() {
 		super();
 	}
@@ -53,6 +59,11 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 
 	 */
 
+	/**
+	 * Instantiates a new Actemium customer.
+	 *
+	 * @param builder the builder
+	 */
 	public ActemiumCustomer(CustomerBuilder builder){
 		super(builder.username, builder.password, builder.firstName, builder.lastName);
 		this.company = builder.company;
@@ -60,56 +71,120 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	}
 
 
-
+	/**
+	 *	Gets the customer nr. In fact the userid.
+	 *
+	 * @return customer nr
+	 */
 	public int getCustomerNr() {
 		return (int) super.getUserId();
 	}
 
+	/**
+	 * Gets contracts.
+	 *
+	 * @return the contracts
+	 */
 	public List<ActemiumContract> getContracts() {
 		return contracts;
 	}
 
+	/**
+	 * Gives the contracts in a observable list.
+	 *
+	 * @return ObservableList of contracts
+	 */
 	public ObservableList<Contract> giveContracts() {
 		return (ObservableList<Contract>) (Object) FXCollections.observableList(contracts);
 	}
 
+	/**
+	 * Sets contracts.
+	 *
+	 * @param contracts the contracts
+	 */
 	public void setContracts(List<ActemiumContract> contracts) {
 		this.contracts = contracts;
 	}
 
+	/**
+	 * Gets company.
+	 *
+	 * @return the company
+	 */
 	public ActemiumCompany getCompany() {
 		return company;
 	}
-	
+
+	/**
+	 * Give the company of a customer.
+	 *
+	 * @return company
+	 */
 	public Company giveCompany() {
 		return (Company) company;
 	}
 
+	/**
+	 * Sets company.
+	 *
+	 * @param company the company
+	 */
 	public void setCompany(ActemiumCompany company) {
 		this.company = company;
 	}
 
+	/**
+	 * Gets the registration date of a customer.
+	 *
+	 * @return registration date
+	 */
 	public LocalDate getRegistrationDate() {
 		return registrationDate;
 	}
 
+	/**
+	 * Sets registration date.
+	 *
+	 * @param registrationDate the registration date
+	 */
 	public void setRegistrationDate(LocalDate registrationDate) {
 		this.registrationDate = registrationDate;
 	}
-	
+
+	/**
+	 * Add ticket.
+	 *
+	 * @param ticket the ticket
+	 */
 	public void addTicket(ActemiumTicket ticket) {
 		tickets.add(ticket);
 	}
 
+	/**
+	 * Add contract.
+	 *
+	 * @param contract the contract
+	 */
 	public void addContract(ActemiumContract contract) {
 		contracts.add(contract);
 	}
 
+	/**
+	 * Give seniority int for the customer.
+	 *
+	 * @return the int
+	 */
 	@Override
 	public int giveSeniority() {
 		return LocalDate.now().getYear() - registrationDate.getYear();
 	}
 
+	/**
+	 * Check attributes.
+	 *
+	 * @throws InformationRequiredException the information required exception
+	 */
 	public void checkAttributes() throws InformationRequiredException {
 		// Ms. Malfait her idea
 		new CustomerBuilder()
@@ -122,6 +197,9 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 				.build();
 	}
 
+	/**
+	 * The type Customer builder.
+	 */
 	public static class CustomerBuilder {
 		private String username;
 		private String password;
@@ -134,31 +212,78 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 		private Set<RequiredElement> requiredElements;
 
 
+		/**
+		 * Username customer builder.
+		 *
+		 * @param username the username
+		 * @return the customer builder
+		 */
 		public CustomerBuilder username(String username) {
 			this.username = username;
 			return this;
 		}
+
+		/**
+		 * Password customer builder.
+		 *
+		 * @param password the password
+		 * @return the customer builder
+		 */
 		public CustomerBuilder password(String password) {
 			this.password = password;
 			return this;
 		}
+
+		/**
+		 * First name customer builder.
+		 *
+		 * @param firstName the first name
+		 * @return the customer builder
+		 */
 		public CustomerBuilder firstName(String firstName) {
 			this.firstName = firstName;
 			return this;
 		}
+
+		/**
+		 * Last name customer builder.
+		 *
+		 * @param lastName the last name
+		 * @return the customer builder
+		 */
 		public CustomerBuilder lastName(String lastName) {
 			this.lastName = lastName;
 			return this;
 		}
+
+		/**
+		 * Company customer builder.
+		 *
+		 * @param company the company
+		 * @return the customer builder
+		 */
 		public CustomerBuilder company(ActemiumCompany company) {
 			this.company = company;
 			return this;
 		}
+
+		/**
+		 * Registration date customer builder.
+		 *
+		 * @param registrationDate the registration date
+		 * @return the customer builder
+		 */
 		public CustomerBuilder registrationDate(LocalDate registrationDate) {
 			this.registrationDate = registrationDate;
 			return this;
 		}
 
+		/**
+		 * Build actemium customer.
+		 *
+		 * @return the actemium customer
+		 * @throws InformationRequiredException the information required exception
+		 */
 		public ActemiumCustomer build() throws InformationRequiredException {
 			requiredElements = new HashSet<>();
 			checkAttributesEmployeeBuiler();
@@ -185,6 +310,12 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 		}
 	}
 
+	/**
+	 * This clones an actemium customer.
+	 *
+	 * @return Actemium Customer
+	 * @throws CloneNotSupportedException throws a clone not supported exception
+	 */
 	@Override
 	public ActemiumCustomer clone() throws CloneNotSupportedException {
 

@@ -51,9 +51,9 @@ public class ContractTypeViewModel extends ViewModel {
         details.put(LanguageResource.getString("ID"), Collections.singletonMap(true, String.valueOf(contractType.getContractTypeId())));
         details.put(LanguageResource.getString("name"), Collections.singletonMap(true, contractType.getName()));
         details.put(LanguageResource.getString("status"), Collections.singletonMap(true, contractType.getStatus()));
-        details.put(LanguageResource.getString("email"), Collections.singletonMap(true, (Boolean) contractType.isHasEmail()));
-        details.put(LanguageResource.getString("phone"), Collections.singletonMap(true, (Boolean) contractType.isHasPhone()));
-        details.put(LanguageResource.getString("application"), Collections.singletonMap(true, (Boolean) contractType.isHasApplication()));
+        details.put(LanguageResource.getString("email"), Collections.singletonMap(true, (Boolean) contractType.hasEmail()));
+        details.put(LanguageResource.getString("phone"), Collections.singletonMap(true, (Boolean) contractType.hasPhone()));
+        details.put(LanguageResource.getString("application"), Collections.singletonMap(true, (Boolean) contractType.hasApplication()));
         details.put(LanguageResource.getString("timestamp_sh"), Collections.singletonMap(true, contractType.getTimestamp()));
         details.put(LanguageResource.getString("max_handling_time"), Collections.singletonMap(true, String.format("%d", contractType.getMaxHandlingTime())));
         details.put(LanguageResource.getString("min_throughput_time"), Collections.singletonMap(true, String.format("%d", contractType.getMinThroughputTime())));

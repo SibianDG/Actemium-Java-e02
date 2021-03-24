@@ -20,6 +20,9 @@ import domain.enums.RequiredElement;
 import exceptions.InformationRequiredException;
 import languages.LanguageResource;
 
+/**
+ * The type Actemium ticket change.
+ */
 @Entity
 @Access(AccessType.FIELD)
 public class ActemiumTicketChange implements TicketChange, Serializable {
@@ -44,11 +47,19 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 //	@Column
 	private List<String> changeContent;
 
+	/**
+	 * Instantiates a new Actemium ticket change.
+	 */
 	public ActemiumTicketChange() {
 		super();
 	}
 
-	private ActemiumTicketChange(TicketChangeBuilder builder) throws InformationRequiredException {
+	/**
+	 * Instantiates a new Actemium ticket change via the builder pattern.
+	 *
+	 * @param builder the builder
+	 */
+	private ActemiumTicketChange(TicketChangeBuilder builder) {
 		this.ticket = builder.ticket;
 		this.user = builder.user;
 		this.userRole = builder.userRole;
@@ -57,54 +68,119 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 		this.changeContent = builder.changeContent;
 	}
 
+	/**
+	 * Gets ticket.
+	 *
+	 * @return the ticket
+	 */
 	public ActemiumTicket getTicket() {
 		return ticket;
 	}
 
+	/**
+	 * Sets ticket.
+	 *
+	 * @param ticket the ticket
+	 */
 	public void setTicket(ActemiumTicket ticket) {
 		this.ticket = ticket;
 	}
 
+	/**
+	 * Gets the user of the ticket change.
+	 *
+	 * @return user
+	 */
 	public UserModel getUser() {
 		return user;
 	}
 
+	/**
+	 * Sets user.
+	 *
+	 * @param user the user
+	 */
 	public void setUser(UserModel user) {
 		this.user = user;
 	}
 
+	/**
+	 * Gets the role of the user of the ticket change.
+	 *
+	 * @return user role
+	 */
 	public String getUserRole() {
 		return userRole;
 	}
 
+	/**
+	 * Sets user role.
+	 *
+	 * @param userRole the user role
+	 */
 	public void setUserRole(String userRole) {
 		this.userRole = userRole;
 	}
 
+	/**
+	 * Gets the date time of the change.
+	 *
+	 * @return date time of change
+	 */
 	public LocalDateTime getDateTimeOfChange() {
 		return dateTimeOfChange;
 	}
 
+	/**
+	 * Sets date time of change.
+	 *
+	 * @param dateTimeOfChange the date time of change
+	 */
 	public void setDateTimeOfChange(LocalDateTime dateTimeOfChange) {
 		this.dateTimeOfChange = dateTimeOfChange;
 	}
 
+	/**
+	 *	Gets the change description string.
+	 *
+	 * @return change description string
+	 */
 	public String getChangeDescription() {
 		return changeDescription;
 	}
 
+	/**
+	 * Sets change description.
+	 *
+	 * @param changeDescription the change description
+	 */
 	public void setChangeDescription(String changeDescription) {
 		this.changeDescription = changeDescription;
 	}
 
+	/**
+	 *	Gets the changed content as string list.
+	 *
+	 * @return List of strings of the changed content
+	 */
 	public List<String> getChangeContent() {
 		return changeContent;
 	}
 
+	/**
+	 * Sets change content.
+	 *
+	 * @param changeContent the change content
+	 */
 	public void setChangeContent(List<String> changeContent) {
 		this.changeContent = changeContent;
 	}
 
+	/**
+	 * Check attributes.
+	 *
+	 * @throws InformationRequiredException the information required exception
+	 */
 	public void checkAttributes() throws InformationRequiredException {
 		new TicketChangeBuilder().ticket(this.getTicket())
 				.user(this.getUser())
@@ -115,6 +191,9 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 				.build();
 	}
 
+	/**
+	 * The type Ticket change builder.
+	 */
 	public static class TicketChangeBuilder {
 		private ActemiumTicket ticket;
 		private UserModel user;
@@ -125,36 +204,78 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 
 		private Set<RequiredElement> requiredElements;
 
+		/**
+		 * Ticket ticket change builder.
+		 *
+		 * @param ticket the ticket
+		 * @return the ticket change builder
+		 */
 		public TicketChangeBuilder ticket(ActemiumTicket ticket) {
 			this.ticket = ticket;
 			return this;
 		}
 
+		/**
+		 * User ticket change builder.
+		 *
+		 * @param user the user
+		 * @return the ticket change builder
+		 */
 		public TicketChangeBuilder user(UserModel user) {
 			this.user = user;
 			return this;
 		}
 
+		/**
+		 * User role ticket change builder.
+		 *
+		 * @param userRole the user role
+		 * @return the ticket change builder
+		 */
 		public TicketChangeBuilder userRole(String userRole) {
 			this.userRole = userRole;
 			return this;
 		}
 
+		/**
+		 * Date time of change ticket change builder.
+		 *
+		 * @param dateTimeOfChange the date time of change
+		 * @return the ticket change builder
+		 */
 		public TicketChangeBuilder dateTimeOfChange(LocalDateTime dateTimeOfChange) {
 			this.dateTimeOfChange = dateTimeOfChange;
 			return this;
 		}
 
+		/**
+		 * Change description ticket change builder.
+		 *
+		 * @param changeDescription the change description
+		 * @return the ticket change builder
+		 */
 		public TicketChangeBuilder changeDescription(String changeDescription) {
 			this.changeDescription = changeDescription;
 			return this;
 		}
 
+		/**
+		 * Change content ticket change builder.
+		 *
+		 * @param changeContent the change content
+		 * @return the ticket change builder
+		 */
 		public TicketChangeBuilder changeContent(List<String> changeContent) {
 			this.changeContent = changeContent;
 			return this;
 		}
 
+		/**
+		 * Build actemium ticket change.
+		 *
+		 * @return the actemium ticket change
+		 * @throws InformationRequiredException the information required exception
+		 */
 		public ActemiumTicketChange build() throws InformationRequiredException {
 			requiredElements = new HashSet<>();
 			checkAttributesKbItemBuiler();
@@ -176,6 +297,12 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 		}
 	}
 
+	/**
+	 * This clones an actemium ticket change.
+	 *
+	 * @return actmium ticket change
+	 * @throws CloneNotSupportedException throws a clone not supported exception
+	 */
 	@Override
 	public ActemiumTicketChange clone() throws CloneNotSupportedException {
 

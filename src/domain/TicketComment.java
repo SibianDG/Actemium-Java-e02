@@ -2,14 +2,32 @@ package domain;
 
 import java.time.LocalDateTime;
 
+/**
+ * The interface Ticket comment.
+ */
 public interface TicketComment {
-	
-	public UserModel getUser();
 
-	public String getUserRole();
+	/**
+	 * Gets user.
+	 *
+	 * @return the user
+	 */
+	UserModel getUser();
 
-	public LocalDateTime getDateTimeOfComment();
+	String getUserRole();
 
-	public String getCommentText(); 
+	/**
+	 * Gets date time of comment.
+	 *
+	 * @return the date time of comment
+	 */
+	LocalDateTime getDateTimeOfComment();
+
+	/**
+	 * Gets comment text.
+	 *
+	 * @return the comment text
+	 */
+	String getCommentText();
 
 }

@@ -5,18 +5,46 @@ import java.util.List;
 
 import javafx.collections.ObservableList;
 
+/**
+ * The interface Customer.
+ */
 public interface Customer extends User {
 	
 	// getters
 
-	public int getCustomerNr();
-	
-	public Company giveCompany();
-	
-	public ObservableList<Contract> giveContracts();
+	/**
+	 * Gets customer nr.
+	 *
+	 * @return the customer nr
+	 */
+	int getCustomerNr();
 
-	public LocalDate getRegistrationDate();
-	
-	public int giveSeniority();	
+	/**
+	 * Give company company.
+	 *
+	 * @return the company
+	 */
+	Company giveCompany();
+
+	/**
+	 * Give contracts observable list.
+	 *
+	 * @return the observable list
+	 */
+	ObservableList<Contract> giveContracts();
+
+	/**
+	 * Gets registration date.
+	 *
+	 * @return the registration date
+	 */
+	LocalDate getRegistrationDate();
+
+	/**
+	 * Give seniority int.
+	 *
+	 * @return the int
+	 */
+	int giveSeniority();
 	
 }

@@ -27,6 +27,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import languages.LanguageResource;
 
+/**
+ * The type User model.
+ */
 @Entity
 @Access(AccessType.FIELD)
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -68,10 +71,21 @@ public abstract class UserModel implements User, Serializable {
 	@Transient
 	private StringProperty status = new SimpleStringProperty();
 
+	/**
+	 * Instantiates a new User model.
+	 */
 	public UserModel() {
 
 	}
 
+	/**
+	 * Instantiates a new User model.
+	 *
+	 * @param username  the username
+	 * @param password  the password
+	 * @param firstName the first name
+	 * @param lastName  the last name
+	 */
 	public UserModel(String username, String password, String firstName, String lastName) {
 		setUsername(username);
 		setPassword(password);
@@ -81,10 +95,16 @@ public abstract class UserModel implements User, Serializable {
 		setStatus(UserStatus.ACTIVE);
 	}
 
+	/**
+	 * Reset login attempts.
+	 */
 	public void resetLoginAttempts() {
 		setFailedLoginAttempts(0);
 	}
 
+	/**
+	 * Increase failed login attempts.
+	 */
 	public void increaseFailedLoginAttempts() {
 		failedLoginAttempts++;
 //		if (failedLoginAttempts > USER_LOGIN_MAX_ATTEMPTS) {
@@ -93,23 +113,48 @@ public abstract class UserModel implements User, Serializable {
 
 	}
 
+	/**
+	 * Gets login attempts.
+	 *
+	 * @return the login attempts
+	 */
 	public List<LoginAttempt> getLoginAttempts() {
 		return Collections.unmodifiableList(loginAttempts);
 	}
 
+	/**
+	 * Gets the user id.
+	 *
+	 * @return user id int
+	 */
 	public long getUserId() {
 		return userId;
 	}
 
+	/**
+	 * Sets user id.
+	 *
+	 * @param userId the user id
+	 */
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
 
+	/**
+	 * Gets the username.
+	 *
+	 * @return username.
+	 */
 	@Access(AccessType.PROPERTY)
 	public String getUsername() {
 		return username.get();
 	}
 
+	/**
+	 * Sets username.
+	 *
+	 * @param username the username
+	 */
 	public void setUsername(String username) {
 		//String usernameRegex = "[A-Za-z0-9]+";
 		//if(username == null || username.isBlank() || !username.matches(usernameRegex)) {
@@ -118,10 +163,20 @@ public abstract class UserModel implements User, Serializable {
 		this.username.set(username);
 	}
 
+	/**
+	 * Gets the password.
+	 *
+	 * @return password
+	 */
 	public String getPassword() {
 		return password;
 	}
 
+	/**
+	 * Sets password.
+	 *
+	 * @param password the password
+	 */
 	public void setPassword(String password) {
 		//String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()â€“{}:;',.?/*~$^+=<>]).{8,}$";
 		//if(password == null || password.isBlank() || !password.matches(passwordRegex)){
@@ -130,11 +185,21 @@ public abstract class UserModel implements User, Serializable {
 		this.password = password;
 	}
 
+	/**
+	 * Gets the first name.
+	 *
+	 * @return first name.
+	 */
 	@Access(AccessType.PROPERTY)
 	public String getFirstName() {
 		return firstName.get();
 	}
 
+	/**
+	 * Sets first name.
+	 *
+	 * @param firstName the first name
+	 */
 	public void setFirstName(String firstName) {
 		//String firstNameRegex = "[^0-9]+";
 		//if(firstName == null || firstName.isBlank() || !firstName.matches(firstNameRegex)){
@@ -143,11 +208,21 @@ public abstract class UserModel implements User, Serializable {
 		this.firstName.set(firstName);
 	}
 
+	/**
+	 * Gets the last name.
+	 *
+	 * @return last name
+	 */
 	@Access(AccessType.PROPERTY)
 	public String getLastName() {
 		return lastName.get();
 	}
 
+	/**
+	 * Sets last name.
+	 *
+	 * @param lastName the last name
+	 */
 	public void setLastName(String lastName) {
 		//String lastNameRegex = "[^0-9]+";
 		//if(lastName == null || lastName.isBlank() || !lastName.matches(lastNameRegex)){
@@ -156,48 +231,101 @@ public abstract class UserModel implements User, Serializable {
 		this.lastName.set(lastName);
 	}
 
+	/**
+	 * Gets number of failed login attemps.
+	 *
+	 * @return failed login attempts.
+	 */
 	public int getFailedLoginAttempts() {
 		return failedLoginAttempts;
 	}
 
+	/**
+	 * Sets failed login attempts.
+	 *
+	 * @param failedLoginAttempts
+	 */
 	private void setFailedLoginAttempts(int failedLoginAttempts) {
 		this.failedLoginAttempts = failedLoginAttempts;
 	}
 
+	/**
+	 * Gets status as string.
+	 *
+	 * @return status
+	 */
 	public String getStatusAsString() {
 		return status.get();
 	}
 
+	/**
+	 * Gets the user status.
+	 *
+	 * @return user status.
+	 */
 	@Access(AccessType.PROPERTY)
 	@Enumerated(EnumType.STRING)
 	public UserStatus getStatus() {
 		return UserStatus.valueOf(status.get());
 	}
 
+	/**
+	 * Sets status.
+	 *
+	 * @param status the status
+	 */
 	public void setStatus(UserStatus status) {
 		this.status.set(String.valueOf(status));
 	}
 
+	/**
+	 * Block user.
+	 */
 	public void blockUser() {
 		setStatus(UserStatus.BLOCKED);
 	}
 
+	/**
+	 * Add login attempt.
+	 *
+	 * @param loginAttempt the login attempt
+	 */
 	public void addLoginAttempt(LoginAttempt loginAttempt) {
 		loginAttempts.add(loginAttempt);
 	}
 
+	/**
+	 *	Gets the property username.
+	 *
+	 * @return username property
+	 */
 	public StringProperty usernameProperty() {
 		return username;
 	}
 
+	/**
+	 * Gets the property status.
+	 *
+	 * @return status property
+	 */
 	public StringProperty statusProperty() {
 		return status;
 	}
 
+	/**
+	 * Gets the property firstname.
+	 *
+	 * @return firstname property
+	 */
 	public StringProperty firstNameProperty() {
 		return firstName;
 	}
 
+	/**
+	 * Gets the property lastname
+	 *
+	 * @return lastname property
+	 */
 	public StringProperty lastNameProperty() {
 		return lastName;
 	}	

@@ -6,30 +6,88 @@ import domain.enums.ContractStatus;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 
+/**
+ * The interface Contract.
+ */
 public interface Contract {
-	
-	public String getContractIdString();
-//	public int getContractIdInt();
-	
-	public ContractType giveContractType();
-	
-	public Customer giveCustomer();
-	
-	public String getStatusAsString();
-	
-	public ContractStatus getStatus();
 
-	public LocalDate getStartDate();
+	/**
+	 * Gets contract id string.
+	 *
+	 * @return the contract id string
+	 */
+	String getContractIdString();
 
-	public LocalDate getEndDate();
-	
-//	public StringProperty contractIdProperty();
-	public IntegerProperty contractIdProperty();
-	
-	public StringProperty contractTypeNameProperty();
+	/**
+	 * Give contract type contract type.
+	 *
+	 * @return the contract type
+	 */
+	ContractType giveContractType();
 
-	public StringProperty contractStatusProperty();
-	public StringProperty contractStartDateProperty();
-	public StringProperty contractEndDateProperty();
+	/**
+	 * Give customer customer.
+	 *
+	 * @return the customer
+	 */
+	Customer giveCustomer();
+
+	/**
+	 * Gets status as string.
+	 *
+	 * @return the status as string
+	 */
+	String getStatusAsString();
+
+	/**
+	 * Gets status.
+	 *
+	 * @return the status
+	 */
+	ContractStatus getStatus();
+
+	LocalDate getStartDate();
+
+	/**
+	 * Gets end date.
+	 *
+	 * @return the end date
+	 */
+	LocalDate getEndDate();
+
+	/**
+	 * Contract id property integer property.
+	 *
+	 * @return the integer property
+	 */
+	IntegerProperty contractIdProperty();
+
+	/**
+	 * Contract type name property string property.
+	 *
+	 * @return the string property
+	 */
+	StringProperty contractTypeNameProperty();
+
+	/**
+	 * Contract status property string property.
+	 *
+	 * @return the string property
+	 */
+	StringProperty contractStatusProperty();
+
+	/**
+	 * Contract start date property string property.
+	 *
+	 * @return the string property
+	 */
+	StringProperty contractStartDateProperty();
+
+	/**
+	 * Contract end date property string property.
+	 *
+	 * @return the string property
+	 */
+	StringProperty contractEndDateProperty();
 
 }

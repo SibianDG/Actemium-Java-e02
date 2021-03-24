@@ -11,61 +11,194 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 
+/**
+ * The interface Ticket.
+ */
 public interface Ticket {
 
-	public String getTicketIdString();	
-//	public int getTicketIdInt();	
+	/**
+	 * Gets ticket id string.
+	 *
+	 * @return the ticket id string
+	 */
+	String getTicketIdString();
+//	int getTicketIdInt();
 
-	public String getStatusAsString();
-	
-	public TicketStatus getStatus();
+	/**
+	 * Gets status as string.
+	 *
+	 * @return the status as string
+	 */
+	String getStatusAsString();
 
-	public String getPriorityAsString();
-	
-	public TicketPriority getPriority();
+	/**
+	 * Gets status.
+	 *
+	 * @return the status
+	 */
+	TicketStatus getStatus();
 
-	public String getTicketTypeAsString();
+	/**
+	 * Gets priority as string.
+	 *
+	 * @return the priority as string
+	 */
+	String getPriorityAsString();
 
-	public TicketType getTicketType();
+	/**
+	 * Gets priority.
+	 *
+	 * @return the priority
+	 */
+	TicketPriority getPriority();
 
-	public LocalDate getDateOfCreation();
+	/**
+	 * Gets ticket type as string.
+	 *
+	 * @return the ticket type as string
+	 */
+	String getTicketTypeAsString();
 
-	public LocalDateTime getDateAndTimeOfCreation();
+	/**
+	 * Gets ticket type.
+	 *
+	 * @return the ticket type
+	 */
+	TicketType getTicketType();
 
-	public LocalDateTime getDateAndTimeOfCompletion();
+	/**
+	 * Gets date of creation.
+	 *
+	 * @return the date of creation
+	 */
+	LocalDate getDateOfCreation();
 
-	public String getTitle();
+	/**
+	 * Gets date and time of creation.
+	 *
+	 * @return the date and time of creation
+	 */
+	LocalDateTime getDateAndTimeOfCreation();
 
-	public String getDescription();
+	/**
+	 * Gets date and time of completion.
+	 *
+	 * @return the date and time of completion
+	 */
+	LocalDateTime getDateAndTimeOfCompletion();
 
-	public Customer giveCustomer();
+	/**
+	 * Gets title.
+	 *
+	 * @return the title
+	 */
+	String getTitle();
 
-	public List<TicketComment> giveComments();
+	/**
+	 * Gets description.
+	 *
+	 * @return the description
+	 */
+	String getDescription();
 
-	public String getAttachments();
-//	public List<String> getAttachments();
-	
-	public ObservableList<Employee> giveTechnicians();
-	
-	public String getSolution();
+	/**
+	 * Give customer customer.
+	 *
+	 * @return the customer
+	 */
+	Customer giveCustomer();
 
-	public String getQuality();
+	/**
+	 * Give comments list.
+	 *
+	 * @return the list
+	 */
+	List<TicketComment> giveComments();
 
-	public String getSupportNeeded();
+	/**
+	 * Gets attachments.
+	 *
+	 * @return the attachments
+	 */
+	String getAttachments();
+//	List<String> getAttachments();
 
-	public List<TicketChange> giveTicketChanges();
-	
-	public StringProperty titleProperty();
-	
-	public StringProperty priorityProperty();
-	
-	public StringProperty statusProperty();
-	
-//	public StringProperty ticketIdProperty();
-	public IntegerProperty ticketIdProperty();
+	/**
+	 * Give technicians observable list.
+	 *
+	 * @return the observable list
+	 */
+	ObservableList<Employee> giveTechnicians();
 
-	public StringProperty ticketTypeProperty();
-	
-	public StringProperty completionDateProperty();
+	/**
+	 * Gets solution.
+	 *
+	 * @return the solution
+	 */
+	String getSolution();
+
+	/**
+	 * Gets quality.
+	 *
+	 * @return the quality
+	 */
+	String getQuality();
+
+	/**
+	 * Gets support needed.
+	 *
+	 * @return the support needed
+	 */
+	String getSupportNeeded();
+
+	/**
+	 * Give ticket changes list.
+	 *
+	 * @return the list
+	 */
+	List<TicketChange> giveTicketChanges();
+
+	/**
+	 * Title property string property.
+	 *
+	 * @return the string property
+	 */
+	StringProperty titleProperty();
+
+	/**
+	 * Priority property string property.
+	 *
+	 * @return the string property
+	 */
+	StringProperty priorityProperty();
+
+	/**
+	 * Status property string property.
+	 *
+	 * @return the string property
+	 */
+	StringProperty statusProperty();
+
+	/**
+	 * Ticket id property integer property.
+	 *
+	 * @return the integer property
+	 */
+//	StringProperty ticketIdProperty();
+	IntegerProperty ticketIdProperty();
+
+	/**
+	 * Ticket type property string property.
+	 *
+	 * @return the string property
+	 */
+	StringProperty ticketTypeProperty();
+
+	/**
+	 * Completion date property string property.
+	 *
+	 * @return the string property
+	 */
+	StringProperty completionDateProperty();
 	
 }

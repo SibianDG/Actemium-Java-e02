@@ -15,6 +15,9 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+/**
+ * The type Actemium contract type.
+ */
 @Entity
 @Access(AccessType.FIELD)
 public class ActemiumContractType implements ContractType, Serializable {
@@ -44,11 +47,19 @@ public class ActemiumContractType implements ContractType, Serializable {
 	private int minThroughputTime;
 	// Price per year?
 	private double price;
-	
+
+	/**
+	 * Instantiates a new Actemium contract type.
+	 */
 	public ActemiumContractType() {
 		super();
 	}
 
+	/**
+	 * Instantiates a new Actemium contract type.
+	 *
+	 * @param builder the builder
+	 */
 	public ActemiumContractType(ContractTypeBuilder builder){
 		this.name.set(builder.name);
 		this.status.set(String.valueOf(builder.status));
@@ -76,80 +87,165 @@ public class ActemiumContractType implements ContractType, Serializable {
 		setMaxHandlingTime(maxHandlingTime);
 		setMinThroughputTime(minThroughputTime);
 		setPrice(price);
-	}*/	
+	}*/
 
+	/**
+	 * Gets contract type ID
+	 *
+	 * @return contract type ID
+	 */
 	public long getContractTypeId() {
 		return contractTypeId;
 	}
 
+	/**
+	 * Gets the name.
+	 *
+	 * @return name
+	 */
 	@Access(AccessType.PROPERTY)
 	public String getName() {
 		return name.get();
 	}
 
+	/**
+	 * Sets name.
+	 *
+	 * @param name the name
+	 */
 	public void setName(String name) {
 		this.name.set(name);
 	}
 
+	/**
+	 *	Gets the status as string.
+	 *
+	 * @return status
+	 */
 	public String getStatusAsString() {
 		return status.get();
 	}
 
+	/**
+	 * Gets Contract type status.
+	 *
+	 * @return Contract type status
+	 */
 	@Access(AccessType.PROPERTY)
 	@Enumerated(EnumType.STRING)
 	public ContractTypeStatus getStatus() {
 		return ContractTypeStatus.valueOf(status.get());
 	}
 
+	/**
+	 * Sets status.
+	 *
+	 * @param contractTypeStatus the contract type status
+	 */
 	public void setStatus(ContractTypeStatus contractTypeStatus) {
 		this.status.set(contractTypeStatus.toString());
 	}
 
-	public boolean isHasEmail() {
+	/**
+	 * Gets the boolean of the contract type has a way to contact via email.
+	 *
+	 * @return has Email
+	 */
+	public boolean hasEmail() {
 		return hasEmail;
 	}
 
+	/**
+	 * Sets has email.
+	 *
+	 * @param hasEmail the has email
+	 */
 	public void setHasEmail(boolean hasEmail) {
 		//verifyTicketCreationMethods(hasEmail, hasPhone, hasApplication);
 		this.hasEmail = hasEmail;
 	}
 
-	public boolean isHasPhone() {
+	/**
+	 * Gets the boolean of the contract type has a way to contact via phone.
+	 *
+	 * @return has Phone
+	 */
+	public boolean hasPhone() {
 		return hasPhone;
 	}
 
+	/**
+	 * Sets has phone.
+	 *
+	 * @param hasPhone the has phone
+	 */
 	public void setHasPhone(boolean hasPhone) {
 		//verifyTicketCreationMethods(hasEmail, hasPhone, hasApplication);
 		this.hasPhone = hasPhone;
 	}
 
-	public boolean isHasApplication() {
+	/**
+	 * Gets the boolean of the contract type has a way to contact via application.
+	 *
+	 * @return has application
+	 */
+	public boolean hasApplication() {
 		return hasApplication;
 	}
 
+	/**
+	 * Sets has application.
+	 *
+	 * @param hasApplication the has application
+	 */
 	public void setHasApplication(boolean hasApplication) {
 		//verifyTicketCreationMethods(hasEmail, hasPhone, hasApplication);
 		this.hasApplication = hasApplication;
 	}
 
+	/**
+	 * Gets the timestamp as string.
+	 *
+	 * @return timestamp as string
+	 */
 	public String getTimestampAsString() {
 		return timestamp.get();
 	}
 
+	/**
+	 * Gets the Timestamp.
+	 *
+	 * @return Timestamp
+	 */
 	@Access(AccessType.PROPERTY)
 	@Enumerated(EnumType.STRING)
 	public Timestamp getTimestamp() {
 		return Timestamp.valueOf(timestamp.get());
 	}
 
+	/**
+	 * Sets timestamp.
+	 *
+	 * @param timestamp the timestamp
+	 */
 	public void setTimestamp(Timestamp timestamp) {
 		this.timestamp.set(timestamp.toString());
 	}
 
+	/**
+	 * Gets the max handling time.
+	 *
+	 * @return max handling time
+	 */
 	public int getMaxHandlingTime() {
 		return maxHandlingTime;
 	}
 
+	/**
+	 * Sets max handling time.
+	 *
+	 * @param maxHandlingTime the max handling time
+	 */
 	public void setMaxHandlingTime(int maxHandlingTime) {
 		if(maxHandlingTime <= 0) {
 			throw new IllegalArgumentException(LanguageResource.getString("maxHandlingTime_invalid"));
@@ -157,10 +253,20 @@ public class ActemiumContractType implements ContractType, Serializable {
 		this.maxHandlingTime = maxHandlingTime;
 	}
 
+	/**
+	 *	Gets the min throughput time.
+	 *
+	 * @return min throughput time
+	 */
 	public int getMinThroughputTime() {
 		return minThroughputTime;
 	}
 
+	/**
+	 * Sets min throughput time.
+	 *
+	 * @param minThroughputTime the min throughput time
+	 */
 	public void setMinThroughputTime(int minThroughputTime) {
 		if(minThroughputTime <= 0) {
 			throw new IllegalArgumentException(LanguageResource.getString("minThroughputTime_invalid"));
@@ -168,10 +274,20 @@ public class ActemiumContractType implements ContractType, Serializable {
 		this.minThroughputTime = minThroughputTime;
 	}
 
+	/**
+	 * Gets the price.
+	 *
+	 * @return price
+	 */
 	public double getPrice() {
 		return price;
 	}
 
+	/**
+	 * Sets price.
+	 *
+	 * @param price the price
+	 */
 	public void setPrice(double price) {
 		if(price <= 0) {
 			throw new IllegalArgumentException(LanguageResource.getString("price_invalid"));
@@ -181,12 +297,14 @@ public class ActemiumContractType implements ContractType, Serializable {
 		
 	//TODO this method should be private but than you can't test it
 	// or shouldn't we test this method seperately?
+
 	/**
 	 * Ensures that at least 1 ticket creation method is selected.
-	 * @param hasEmail
-	 * @param hasPhone
-	 * @param hasApplication
-	 * @throws IllegalArgumentException
+	 *
+	 * @param hasEmail       the has email
+	 * @param hasPhone       the has phone
+	 * @param hasApplication the has application
+	 * @throws IllegalArgumentException throws an Illegal Argument Exception
 	 */
 	public void verifyTicketCreationMethods(boolean hasEmail, boolean hasPhone,
 			boolean hasApplication) {
@@ -194,19 +312,39 @@ public class ActemiumContractType implements ContractType, Serializable {
 			throw new IllegalArgumentException(LanguageResource.getString("ticketCreation_invalid"));
 		}
 	}
-	
+
+	/**
+	 * Gets the name property.
+	 *
+	 * @return name property
+	 */
 	public StringProperty contractTypeNameProperty() {
 		return name;
 	}
-	
+
+	/**
+	 * Gets the status property.
+	 *
+	 * @return status property
+	 */
 	public StringProperty contractTypeStatusProperty() {
 		return status;
 	}
-	
+
+	/**
+	 * Gets the timestamp property.
+	 *
+	 * @return timestamp property
+	 */
 	public StringProperty contractTypestampProperty() {
 		return timestamp;
 	}
 
+	/**
+	 * Check attributes.
+	 *
+	 * @throws InformationRequiredException the information required exception
+	 */
 	public void checkAttributes() throws InformationRequiredException {
 		// Ms. Malfait her idea
 		new ContractTypeBuilder()
@@ -222,6 +360,9 @@ public class ActemiumContractType implements ContractType, Serializable {
 				.build();
 	}
 
+	/**
+	 * The type Contract type builder.
+	 */
 	public static class ContractTypeBuilder {
 		private String name;
 		private ContractTypeStatus status;
@@ -235,51 +376,111 @@ public class ActemiumContractType implements ContractType, Serializable {
 
 		private Set<RequiredElement> requiredElements;
 
+		/**
+		 * Name contract type builder.
+		 *
+		 * @param name the name
+		 * @return the contract type builder
+		 */
 		public ContractTypeBuilder name(String name) {
 			this.name = name;
 			return this;
 		}
 
+		/**
+		 * Status contract type builder.
+		 *
+		 * @param status the status
+		 * @return the contract type builder
+		 */
 		public ContractTypeBuilder status(ContractTypeStatus status) {
 			this.status = status;
 			return this;
 		}
 
+		/**
+		 * Has email contract type builder.
+		 *
+		 * @param hasEmail the has email
+		 * @return the contract type builder
+		 */
 		public ContractTypeBuilder hasEmail(boolean hasEmail) {
 			this.hasEmail = hasEmail;
 			return this;
 		}
 
+		/**
+		 * Has phone contract type builder.
+		 *
+		 * @param hasPhone the has phone
+		 * @return the contract type builder
+		 */
 		public ContractTypeBuilder hasPhone(boolean hasPhone) {
 			this.hasPhone = hasPhone;
 			return this;
 		}
 
+		/**
+		 * Has application contract type builder.
+		 *
+		 * @param hasApplication the has application
+		 * @return the contract type builder
+		 */
 		public ContractTypeBuilder hasApplication(boolean hasApplication) {
 			this.hasApplication = hasApplication;
 			return this;
 		}
 
+		/**
+		 * Timestamp contract type builder.
+		 *
+		 * @param timestamp the timestamp
+		 * @return the contract type builder
+		 */
 		public ContractTypeBuilder timestamp(Timestamp timestamp) {
 			this.timestamp = timestamp;
 			return this;
 		}
 
+		/**
+		 * Max handling time contract type builder.
+		 *
+		 * @param maxHandlingTime the max handling time
+		 * @return the contract type builder
+		 */
 		public ContractTypeBuilder maxHandlingTime(int maxHandlingTime) {
 			this.maxHandlingTime = maxHandlingTime;
 			return this;
 		}
 
+		/**
+		 * Min throughput time contract type builder.
+		 *
+		 * @param minThroughputTime the min throughput time
+		 * @return the contract type builder
+		 */
 		public ContractTypeBuilder minThroughputTime(int minThroughputTime) {
 			this.minThroughputTime = minThroughputTime;
 			return this;
 		}
 
+		/**
+		 * Price contract type builder.
+		 *
+		 * @param price the price
+		 * @return the contract type builder
+		 */
 		public ContractTypeBuilder price(double price) {
 			this.price = price;
 			return this;
 		}
 
+		/**
+		 * Build actemium contract type.
+		 *
+		 * @return the actemium contract type
+		 * @throws InformationRequiredException the information required exception
+		 */
 		public ActemiumContractType build() throws InformationRequiredException {
 			requiredElements = new HashSet<>();
 			checkAttributesEmployeeBuiler();
@@ -309,6 +510,12 @@ public class ActemiumContractType implements ContractType, Serializable {
 		}
 	}
 
+	/**
+	 * This clones an actemium Ctontract type.
+	 *
+	 * @return Actemium Contract Type
+	 * @throws CloneNotSupportedException
+	 */
 	@Override
 	public ActemiumContractType clone() throws CloneNotSupportedException {
 
@@ -317,9 +524,9 @@ public class ActemiumContractType implements ContractType, Serializable {
 			cloned = new ContractTypeBuilder()
 					.name(this.getName())
 					.status(this.getStatus())
-					.hasEmail(this.isHasEmail())
-					.hasPhone(this.isHasPhone())
-					.hasEmail(this.isHasEmail())
+					.hasEmail(this.hasEmail())
+					.hasPhone(this.hasPhone())
+					.hasEmail(this.hasEmail())
 					.timestamp(this.getTimestamp())
 					.maxHandlingTime(this.getMaxHandlingTime())
 					.minThroughputTime(this.getMinThroughputTime())

@@ -28,6 +28,9 @@ import javafx.beans.property.StringProperty;
 import languages.LanguageResource;
 
 
+/**
+ * The type Actemium contract.
+ */
 @Entity
 @Access(AccessType.FIELD)
 public class ActemiumContract implements Contract, Serializable {
@@ -48,6 +51,9 @@ public class ActemiumContract implements Contract, Serializable {
 	@Transient
 	private StringProperty contractTypeName = new SimpleStringProperty();
 
+	/**
+	 * The Customer with the contract.
+	 */
 	@ManyToOne
 	ActemiumCustomer customer;
 
@@ -61,10 +67,18 @@ public class ActemiumContract implements Contract, Serializable {
 	//private LocalDate startDate;
 	//private LocalDate endDate;
 
+	/**
+	 * Instantiates a new Actemium contract.
+	 */
 	public ActemiumContract() {
 		super();
 	}
 
+	/**
+	 * Instantiates a new Actemium contract.
+	 *
+	 * @param builder the builder
+	 */
 	public ActemiumContract(ContractBuilder builder){
 		this.contractType = builder.contractType;
 		this.status.set(String.valueOf(builder.status));
@@ -101,69 +115,145 @@ public class ActemiumContract implements Contract, Serializable {
 		this(contractType, customer, LocalDate.now(), endDate);
 	}*/
 
+	/**
+	 * Gets contract Id.
+	 *
+	 * @return contract Id
+	 */
 	public String getContractIdString() {
 		return String.valueOf(contractId);
 	}
 
+	/**
+	 * Gets contract id int.
+	 *
+	 * @return the contract id int
+	 */
 	public int getContractIdInt() {
 		return (int) contractId;
 	}
 
+	/**
+	 * Sets contract id int.
+	 */
 	public void setContractIdInt() {
 		this.contractIdInt.set((int) contractId);
 	}
 
+	/**
+	 * Gets contract type.
+	 *
+	 * @return the contract type
+	 */
 	public ActemiumContractType getContractType() {
 		return contractType;
 	}
 
+	/**
+	 * gets contract type.
+	 *
+	 * @return contract type
+	 */
 	public ContractType giveContractType() {
 		return (ContractType) contractType;
 	}
 
+	/**
+	 * Sets contract type.
+	 *
+	 * @param contractType the contract type
+	 */
 	public void setContractType(ActemiumContractType contractType) {
 		this.contractType = contractType;
 	}
 
+	/**
+	 * Sets contract type name.
+	 */
 	public void setContractTypeName() {
 		this.contractTypeName.set(String.valueOf(contractType.getName()));
 	}
 
+	/**
+	 * Gets customer.
+	 *
+	 * @return the customer
+	 */
 	public ActemiumCustomer getCustomer() {
 		return customer;
 	}
 
+	/**
+	 * Gives customer.
+	 *
+	 * @return customer
+	 */
 	public Customer giveCustomer() {
 		return (Customer) customer;
 	}
 
+	/**
+	 * Sets customer.
+	 *
+	 * @param customer the customer
+	 */
 	public void setCustomer(ActemiumCustomer customer) {
 		this.customer = customer;
 	}
 
+	/**
+	 * Returns the status as string.
+	 *
+	 * @return status as string
+	 */
 	public String getStatusAsString() {
 		return status.get();
 	}
 
+	/**
+	 * Gets contract status.
+	 *
+	 * @return contract status
+	 */
 	@Access(AccessType.PROPERTY)
 	@Enumerated(EnumType.STRING)
 	public ContractStatus getStatus() {
 		return ContractStatus.valueOf(status.get());
 	}
 
+	/**
+	 * Sets status.
+	 *
+	 * @param status the status
+	 */
 	public void setStatus(ContractStatus status) {
 		this.status.set(String.valueOf(status));
 	}
 
+	/**
+	 * Gets start date.
+	 *
+	 * @return start date
+	 */
 	@Access(AccessType.PROPERTY)
 	public LocalDate getStartDate() {
 		return LocalDate.parse(startDate.get());
 	}
 
+	/**
+	 * Property contract start date
+	 *
+	 * @return start date
+	 */
 	public StringProperty contractStartDateProperty() {
 		return startDate;
 	}
 
+	/**
+	 * Sets start date.
+	 *
+	 * @param startDate the start date
+	 */
 	public void setStartDate(LocalDate startDate) {
 		//if (startDate.isBefore(LocalDate.now())) {
 		//	throw new IllegalArgumentException(LanguageResource.getString("startDate_invalid"));
@@ -171,15 +261,30 @@ public class ActemiumContract implements Contract, Serializable {
 		this.startDate.set(String.valueOf(startDate));
 	}
 
+	/**
+	 * Gets end date.
+	 *
+	 * @return end date
+	 */
 	@Access(AccessType.PROPERTY)
 	public LocalDate getEndDate() {
 		return LocalDate.parse(endDate.get());
 	}
 
+	/**
+	 * Gets property end date
+	 *
+	 * @return end date property
+	 */
 	public StringProperty contractEndDateProperty() {
 		return endDate;
 	}
 
+	/**
+	 * Sets end date.
+	 *
+	 * @param endDate the end date
+	 */
 	public void setEndDate(LocalDate endDate) {
 		//LocalDate starDate = getStartDate();
 		//if (endDate.isBefore(starDate)) {
@@ -193,18 +298,33 @@ public class ActemiumContract implements Contract, Serializable {
 		this.endDate.set(String.valueOf(endDate));
 	}
 
+	/**
+	 * Gets property contract ID.
+	 *
+	 * @return contract ID property
+	 */
 	@Override
 	public IntegerProperty contractIdProperty() {
 		setContractIdInt();
 		return contractIdInt;
 	}
 
+	/**
+	 * Gets property contract type name.
+	 *
+	 * @return contract type name property
+	 */
 	@Override
 	public StringProperty contractTypeNameProperty() {
 		setContractTypeName();
 		return contractTypeName;
 	}
 
+	/**
+	 * Gets property status.
+	 *
+	 * @return status
+	 */
 	@Override
 	public StringProperty contractStatusProperty() {
 		return status;
@@ -215,6 +335,11 @@ public class ActemiumContract implements Contract, Serializable {
 		return String.format("%s: %s %s %s %s %s", this.getContractIdString(), this.contractType.getName(), this.getStatusAsString(), this.getStartDate().toString(), LanguageResource.getString("until") ,this.getEndDate().toString());
 	}
 
+	/**
+	 * Check attributes.
+	 *
+	 * @throws InformationRequiredException the information required exception
+	 */
 	public void checkAttributes() throws InformationRequiredException {
 		// Ms. Malfait her idea
 		new ContractBuilder()
@@ -226,6 +351,9 @@ public class ActemiumContract implements Contract, Serializable {
 				.build();
 	}
 
+	/**
+	 * The type Contract builder.
+	 */
 	public static class ContractBuilder {
 		private ActemiumContractType contractType;
 		private ActemiumCustomer customer;
@@ -235,31 +363,67 @@ public class ActemiumContract implements Contract, Serializable {
 
 		private Set<RequiredElement> requiredElements;
 
+		/**
+		 * Contract type contract builder.
+		 *
+		 * @param contractType the contract type
+		 * @return the contract builder
+		 */
 		public ContractBuilder contractType(ActemiumContractType contractType) {
 			this.contractType = contractType;
 			return this;
 		}
 
+		/**
+		 * Customer contract builder.
+		 *
+		 * @param customer the customer
+		 * @return the contract builder
+		 */
 		public ContractBuilder customer(ActemiumCustomer customer) {
 			this.customer = customer;
 			return this;
 		}
 
+		/**
+		 * Status contract builder.
+		 *
+		 * @param status the status
+		 * @return the contract builder
+		 */
 		public ContractBuilder status(ContractStatus status) {
 			this.status = status;
 			return this;
 		}
 
+		/**
+		 * Start date contract builder.
+		 *
+		 * @param startDate the start date
+		 * @return the contract builder
+		 */
 		public ContractBuilder startDate(LocalDate startDate) {
 			this.startDate = startDate;
 			return this;
 		}
 
+		/**
+		 * End date contract builder.
+		 *
+		 * @param endDate the end date
+		 * @return the contract builder
+		 */
 		public ContractBuilder endDate(LocalDate endDate) {
 			this.endDate = endDate;
 			return this;
 		}
 
+		/**
+		 * Build actemium contract.
+		 *
+		 * @return the actemium contract
+		 * @throws InformationRequiredException the information required exception
+		 */
 		public ActemiumContract build() throws InformationRequiredException {
 			requiredElements = new HashSet<>();
 			checkAttributesEmployeeBuilder();
@@ -303,6 +467,12 @@ public class ActemiumContract implements Contract, Serializable {
 
 	}
 
+	/**
+	 * This clones an actemium contract.
+	 *
+	 * @return actmium contract
+	 * @throws CloneNotSupportedException throws a clone not supported exception
+	 */
 	@Override
 	public ActemiumContract clone() throws CloneNotSupportedException {
 

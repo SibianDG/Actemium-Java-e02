@@ -17,6 +17,9 @@ import exceptions.InformationRequiredException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+/**
+ * The type Actemium employee.
+ */
 @Entity
 @Access(AccessType.FIELD)
 @NamedQueries({
@@ -63,6 +66,11 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 		setRegistrationDate(LocalDate.now());
 	}*/
 
+	/**
+	 * Instantiates a new Actemium employee.
+	 *
+	 * @param builder the builder
+	 */
 	public ActemiumEmployee(EmployeeBuilder builder){
 		super(builder.username, builder.password, builder.firstName, builder.lastName);
 		this.address = builder.address;
@@ -73,23 +81,46 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 		this.specialties = new HashSet<>();
 	}
 
+	/**
+	 * Instantiates a new Actemium employee.
+	 */
 	public ActemiumEmployee() {
 		super();
 	}
 
+	/**
+	 * Give seniority int for the Employee.
+	 *
+	 * @return the int
+	 */
 	@Override
 	public int giveSeniority() {
 		return LocalDate.now().getYear() - registrationDate.getYear();
 	}
 
+	/**
+	 * Gets the employee nr, in fact the userid.
+	 *
+	 * @return employee nr
+	 */
 	public int getEmployeeNr() {
 		return (int) super.getUserId();
 	}
 
+	/**
+	 * Gets the address.
+	 *
+	 * @return address
+	 */
 	public String getAddress() {
 		return address;
 	}
 
+	/**
+	 * Sets address.
+	 *
+	 * @param address the address
+	 */
 	public void setAddress(String address) {
 		//String usernameRegex = "[A-Za-z0-9 _-]+";
 		//if (address == null || address.isBlank() || !address.matches(usernameRegex)) {
@@ -98,10 +129,20 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 		this.address = address;
 	}
 
+	/**
+	 * Gets the email address.
+	 *
+	 * @return email address
+	 */
 	public String getEmailAddress() {
 		return emailAddress;
 	}
 
+	/**
+	 * Sets email address.
+	 *
+	 * @param emailAddress the email address
+	 */
 	public void setEmailAddress(String emailAddress) {
 		//String emailRegex = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+[.][a-zA-Z0-9-]{2,4}$";
 		////TODO the regex below doesn't work because we create employees with a false email according to this regex in PopulateDB
@@ -112,10 +153,20 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 		this.emailAddress = emailAddress;
 	}
 
+	/**
+	 * Gets the phone number string.
+	 *
+	 * @return phone number
+	 */
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
+	/**
+	 * Sets phone number.
+	 *
+	 * @param phoneNumber the phone number
+	 */
 	public void setPhoneNumber(String phoneNumber) {
 		//String usernameRegex = "[0-9 /-]+";
 		//if (phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches(usernameRegex)) {
@@ -124,24 +175,49 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 		this.phoneNumber = phoneNumber;
 	}
 
+	/**
+	 * Gets the registration date.
+	 *
+	 * @return registration date
+	 */
 	public LocalDate getRegistrationDate() {
 		return registrationDate;
 	}
 
+	/**
+	 * Sets registration date.
+	 *
+	 * @param registrationDate the registration date
+	 */
 	public void setRegistrationDate(LocalDate registrationDate) {
 		this.registrationDate = registrationDate;
 	}
 
+	/**
+	 * Gets the role as String.
+	 *
+	 * @return role as string
+	 */
 	public String getRoleAsString() {
 		return role.get();
 	}
 
+	/**
+	 *	Gets the Employee role.
+	 *
+	 * @return Employee role
+	 */
 	@Access(AccessType.PROPERTY)
 	@Enumerated(EnumType.STRING)
 	public EmployeeRole getRole() {
 		return EmployeeRole.valueOf(role.get());
 	}
 
+	/**
+	 * Sets role.
+	 *
+	 * @param role the role
+	 */
 	public void setRole(EmployeeRole role) {
 		//if (role == null) {
 		//	throw new IllegalArgumentException(LanguageResource.getString("role_invalid"));
@@ -149,14 +225,29 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 		this.roleProperty().set(role.toString());
 	}
 
+	/**
+	 * Gets the set of specialties of a technician.
+	 *
+	 * @return set of specialties
+	 */
 	public Set<TicketType> getSpecialties() {
 		return specialties;
 	}
 
+	/**
+	 * Sets specialties.
+	 *
+	 * @param specialties the specialties
+	 */
 	public void setSpecialties(Set<TicketType> specialties) {
 		this.specialties = specialties;
 	}
 
+	/**
+	 * Add specialty.
+	 *
+	 * @param ticketType the ticket type
+	 */
 	public void addSpecialty (TicketType ticketType){
 		this.specialties.add(ticketType);
 	}
@@ -173,10 +264,20 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 //		this.tickets = tickets;
 //	}
 
+	/**
+	 *	Gets the property role.
+	 *
+	 * @return role property
+	 */
 	public StringProperty roleProperty() {
 		return role;
 	}
 
+	/**
+	 * Check attributes.
+	 *
+	 * @throws InformationRequiredException the information required exception
+	 */
 	public void checkAttributes() throws InformationRequiredException {
 		// Ms. Malfait her idea
 		new EmployeeBuilder()
@@ -192,6 +293,9 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 				.build();
 	}
 
+	/**
+	 * The type Employee builder.
+	 */
 	public static class EmployeeBuilder {
 		private String username;
 		private String password;
@@ -207,43 +311,111 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 
 		private Set<RequiredElement> requiredElements;
 
+		/**
+		 * Username employee builder.
+		 *
+		 * @param username the username
+		 * @return the employee builder
+		 */
 		public EmployeeBuilder username(String username) {
 			this.username = username;
 			return this;
 		}
+
+		/**
+		 * Password employee builder.
+		 *
+		 * @param password the password
+		 * @return the employee builder
+		 */
 		public EmployeeBuilder password(String password) {
 			this.password = password;
 			return this;
 		}
+
+		/**
+		 * First name employee builder.
+		 *
+		 * @param firstName the first name
+		 * @return the employee builder
+		 */
 		public EmployeeBuilder firstName(String firstName) {
 			this.firstName = firstName;
 			return this;
 		}
+
+		/**
+		 * Last name employee builder.
+		 *
+		 * @param lastName the last name
+		 * @return the employee builder
+		 */
 		public EmployeeBuilder lastName(String lastName) {
 			this.lastName = lastName;
 			return this;
 		}
+
+		/**
+		 * Address employee builder.
+		 *
+		 * @param address the address
+		 * @return the employee builder
+		 */
 		public EmployeeBuilder address(String address) {
 			this.address = address;
 			return this;
 		}
+
+		/**
+		 * Phone number employee builder.
+		 *
+		 * @param phoneNumber the phone number
+		 * @return the employee builder
+		 */
 		public EmployeeBuilder phoneNumber(String phoneNumber) {
 			this.phoneNumber = phoneNumber;
 			return this;
 		}
+
+		/**
+		 * Email address employee builder.
+		 *
+		 * @param emailAddress the email address
+		 * @return the employee builder
+		 */
 		public EmployeeBuilder emailAddress(String emailAddress) {
 			this.emailAddress = emailAddress;
 			return this;
 		}
+
+		/**
+		 * Role employee builder.
+		 *
+		 * @param role the role
+		 * @return the employee builder
+		 */
 		public EmployeeBuilder role(EmployeeRole role) {
 			this.role = role;
 			return this;
 		}
+
+		/**
+		 * Registration date employee builder.
+		 *
+		 * @param registrationDate the registration date
+		 * @return the employee builder
+		 */
 		public EmployeeBuilder registrationDate(LocalDate registrationDate) {
 			this.registrationDate = registrationDate;
 			return this;
 		}
 
+		/**
+		 * Build actemium employee.
+		 *
+		 * @return the actemium employee
+		 * @throws InformationRequiredException the information required exception
+		 */
 		public ActemiumEmployee build() throws InformationRequiredException {
 			requiredElements = new HashSet<>();
 			checkAttributesEmployeeBuiler();
@@ -278,6 +450,12 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 
 	}
 
+	/**
+	 * This clones an actemium employee.
+	 *
+	 * @return actmium employee
+	 * @throws CloneNotSupportedException throws a clone not supported exception
+	 */
 	@Override
 	public ActemiumEmployee clone() throws CloneNotSupportedException {
 

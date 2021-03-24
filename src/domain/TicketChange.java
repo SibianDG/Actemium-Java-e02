@@ -3,16 +3,39 @@ package domain;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * The interface Ticket change.
+ */
 public interface TicketChange {
 
-	public UserModel getUser();
+	/**
+	 * Gets user.
+	 *
+	 * @return the user
+	 */
+	UserModel getUser();
 
-	public String getUserRole();
+	String getUserRole();
 
-	public LocalDateTime getDateTimeOfChange();
+	/**
+	 * Gets date time of change.
+	 *
+	 * @return the date time of change
+	 */
+	LocalDateTime getDateTimeOfChange();
 
-	public String getChangeDescription();
+	/**
+	 * Gets change description.
+	 *
+	 * @return the change description
+	 */
+	String getChangeDescription();
 
-	public List<String> getChangeContent();
+	/**
+	 * Gets change content.
+	 *
+	 * @return the change content
+	 */
+	List<String> getChangeContent();
 
 }

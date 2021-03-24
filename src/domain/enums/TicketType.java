@@ -2,41 +2,43 @@ package domain.enums;
 
 import languages.LanguageResource;
 
+/**
+ * The enum Ticket type.
+ */
 public enum TicketType {
-    HARDWARE /*{
-        @Override
-        public String toString() {
-            return LanguageResource.getString("HARDWARE");
-        }
-    }*/
-    , SOFTWARE /*{
-        @Override
-        public String toString() {
-            return LanguageResource.getString("SOFTWARE");
-        }
-    }*/
-    , INFRASTRUCTURE /*{
-        @Override
-        public String toString() {
-            return LanguageResource.getString("INFRASTRUCTURE");
-        }
-    }*/
-    , DATABASE /*{
-        @Override
-        public String toString() {
-            return LanguageResource.getString("DATABASE");
-        }
-    }*/
-    , NETWORK /*{
-        @Override
-        public String toString() {
-            return LanguageResource.getString("NETWORK");
-        }
-    }*/
-    , OTHER /*{
-        @Override
-        public String toString() {
-            return LanguageResource.getString("OTHER");
-        }
-    }*/
+    /**
+     * Hardware ticket type.
+     */
+    HARDWARE
+
+    ,
+    /**
+     * Software ticket type.
+     */
+    SOFTWARE
+
+    ,
+    /**
+     * Infrastructure ticket type.
+     */
+    INFRASTRUCTURE
+
+    ,
+    /**
+     * Database ticket type.
+     */
+    DATABASE
+
+    ,
+    /**
+     * Network ticket type.
+     */
+    NETWORK
+
+    ,
+    /**
+     * Other ticket type.
+     */
+    OTHER
+
 }

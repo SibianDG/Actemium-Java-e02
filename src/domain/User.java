@@ -3,33 +3,96 @@ package domain;
 import domain.enums.UserStatus;
 import javafx.beans.property.StringProperty;
 
+/**
+ * The interface User.
+ */
 public interface User {
 
 	// getters
 //	public List<LoginAttempt> getLoginAttempts();
 
-	public long getUserId();
+	/**
+	 * Gets user id.
+	 *
+	 * @return the user id
+	 */
+	long getUserId();
 
-	public String getUsername();
+	/**
+	 * Gets username.
+	 *
+	 * @return the username
+	 */
+	String getUsername();
 
-	public String getPassword();
+	/**
+	 * Gets password.
+	 *
+	 * @return the password
+	 */
+	String getPassword();
 
-	public String getFirstName();
+	/**
+	 * Gets first name.
+	 *
+	 * @return the first name
+	 */
+	String getFirstName();
 
-	public String getLastName();
+	/**
+	 * Gets last name.
+	 *
+	 * @return the last name
+	 */
+	String getLastName();
 
-	public int getFailedLoginAttempts();
+	/**
+	 * Gets failed login attempts.
+	 *
+	 * @return the failed login attempts
+	 */
+	int getFailedLoginAttempts();
 
-	public String getStatusAsString();
+	/**
+	 * Gets status as string.
+	 *
+	 * @return the status as string
+	 */
+	String getStatusAsString();
 
-	public UserStatus getStatus();
-	
-	public StringProperty usernameProperty();
+	/**
+	 * Gets status.
+	 *
+	 * @return the status
+	 */
+	UserStatus getStatus();
 
-	public StringProperty statusProperty();
+	/**
+	 * Username property string property.
+	 *
+	 * @return the string property
+	 */
+	StringProperty usernameProperty();
 
-	public StringProperty firstNameProperty();
+	/**
+	 * Status property string property.
+	 *
+	 * @return the string property
+	 */
+	StringProperty statusProperty();
 
-	public StringProperty lastNameProperty();
+	/**
+	 * First name property string property.
+	 *
+	 * @return the string property
+	 */
+	StringProperty firstNameProperty();
+
+	/**
+	 * Last name property string property.
+	 *
+	 * @return the string property
+	 */
+	StringProperty lastNameProperty();
 
 }

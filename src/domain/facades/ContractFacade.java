@@ -13,19 +13,34 @@ import exceptions.InformationRequiredException;
 import javafx.collections.ObservableList;
 import languages.LanguageResource;
 
+/**
+ * The type Contract facade.
+ */
 public class ContractFacade implements Facade {
 
     private final Actemium actemium;
 
-    public ContractFacade(Actemium actemium) {
+	/**
+	 * Instantiates a new Contract facade.
+	 *
+	 * @param actemium the actemium
+	 */
+	public ContractFacade(Actemium actemium) {
         this.actemium = actemium;
     }
 
-    public void modifyContract(ActemiumContract contract, ContractStatus status) throws InformationRequiredException {
+	/**
+	 * Modify contract.
+	 *
+	 * @param contract the contract
+	 * @param status   the status
+	 * @throws InformationRequiredException the information required exception
+	 */
+	public void modifyContract(ActemiumContract contract, ContractStatus status) throws InformationRequiredException {
 		try {
 			ActemiumContract contractClone = contract.clone();
 			// check to see if signed in user is Support Manager
-			actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
+			actemium.checkPermission(EmployeeRole.SUPPORT_MANAGER);
 			contractClone.setStatus(status);
 
 			contractClone.checkAttributes();
@@ -36,11 +51,20 @@ public class ContractFacade implements Facade {
 		}
 
     }
-    
+
+	/**
+	 * Register contract.
+	 *
+	 * @param customerId     the customer id
+	 * @param contractTypeId the contract type id
+	 * @param startDate      the start date
+	 * @param duration       the duration
+	 * @throws InformationRequiredException the information required exception
+	 */
 	public void registerContract(Long customerId, long contractTypeId, LocalDate startDate,
 			int duration) throws InformationRequiredException {
 		// check to see if signed in user is Support Manager
-		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
+		actemium.checkPermission(EmployeeRole.SUPPORT_MANAGER);
 		ActemiumContractType contractType = (ActemiumContractType) actemium.findContractTypeById(contractTypeId);
 		//if (contractType == null) {
 		//	throw new IllegalArgumentException("You must provide the name of an existing contractType");
@@ -60,10 +84,20 @@ public class ContractFacade implements Facade {
 		actemium.registerContract(contract);
 	}
 
-    public ObservableList<Contract> giveActemiumContracts() {
+	/**
+	 * Give actemium contracts observable list.
+	 *
+	 * @return the observable list
+	 */
+	public ObservableList<Contract> giveActemiumContracts() {
         return actemium.giveActemiumContracts();
     }
 
+	/**
+	 * Gets last added contract.
+	 *
+	 * @return the last added contract
+	 */
 	public Contract getLastAddedContract() {
 		return actemium.getLastAddedContract();
 	}

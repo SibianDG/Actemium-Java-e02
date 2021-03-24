@@ -2,23 +2,25 @@ package domain.enums;
 
 import languages.LanguageResource;
 
+/**
+ * The enum Login status.
+ */
 public enum LoginStatus {
-	// Correct username and password combination for an ACTIVE userAccount
-	SUCCESS /*{
-		@Override
-		public String toString() {
-			return LanguageResource.getString("SUCCESS");
-		}
-	}*/
+	/**
+	 * The Success.
+	 */
+// Correct username and password combination for an ACTIVE userAccount
+	SUCCESS
+
 	// Incorrect password for existing username
 	// or
 	// Correct username and password combination for BLOCKED/INACTIVE userAccount
-	, FAILED /*{
-		@Override
-		public String toString() {
-			return LanguageResource.getString("FAILED");
-		}
-	}*/
+	,
+	/**
+	 * Failed login status.
+	 */
+	FAILED
+
 	
 	// LoginAttempts for nonExisting usernames are NOT logged in the database
 }

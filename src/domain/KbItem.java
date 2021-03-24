@@ -3,20 +3,58 @@ package domain;
 import domain.enums.KbItemType;
 import javafx.beans.property.StringProperty;
 
+/**
+ * The interface Kb item.
+ */
 public interface KbItem {
 
-	public String getTitle();
+	/**
+	 * Gets title.
+	 *
+	 * @return the title
+	 */
+	String getTitle();
 
-	public String getTypeAsString();
+	/**
+	 * Gets type as string.
+	 *
+	 * @return the type as string
+	 */
+	String getTypeAsString();
 
-	public KbItemType getType();
-	
-	public String getKeywords();
+	/**
+	 * Gets type.
+	 *
+	 * @return the type
+	 */
+	KbItemType getType();
 
-	public String getText();
-	
-	public StringProperty titleProperty();
+	/**
+	 * Gets keywords.
+	 *
+	 * @return the keywords
+	 */
+	String getKeywords();
 
-	public StringProperty typeProperty();
+	/**
+	 * Gets text.
+	 *
+	 * @return the text
+	 */
+	String getText();
+
+	/**
+	 * Title property string property.
+	 *
+	 * @return the string property
+	 */
+	StringProperty titleProperty();
+
+	/**
+	 * Type property string property.
+	 *
+	 * @return the string property
+	 */
+	StringProperty typeProperty();
 
 }

@@ -2,17 +2,19 @@ package domain.enums;
 
 import languages.LanguageResource;
 
+/**
+ * The enum Timestamp.
+ */
 public enum Timestamp {
-	ALWAYS /*{
-		@Override
-		public String toString() {
-			return LanguageResource.getString("ALWAYS");
-		}
-	}*/
-	, WORKINGHOURS /*{
-		@Override
-		public String toString() {
-			return LanguageResource.getString("WORKINGHOURS");
-		}
-	}*/
+	/**
+	 * The Always.
+	 */
+	ALWAYS
+
+	,
+	/**
+	 * The Workinghours.
+	 */
+	WORKINGHOURS
+
 }

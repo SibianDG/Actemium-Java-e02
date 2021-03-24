@@ -8,30 +8,83 @@ import domain.enums.EmployeeRole;
 import domain.enums.TicketType;
 import javafx.beans.property.StringProperty;
 
+/**
+ * The interface Employee.
+ */
 public interface Employee extends User {
 
 	// getters
 
-	public int giveSeniority();
+	/**
+	 * Give seniority int.
+	 *
+	 * @return the int
+	 */
+	int giveSeniority();
 
-	public int getEmployeeNr();
+	/**
+	 * Gets employee nr.
+	 *
+	 * @return the employee nr
+	 */
+	int getEmployeeNr();
 
-	public String getAddress();
+	/**
+	 * Gets address.
+	 *
+	 * @return the address
+	 */
+	String getAddress();
 
-	public String getEmailAddress();
+	/**
+	 * Gets email address.
+	 *
+	 * @return the email address
+	 */
+	String getEmailAddress();
 
-	public String getPhoneNumber();
+	/**
+	 * Gets phone number.
+	 *
+	 * @return the phone number
+	 */
+	String getPhoneNumber();
 
-	public LocalDate getRegistrationDate();
+	/**
+	 * Gets registration date.
+	 *
+	 * @return the registration date
+	 */
+	LocalDate getRegistrationDate();
 
-	public String getRoleAsString();
+	/**
+	 * Gets role as string.
+	 *
+	 * @return the role as string
+	 */
+	String getRoleAsString();
 
-	public EmployeeRole getRole();
+	/**
+	 * Gets role.
+	 *
+	 * @return the role
+	 */
+	EmployeeRole getRole();
 
-//	public List<Ticket> giveTickets();
-	
-	public StringProperty roleProperty();
+//	List<Ticket> giveTickets();
 
-	public Set<TicketType> getSpecialties();
+	/**
+	 * Role property string property.
+	 *
+	 * @return the string property
+	 */
+	StringProperty roleProperty();
+
+	/**
+	 * Gets specialties.
+	 *
+	 * @return the specialties
+	 */
+	Set<TicketType> getSpecialties();
 
 }

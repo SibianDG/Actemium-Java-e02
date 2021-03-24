@@ -4,37 +4,115 @@ import domain.enums.ContractTypeStatus;
 import domain.enums.Timestamp;
 import javafx.beans.property.StringProperty;
 
+/**
+ * The interface Contract type.
+ */
 public interface ContractType {
 	
 	// getters 
-	
-	public long getContractTypeId();
-	
-	public String getName();
 
-	public ContractTypeStatus getStatus();
-	
-	public String getStatusAsString();
+	/**
+	 * Gets contract type id.
+	 *
+	 * @return the contract type id
+	 */
+	long getContractTypeId();
 
-	public boolean isHasEmail();
+	/**
+	 * Gets name.
+	 *
+	 * @return the name
+	 */
+	String getName();
 
-	public boolean isHasPhone();
+	/**
+	 * Gets status.
+	 *
+	 * @return the status
+	 */
+	ContractTypeStatus getStatus();
 
-	public boolean isHasApplication();
+	/**
+	 * Gets status as string.
+	 *
+	 * @return the status as string
+	 */
+	String getStatusAsString();
 
-	public Timestamp getTimestamp();
-	
-	public String getTimestampAsString();
+	/**
+	 * Has email boolean.
+	 *
+	 * @return the boolean
+	 */
+	boolean hasEmail();
 
-	public int getMaxHandlingTime();
+	/**
+	 * Has phone boolean.
+	 *
+	 * @return the boolean
+	 */
+	boolean hasPhone();
 
-	public int getMinThroughputTime();
+	/**
+	 * Has application boolean.
+	 *
+	 * @return the boolean
+	 */
+	boolean hasApplication();
 
-	public double getPrice();
+	/**
+	 * Gets timestamp.
+	 *
+	 * @return the timestamp
+	 */
+	Timestamp getTimestamp();
 
-	public StringProperty contractTypeNameProperty();
-	
-	public StringProperty contractTypeStatusProperty();
+	/**
+	 * Gets timestamp as string.
+	 *
+	 * @return the timestamp as string
+	 */
+	String getTimestampAsString();
 
-	public StringProperty contractTypestampProperty();
+	/**
+	 * Gets max handling time.
+	 *
+	 * @return the max handling time
+	 */
+	int getMaxHandlingTime();
+
+	/**
+	 * Gets min throughput time.
+	 *
+	 * @return the min throughput time
+	 */
+	int getMinThroughputTime();
+
+	/**
+	 * Gets price.
+	 *
+	 * @return the price
+	 */
+	double getPrice();
+
+	/**
+	 * Contract type name property string property.
+	 *
+	 * @return the string property
+	 */
+	StringProperty contractTypeNameProperty();
+
+	/**
+	 * Contract type status property string property.
+	 *
+	 * @return the string property
+	 */
+	StringProperty contractTypeStatusProperty();
+
+	/**
+	 * Contract typestamp property string property.
+	 *
+	 * @return the string property
+	 */
+	StringProperty contractTypestampProperty();
 }

@@ -23,18 +23,39 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import languages.LanguageResource;
 
+/**
+ * The type Ticket facade.
+ */
 public class TicketFacade implements Facade {
 	
 	private final Actemium actemium;
 
+	/**
+	 * Instantiates a new Ticket facade.
+	 *
+	 * @param actemium the actemium
+	 */
 	public TicketFacade(Actemium actemium) {
 		this.actemium = actemium;
 	}
 
+	/**
+	 * Register ticket.
+	 *
+	 * @param priority                   the priority
+	 * @param ticketType                 the ticket type
+	 * @param title                      the title
+	 * @param description                the description
+	 * @param commentText                the comment text
+	 * @param attachments                the attachments
+	 * @param customerId                 the customer id
+	 * @param techniciansAsignedToTicket the technicians asigned to ticket
+	 * @throws InformationRequiredException the information required exception
+	 */
 	public void registerTicket(TicketPriority priority, TicketType ticketType, String title, String description,
 							String commentText, String attachments, long customerId, List<ActemiumEmployee> techniciansAsignedToTicket) throws InformationRequiredException {
 		// check to see if signed in user is Support Manger
-		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
+		actemium.checkPermission(EmployeeRole.SUPPORT_MANAGER);
 		ActemiumCustomer customer = (ActemiumCustomer) actemium.findUserById(customerId);
 		ActemiumTicket ticket = new ActemiumTicket.TicketBuilder()
 							.title(title)
@@ -77,6 +98,20 @@ public class TicketFacade implements Facade {
 		actemium.modifyTicket(ticket);
 	}
 
+	/**
+	 * Modify ticket outstanding.
+	 *
+	 * @param ticket      the ticket
+	 * @param priority    the priority
+	 * @param ticketType  the ticket type
+	 * @param status      the status
+	 * @param title       the title
+	 * @param description the description
+	 * @param commentText the comment text
+	 * @param attachments the attachments
+	 * @param technicians the technicians
+	 * @throws InformationRequiredException the information required exception
+	 */
 	public void modifyTicketOutstanding(ActemiumTicket ticket, TicketPriority priority, TicketType ticketType,
 			TicketStatus status, String title, String description, String commentText, String attachments,
 			List<ActemiumEmployee> technicians) throws InformationRequiredException {		
@@ -167,7 +202,16 @@ public class TicketFacade implements Facade {
 		}
 		}
 	}
-	
+
+	/**
+	 * Modify ticket resolved.
+	 *
+	 * @param ticket        the ticket
+	 * @param solution      the solution
+	 * @param quality       the quality
+	 * @param supportNeeded the support needed
+	 * @throws InformationRequiredException the information required exception
+	 */
 	public void modifyTicketResolved(ActemiumTicket ticket, String solution, String quality, String supportNeeded)
 			throws InformationRequiredException {
 		EmployeeRole signedInEmployeeRole = ((Employee) actemium.getSignedInUser()).getRole();
@@ -232,30 +276,61 @@ public class TicketFacade implements Facade {
 				.commentText(commentText)
 				.build();
 	}
-	
-    public void delete(ActemiumTicket ticket) throws InformationRequiredException {
+
+	/**
+	 * Delete.
+	 *
+	 * @param ticket the ticket
+	 * @throws InformationRequiredException the information required exception
+	 */
+	public void delete(ActemiumTicket ticket) throws InformationRequiredException {
 		// check to see if signed in user is Support Manger
-		actemium.checkPermision(EmployeeRole.SUPPORT_MANAGER);
+		actemium.checkPermission(EmployeeRole.SUPPORT_MANAGER);
 		ticket.setStatus(TicketStatus.CANCELLED);
 		actemium.modifyTicket(ticket);
     }
 
+	/**
+	 * Gets last added ticket.
+	 *
+	 * @return the last added ticket
+	 */
 	public Ticket getLastAddedTicket() {
 		return actemium.getLastAddedTicket();
 	}
 
+	/**
+	 * Give actemium tickets observable list.
+	 *
+	 * @return the observable list
+	 */
 	public ObservableList<Ticket> giveActemiumTickets() {
 		return actemium.giveActemiumTickets();
 	}
-	
+
+	/**
+	 * Give actemium tickets outstanding observable list.
+	 *
+	 * @return the observable list
+	 */
 	public ObservableList<Ticket> giveActemiumTicketsOutstanding() {
 		return actemium.giveActemiumTicketsOutstanding();
 	}
-	
+
+	/**
+	 * Give actemium tickets resolved observable list.
+	 *
+	 * @return the observable list
+	 */
 	public ObservableList<Ticket> giveActemiumTicketsResolved() {
 		return actemium.giveActemiumTicketsResolved();
 	}
-	
+
+	/**
+	 * Give actemium tickets completed observable list.
+	 *
+	 * @return the observable list
+	 */
 	public ObservableList<Ticket> giveActemiumTicketsCompleted() {
 		return FXCollections.observableArrayList(
 				actemium.giveActemiumTicketsResolved()
@@ -264,6 +339,11 @@ public class TicketFacade implements Facade {
 					.collect(Collectors.toList()));
 	}
 
+	/**
+	 * Gets all technicians.
+	 *
+	 * @return the all technicians
+	 */
 	public ObservableList<Employee> getAllTechnicians() {
 		return FXCollections.observableArrayList(actemium.giveActemiumEmployees()
 				.stream()
@@ -271,6 +351,12 @@ public class TicketFacade implements Facade {
 				.collect(Collectors.toList()));
 	}
 
+	/**
+	 * Give tickets of same type observable list.
+	 *
+	 * @param type the type
+	 * @return the observable list
+	 */
 	public ObservableList<Ticket> giveTicketsOfSameType(KbItemType type) {
 		ObservableList<Ticket> ticketsOfSameType;
 		switch(type) {
