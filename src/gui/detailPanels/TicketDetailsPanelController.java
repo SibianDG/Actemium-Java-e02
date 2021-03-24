@@ -1,5 +1,7 @@
 package gui.detailPanels;
 
+import static java.util.stream.Collectors.toList;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,9 +19,7 @@ import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import exceptions.InformationRequiredException;
 import gui.GUIEnum;
-import gui.viewModels.KnowledgeBaseViewModel;
 import gui.viewModels.TicketViewModel;
-import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -40,8 +40,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import languages.LanguageResource;
-
-import static java.util.stream.Collectors.toList;
 
 
 public class TicketDetailsPanelController extends DetailsPanelController {
@@ -72,7 +70,6 @@ public class TicketDetailsPanelController extends DetailsPanelController {
     	// 					content of the change
     	
     	// console output
-    	((TicketViewModel) viewModel).getSelectedTicket().giveTicketChanges().forEach(System.out::println);
     	
     	ticketHistoryPanelController = new TicketHistoryPanelController((TicketViewModel) super.viewModel, super.gridContent);
 		gridContent.add(ticketHistoryPanelController, 1, 0);
