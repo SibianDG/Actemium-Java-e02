@@ -17,6 +17,7 @@ import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import exceptions.InformationRequiredException;
 import gui.GUIEnum;
+import gui.viewModels.KnowledgeBaseViewModel;
 import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
@@ -155,10 +156,11 @@ public class TicketDetailsPanelController extends DetailsPanelController {
 
     private void setDetailOnModifying(){
         initGridDetails();        
-       
+
+
         if (TicketStatus.isOutstanding()) {
             addGridDetails(((TicketViewModel) viewModel).getDetails());
-            btnDelete.setVisible(true);
+            btnDelete.setVisible(((Employee) ((TicketViewModel) viewModel).getSignedInUser()).getRole() != EmployeeRole.TECHNICIAN);
         } else {
             addGridDetails(((TicketViewModel) viewModel).getDetails());
             btnDelete.setVisible(false);

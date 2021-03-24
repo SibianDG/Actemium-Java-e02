@@ -9,10 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import domain.ActemiumEmployee;
-import domain.ActemiumTicket;
-import domain.Employee;
-import domain.Ticket;
+import domain.*;
 import domain.enums.EmployeeRole;
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
@@ -167,5 +164,9 @@ public class TicketViewModel extends ViewModel {
 
     public void setTechniciansAsignedToTicketEmpty() {
         this.techniciansAsignedToTicket = new ArrayList<>();
+    }
+
+    public User getSignedInUser() {
+        return userFacade.getSignedInUser();
     }
 }
