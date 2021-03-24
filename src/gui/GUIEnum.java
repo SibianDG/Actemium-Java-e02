@@ -38,5 +38,5 @@ public enum GUIEnum {
         public String toString() {
             return LanguageResource.getString("knowledge_base");
         }
-    } //Knowledge Base
+    } 
 }

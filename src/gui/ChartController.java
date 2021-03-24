@@ -317,7 +317,6 @@ public class ChartController extends GridPane {
         barChart.setTitle(LanguageResource.getString("AverageTimeTicket"));
 
         double data = chartViewModel.chartAverageTimeNeededToSolveTickets();
-        System.out.println(data);
 
         XYChart.Series<String, Double> dataSeries = new XYChart.Series<>();
         dataSeries.setName(LanguageResource.getString("solveTicket"));

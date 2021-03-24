@@ -30,7 +30,6 @@ import languages.LanguageResource;
 
 public class ProfilePanelController extends GridPane  {
 	
-	//private UserFacade userFacade;
 	private final ProfileViewModel profileViewModel;
 	private final DashboardFrameController dashboardFrameController;
 	
@@ -50,7 +49,6 @@ public class ProfilePanelController extends GridPane  {
     void modifyButtonAccountOnMousePressed(MouseEvent event) {
         try {
             if (profileViewModel.isFieldModified()){
-                System.out.println("START");
                 profileViewModel.modifyProfile(
                         getTextFromGridPane(1),
                         getTextFromGridPane(2),
@@ -61,8 +59,6 @@ public class ProfilePanelController extends GridPane  {
                         getTextFromGridPane(7)
                 );
 
-                //TODO afhandeling
-
                 showPopupMessage("popupSuccess", LanguageResource.getString("profileEdit_success"));
                 txtErrorMessage.setVisible(false);
                 profileViewModel.setFieldModified(false);
@@ -70,15 +66,12 @@ public class ProfilePanelController extends GridPane  {
 
 
             } else {
-                System.out.println("nothing changed?");
                 showPopupMessage("popupWarning", LanguageResource.getString("unchangedMessage"));
             }
 
         } catch (InformationRequiredException ire){
-            System.out.println("IRE ex");
             StringBuilder errorMessage = new StringBuilder();
             ire.getInformationRequired().forEach(e -> {
-                System.out.println(e);
                 errorMessage.append(e).append("\n");
             });
             txtErrorMessage.setText(errorMessage.toString());
@@ -86,7 +79,6 @@ public class ProfilePanelController extends GridPane  {
             showPopupMessage("popupWarning", LanguageResource.getString("unchangedMessage"));
 
         } catch (Exception e){
-            System.out.println("General Exception");
             txtErrorMessage.setText(e.getMessage());
             txtErrorMessage.setVisible(true);
             showPopupMessage("popupWarning", LanguageResource.getString("unchangedMessage"));
@@ -96,17 +88,13 @@ public class ProfilePanelController extends GridPane  {
     }
 
     private void emptyPasswordField() {
-        System.out.println("emptyPasswordField");
         gridProfile.getChildren().forEach(e -> {
-            System.out.println(e.getClass().getSimpleName());
             if (e instanceof HBox) {
                 ((HBox) e).getChildren().forEach(h -> {
                     if (h instanceof PasswordField){
-                        System.out.println("Binnen");
                         PasswordField psswdf = (PasswordField) h;
                         psswdf.setText("");
                         psswdf.setPromptText(LanguageResource.getString("change_password"));
-                        System.out.println("Klaar?");
                     }
                 });
             }
@@ -261,16 +249,13 @@ public class ProfilePanelController extends GridPane  {
                 popup.hide();
             }
         });
-//        label.getStylesheets().add("/css/styles.css");
         label.getStylesheets().add("file:src/start/styles.css");
         label.getStyleClass().add(popupType);
         popup.getContent().add(label);
         return popup;
     }
 
-    //TODO fix positioning
-    // Can it be relative to a button such as btnModify or btnAdd
-    // Temp fix
+
     public void showPopupMessage(final String popupType, String message) {
         final Popup popup = createPopup(message, popupType);
         final Stage stage = (Stage) gridProfile.getScene().getWindow();
@@ -282,11 +267,9 @@ public class ProfilePanelController extends GridPane  {
     }
 
 
-    //TODO: make void?
     public boolean alertChanges() {
         boolean showNewObject = true;
         if(profileViewModel.isFieldModified()) {
-            //popup
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
             alert.setTitle(LanguageResource.getString("modifiedWithoutSaving"));
@@ -313,8 +296,6 @@ public class ProfilePanelController extends GridPane  {
                 dashboardFrameController.setEnabled(true);
                 profileViewModel.setFieldModified(false);
             } else {
-                // ... user chose CANCEL or closed the dialog
-                // nothing happens -> back to same detail panel
                 dashboardFrameController.setEnabled(false);
                 showNewObject = false;
             }
