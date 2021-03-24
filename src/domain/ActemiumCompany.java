@@ -265,7 +265,7 @@ public class ActemiumCompany implements Company, Serializable {
 		return actemiumTickets;
 	}
 
-	/**
+
 	public List<Ticket> giveTickets() {
 		return (List<Ticket>) (Object) actemiumTickets;
 	}
