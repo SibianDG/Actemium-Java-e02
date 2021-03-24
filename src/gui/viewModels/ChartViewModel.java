@@ -143,8 +143,7 @@ public class ChartViewModel{
 
         long secondsNeeded = completedTickets.stream().mapToLong(t -> ChronoUnit.SECONDS.between(t.getDateAndTimeOfCreation(), t.getDateAndTimeOfCompletion())).sum();
 
-        System.out.println(secondsNeeded);
-        return secondsNeeded/completedTickets.size();
+        return (secondsNeeded/completedTickets.size())/3600;
     }
 
 }
