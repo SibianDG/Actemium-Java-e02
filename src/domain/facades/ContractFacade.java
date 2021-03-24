@@ -16,9 +16,7 @@ import languages.LanguageResource;
 /**
  * The type Contract facade.
  */
-public class ContractFacade implements Facade {
-
-    private final Actemium actemium;
+public class ContractFacade extends Facade {
 
 	/**
 	 * Instantiates a new Contract facade.
@@ -26,7 +24,7 @@ public class ContractFacade implements Facade {
 	 * @param actemium the actemium
 	 */
 	public ContractFacade(Actemium actemium) {
-        this.actemium = actemium;
+        super(actemium);
     }
 
 	/**
@@ -82,24 +80,6 @@ public class ContractFacade implements Facade {
 				.build();
 
 		actemium.registerContract(contract);
-	}
-
-	/**
-	 * Give actemium contracts observable list.
-	 *
-	 * @return the observable list
-	 */
-	public ObservableList<Contract> giveActemiumContracts() {
-        return actemium.giveActemiumContracts();
-    }
-
-	/**
-	 * Gets last added contract.
-	 *
-	 * @return the last added contract
-	 */
-	public Contract getLastAddedContract() {
-		return actemium.getLastAddedContract();
 	}
 
 }

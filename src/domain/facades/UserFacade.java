@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * The type User facade.
  */
-public class UserFacade implements Facade {
+public class UserFacade extends Facade {
 
 	// For now we are still working with a single DomainController
 	// In the next sprint this will be replaced by:
@@ -24,7 +24,6 @@ public class UserFacade implements Facade {
 	// - SignedInUserManagaer in domain.facades
 	// - ...	
 	
-	private final Actemium actemium;
 
 	/**
 	 * Instantiates a new User facade.
@@ -32,7 +31,7 @@ public class UserFacade implements Facade {
 	 * @param actemium the actemium
 	 */
 	public UserFacade(Actemium actemium) {
-		this.actemium = actemium;
+		super(actemium);
 	}
 
 	// Johan suggested this is how he does it
@@ -60,114 +59,6 @@ public class UserFacade implements Facade {
 //		actemium.signIn(username, password);	
 //		return this;
 //	}
-
-	/**
-	 * Gets employee role.
-	 *
-	 * @return the employee role
-	 */
-	public EmployeeRole getEmployeeRole() {
-		return actemium.giveEmployeeRoleAsEnum();
-	}
-
-	/**
-	 * Give user role string.
-	 *
-	 * @return the string
-	 */
-	public String giveUserRole() {
-		return actemium.giveUserRole();
-	}
-
-	/**
-	 * Give user first name string.
-	 *
-	 * @return the string
-	 */
-	public String giveUserFirstName() {
-		return actemium.giveUserFirstName();
-	}
-
-	/**
-	 * Give user last name string.
-	 *
-	 * @return the string
-	 */
-	public String giveUserLastName() {
-		return actemium.giveUserLastName();
-	}
-
-	/**
-	 * Give user username string.
-	 *
-	 * @return the string
-	 */
-	public String giveUserUsername() {
-		return actemium.giveUsername();
-	}
-
-	/**
-	 * Give user employee id string.
-	 *
-	 * @return the string
-	 */
-	public String giveUserEmployeeId() {
-		return actemium.giveUserEmployeeId();
-	}
-
-	/**
-	 * Give user status string.
-	 *
-	 * @return the string
-	 */
-	public String giveUserStatus( ) {
-		return actemium.giveUserStatus();
-	}
-
-	/**
-	 * Give user email address string.
-	 *
-	 * @return the string
-	 */
-	public String giveUserEmailAddress() {
-		return actemium.giveUserEmailAddress();
-	}
-
-	/**
-	 * Give user phone number string.
-	 *
-	 * @return the string
-	 */
-	public String giveUserPhoneNumber() {
-		return actemium.giveUserPhoneNumber();
-	}
-
-	/**
-	 * Give user address string.
-	 *
-	 * @return the string
-	 */
-	public String giveUserAddress() {
-		return actemium.giveUserAddress();
-	}
-
-	/**
-	 * Give user seniority string.
-	 *
-	 * @return the string
-	 */
-	public String giveUserSeniority() {
-		return actemium.giveUserSeniority();
-	}
-
-	/**
-	 * Give user password string.
-	 *
-	 * @return the string
-	 */
-	public String giveUserPassword() {
-		return actemium.giveUserPassword();
-	}
 
 	/**
 	 * Register customer.
@@ -445,58 +336,4 @@ public class UserFacade implements Facade {
 			actemium.modifyCustomer((ActemiumCustomer) user);
 	}
 
-	/**
-	 * Gets last added customer.
-	 *
-	 * @return the last added customer
-	 */
-	public Customer getLastAddedCustomer() {
-		return actemium.getLastAddedCustomer();
-	}
-
-	/**
-	 * Gets last added employee.
-	 *
-	 * @return the last added employee
-	 */
-	public Employee getLastAddedEmployee() {
-		return actemium.getLastAddedEmployee();
-	}
-
-	/**
-	 * Give actemium customers observable list.
-	 *
-	 * @return the observable list
-	 */
-	public ObservableList<Customer> giveActemiumCustomers() {
-		return actemium.giveActemiumCustomers();
-	}
-
-	/**
-	 * Give actemium employees observable list.
-	 *
-	 * @return the observable list
-	 */
-	public ObservableList<Employee> giveActemiumEmployees() {
-		return actemium.giveActemiumEmployees();
-    }
-
-	/**
-	 * Gets name by id.
-	 *
-	 * @param id the id
-	 * @return the name by id
-	 */
-	public String getNameByID(long id) {
-		return actemium.getNameByID(id);
-	}
-
-	/**
-	 * Gets signed in user.
-	 *
-	 * @return the signed in user
-	 */
-	public User getSignedInUser() {
-		return actemium.getSignedInUser();
-    }
 }

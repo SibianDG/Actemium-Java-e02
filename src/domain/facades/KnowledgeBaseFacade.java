@@ -11,9 +11,7 @@ import javafx.collections.ObservableList;
 /**
  * The type Knowledge base facade.
  */
-public class KnowledgeBaseFacade implements Facade {
-
-    private final Actemium actemium;
+public class KnowledgeBaseFacade extends Facade {
 
     /**
      * Instantiates a new Knowledge base facade.
@@ -21,7 +19,7 @@ public class KnowledgeBaseFacade implements Facade {
      * @param actemium the actemium
      */
     public KnowledgeBaseFacade(Actemium actemium) {
-        this.actemium = actemium;
+        super(actemium);
     }
 
     /**
@@ -92,24 +90,6 @@ public class KnowledgeBaseFacade implements Facade {
 		actemium.checkPermission(EmployeeRole.SUPPORT_MANAGER);
 		// physical delete for kb item?
         actemium.modifyKbItem(kbItem);
-    }
-
-    /**
-     * Give actemium kb items observable list.
-     *
-     * @return the observable list
-     */
-    public ObservableList<KbItem> giveActemiumKbItems() {
-        return actemium.giveActemiumKbItems();
-    }
-
-    /**
-     * Gets last added kb item.
-     *
-     * @return the last added kb item
-     */
-    public KbItem getLastAddedKbItem() {
-        return actemium.getLastAddedKbItem();
     }
 
 }

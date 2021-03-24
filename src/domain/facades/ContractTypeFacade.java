@@ -12,9 +12,7 @@ import javafx.collections.ObservableList;
 /**
  * The type Contract type facade.
  */
-public class ContractTypeFacade implements Facade{
-
-    private final Actemium actemium;
+public class ContractTypeFacade extends Facade{
 
     /**
      * Instantiates a new Contract type facade.
@@ -22,7 +20,7 @@ public class ContractTypeFacade implements Facade{
      * @param actemium the actemium
      */
     public ContractTypeFacade(Actemium actemium) {
-        this.actemium = actemium;
+        super(actemium);
     }
 
     /**
@@ -122,22 +120,5 @@ public class ContractTypeFacade implements Facade{
         actemium.modifyContractType(contractType);
     }
 
-    /**
-     * Give actemium contract types observable list.
-     *
-     * @return the observable list
-     */
-    public ObservableList<ContractType> giveActemiumContractTypes() {
-        return actemium.giveActemiumContractTypes();
-    }
-
-    /**
-     * Gets last added contract type.
-     *
-     * @return the last added contract type
-     */
-    public ContractType getLastAddedContractType() {
-        return actemium.getLastAddedContractType();
-    }
 
 }

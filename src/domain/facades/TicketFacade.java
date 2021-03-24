@@ -26,9 +26,8 @@ import languages.LanguageResource;
 /**
  * The type Ticket facade.
  */
-public class TicketFacade implements Facade {
+public class TicketFacade extends Facade {
 	
-	private final Actemium actemium;
 
 	/**
 	 * Instantiates a new Ticket facade.
@@ -36,7 +35,7 @@ public class TicketFacade implements Facade {
 	 * @param actemium the actemium
 	 */
 	public TicketFacade(Actemium actemium) {
-		this.actemium = actemium;
+		super(actemium);
 	}
 
 	/**
@@ -290,119 +289,4 @@ public class TicketFacade implements Facade {
 		actemium.modifyTicket(ticket);
     }
 
-	/**
-	 * Gets last added ticket.
-	 *
-	 * @return the last added ticket
-	 */
-	public Ticket getLastAddedTicket() {
-		return actemium.getLastAddedTicket();
-	}
-
-	/**
-	 * Give actemium tickets observable list.
-	 *
-	 * @return the observable list
-	 */
-	public ObservableList<Ticket> giveActemiumTickets() {
-		return actemium.giveActemiumTickets();
-	}
-
-	/**
-	 * Give actemium tickets outstanding observable list.
-	 *
-	 * @return the observable list
-	 */
-	public ObservableList<Ticket> giveActemiumTicketsOutstanding() {
-		return actemium.giveActemiumTicketsOutstanding();
-	}
-
-	/**
-	 * Give actemium tickets resolved observable list.
-	 *
-	 * @return the observable list
-	 */
-	public ObservableList<Ticket> giveActemiumTicketsResolved() {
-		return actemium.giveActemiumTicketsResolved();
-	}
-
-	/**
-	 * Give actemium tickets completed observable list.
-	 *
-	 * @return the observable list
-	 */
-	public ObservableList<Ticket> giveActemiumTicketsCompleted() {
-		return FXCollections.observableArrayList(
-				actemium.giveActemiumTicketsResolved()
-					.stream()
-					.filter(t -> t.getStatus().equals(TicketStatus.COMPLETED))
-					.collect(Collectors.toList()));
-	}
-
-	/**
-	 * Gets all technicians.
-	 *
-	 * @return the all technicians
-	 */
-	public ObservableList<Employee> getAllTechnicians() {
-		return FXCollections.observableArrayList(actemium.giveActemiumEmployees()
-				.stream()
-				.filter(t -> t.getRole().equals(EmployeeRole.TECHNICIAN))
-				.collect(Collectors.toList()));
-	}
-
-	/**
-	 * Give tickets of same type observable list.
-	 *
-	 * @param type the type
-	 * @return the observable list
-	 */
-	public ObservableList<Ticket> giveTicketsOfSameType(KbItemType type) {
-		ObservableList<Ticket> ticketsOfSameType;
-		switch(type) {
-		case HARDWARE -> {
-			ticketsOfSameType = FXCollections.observableArrayList(
-					giveActemiumTicketsCompleted()
-					.stream()
-					.filter(t -> t.getTicketType().equals(TicketType.HARDWARE))
-					.collect(Collectors.toList()));
-		}
-		case SOFTWARE -> {
-			ticketsOfSameType = FXCollections.observableArrayList(
-					giveActemiumTicketsCompleted()
-					.stream()
-					.filter(t -> t.getTicketType().equals(TicketType.SOFTWARE))
-					.collect(Collectors.toList()));
-		}
-		case INFRASTRUCTURE -> {
-			ticketsOfSameType = FXCollections.observableArrayList(
-					giveActemiumTicketsCompleted()
-					.stream()
-					.filter(t -> t.getTicketType().equals(TicketType.INFRASTRUCTURE))
-					.collect(Collectors.toList()));
-		}
-		case DATABASE -> {
-			ticketsOfSameType = FXCollections.observableArrayList(
-					giveActemiumTicketsCompleted()
-					.stream()
-					.filter(t -> t.getTicketType().equals(TicketType.DATABASE))
-					.collect(Collectors.toList()));
-		}
-		case NETWORK -> {
-			ticketsOfSameType = FXCollections.observableArrayList(
-					giveActemiumTicketsCompleted()
-					.stream()
-					.filter(t -> t.getTicketType().equals(TicketType.NETWORK))
-					.collect(Collectors.toList()));
-		}
-		default -> {
-			ticketsOfSameType = FXCollections.observableArrayList(
-					giveActemiumTicketsCompleted()
-					.stream()
-					.filter(t -> t.getTicketType().equals(TicketType.OTHER))
-					.collect(Collectors.toList()));
-		}
-		}
-		return ticketsOfSameType;
-	}
 }
