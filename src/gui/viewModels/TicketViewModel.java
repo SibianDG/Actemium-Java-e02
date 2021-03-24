@@ -71,7 +71,7 @@ public class TicketViewModel extends ViewModel {
         Map<String, Map<Boolean, Object>> details = new LinkedHashMap<>();
         boolean techPermissions = userFacade.getEmployeeRole().equals(EmployeeRole.TECHNICIAN) && TicketStatus.isOutstanding();
         boolean editable = TicketStatus.isOutstanding();
-        if(userFacade.getEmployeeRole().equals(EmployeeRole.TECHNICIAN)) {
+        if(TicketStatus.isOutstanding() && userFacade.getEmployeeRole().equals(EmployeeRole.TECHNICIAN)) {
         	editable = !editable;
         }
         details.put(LanguageResource.getString("title"), Collections.singletonMap(editable, ticket.getTitle()));
