@@ -10,6 +10,7 @@ import domain.facades.ContractTypeFacade;
 import domain.facades.KnowledgeBaseFacade;
 import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
+import exceptions.AccessException;
 import exceptions.BlockedUserException;
 import exceptions.PasswordException;
 import gui.controllers.GuiController;
@@ -122,7 +123,7 @@ public class LoginController extends GuiController {
                 stage.centerOnScreen();
                 stage.show();
             }
-        } catch (IllegalArgumentException | PasswordException | BlockedUserException | EntityNotFoundException e) {
+        } catch (IllegalArgumentException | PasswordException | BlockedUserException | EntityNotFoundException | AccessException e) {
             txtErrorLogin.setText(e.getMessage());
             txtErrorLogin.setOpacity(1);
         } catch (Exception e){
