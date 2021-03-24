@@ -33,7 +33,6 @@ package languages;
 			} else {
 				LanguageResource.locale = new Locale("en");
 			}
-			System.out.println(getLocale());
 			setBundle();
 		}
 

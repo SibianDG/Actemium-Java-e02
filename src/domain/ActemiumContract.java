@@ -414,8 +414,6 @@ public class ActemiumContract implements Contract, Serializable {
 				}
 			}
 
-			requiredElements.forEach(System.out::println);
-
 			if (!requiredElements.isEmpty()) {
 				throw new InformationRequiredException(requiredElements);
 			}
