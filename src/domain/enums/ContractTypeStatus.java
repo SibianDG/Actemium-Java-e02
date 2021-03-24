@@ -19,5 +19,4 @@ public enum ContractTypeStatus {
 	INACTIVE
 	
 	// Most recent update by Product Owner (Actemium)
-	// No changes yet
 }
