@@ -194,9 +194,6 @@ public class DashboardFrameController <T,E> extends GridPane implements Invalida
     }
 
     public void initializeDashboard() throws FileNotFoundException {
-    	//this.setPrefHeight(1080);
-    	//this.setPrefWidth(1920);
-    	
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
         
         gridDashboard.setPrefWidth(primScreenBounds.getWidth());
@@ -206,23 +203,19 @@ public class DashboardFrameController <T,E> extends GridPane implements Invalida
         initializeGridPane(3, 2, 300, 300);
 
         String[] itemNames = new String[] {};
-        //String[] itemIcons = new String[] {};
 
         switch (userFacade.giveUserRole().toUpperCase()) {
             case "ADMINISTRATOR" -> {
                 itemNames = new String[]{LanguageResource.getString("manage_employees"), LanguageResource.getString("manage_customers")};
-                //itemIcons = new String[]{"icon_manage_user", "icon_manage_user"};
             }
             case "SUPPORT_MANAGER" -> {
                 itemNames = new String[]{LanguageResource.getString("manage_knowledge_base"), LanguageResource.getString("outstanding_tickets")
                         , LanguageResource.getString("resolved_tickets"), LanguageResource.getString("statistics"), LanguageResource.getString("manage_contract_types")
                         , LanguageResource.getString("manage_contracts")};
-                //itemIcons = new String[]{"icon_manage", "icon_outstanding", "icon_resolved", "icon_statistics", "icon_manage_contract_types", "icon_manage_contracts"};
             }
             case "TECHNICIAN" -> {
                 itemNames = new String[]{LanguageResource.getString("consult_knowledge_base"), LanguageResource.getString("outstanding_tickets"),
                         LanguageResource.getString("resolved_tickets"), LanguageResource.getString("statistics")};
-                //itemIcons = new String[]{"icon_consult", "icon_outstanding", "icon_resolved", "icon_statistics"};
             }
         }
         	
@@ -248,11 +241,7 @@ public class DashboardFrameController <T,E> extends GridPane implements Invalida
 
     private void createGridMenu(String[] itemNames) throws FileNotFoundException {
         hboxMenu.getChildren().clear();
-//        int i =0;
-        //int width = (int) (primScreenBounds.getWidth()/(itemNames.length+1) - (gap*itemNames.length));
         for (String text : itemNames) {
-            //gridMenu.addColumn(i);
-            //gridMenu.getColumnConstraints().add(new ColumnConstraints(width, 100, -1, Priority.ALWAYS, HPos.CENTER, false));
             Button button = createMenuItemButton(text, itemNames.length);
             button.setOnMouseClicked(e -> {
                 if(tableViewPanelCompanion != null)
@@ -263,13 +252,11 @@ public class DashboardFrameController <T,E> extends GridPane implements Invalida
                               
                 if (enabled) {
                     try {
-                        System.out.println("Clicked: "+text);
                         buttonMenusClicked(text);
                     } catch (IOException ignored) { }
                 }                               
             });
             hboxMenu.getChildren().add(button);
-//            i++;
         }
     }
     
@@ -294,7 +281,6 @@ public class DashboardFrameController <T,E> extends GridPane implements Invalida
             button.setMaxWidth((primScreenBounds.getWidth() * 0.5) / (numberOfItems));
         }
 
-//        button.setPadding(new Insets(5, paddingX, 5, paddingX));
         return button;
     }
 
@@ -354,7 +340,6 @@ public class DashboardFrameController <T,E> extends GridPane implements Invalida
         });
 
         if (name.toLowerCase().contains(LanguageResource.getString("manage").toLowerCase()) && name.toLowerCase().contains(LanguageResource.getString("employee").toLowerCase())) {
-            //Todo weird => fixed? or still weird?
             tableViewPanelCompanion = new EmployeeTableViewPanelController<>(this, userViewModel, GUIEnum.EMPLOYEE, EmployeeRole.valueOf(userFacade.giveUserRole()));
             switchToManageScreen(name, tableViewPanelCompanion, userViewModel);
         } else if (name.toLowerCase().contains(LanguageResource.getString("manage").toLowerCase()) && name.toLowerCase().contains(LanguageResource.getString("customer").toLowerCase())) {
@@ -395,10 +380,8 @@ public class DashboardFrameController <T,E> extends GridPane implements Invalida
 		if (detailsPanelController != null) {
 			detailsPanelController.getViewModel().removeListener(detailsPanelController);
 		}
-		//txtTitle.setText(name);
 		resetGridpane(gridContent);
 
-		//tableViewPanelCompanion = new TableViewPanelCompanion(this, userViewModel, currentState);
 		switch(viewModel.getClass().getSimpleName()) {
 		case "UserViewModel" -> detailsPanelController = new UserDetailsPanelController(viewModel, gridContent);
 		case "TicketViewModel" -> detailsPanelController = new TicketDetailsPanelController(viewModel, gridContent, userFacade.getEmployeeRole());
@@ -406,7 +389,6 @@ public class DashboardFrameController <T,E> extends GridPane implements Invalida
 		case "ContractViewModel" -> detailsPanelController = new ContractDetailsPanelController(viewModel, gridContent);
 		case "KnowledgeBaseViewModel" -> detailsPanelController = new KnowledgeBaseDetailsPanelController(viewModel, gridContent);
 		}
-//		detailsPanelController = new DetailsPanelController(viewModel, gridContent);
 		gridContent.add(tableViewPanelCompanion, 0, 0);
 		gridContent.add(detailsPanelController, 1, 0);
 	}
@@ -443,9 +425,7 @@ public class DashboardFrameController <T,E> extends GridPane implements Invalida
 		if (detailsPanelController != null) {
 			detailsPanelController.getViewModel().removeListener(detailsPanelController);
 		}
-        makePopUp(LanguageResource.getString("logout_message"));
-        //Platform.exit();
-        //System.exit(0);    
+        makePopUp(LanguageResource.getString("logout_message"));   
         
         Scene scene = this.loginController.getScene();
         Stage stage = (Stage) this.getScene().getWindow();
@@ -482,35 +462,8 @@ public class DashboardFrameController <T,E> extends GridPane implements Invalida
 
     @FXML
     void btnProfileAction(MouseEvent event) {
-        //makePopUp("Profile");
     	resetGridpane(gridContent);
-    	initializeGridPane(1, 1, 600, 600);
-    	
-//    	GridPane gridProfile = new GridPane();
-//    	
-//    	Label lbUsername = new Label("Username:");
-//    	Text txtUsername = new Text("username");   	
-//    	gridProfile.add(lbUsername, 0, 0);
-//    	gridProfile.add(txtUsername, 1, 0);
-//    	
-//    	Label lbFirstName = new Label("Firstname:");
-//    	Text txtFirstName = new Text(userFacade.giveUserFirstName());	
-//    	Label lbLastName = new Label("Lastname:");
-//    	Text txtLastName = new Text(userFacade.giveUserLastName());
-//    	gridProfile.add(lbFirstName, 0, 1);
-//    	gridProfile.add(txtFirstName, 1, 1);
-//    	gridProfile.add(lbLastName, 0, 2);
-//    	gridProfile.add(txtLastName, 1, 2);
-//    	 	
-//    	Label lblEmail = new Label("Email:");
-//    	Text txtEmail = new Text("email");
-//    	gridProfile.add(lblEmail, 0, 3);
-//    	gridProfile.add(txtEmail, 1, 3);
-    	
-    	 	
-//    	vbProfile.getChildren().addAll(gridProfile);
-
-        //TODO as attribute?
+    	initializeGridPane(1, 1, 600, 600);    
         
     	gridContent.add(this.profilePanelController, 0, 0);
         hboxMenu.getChildren().forEach(child -> {
@@ -530,7 +483,6 @@ public class DashboardFrameController <T,E> extends GridPane implements Invalida
     	// if listener is never removed when you press the home button
         // everytime you press an item in the tableView
         // it will run setDetailOnModifying() multiple times instead of once
-    	// if you find a cleaner way to do this, please let me know xoxo
     	if (detailsPanelController != null) {
     		detailsPanelController.getViewModel().removeListener(detailsPanelController);
     	}

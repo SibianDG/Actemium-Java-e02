@@ -112,7 +112,6 @@ public class LoginController extends GridPane {
             } else {
                 userFacade.signIn(txfUsername.getText(), pwfPassword.getText());
                 txtErrorLogin.setOpacity(0);
-                //DashboardFrameController dashboardController = new DashboardFrameController(userFacade, ticketFacade, contractTypeFacade, this);
                 dashboardFrameController = new DashboardFrameController(userFacade, ticketFacade, contractTypeFacade, contractFacade, knowledgeBaseFacade, this);
                 Scene scene = new Scene(dashboardFrameController);
                 Stage stage = (Stage) this.getScene().getWindow();
@@ -127,7 +126,6 @@ public class LoginController extends GridPane {
             txtErrorLogin.setText(e.getMessage());
             txtErrorLogin.setOpacity(1);
         } catch (Exception e){
-            System.out.println(e.getMessage());
         }
     }
 
