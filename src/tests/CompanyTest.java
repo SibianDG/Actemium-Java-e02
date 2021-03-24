@@ -164,10 +164,6 @@ public class CompanyTest implements Attributes {
     	ActemiumTicket ticket = getActemiumTicket();
     	facebook.addActemiumTicket(ticket);
     	Assertions.assertEquals(ticket, facebook.getActemiumTickets().get(0));
-    	// cannot use static company, this does not reset before each test
-    	// you will not get the right ActemiumTicket
-//    	company.addActemiumTicket(actemiumTicket);
-//      Assertions.assertEquals(actemiumTicket, company.getActemiumTickets().get(0));
     }
 
     @Test
@@ -195,7 +191,6 @@ public class CompanyTest implements Attributes {
     // Customer is the contactPerson of a company
     // Company is the "real" Customer, but for ease of naming
     // we will use the name Customer for contactPerson
-    // Could be changed if we realy have to
     @Test
     public void addContactPerson_CompanyContainsContactPerson() {
         initializeAttributes();

@@ -17,7 +17,7 @@ import domain.enums.EmployeeRole;
 import domain.enums.TicketPriority;
 import domain.enums.TicketType;
 
-public class ActemiumTicketTest implements Attributes {
+public class TicketTest implements Attributes {
 	
 	private static ActemiumEmployee technician;
 
@@ -56,7 +56,7 @@ public class ActemiumTicketTest implements Attributes {
 		}
 	}
 
-	public ActemiumTicketTest() {
+	public TicketTest() {
 	}
 
 	private static Stream<Arguments> validActemiumTicketAttributes04() {
@@ -163,7 +163,6 @@ public class ActemiumTicketTest implements Attributes {
 										.title(title)
 										.description(description)
 										.customer(customer)
-//										.comments(remarks)
 										.attachments(attachments)
 										.build());
 	}
@@ -179,14 +178,10 @@ public class ActemiumTicketTest implements Attributes {
 										.title(title)
 										.description(description)
 										.customer(customer)
-//										.comments(remarks)
 										.attachments(attachments)
 										.build());
 	}
 
-	// TODO Should this method be tested seperately like it is now
-	// or will a constructor test be sufficient since the method is called in the
-	// constructor?
 	@Test
 	public void addTechnician_TechniciansContainsNewTechnician() {
 		setAttributes();

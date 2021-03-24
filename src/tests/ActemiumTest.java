@@ -111,9 +111,7 @@ public class ActemiumTest {
     	Mockito.lenient().when(userRepoDummy.findByUsername(CUSTOMERUSERNAME)).thenReturn(cust);
     }
     
-    // does this method test too many things at once?
-    // or are we allowed to test multiple things as long
-    // as they relate to one another
+    // this method tests multiple things that belong together at once 
     @Test
     public void loginAttempt_Valid() {
     	trainDummy();
@@ -122,7 +120,7 @@ public class ActemiumTest {
         assertEquals(ADMINUSERNAME, actemium.giveUsername());
         assertEquals(0, admin.getFailedLoginAttempts());
         Mockito.verify(userRepoDummy).findByUsername(ADMINUSERNAME);
-    } // tried to split this test up in smaller tests
+    } // this has also been split up in seperate smaller tests
     
     @Test
     public void loginAttempt_Valid_DoesNotThrowException() {

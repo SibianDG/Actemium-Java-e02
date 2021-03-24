@@ -35,7 +35,8 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 
 	@ManyToOne
 	private ActemiumTicket ticket;
-	
+
+	@ManyToOne
 	private UserModel user;
 //	private String username;
 	private String userRole;
@@ -43,8 +44,7 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 	private LocalDateTime dateTimeOfChange;
 
 	private String changeDescription;
-//	@Lob
-//	@Column
+
 	private List<String> changeContent;
 
 	/**

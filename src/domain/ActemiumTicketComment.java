@@ -36,7 +36,8 @@ public class ActemiumTicketComment implements TicketComment, Serializable {
 
 	@ManyToOne
 	private ActemiumTicket ticket;
-	
+
+	@ManyToOne
 	private UserModel user;
 //	private String username;
 	private String userRole;

@@ -72,23 +72,6 @@ public class ActemiumContractType implements ContractType, Serializable {
 		this.price = builder.price;
 	}
 
-	/*public ActemiumContractType(String name, ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone,
-			boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) {
-		super();
-		verifyTicketCreationMethods(hasEmail, hasPhone, hasApplication);
-		setName(name);
-		setContractTypeStatus(contractTypeStatus);
-		// Not using setters for has... because then verifyTicketCreationMethods()
-		// would be called 3 extra times, which isn't necessary
-		this.hasEmail = hasEmail;
-		this.hasPhone = hasPhone;
-		this.hasApplication = hasApplication;
-		setTimestamp(timestamp);
-		setMaxHandlingTime(maxHandlingTime);
-		setMinThroughputTime(minThroughputTime);
-		setPrice(price);
-	}*/
-
 	/**
 	 * Gets contract type ID
 	 *
@@ -294,25 +277,7 @@ public class ActemiumContractType implements ContractType, Serializable {
 		}
 		this.price = price;
 	}
-		
-	//TODO this method should be private but than you can't test it
-	// or shouldn't we test this method seperately?
-
-	/**
-	 * Ensures that at least 1 ticket creation method is selected.
-	 *
-	 * @param hasEmail       the has email
-	 * @param hasPhone       the has phone
-	 * @param hasApplication the has application
-	 * @throws IllegalArgumentException throws an Illegal Argument Exception
-	 */
-	public void verifyTicketCreationMethods(boolean hasEmail, boolean hasPhone,
-			boolean hasApplication) {
-		if (!(hasEmail || hasPhone || hasApplication)) {
-			throw new IllegalArgumentException(LanguageResource.getString("ticketCreation_invalid"));
-		}
-	}
-
+	
 	/**
 	 * Gets the name property.
 	 *
@@ -500,6 +465,7 @@ public class ActemiumContractType implements ContractType, Serializable {
 				requiredElements.add(RequiredElement.ContractTypeMinTroughPutTimeRequired);
 			if (price <= 0)
 				requiredElements.add(RequiredElement.ContractTypePriceRequired);
+			// Ensures that at least 1 ticket creation method is selected
 			if (!(hasEmail || hasPhone || hasApplication))
 				requiredElements.add(RequiredElement.ContractTypeWayRequired);
 

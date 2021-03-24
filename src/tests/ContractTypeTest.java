@@ -2,9 +2,7 @@ package tests;
 
 import java.util.stream.Stream;
 
-import exceptions.InformationRequiredException;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -12,6 +10,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import domain.ActemiumContractType;
 import domain.enums.ContractTypeStatus;
 import domain.enums.Timestamp;
+import exceptions.InformationRequiredException;
 
 public class ContractTypeTest {
 	
@@ -136,15 +135,5 @@ public class ContractTypeTest {
 				.price(price)
 				.build());
 	}
-    
-	//TODO Should this method be tested seperately like it is now
-	// or will a constructor test be sufficient since the method is called in the constructor?
-	@Test
-	public void verifyTicketCreationMethods_NoCreationMethods_ThrowsIllegalArgumentException() {
-		boolean hasEmail = false, hasPhone = false, hasApplication = false;
-		ActemiumContractType contractType = new ActemiumContractType();
-		Assertions.assertThrows(IllegalArgumentException.class,
-				() -> contractType.verifyTicketCreationMethods(hasEmail, hasPhone, hasApplication));
-	}
-    
+        
 }

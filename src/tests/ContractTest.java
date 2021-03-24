@@ -97,7 +97,7 @@ public class ContractTest {
 		}
 	}
 
-	private static Stream<Arguments> validContractAttributes02() {
+	private static Stream<Arguments> validContractAttributes03() {
 		initializeAttributes();
         return Stream.of(
                 Arguments.of(contractType01, mark, nextYear),
@@ -107,7 +107,7 @@ public class ContractTest {
         		);
     }
     
-    private static Stream<Arguments> invalidContractAttributes02() {
+    private static Stream<Arguments> invalidContractAttributes03() {
 		initializeAttributes();
 		return Stream.of(
 				// endDate: cannot be before the startDate (today)
@@ -125,7 +125,7 @@ public class ContractTest {
         		);
     }
     
-    private static Stream<Arguments> validContractAttributes03() {
+    private static Stream<Arguments> validContractAttributes04() {
 		initializeAttributes();
 		return Stream.of(
                 Arguments.of(contractType01, mark, today, nextYear),
@@ -141,7 +141,7 @@ public class ContractTest {
     			);
     }
     
-    private static Stream<Arguments> invalidContractAttributes03() {
+    private static Stream<Arguments> invalidContractAttributes04() {
 		initializeAttributes();
 		return Stream.of(
     			// startDate: must be today or in the future
@@ -164,9 +164,9 @@ public class ContractTest {
     			);
     }
 
-    // Tests for consturctor with 2 parameters
+    // Tests for consturctor with 3 parameters
 	@ParameterizedTest
-	@MethodSource("validContractAttributes02")
+	@MethodSource("validContractAttributes03")
 	public void createContract_ValidAttributes02_DoesNotThrowException(ActemiumContractType contractType, ActemiumCustomer customer, LocalDate endDate) {
 		Assertions.assertDoesNotThrow(() -> new ActemiumContract.ContractBuilder()
 				.contractType(contractType)
@@ -175,9 +175,9 @@ public class ContractTest {
 				.build());
 	}
 
-    // Tests for consturctor with 2 parameters
+    // Tests for consturctor with 3 parameters
 	@ParameterizedTest
-	@MethodSource("invalidContractAttributes02")
+	@MethodSource("invalidContractAttributes03")
 	public void createContract_InValidAttributes02_ThrowsIllegalArgumentException(ActemiumContractType contractType, ActemiumCustomer customer, LocalDate endDate) {
 
 		Assertions.assertThrows(InformationRequiredException.class, () -> new ActemiumContract.ContractBuilder()
@@ -187,9 +187,9 @@ public class ContractTest {
 				.build());
 	}
 
-    // Tests for consturctor with 3 parameters
+    // Tests for consturctor with 4 parameters
 	@ParameterizedTest
-	@MethodSource("validContractAttributes03")
+	@MethodSource("validContractAttributes04")
 
 	public void createContract_ValidAttributes03_DoesNotThrowException(ActemiumContractType contractType, ActemiumCustomer customer, LocalDate startDate, LocalDate endDate) {
 
@@ -201,9 +201,9 @@ public class ContractTest {
 				.build());
 	}
 
-    // Tests for consturctor with 3 parameters
+    // Tests for consturctor with 4 parameters
     @ParameterizedTest
-    @MethodSource("invalidContractAttributes03")
+    @MethodSource("invalidContractAttributes04")
     public void createContract_InValidAttributes03_ThrowsIllegalArgumentException(ActemiumContractType contractType, ActemiumCustomer customer, LocalDate startDate, LocalDate endDate) {
     	Assertions.assertThrows(InformationRequiredException.class, () -> new ActemiumContract.ContractBuilder()
 				.contractType(contractType)
