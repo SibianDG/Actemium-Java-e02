@@ -325,8 +325,6 @@ public class Actemium {
 		
 		setSignedInUser(user);
 
-		//TODO remove:
-		System.out.println("Just signed in: " + signedInUser.getUsername());
 	}
 
 	/**

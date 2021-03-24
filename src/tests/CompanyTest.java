@@ -3,8 +3,6 @@ package tests;
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
-import domain.UserModel;
-import exceptions.InformationRequiredException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,6 +14,7 @@ import domain.ActemiumCustomer;
 import domain.ActemiumTicket;
 import domain.enums.TicketPriority;
 import domain.enums.TicketType;
+import exceptions.InformationRequiredException;
 
 public class CompanyTest implements Attributes {
     private ActemiumCompany google ;

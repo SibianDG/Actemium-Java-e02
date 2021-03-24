@@ -6,7 +6,6 @@ import domain.enums.TicketType;
 import domain.enums.UserStatus;
 import domain.manager.Actemium;
 import exceptions.InformationRequiredException;
-import javafx.collections.ObservableList;
 import languages.LanguageResource;
 
 import java.util.Set;

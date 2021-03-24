@@ -27,11 +27,9 @@ import repository.UserDaoJpa;
 
 public class StartUpGUI extends Application {
 
-
     @Override
     public void start(Stage primaryStage)
     {
-
         try {
             UserDaoJpa userDaoJpa= new UserDaoJpa();
             GenericDaoJpa<ActemiumCompany> companyDaoJpa = new GenericDaoJpa<>(ActemiumCompany.class);
@@ -73,4 +71,5 @@ public class StartUpGUI extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    
 }
