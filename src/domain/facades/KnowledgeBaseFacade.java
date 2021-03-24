@@ -1,12 +1,10 @@
 package domain.facades;
 
 import domain.ActemiumKbItem;
-import domain.KbItem;
 import domain.enums.EmployeeRole;
 import domain.enums.KbItemType;
 import domain.manager.Actemium;
 import exceptions.InformationRequiredException;
-import javafx.collections.ObservableList;
 
 /**
  * The type Knowledge base facade.

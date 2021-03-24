@@ -5,12 +5,10 @@ import java.time.LocalDate;
 import domain.ActemiumContract;
 import domain.ActemiumContractType;
 import domain.ActemiumCustomer;
-import domain.Contract;
 import domain.enums.ContractStatus;
 import domain.enums.EmployeeRole;
 import domain.manager.Actemium;
 import exceptions.InformationRequiredException;
-import javafx.collections.ObservableList;
 import languages.LanguageResource;
 
 /**

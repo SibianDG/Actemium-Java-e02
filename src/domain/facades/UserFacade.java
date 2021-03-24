@@ -15,15 +15,6 @@ import java.util.Set;
  */
 public class UserFacade extends Facade {
 
-	// For now we are still working with a single DomainController
-	// In the next sprint this will be replaced by:
-	// - Abstract GuiController with e.g. LoginController inheriting from it
-	// - Facade Interface in pacakge domain.facades
-	// - UserModelFacade implements Facade
-	// - SignedInUserManagaer in domain.facades
-	// - ...	
-	
-
 	/**
 	 * Instantiates a new User facade.
 	 *
@@ -32,7 +23,6 @@ public class UserFacade extends Facade {
 	public UserFacade(Actemium actemium) {
 		super(actemium);
 	}
-
 
 	/**
 	 * Sign in.
@@ -43,7 +33,6 @@ public class UserFacade extends Facade {
 	public void signIn(String username, String password) {
 		actemium.signIn(username, password);	
 	}
-
 
 	/**
 	 * Register customer.
@@ -167,7 +156,6 @@ public class UserFacade extends Facade {
 			actemium.checkPermission(EmployeeRole.ADMINISTRATOR);
 
 			// Changes to company of the contactPerson (=Customer)
-
 			ActemiumCompany companyClone = cloneCustomer.getCompany().clone();
 
 			companyClone.setName(companyName);
@@ -188,7 +176,6 @@ public class UserFacade extends Facade {
 
 			cloneCustomer.setFirstName(firstName);
 			cloneCustomer.setLastName(lastName);
-			// JPA automatically updates the company
 			cloneCustomer.setStatus(status);
 
 			companyClone.checkAttributes();
@@ -207,9 +194,6 @@ public class UserFacade extends Facade {
 			customer.setFirstName(firstName);
 			customer.setLastName(lastName);
 			customer.setStatus(status);
-			// JPA automatically updates the company
-
-;
 
 			actemium.modifyCustomer(customer);
 		} catch (CloneNotSupportedException e) {
@@ -247,7 +231,6 @@ public class UserFacade extends Facade {
 			if (!cloneEmployee.getUsername().equals(username)) {
 				actemium.existingUsername(username);
 				cloneEmployee.setUsername(username);
-
 			}
 
 			if (!(password.equals("********") || password.isBlank())) {
@@ -275,7 +258,6 @@ public class UserFacade extends Facade {
 			employee.setRole(role);
 			employee.setStatus(status);
 			employee.setSpecialties(specialties);
-
 
 			actemium.modifyEmployee(employee);
 		} catch (CloneNotSupportedException e){

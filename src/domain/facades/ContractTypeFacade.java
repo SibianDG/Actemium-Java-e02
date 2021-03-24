@@ -1,13 +1,11 @@
 package domain.facades;
 
 import domain.ActemiumContractType;
-import domain.ContractType;
 import domain.enums.ContractTypeStatus;
 import domain.enums.EmployeeRole;
 import domain.enums.Timestamp;
 import domain.manager.Actemium;
 import exceptions.InformationRequiredException;
-import javafx.collections.ObservableList;
 
 /**
  * The type Contract type facade.

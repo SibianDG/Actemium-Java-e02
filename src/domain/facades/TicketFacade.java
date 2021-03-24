@@ -3,7 +3,6 @@ package domain.facades;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import domain.ActemiumCustomer;
 import domain.ActemiumEmployee;
@@ -11,16 +10,12 @@ import domain.ActemiumTicket;
 import domain.ActemiumTicketChange;
 import domain.ActemiumTicketComment;
 import domain.Employee;
-import domain.Ticket;
 import domain.enums.EmployeeRole;
-import domain.enums.KbItemType;
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import domain.manager.Actemium;
 import exceptions.InformationRequiredException;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import languages.LanguageResource;
 
 /**
