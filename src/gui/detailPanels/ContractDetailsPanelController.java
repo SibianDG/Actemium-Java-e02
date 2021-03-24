@@ -59,7 +59,6 @@ public class ContractDetailsPanelController extends DetailsPanelController {
 					showPopupMessage("popupWarning", LanguageResource.getString("unchangedMessage"));
                 }
             } else {
-                //TODO entering customerID should show corresponding company name
                 ((ContractViewModel) viewModel).registerContract(
                         // customerId, contractTypeName, startDate, duration
                         Long.parseLong(getTextFromGridItem(0))
@@ -73,18 +72,10 @@ public class ContractDetailsPanelController extends DetailsPanelController {
             editing = false;
             viewModel.setFieldModified(false);
             setDetailOnModifying();
-            //was trying some different ways of renewing the detailsPane
-            // is this better or worse and why?
-//            viewModel.fireInvalidationEvent();
 
-            //TODO: handle the correct error messages, not just all
         } catch (InformationRequiredException ire) {
-
-            System.out.println("IRE!! "+ire.getInformationRequired().size());
-
             StringBuilder errorMessage = new StringBuilder();
             ire.getInformationRequired().forEach(e -> {
-                System.out.println(e);
                 errorMessage.append(e).append("\n");
 
             });
@@ -95,7 +86,6 @@ public class ContractDetailsPanelController extends DetailsPanelController {
             txtErrorMessage.setVisible(true);
         }
         catch (Exception e){
-            System.out.println(Arrays.toString(e.getStackTrace()));
             txtErrorMessage.setText(e.getMessage());
             txtErrorMessage.setVisible(true);
         }
@@ -139,7 +129,6 @@ public class ContractDetailsPanelController extends DetailsPanelController {
         Map<Integer, String> demoValues = Map.of(
                 0, "006"
                 , 1, "002"
-//                , 2, LocalDate.now().toString()
                 , 2, "3"
         );
 

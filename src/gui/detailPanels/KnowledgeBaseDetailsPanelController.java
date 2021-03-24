@@ -76,18 +76,11 @@ public class KnowledgeBaseDetailsPanelController extends DetailsPanelController 
             editing = false;
             viewModel.setFieldModified(false);
             setDetailOnModifying();
-            //was trying some different ways of renewing the detailsPane
-            // is this better or worse and why?
-//            viewModel.fireInvalidationEvent();
 
-            //TODO: handle the correct error messages, not just all
         } catch (InformationRequiredException ire) {
-
-            System.out.println("IRE!! "+ire.getInformationRequired().size());
 
             StringBuilder errorMessage = new StringBuilder();
             ire.getInformationRequired().forEach(e -> {
-                System.out.println(e);
                 errorMessage.append(e).append("\n");
 
             });
@@ -98,7 +91,6 @@ public class KnowledgeBaseDetailsPanelController extends DetailsPanelController 
             txtErrorMessage.setVisible(true);
         }
         catch (Exception e){
-            System.out.println(Arrays.toString(e.getStackTrace()));
             txtErrorMessage.setText(e.getMessage());
             txtErrorMessage.setVisible(true);
         }
@@ -203,7 +195,6 @@ public class KnowledgeBaseDetailsPanelController extends DetailsPanelController 
         if (o instanceof String) {
             String string = (String) o;
            
-            //TODO transform into generic method
             if(key.equalsIgnoreCase(LanguageResource.getString("text"))) {
             	TextArea detail = new TextArea(string);
             	
@@ -216,7 +207,6 @@ public class KnowledgeBaseDetailsPanelController extends DetailsPanelController 
                     detail.setVisible(false);
                     detail.setPadding(new Insets(15, 0, 0, 0));
                 } else {
-                    //detail.setPadding(new Insets(0, 0, 0, 15));
                     detail.setId("textFieldWithPadding");
                 }
 	            detail.setEditable(editable);
@@ -235,7 +225,6 @@ public class KnowledgeBaseDetailsPanelController extends DetailsPanelController 
 	                detail.setVisible(false);
 	                detail.setPadding(new Insets(15, 0, 0, 0));
 	            } else {
-	                //detail.setPadding(new Insets(0, 0, 0, 15));
 	                detail.setId("textFieldWithPadding");
 	            }
 	            detail.setDisable(disable);
@@ -256,7 +245,6 @@ public class KnowledgeBaseDetailsPanelController extends DetailsPanelController 
     }
     
     private <T> Node makeTableViewTicketsInKb(Object o) {
-        //ObservableList<String> list = FXCollections.observableArrayList(contracts.stream().map(c -> c.toString()).collect(Collectors.toList()));
         ObservableList<Ticket> list = (ObservableList<Ticket>) o;
         TableView<Ticket> tableView = new TableView<>(list);
         TableColumn<Ticket, Number> columnID = new TableColumn<>(LanguageResource.getString("ID"));

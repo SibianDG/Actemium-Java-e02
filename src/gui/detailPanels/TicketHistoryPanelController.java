@@ -81,7 +81,6 @@ public class TicketHistoryPanelController extends GridPane implements Invalidati
     private void addGridDetails(){
         int i = 0;
         
-        // Added extra empty field because of weird first Vgap
         TextField empty = new TextField("");
         empty.getStyleClass().clear();
         gridDetails.add(empty, 0, i++);

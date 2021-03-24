@@ -133,8 +133,7 @@ public abstract class DetailsPanelController extends GridPane implements Invalid
         } catch (InformationRequiredException ire) {
             StringBuilder errorMessage = new StringBuilder();
             ire.getInformationRequired().forEach(e -> {
-                System.out.println(e);
-                errorMessage.append(e).append("\n");
+            errorMessage.append(e).append("\n");
             });
             txtErrorMessage.setText(errorMessage.toString());
             txtErrorMessage.setVisible(true);
@@ -160,7 +159,6 @@ public abstract class DetailsPanelController extends GridPane implements Invalid
         return text;
     }
 
-    //TODO still unable to get lable aligned right
     protected Label makeNewLabel(String text, boolean withColon){
         Label label = new Label(text+ (withColon ? ":" : ""));
         label.getStyleClass().clear();
@@ -175,8 +173,7 @@ public abstract class DetailsPanelController extends GridPane implements Invalid
         return label;
     }
 
-    //TODO
-    // should this stay in the superclass or seperate method in each subclass?
+
     private ComboBox makeComboBox(Object o) {
         ObservableList list;
         if (o instanceof Boolean){
@@ -249,8 +246,6 @@ public abstract class DetailsPanelController extends GridPane implements Invalid
         popup.show(stage);
     }
 	
-	//TODO
-	//temp fix for created item popup
     protected void showPopupMessageAddItem(final String popupType, String message) {
         final Popup popup = createPopup(message, popupType);
         final Stage stage = (Stage) gridDetails.getScene().getWindow();

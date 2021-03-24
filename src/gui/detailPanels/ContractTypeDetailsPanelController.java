@@ -85,18 +85,10 @@ public class ContractTypeDetailsPanelController extends DetailsPanelController {
             editing = false;
             viewModel.setFieldModified(false);
             setDetailOnModifying();
-            //was trying some different ways of renewing the detailsPane
-            // is this better or worse and why?
-//            viewModel.fireInvalidationEvent();
 
-            //TODO: handle the correct error messages, not just all
         } catch (InformationRequiredException ire) {
-
-            System.out.println("IRE!! "+ire.getInformationRequired().size());
-
             StringBuilder errorMessage = new StringBuilder();
             ire.getInformationRequired().forEach(e -> {
-                System.out.println(e);
                 errorMessage.append(e).append("\n");
 
             });
@@ -107,7 +99,6 @@ public class ContractTypeDetailsPanelController extends DetailsPanelController {
             txtErrorMessage.setVisible(true);
         }
         catch (Exception e){
-            System.out.println(Arrays.toString(e.getStackTrace()));
             txtErrorMessage.setText(e.getMessage());
             txtErrorMessage.setVisible(true);
         }
@@ -225,7 +216,6 @@ public class ContractTypeDetailsPanelController extends DetailsPanelController {
                 detail.setVisible(false);
                 detail.setPadding(new Insets(15, 0, 0, 0));
             } else {
-                //detail.setPadding(new Insets(0, 0, 0, 15));
                 detail.setId("textFieldWithPadding");
             }
             detail.setDisable(disable);

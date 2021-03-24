@@ -30,12 +30,6 @@ import languages.LanguageResource;
 
 import static java.util.stream.Collectors.toList;
 
-//TODO
-// this class can be split up in :
-// EmployeeDetailsPanelController
-// and
-// CustomerDetailsPanelController
-// Should we do this?
 
 public class UserDetailsPanelController extends DetailsPanelController { 
 
@@ -118,19 +112,12 @@ public class UserDetailsPanelController extends DetailsPanelController {
             editing = false;
             viewModel.setFieldModified(false);
             setDetailOnModifying();
-            //was trying some different ways of renewing the detailsPane
-            // is this better or worse and why?
-//            viewModel.fireInvalidationEvent();
 
-            //TODO: handle the correct error messages, not just all
         } catch (InformationRequiredException ire) {
-
-            System.out.println("IRE!! "+ire.getInformationRequired().size());
 
             StringBuilder errorMessage = new StringBuilder();
             ire.getInformationRequired().forEach(e -> {
-                System.out.println(e);
-                errorMessage.append(e).append("\n");
+            	errorMessage.append(e).append("\n");
 
             });
             txtErrorMessage.setText(errorMessage.toString());
@@ -140,7 +127,6 @@ public class UserDetailsPanelController extends DetailsPanelController {
             txtErrorMessage.setVisible(true);
         }
         catch (Exception e){
-            System.out.println(Arrays.toString(e.getStackTrace()));
             txtErrorMessage.setText(e.getMessage());
             txtErrorMessage.setVisible(true);
         }
@@ -265,7 +251,6 @@ public class UserDetailsPanelController extends DetailsPanelController {
                 detail.setVisible(false);
                 detail.setPadding(new Insets(15, 0, 0, 0));
             } else {
-                //detail.setPadding(new Insets(0, 0, 0, 15));
                 detail.setId("textFieldWithPadding");
             }
             detail.setDisable(disable);
@@ -296,7 +281,6 @@ public class UserDetailsPanelController extends DetailsPanelController {
         List<CheckMenuItem> specialtyListCheckMenuItem = new ArrayList<>();
         ObservableList<TicketType> allSpecialties = FXCollections.observableArrayList(TicketType.values());
 
-        //Map<String, Employee> namesAndTechs = new HashMap<>();
         currentSpecialtiesSet.forEach(s -> {
             currentSpecialtiesObservableList.add(s.toString());
             currentSpecialtiesTicketTypeObservableList.add(s);
@@ -307,7 +291,6 @@ public class UserDetailsPanelController extends DetailsPanelController {
         for (CheckMenuItem check: specialtyListCheckMenuItem) {
             currentSpecialtiesSet.forEach(s ->  {
                 if (check.getText().equals(s.toString())) {
-                    System.out.println("equal: "+s);
                     check.setSelected(true);
                 }
             });
@@ -323,13 +306,11 @@ public class UserDetailsPanelController extends DetailsPanelController {
         for (final CheckMenuItem specialty : specialtyListCheckMenuItem) {
             specialty.selectedProperty().addListener((observableValue, oldValue, newValue) -> {
                 if (newValue) {
-                    //technicians.add(((TicketViewModel) viewModel).getEmployeeByName(tech.getText()));
                     currentSpecialtiesObservableList.add(specialty.getText());
                     viewModel.setFieldModified(true);
                     //add technician to ticket
                     ((UserViewModel) viewModel).addSpecialty(TicketType.valueOf(specialty.getText()));
                 } else {
-                    //technicians.remove(((TicketViewModel) viewModel).getEmployeeByName(tech.getText()));
                     currentSpecialtiesObservableList.remove(specialty.getText());
                     viewModel.setFieldModified(true);
                     //add technician to ticket
@@ -345,8 +326,6 @@ public class UserDetailsPanelController extends DetailsPanelController {
             });
         }
 
-
-
         //create Listview for technicians for ticket
         listView.setMaxHeight(currentSpecialtiesSet.size()*25+25);
         listView.getStylesheets().add("file:src/start/styles.css");
@@ -357,11 +336,8 @@ public class UserDetailsPanelController extends DetailsPanelController {
     }
 
     private <T> Node makeTableViewContractsInCustomers(Object o) {
-        //ObservableList<String> list = FXCollections.observableArrayList(contracts.stream().map(c -> c.toString()).collect(Collectors.toList()));
         ObservableList<Contract> list = (ObservableList<Contract>) o;
         TableView<Contract> tableView = new TableView<>(list);
-
-//return String.format("%s: %s %s %s until %s", this.getContractIdString(), this.contractType.getName(), this.getStatusAsString(), this.getStartDate().toString(), this.getEndDate().toString());
 
         TableColumn<Contract, Number> columnID = new TableColumn<>(LanguageResource.getString("ID"));
         columnID.setCellValueFactory(cellData -> cellData.getValue().contractIdProperty());

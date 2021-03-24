@@ -72,11 +72,7 @@ public class TicketDetailsPanelController extends DetailsPanelController {
     	// 					content of the change
     	
     	// console output
-    	System.out.println("=============HISTORY============\n");
-    	System.out.println("==============BEGIN=============\n");
-    	System.out.println("History" + txtDetailsTitle.getText().substring(7) + "\n");
     	((TicketViewModel) viewModel).getSelectedTicket().giveTicketChanges().forEach(System.out::println);
-    	System.out.println("===============END==============\n");    	
     	
     	ticketHistoryPanelController = new TicketHistoryPanelController((TicketViewModel) super.viewModel, super.gridContent);
 		gridContent.add(ticketHistoryPanelController, 1, 0);
@@ -126,18 +122,11 @@ public class TicketDetailsPanelController extends DetailsPanelController {
             editing = false;
             viewModel.setFieldModified(false);
             setDetailOnModifying();
-            //was trying some different ways of renewing the detailsPane
-            // is this better or worse and why?
-//            viewModel.fireInvalidationEvent();
-
-            //TODO: handle the correct error messages, not just all
+            
         } catch (InformationRequiredException ire) {
-
-            System.out.println("IRE!! "+ire.getInformationRequired().size());
 
             StringBuilder errorMessage = new StringBuilder();
             ire.getInformationRequired().forEach(e -> {
-                System.out.println(e);
                 errorMessage.append(e).append("\n");
 
             });
@@ -148,7 +137,6 @@ public class TicketDetailsPanelController extends DetailsPanelController {
             txtErrorMessage.setVisible(true);
         }
         catch (Exception e){
-            System.out.println(Arrays.toString(e.getStackTrace()));
             txtErrorMessage.setText(e.getMessage());
             txtErrorMessage.setVisible(true);
         }
@@ -261,7 +249,6 @@ public class TicketDetailsPanelController extends DetailsPanelController {
         if (o instanceof String) {
             String string = (String) o;
                         
-            //TODO transform into generic method
             if(key.equalsIgnoreCase(LanguageResource.getString("description"))
             		|| key.equalsIgnoreCase(LanguageResource.getString("comments"))) {
             	TextArea detail = new TextArea(string);
@@ -275,7 +262,6 @@ public class TicketDetailsPanelController extends DetailsPanelController {
                     detail.setVisible(false);
                     detail.setPadding(new Insets(15, 0, 0, 0));
                 } else {
-                    //detail.setPadding(new Insets(0, 0, 0, 15));
                     detail.setId("textFieldWithPadding");
                 }
                 // TextArea should still be scrollable when ticket is resolved
@@ -295,11 +281,9 @@ public class TicketDetailsPanelController extends DetailsPanelController {
 	            });
 	            detail.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
 	
-                //detail.setPadding(new Insets(0, 0, 0, 15));
                 detail.setId("textFieldWithPadding");
 	            
 	            detail.setDisable(disable);
-//	            detail.setEditable(editable);
 	            detail.setPromptText(key);
 	
 	            node = detail;
@@ -365,13 +349,11 @@ public class TicketDetailsPanelController extends DetailsPanelController {
             ObservableList<Employee> finalTechnicians = technicians;
             tech.selectedProperty().addListener((observableValue, oldValue, newValue) -> {
                 if (newValue) {
-                    //technicians.add(((TicketViewModel) viewModel).getEmployeeByName(tech.getText()));
                     stringsList.add(tech.getText());
                     viewModel.setFieldModified(true);
                     //add technician to ticket
                     ((TicketViewModel) viewModel).addTechnicianToTicket(namesAndTechs.get(tech.getText()));
                 } else {
-                    //technicians.remove(((TicketViewModel) viewModel).getEmployeeByName(tech.getText()));
                     stringsList.remove(tech.getText());
                     viewModel.setFieldModified(true);
                     //add technician to ticket
@@ -392,8 +374,6 @@ public class TicketDetailsPanelController extends DetailsPanelController {
         listView.setMaxHeight(((TicketViewModel) viewModel).getTechniciansAsignedToTicket().size()*25+25);		
         listView.getStylesheets().add("file:src/start/styles.css");
         listView.setId("list-view");
-        //listView.setMouseTransparent(true);
-        //listView.setSelectionModel(null);
         // only show menuButton when ticket is outstanding
         // hide it when ticket is resolved
         if (!TicketStatus.isOutstanding() || !signedInEmployeeRole.equals(EmployeeRole.SUPPORT_MANAGER)) {        	
