@@ -62,7 +62,6 @@ public class TicketFacade extends Facade {
 							.ticketType(ticketType)
 							.description(description)
 							.customer(customer)
-//							.comments(comments)
 							.attachments(attachments)
 							.build();
 		ticket.setTechnicians(techniciansAsignedToTicket);
@@ -129,7 +128,6 @@ public class TicketFacade extends Facade {
 			ticketClone.setStatus(status);
 			ticketClone.setTitle(title);
 			ticketClone.setDescription(description);
-//			ticketClone.setComments(commentText);
 			ticketClone.setAttachments(attachments);
 			
 			ticketClone.checkAttributes();

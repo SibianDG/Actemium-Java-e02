@@ -33,15 +33,6 @@ public class UserFacade extends Facade {
 		super(actemium);
 	}
 
-	// Johan suggested this is how he does it
-//	public UserFacade() {
-//		UserDaoJpa userDaoJpa= new UserDaoJpa();
-//        GenericDaoJpa<ActemiumTicket> ticketDaoJpa = new GenericDaoJpa<>(ActemiumTicket.class);
-//        GenericDaoJpa<ActemiumContractType> contractTypeDaoJpa = new GenericDaoJpa<>(ActemiumContractType.class);
-//        GenericDaoJpa<ActemiumContract> contractDaoJpa = new GenericDaoJpa<>(ActemiumContract.class);
-//		
-//		this.actemium = new Actemium(userDaoJpa, ticketDaoJpa, contractTypeDaoJpa, contractDaoJpa);
-//	}
 
 	/**
 	 * Sign in.
@@ -53,11 +44,6 @@ public class UserFacade extends Facade {
 		actemium.signIn(username, password);	
 	}
 
-	// Johan suggestion
-//	public UserFacade signIn2(String username, String password) {				
-//		actemium.signIn(username, password);	
-//		return this;
-//	}
 
 	/**
 	 * Register customer.
@@ -105,9 +91,7 @@ public class UserFacade extends Facade {
 	 * @param companyId the company id
 	 * @throws InformationRequiredException the information required exception
 	 */
-// TODO
-	// companyName vs companyId vs ... ?
-	// how will we select an existing company when creating a new contactperson for it
+
 	public void registerCustomerUsingExistingCompany(String username, String password, String firstName, String lastName, Long companyId) throws InformationRequiredException {
 		// check to see if signed in user is Admin
 		actemium.checkPermission(EmployeeRole.ADMINISTRATOR);
@@ -152,7 +136,6 @@ public class UserFacade extends Facade {
 										.emailAddress(emailAddress)
 										.role(role)
 										.build();
-		//ActemiumEmployee newEmployee = new ActemiumEmployee(username, password, firstName, lastName, address, phoneNumber, emailAddress, role);
 
 		actemium.registerEmployee(newEmployee);
 	}
@@ -206,7 +189,6 @@ public class UserFacade extends Facade {
 			cloneCustomer.setFirstName(firstName);
 			cloneCustomer.setLastName(lastName);
 			// JPA automatically updates the company
-//		customer.setCompany(company);
 			cloneCustomer.setStatus(status);
 
 			companyClone.checkAttributes();
@@ -226,7 +208,6 @@ public class UserFacade extends Facade {
 			customer.setLastName(lastName);
 			customer.setStatus(status);
 			// JPA automatically updates the company
-//		customer.setCompany(company);
 
 ;
 
