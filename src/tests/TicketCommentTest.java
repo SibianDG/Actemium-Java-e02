@@ -26,8 +26,6 @@ public class TicketCommentTest {
     private static void setAttributes(){
         try {
 
-            //TicketPriority.P1, TicketType.SOFTWARE, "Title", "Cannot print labels", customer),
-
             google = new ActemiumCompany.CompanyBuilder()
                     .name("Google")
                     .country("United States")

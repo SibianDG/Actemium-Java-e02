@@ -48,12 +48,6 @@ public class TicketFacadeTest implements Attributes {
     @Mock
     private GenericDao<ActemiumTicket> ticketRepoDummy;
 
-    @InjectMocks
-    private TicketFacade tf;
-
-    public TicketFacadeTest() {
-    }
-
     private void trainDummy() throws InformationRequiredException {
         initializeAttributes();
         ArrayList<ActemiumTicket> tickets = new ArrayList<>();

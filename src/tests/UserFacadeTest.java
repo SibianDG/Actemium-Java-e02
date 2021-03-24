@@ -81,8 +81,6 @@ public class UserFacadeTest {
     
     @Mock
     private UserDao userRepoDummy;
-    @Mock
-    private GenericDao<UserModel> genericRepoDummy;
     @InjectMocks
     private Actemium actemium;
 

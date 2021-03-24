@@ -90,7 +90,6 @@ public class CompanyTest implements Attributes {
                 Arguments.of("Tesla, Inc.", "United States", "Palo Alto, CA 94304", "      ", "+31 20 365 0008"),
                 Arguments.of("The White House", "United States", "Washington, D.C. 20500", "1600 Pennsylvania Avenue NW", "  "),
 
-                //TODO
                 //bad phonenumber
                 Arguments.of("The White House", "United States", "Washington, D.C. 20500", "1600 Pennsylvania Avenue NW", "phoneNumber"),
                 Arguments.of("Microsoft", "United States", "Redmond, WA 98052", "1 Microsoft Way", "phoneNumber"),

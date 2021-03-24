@@ -48,8 +48,6 @@ public class ActemiumTest {
 
     @Mock
     private UserDao userRepoDummy;
-    @Mock
-    private GenericDao<UserModel> genericRepoDummy;
     @InjectMocks
     private Actemium actemium;
 
@@ -177,7 +175,6 @@ public class ActemiumTest {
     	Mockito.verify(userRepoDummy).findByUsername(ADMINUSERNAME);
     }
     
-    // seems pretty useless to test? or not?
     @Test
     public void loginAttempt_InValidUsername_ReturnsEntityNotFoundException() {
         Mockito.when(userRepoDummy.findByUsername(WRONGUSERNAME)).thenThrow(EntityNotFoundException.class);
