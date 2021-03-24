@@ -4,11 +4,15 @@ import exceptions.InformationRequiredException;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public abstract class ViewModel implements Observable {
 	
 	private boolean fieldModified = false;
+
+    protected final DateTimeFormatter formatDateTime = DateTimeFormatter.ofPattern("HH:mm:ss");
+
 
     private final ArrayList<InvalidationListener> listeners = new ArrayList<>();
 

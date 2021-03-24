@@ -116,11 +116,13 @@ public class TicketHistoryPanelController extends GridPane implements Invalidati
     }
     
     private List<Node> createDateTimeNodeList(TicketChange change) {
-    	List<String> changeDateTime = new ArrayList<>();
+        final DateTimeFormatter formatDateTime = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        List<String> changeDateTime = new ArrayList<>();
     	
     	changeDateTime.add(String.format("%s", change.getDateTimeOfChange().format(DateTimeFormatter.ISO_DATE)));
-    	String time = change.getDateTimeOfChange().format(DateTimeFormatter.ISO_TIME);
-    	changeDateTime.add(String.format("%s", time.substring(0, time.lastIndexOf("."))));
+    	String time = change.getDateTimeOfChange().format(formatDateTime);
+    	changeDateTime.add(String.format("%s", time));
 
         return changeDateTime.stream()
                 .map(this::createDateTimeNode)

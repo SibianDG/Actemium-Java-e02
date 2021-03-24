@@ -324,10 +324,12 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 
 	@Override
 	public String toString() {
+		final DateTimeFormatter formatDateTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
 		StringBuilder ticketChange = new StringBuilder();
 		ticketChange.append(String.format("%s: %s %s%n", getUserRole(), user.getFirstName(), user.getLastName()));
-		ticketChange.append(String.format("%s: %s%n", LanguageResource.getString("date"), getDateTimeOfChange().format(DateTimeFormatter.ISO_DATE)));
-		ticketChange.append(String.format("%s: %s%n", LanguageResource.getString("time"), getDateTimeOfChange().format(DateTimeFormatter.ISO_TIME)));
+		ticketChange.append(String.format("%s: %s%n", LanguageResource.getString("date"), getDateTimeOfChange().format(formatDateTime)));
+		ticketChange.append(String.format("%s: %s%n", LanguageResource.getString("time"), getDateTimeOfChange().format(formatDateTime)));
 		ticketChange.append(String.format("%s: %s%n", LanguageResource.getString("description"), getChangeDescription()));
 		ticketChange.append(String.format("%s: %n", LanguageResource.getString("change_content")));
 		getChangeContent().forEach(c -> ticketChange.append(String.format("%s%n", c)));

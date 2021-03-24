@@ -67,7 +67,7 @@ public class TicketViewModel extends ViewModel {
     }
 
     public Map<String, Map<Boolean, Object>> getDetails() {
-        Ticket ticket = selectedTicket;        
+        Ticket ticket = selectedTicket;
         Map<String, Map<Boolean, Object>> details = new LinkedHashMap<>();
         boolean techPermissions = userFacade.getEmployeeRole().equals(EmployeeRole.TECHNICIAN) && TicketStatus.isOutstanding();
         boolean editable = TicketStatus.isOutstanding();
@@ -76,10 +76,10 @@ public class TicketViewModel extends ViewModel {
         }
         details.put(LanguageResource.getString("title"), Collections.singletonMap(editable, ticket.getTitle()));
         details.put(LanguageResource.getString("creation_date"), Collections.singletonMap(false, ticket.getDateOfCreation().format(DateTimeFormatter.ISO_DATE)));
-        details.put(LanguageResource.getString("creation_time"), Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(DateTimeFormatter.ISO_TIME)));
+        details.put(LanguageResource.getString("creation_time"), Collections.singletonMap(false, ticket.getDateAndTimeOfCreation().format(formatDateTime)));
         if (!TicketStatus.isOutstanding()) {
             details.put(LanguageResource.getString("completion_date"), Collections.singletonMap(false, ticket.getDateAndTimeOfCompletion().format(DateTimeFormatter.ISO_DATE)));
-            details.put(LanguageResource.getString("completion_time"), Collections.singletonMap(false, ticket.getDateAndTimeOfCompletion().format(DateTimeFormatter.ISO_TIME)));
+            details.put(LanguageResource.getString("completion_time"), Collections.singletonMap(false, ticket.getDateAndTimeOfCompletion().format(formatDateTime)));
         }
         details.put(LanguageResource.getString("priority"), Collections.singletonMap(editable, ticket.getPriority()));
         details.put(LanguageResource.getString("type"), Collections.singletonMap(editable, ticket.getTicketType()));

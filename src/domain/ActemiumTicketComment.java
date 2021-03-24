@@ -292,10 +292,12 @@ public class ActemiumTicketComment implements TicketComment, Serializable {
 
 	@Override
 	public String toString() {
+		final DateTimeFormatter formatDateTime = DateTimeFormatter.ofPattern("HH:mm:ss");
+
 		StringBuilder ticketComment = new StringBuilder();
 		ticketComment.append(String.format("%s: %s %s%n", getUserRole(), user.getFirstName(), user.getLastName()));
 		ticketComment.append(String.format("%s: %s%n", LanguageResource.getString("date"), getDateTimeOfComment().format(DateTimeFormatter.ISO_DATE)));
-		ticketComment.append(String.format("%s: %s%n", LanguageResource.getString("time"), getDateTimeOfComment().format(DateTimeFormatter.ISO_TIME)));
+		ticketComment.append(String.format("%s: %s%n", LanguageResource.getString("time"), getDateTimeOfComment().format(formatDateTime)));
 		ticketComment.append(String.format("%s: %s%n", LanguageResource.getString("text"), getCommentText()));
 		return ticketComment.toString();
 	}
