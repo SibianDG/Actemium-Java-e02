@@ -93,9 +93,6 @@ public class UserViewModel extends ViewModel {
                 detailsMap.put(LanguageResource.getString("firstname"), Collections.singletonMap(true, customer.getFirstName()));
                 detailsMap.put(LanguageResource.getString("lastname"), Collections.singletonMap(true, customer.getLastName()));
                 detailsMap.put(LanguageResource.getString("seniority"), Collections.singletonMap(true, String.valueOf(customer.giveSeniority())));
-                //TODO
-                // how are we going to show all the contracts in the details pannel?
-                // they request it in the use case "Manage Users"
                 detailsMap.put(LanguageResource.getString("status"), Collections.singletonMap(true, customer.getStatus()));
                 detailsMap.put(LanguageResource.getString("contracts"), Collections.singletonMap(true, customer.giveContracts()));
                 return detailsMap;

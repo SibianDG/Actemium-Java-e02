@@ -32,10 +32,6 @@ public class ContractViewModel extends ViewModel {
         return contractFacade.giveActemiumContracts();
     }
 
-    public Contract getSelectedContracts() {
-        return selectedContract;
-    }
-
     public void setSelectedContract(Contract contract) {
         this.selectedContract = contract;
         if (contract != null) {

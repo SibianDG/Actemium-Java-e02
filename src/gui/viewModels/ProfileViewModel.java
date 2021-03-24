@@ -38,7 +38,6 @@ public class ProfileViewModel extends ViewModel {
         fireInvalidationEvent();
     }
 
-
     @Override
     public void delete() throws InformationRequiredException {
 

@@ -38,17 +38,9 @@ public class TicketViewModel extends ViewModel {
         setCurrentState(GUIEnum.TICKET);
     }
 
-    public ObservableList<Ticket> giveTickets() {
-        return ticketFacade.giveActemiumTickets();
-    }
-
     public ObservableList<Ticket> giveTicketsOutstanding() {
         return ticketFacade.giveActemiumTicketsOutstanding();
     }
-    
-//    public ObservableList<Ticket> giveTicketsOutstandingAssignedToTechnician() {
-//    	return ticketFacade.giveActemiumTicketsOutstandingAssignedToTechnician();
-//    }
 
     public ObservableList<Ticket> giveTicketsResolved() {
         return ticketFacade.giveActemiumTicketsResolved();
@@ -63,7 +55,6 @@ public class TicketViewModel extends ViewModel {
         if (ticket != null) {        	
             setCurrentState(GUIEnum.TICKET);
             setTechniciansAsignedToTicketEmpty();
-            //techniciansForTicket = ticket.giveTechnicians();
         }
         fireInvalidationEvent();
     }
@@ -78,7 +69,6 @@ public class TicketViewModel extends ViewModel {
     public Map<String, Map<Boolean, Object>> getDetails() {
         Ticket ticket = selectedTicket;        
         Map<String, Map<Boolean, Object>> details = new LinkedHashMap<>();
-        //TODO weird
         boolean techPermissions = userFacade.getEmployeeRole().equals(EmployeeRole.TECHNICIAN) && TicketStatus.isOutstanding();
         boolean editable = TicketStatus.isOutstanding();
         if(userFacade.getEmployeeRole().equals(EmployeeRole.TECHNICIAN)) {
@@ -97,7 +87,6 @@ public class TicketViewModel extends ViewModel {
         details.put(LanguageResource.getString("description"), Collections.singletonMap(editable, ticket.getDescription()));
         details.put(LanguageResource.getString("customer/company"), Collections.singletonMap(false, ticket.giveCustomer().giveCompany().getName()));
         details.put(LanguageResource.getString("technicians"), Collections.singletonMap(editable, ticket.giveTechnicians()));
-        //TODO
         details.put(LanguageResource.getString("comments"), Collections.singletonMap(false, ticket.giveComments().stream().map(Object::toString).collect(Collectors.joining("\n"))));
         if (TicketStatus.isOutstanding()) {
         	details.put(LanguageResource.getString("new_comment"), Collections.singletonMap(editable || techPermissions, ""));
@@ -144,7 +133,6 @@ public class TicketViewModel extends ViewModel {
         ticketFacade.delete((ActemiumTicket) selectedTicket);
     }
 
-    //TODO shouldn't be in here but in userViewModel
     public ObservableList<Employee> getAllTechnicians() {
         return ticketFacade.getAllTechnicians();
     }

@@ -28,10 +28,6 @@ public class ContractTypeViewModel extends ViewModel {
         return contractTypeFacade.giveActemiumContractTypes();
     }
 
-    public ContractType getSelectedContractTypes() {
-        return selectedContractType;
-    }
-
     public void setSelectedContractType(ContractType contractType) {
         this.selectedContractType = contractType;
         if (contractType != null) {
@@ -58,9 +54,6 @@ public class ContractTypeViewModel extends ViewModel {
         details.put(LanguageResource.getString("max_handling_time"), Collections.singletonMap(true, String.format("%d", contractType.getMaxHandlingTime())));
         details.put(LanguageResource.getString("min_throughput_time"), Collections.singletonMap(true, String.format("%d", contractType.getMinThroughputTime())));
         details.put(LanguageResource.getString("price_contract"), Collections.singletonMap(true, String.format("%.2f", contractType.getPrice())));
-        //details.put("Amount open contracts", contractType);
-        //details.put("Amount resolved tickets", contractType);
-        //details.put("Percentage tickets resolved within agreed time", contractType);
 
         return details;
     }
@@ -73,8 +66,6 @@ public class ContractTypeViewModel extends ViewModel {
 
     public void modifyContractType(String name, ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone,
                                    boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) throws InformationRequiredException {
-        //ActemiumContractType contractType, String name, ContractTypeStatus contractTypeStatus, boolean hasEmail, boolean hasPhone,
-        //                                   boolean hasApplication, Timestamp timestamp, int maxHandlingTime, int minThroughputTime, double price) {
         contractTypeFacade.modifyContractType((ActemiumContractType) selectedContractType, name, contractTypeStatus, hasEmail, hasPhone, hasApplication, timestamp, maxHandlingTime, minThroughputTime, price );
     }
 
