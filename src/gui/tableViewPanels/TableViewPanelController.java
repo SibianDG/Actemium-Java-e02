@@ -61,7 +61,26 @@ public abstract class TableViewPanelController<T, E> extends GridPane {
 
 	protected FilteredList<T> tableViewData;
 	protected SortedList<T> tableViewDataSorted;
-	
+
+
+	@FXML
+	void showFilterOnBtnP1(MouseEvent event) {
+		//
+	}
+	@FXML
+	void showFilterOnBtnP2(MouseEvent event) {
+		//
+	}
+	@FXML
+	void showFilterOnBtnP3(MouseEvent event) {
+		//
+	}
+
+	@FXML
+	void addOnMouseClicked(MouseEvent event) {
+		//
+	}
+
 	public TableViewPanelController(DashboardFrameController dashboardFrameController, ViewModel viewModel, GUIEnum currentState, EmployeeRole employeeRole) {
 		this.dashboardFrameController = dashboardFrameController;
 		this.viewModel = viewModel;
