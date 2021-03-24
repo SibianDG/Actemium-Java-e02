@@ -113,8 +113,7 @@ public class ContractTypeTableViewPanelController<T,E> extends TableViewPanelCon
 	        case "Timestamp" -> c.getSelectionModel().select(LanguageResource.getString("select_timestamp").toUpperCase());
 	        default -> c.getSelectionModel().select(LanguageResource.getString("select").toUpperCase());
 	    } 
-		//TODO e.g. select technician and admin at the same time
-//		c.getSelectionModel().select(SelectionMode.MULTIPLE);
+
 		c.valueProperty().addListener(e -> {
 			checkFilters();
 		});

@@ -30,12 +30,6 @@ import languages.LanguageResource;
 
 public abstract class TableViewPanelController<T, E> extends GridPane {
 
-	//---------ALL THE CASES FOR THE FILTERS WITH LanguageResource ---------------//
-	//enum employee { firstname(LanguageResource.getString("firstname")}
-	//----------------------------------------------------------------------------//
-
-
-	//private UserFacade userFacade;
 	protected final DashboardFrameController dashboardFrameController;
 	protected final ViewModel viewModel;
 	protected GUIEnum currentState;
@@ -64,10 +58,7 @@ public abstract class TableViewPanelController<T, E> extends GridPane {
 	
     @FXML
     protected TableView<T> tableView;
-    
-//	protected Map<String, Function<T, Property<E>>> propertyMap = new LinkedHashMap<>();
 
-//	private ObservableList<T> mainData;
 	protected FilteredList<T> tableViewData;
 	protected SortedList<T> tableViewDataSorted;
 	
@@ -92,19 +83,6 @@ public abstract class TableViewPanelController<T, E> extends GridPane {
 		btnResetFilters.setText(LanguageResource.getString("reset_filters"));
 
 		btnAdd.setVisible(!employeeRole.equals(EmployeeRole.TECHNICIAN));		
-	}	
-
-	@FXML
-	void showFilterOnBtnP1(MouseEvent event) {
-		//
-	}
-	@FXML
-	void showFilterOnBtnP2(MouseEvent event) {
-		//
-	}
-	@FXML
-	void showFilterOnBtnP3(MouseEvent event) {
-		//
 	}
 	
 	@FXML
@@ -118,25 +96,17 @@ public abstract class TableViewPanelController<T, E> extends GridPane {
 		});
 	}
 	
-	@FXML
-	void addOnMouseClicked(MouseEvent event) {
-		//
-	}
-	
-	//TODO
 	protected <T> TableColumn<T, E> createColumn(String title, Function<T, Property<E>> prop) {
 		
 		TableColumn<T, E> column = new TableColumn<>(title);
 		column.setCellValueFactory(cellData -> prop.apply(cellData.getValue()));
 		// Resize policy for Title column in Tickets TableView
 		if(title.equalsIgnoreCase(LanguageResource.getString("title"))) {
-			//TODO
 			column.setPrefWidth(320.00);
 		}
 		return column;	
 	}
 	
-	//TODO
 	protected TextField createTextFieldFilter(String o) {
 		TextField filter = new TextField();
 		filter.setPromptText(o);
@@ -155,7 +125,6 @@ public abstract class TableViewPanelController<T, E> extends GridPane {
 	public boolean alertChangesOnTabelView() {
 		boolean showNewObject = true;
 		if(viewModel.isFieldModified()) {
-			//popup
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 
 			alert.setTitle(LanguageResource.getString("modifiedWithoutSaving"));
@@ -177,13 +146,10 @@ public abstract class TableViewPanelController<T, E> extends GridPane {
 
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == discardChanges){
-				// using this variable with if to avoid duplicate code
 				showNewObject = true;
 				dashboardFrameController.setEnabled(true);
 				viewModel.setFieldModified(false);
 			} else {
-				// ... user chose CANCEL or closed the dialog
-				// nothing happens -> back to same detail panel
 				dashboardFrameController.setEnabled(false);
 				showNewObject = false;
 			}

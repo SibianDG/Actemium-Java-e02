@@ -113,8 +113,6 @@ public class EmployeeTableViewPanelController<T,E> extends TableViewPanelControl
 	        case "EmployeeRole" -> c.getSelectionModel().select(LanguageResource.getString("select_status").toUpperCase());
 	        default -> c.getSelectionModel().select(LanguageResource.getString("select").toUpperCase());
 	    } 
-		//TODO e.g. select technician and admin at the same time
-//		c.getSelectionModel().select(SelectionMode.MULTIPLE);
 		c.valueProperty().addListener(e -> {
 			checkFilters();
 		});

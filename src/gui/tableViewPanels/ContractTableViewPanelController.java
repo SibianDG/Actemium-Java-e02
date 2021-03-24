@@ -87,28 +87,24 @@ public class ContractTableViewPanelController<T,E> extends TableViewPanelControl
 
 		ObservableList list;
 
-	    switch(o.getClass().getSimpleName()) {
-		    case "ContractStatus" -> {
-		    	stringArrayList = new ArrayList<>(Collections.singleton(LanguageResource.getString("select_status").toUpperCase()));
-				Arrays.asList(ContractStatus.values()).forEach(string -> stringArrayList.add(string.toString()));
-				itemText = "ContractStatus";
-		    }
-	        default -> {
-	        	stringArrayList = new ArrayList<>(Collections.singleton(LanguageResource.getString("select_status").toUpperCase()));
-				Arrays.asList(UserStatus.values()).forEach(string -> stringArrayList.add(string.toString()));
-				itemText = "Status";
-	        }
-	    }
+		if ("ContractStatus".equals(o.getClass().getSimpleName())) {
+			stringArrayList = new ArrayList<>(Collections.singleton(LanguageResource.getString("select_status").toUpperCase()));
+			Arrays.asList(ContractStatus.values()).forEach(string -> stringArrayList.add(string.toString()));
+			itemText = "ContractStatus";
+		} else {
+			stringArrayList = new ArrayList<>(Collections.singleton(LanguageResource.getString("select_status").toUpperCase()));
+			Arrays.asList(UserStatus.values()).forEach(string -> stringArrayList.add(string.toString()));
+			itemText = "Status";
+		}
 	    
 		list = FXCollections.observableList(stringArrayList);
 		ComboBox c = new ComboBox(list);
-		
-		switch(itemText) {
-	        case "ContractStatus" -> c.getSelectionModel().select("SELECT STATUS");	        
-	        default -> c.getSelectionModel().select(LanguageResource.getString("select").toUpperCase());
-	    } 
-		//TODO e.g. select technician and admin at the same time
-//		c.getSelectionModel().select(SelectionMode.MULTIPLE);
+
+		if ("ContractStatus".equals(itemText)) {
+			c.getSelectionModel().select("SELECT STATUS");
+		} else {
+			c.getSelectionModel().select(LanguageResource.getString("select").toUpperCase());
+		}
 		c.valueProperty().addListener(e -> {
 			checkFilters();
 		});

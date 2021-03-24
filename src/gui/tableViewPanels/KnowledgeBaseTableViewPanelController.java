@@ -79,35 +79,31 @@ public class KnowledgeBaseTableViewPanelController<T,E> extends TableViewPanelCo
 		return null;
 	}
 
-	//TODO
 	protected ComboBox makeComboBox(Object o){
 		String itemText;
 		ArrayList<String> stringArrayList;
 
 		ObservableList list;
-		
-	    switch(o.getClass().getSimpleName()) {	       
-	        case "KbItemType" -> {
-	        	stringArrayList = new ArrayList<>(Collections.singleton(LanguageResource.getString("select_type").toUpperCase()));
-				Arrays.asList(KbItemType.values()).forEach(string -> stringArrayList.add(string.toString()));
-				itemText = "KbItemType";
-	        }      
-	        default -> {
-	        	stringArrayList = new ArrayList<>(Collections.singleton(LanguageResource.getString("select_status").toUpperCase()));
-				Arrays.asList(UserStatus.values()).forEach(string -> stringArrayList.add(string.toString()));
-				itemText = "Status";
-	        }
-	    } 	
+
+		if ("KbItemType".equals(o.getClass().getSimpleName())) {
+			stringArrayList = new ArrayList<>(Collections.singleton(LanguageResource.getString("select_type").toUpperCase()));
+			Arrays.asList(KbItemType.values()).forEach(string -> stringArrayList.add(string.toString()));
+			itemText = "KbItemType";
+		} else {
+			stringArrayList = new ArrayList<>(Collections.singleton(LanguageResource.getString("select_status").toUpperCase()));
+			Arrays.asList(UserStatus.values()).forEach(string -> stringArrayList.add(string.toString()));
+			itemText = "Status";
+		}
 	    
 		list = FXCollections.observableList(stringArrayList);
 		ComboBox c = new ComboBox(list);
-		
-		switch(itemText) {
-	        case "KbItemType" -> c.getSelectionModel().select(LanguageResource.getString("select_type").toUpperCase());
-	        default -> c.getSelectionModel().select(LanguageResource.getString("select").toUpperCase());
-	    } 
-		//TODO e.g. select technician and admin at the same time
-//		c.getSelectionModel().select(SelectionMode.MULTIPLE);
+
+		if ("KbItemType".equals(itemText)) {
+			c.getSelectionModel().select(LanguageResource.getString("select_type").toUpperCase());
+		} else {
+			c.getSelectionModel().select(LanguageResource.getString("select").toUpperCase());
+		}
+
 		c.valueProperty().addListener(e -> {
 			checkFilters();
 		});
