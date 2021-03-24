@@ -141,9 +141,9 @@ public class ChartViewModel{
                 .filter(t -> t.getStatus().equals(TicketStatus.COMPLETED))
                 .collect(Collectors.toList());
 
-        long secondsNeeded = completedTickets.stream().mapToLong(t -> ChronoUnit.SECONDS.between(t.getDateAndTimeOfCreation(), t.getDateAndTimeOfCompletion())).sum();
+        long secondsNeeded = completedTickets.stream().mapToLong(t -> ChronoUnit.MINUTES.between(t.getDateAndTimeOfCreation(), t.getDateAndTimeOfCompletion())).sum();
 
-        return (secondsNeeded/completedTickets.size())/3600;
+        return (secondsNeeded/completedTickets.size());
     }
 
 }
