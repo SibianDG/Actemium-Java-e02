@@ -42,7 +42,6 @@ import repository.UserDaoJpa;
  */
 public class Actemium {
 	
-	// This class is a manager?
 	// The class is statefull, meaning it keeps al the data from the DB in lists
 
 	// All the Dao classes
@@ -72,6 +71,7 @@ public class Actemium {
 	 *
 	 * @param userDaoJpa the user dao jpa
 	 */
+	
 // Contrutor for domainTest
 	// will change in the future
 	public Actemium(UserDao userDaoJpa) {
@@ -171,11 +171,8 @@ public class Actemium {
 	/**
 	 * Instantiates a new Actemium.
 	 */
-//TODO constructor vs setter injection?
 	public Actemium() {
-		//TODO What type should we give to GenericDaoJpa?
 		this(new UserDaoJpa());
-//		setUserRepo(new UserDaoJpa());
 	}
 
 	/**
@@ -371,24 +368,7 @@ public class Actemium {
 		}
 	}
 
-	/**
-	 * Check permision.
-	 *
-	 * @param role  the role
-	 * @param role2 the role 2
-	 */
-	/*public void checkPermission(EmployeeRole role, EmployeeRole role2) {
-		if (!(giveEmployeeRoleAsEnum().equals(role) || giveEmployeeRoleAsEnum().equals(role2))) {
-			throw new AccessException(
-					String.format("%s %s %s/%s %s!"
-							, LanguageResource.getString("you_need_to_be")
-							, role.equals(EmployeeRole.ADMINISTRATOR) ? LanguageResource.getString("an") : LanguageResource.getString("a")
-									, role.toString().toLowerCase()
-									, role2.toString().toLowerCase()
-									, LanguageResource.getString("to_do_this")
-							));
-		}
-	}*/
+	
 
 	/**
 	 * Check permision for modify employee.
@@ -566,16 +546,6 @@ public class Actemium {
 		userDaoJpa.commitTransaction();
 	}
 
-	/*
-	public void deleteUser(UserModel user) {
-		userDaoJpa.startTransaction();
-		userDaoJpa.delete(user);
-		userDaoJpa.commitTransaction();
-		if(user instanceof Employee)
-			actemiumEmployees.remove(user);
-		else
-			actemiumCustomers.remove(user);
-	}*/
 
 	/**
 	 * Gets last added customer.
@@ -661,15 +631,6 @@ public class Actemium {
 		}
 	}
 
-	/*
-	//Todo delete ticket from resolved or outstanding
-	public void deleteTicket(ActemiumTicket ticket) {
-		ticketDaoJpa.startTransaction();
-		ticketDaoJpa.delete(ticket);
-		ticketDaoJpa.commitTransaction();
-		actemiumTickets.remove(ticket);
-	}*/
-
 	/**
 	 * Gets last added ticket.
 	 *
@@ -725,7 +686,7 @@ public class Actemium {
 			if (((Employee) signedInUser).getRole() == EmployeeRole.TECHNICIAN) {
 				return FXCollections.unmodifiableObservableList(giveActemiumTicketsOutstandingAssignedToTechnician());
 			}
-		} // else
+		}
 		return FXCollections.unmodifiableObservableList(actemiumTicketsOutstanding);
 	}
 	
@@ -760,13 +721,6 @@ public class Actemium {
 		contractTypeDaoJpa.commitTransaction();
 	}
 
-	/*
-	public void deleteContractType(ActemiumContractType contractType) {
-		contractTypeDaoJpa.startTransaction();
-		contractTypeDaoJpa.delete(contractType);
-		contractTypeDaoJpa.commitTransaction();
-		actemiumContractTypes.remove(contractType);
-	}*/
 
 	/**
 	 * Give actemium contract types observable list.
