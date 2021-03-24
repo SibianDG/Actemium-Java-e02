@@ -13,7 +13,6 @@ import domain.facades.UserFacade;
 import exceptions.AccessException;
 import exceptions.BlockedUserException;
 import exceptions.PasswordException;
-import gui.controllers.GuiController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,11 +23,12 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import languages.LanguageResource;
 
-public class LoginController extends GuiController {
+public class LoginController extends GridPane {
 		
 
     private DashboardFrameController dashboardFrameController;

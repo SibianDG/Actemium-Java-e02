@@ -1,6 +1,12 @@
 package gui;
 
-import gui.controllers.GuiController;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Map;
+import java.util.Optional;
+
 import gui.viewModels.ChartViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,7 +14,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.chart.*;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.StackedBarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -23,14 +33,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import languages.LanguageResource;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.Map;
-import java.util.Optional;
-
-public class ChartController extends GuiController {
+public class ChartController extends GridPane {
 
     @FXML
     private GridPane gridContent;
