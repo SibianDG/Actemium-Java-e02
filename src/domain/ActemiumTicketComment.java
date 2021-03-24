@@ -253,6 +253,8 @@ public class ActemiumTicketComment implements TicketComment, Serializable {
 
 		private void checkAttributesKbItemBuiler() throws InformationRequiredException {
 			// we dont really need to check anything here
+			if (ticket == null)
+				requiredElements.add(RequiredElement.TicketTitleRequired);
 			if (user == null)
 				requiredElements.add(RequiredElement.UserRequired);
 			if(dateTimeOfComment == null)

@@ -56,9 +56,6 @@ public class TicketTest implements Attributes {
 		}
 	}
 
-	public TicketTest() {
-	}
-
 	private static Stream<Arguments> validActemiumTicketAttributes04() {
 		setAttributes();
         return Stream.of(

@@ -284,9 +284,14 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 
 		private void checkAttributesKbItemBuiler() throws InformationRequiredException {
 			// we dont really need to check anything here
+			if (ticket == null)
+				requiredElements.add(RequiredElement.TicketTitleRequired);
 			if (user == null)
 				requiredElements.add(RequiredElement.UserRequired);
+			if (userRole == null || userRole.isBlank())
+				requiredElements.add(RequiredElement.EmployeeRoleRequired);
 			if(dateTimeOfChange == null)
+				//TODO: change to now here?
 				requiredElements.add(RequiredElement.DateTimeofChangeRequired);
 			if(changeDescription == null || changeDescription.isBlank())
 				requiredElements.add(RequiredElement.ChangeDescriptionRequired);
