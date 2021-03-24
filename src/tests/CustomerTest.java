@@ -31,9 +31,6 @@ public class CustomerTest {
 		}
 	}
 
-	public CustomerTest() {
-	}
-
 	private static Stream<Arguments> validUserAttributes() {
         return Stream.of(
                 Arguments.of("Tester123", "Passwd123&", "Jan", "Jannsens"),

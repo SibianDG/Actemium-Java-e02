@@ -84,9 +84,6 @@ public class UserFacadeTest {
     @InjectMocks
     private Actemium actemium;
 
-	public UserFacadeTest() {
-	}
-
 	private void trainDummy() {
 		initializeAttributes();
     	Mockito.lenient().when(userRepoDummy.findByUsername(ADMINUSERNAME)).thenReturn(admin);

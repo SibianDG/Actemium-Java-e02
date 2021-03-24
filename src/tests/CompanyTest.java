@@ -21,9 +21,6 @@ public class CompanyTest implements Attributes {
 
     private ActemiumCustomer cust;
 
-    public CompanyTest() {
-    }
-
     public void initializeAttributes(){
         try {
             google = new ActemiumCompany.CompanyBuilder()

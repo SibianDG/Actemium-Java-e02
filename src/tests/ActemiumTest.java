@@ -51,9 +51,6 @@ public class ActemiumTest {
     @InjectMocks
     private Actemium actemium;
 
-    public ActemiumTest() {
-    }
-
     private void trainDummy() {
         try {
             tech = new ActemiumEmployee.EmployeeBuilder()
