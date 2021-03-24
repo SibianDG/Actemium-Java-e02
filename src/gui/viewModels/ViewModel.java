@@ -17,7 +17,6 @@ public abstract class ViewModel implements Observable {
             listener.invalidated(this);
         }
     }
-    
 
     @Override
     public void addListener(InvalidationListener invalidationListener) {

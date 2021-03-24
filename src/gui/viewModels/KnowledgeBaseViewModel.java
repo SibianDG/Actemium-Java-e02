@@ -38,10 +38,6 @@ public class KnowledgeBaseViewModel extends ViewModel {
 		return knowledgeBaseFacade.giveActemiumKbItems();
 	}
 
-	public KbItem getSelectedKbItem() {
-		return selectedKbItem;
-	}
-
 	public void setSelectedKbItem(KbItem kbItem) {
 		this.selectedKbItem = kbItem;
 		if (kbItem != null) {
