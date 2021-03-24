@@ -72,7 +72,7 @@ public class TicketFacade extends Facade {
 		changeList.add(String.format("Ticket Description was added."));
 		for (ActemiumEmployee technician : techniciansAsignedToTicket) {
 			changeList.add(String.format("%s \"%s %s\" %s: %d %s.", "Technician"/*(LanguageResource.getString("TECHNICIAN").substring(0,1).toUpperCase() + LanguageResource.getString("TECHNICIAN").substring(1).toLowerCase())*/,
-					technician.getFirstName(), technician.getLastName(), LanguageResource.getString("with_id") ,technician.getUserId(), LanguageResource.getString("got_removed_from_the_ticket")));
+					technician.getFirstName(), technician.getLastName(), LanguageResource.getString("with_id") ,technician.getUserId(), LanguageResource.getString("got_added_to_the_ticket")));
 		}
 		if (!commentText.equals("(none)")) {
 			changeList.add(String.format("Ticket Remark/Comment was added."));
