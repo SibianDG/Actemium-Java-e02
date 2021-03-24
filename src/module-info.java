@@ -25,7 +25,6 @@ module E02.Project2.Java {
     exports gui.detailPanels;
     exports gui.tableViewPanels;
     exports languages;
-    exports main;
     exports repository;
     exports start;
     exports tests;

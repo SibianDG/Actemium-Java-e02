@@ -6,10 +6,8 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import domain.Employee;
-import domain.Ticket;
 import domain.enums.EmployeeRole;
 import domain.enums.TicketPriority;
 import domain.enums.TicketStatus;
@@ -19,7 +17,6 @@ import domain.facades.ContractTypeFacade;
 import domain.facades.KnowledgeBaseFacade;
 import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
-import gui.controllers.GuiController;
 import gui.detailPanels.ContractDetailsPanelController;
 import gui.detailPanels.ContractTypeDetailsPanelController;
 import gui.detailPanels.DetailsPanelController;
@@ -68,7 +65,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import languages.LanguageResource;
 
-public class DashboardFrameController <T,E> extends GuiController implements InvalidationListener {
+public class DashboardFrameController <T,E> extends GridPane implements InvalidationListener {
 	
 	// Facades
     private final UserFacade userFacade;
@@ -151,7 +148,7 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         this.ticketViewModel = new TicketViewModel(ticketFacade, userFacade);        
         this.contractTypeViewModel = new ContractTypeViewModel(contractTypeFacade);    
         this.contractViewModel = new ContractViewModel(contractFacade);    
-        this.knowledgeBaseViewModel = new KnowledgeBaseViewModel(knowledgeBaseFacade, ticketFacade);
+        this.knowledgeBaseViewModel = new KnowledgeBaseViewModel(knowledgeBaseFacade, ticketFacade, userFacade);
         this.profileViewModel = new ProfileViewModel(userFacade);
         this.chartViewModel = new ChartViewModel(ticketFacade, userFacade, contractTypeFacade, contractFacade);
 
