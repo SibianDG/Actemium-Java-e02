@@ -81,6 +81,7 @@ public class UserFacade extends Facade {
 	 * @throws InformationRequiredException the information required exception
 	 */
 
+	// We hadn't time to implement this feature in the GUI
 	public void registerCustomerUsingExistingCompany(String username, String password, String firstName, String lastName, Long companyId) throws InformationRequiredException {
 		// check to see if signed in user is Admin
 		actemium.checkPermission(EmployeeRole.ADMINISTRATOR);
