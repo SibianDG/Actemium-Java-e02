@@ -151,7 +151,7 @@ public class DashboardFrameController <T,E> extends GuiController implements Inv
         this.ticketViewModel = new TicketViewModel(ticketFacade, userFacade);        
         this.contractTypeViewModel = new ContractTypeViewModel(contractTypeFacade);    
         this.contractViewModel = new ContractViewModel(contractFacade);    
-        this.knowledgeBaseViewModel = new KnowledgeBaseViewModel(knowledgeBaseFacade, ticketFacade);
+        this.knowledgeBaseViewModel = new KnowledgeBaseViewModel(knowledgeBaseFacade, ticketFacade, userFacade);
         this.profileViewModel = new ProfileViewModel(userFacade);
         this.chartViewModel = new ChartViewModel(ticketFacade, userFacade, contractTypeFacade, contractFacade);
 

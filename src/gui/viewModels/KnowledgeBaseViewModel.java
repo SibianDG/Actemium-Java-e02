@@ -8,9 +8,11 @@ import java.util.Map;
 
 import domain.ActemiumKbItem;
 import domain.KbItem;
+import domain.User;
 import domain.enums.KbItemType;
 import domain.facades.KnowledgeBaseFacade;
 import domain.facades.TicketFacade;
+import domain.facades.UserFacade;
 import exceptions.InformationRequiredException;
 import gui.GUIEnum;
 import javafx.collections.ObservableList;
@@ -22,11 +24,13 @@ public class KnowledgeBaseViewModel extends ViewModel {
 	private KbItem selectedKbItem;
 	private final KnowledgeBaseFacade knowledgeBaseFacade;
 	private final TicketFacade ticketFacade;
+	private final UserFacade userFacade;
 
-	public KnowledgeBaseViewModel(KnowledgeBaseFacade knowledgeBaseFacade, TicketFacade ticketFacade) {
+	public KnowledgeBaseViewModel(KnowledgeBaseFacade knowledgeBaseFacade, TicketFacade ticketFacade, UserFacade userFacade) {
 		super();
 		this.knowledgeBaseFacade = knowledgeBaseFacade;
 		this.ticketFacade = ticketFacade;
+		this.userFacade = userFacade;
 		setCurrentState(GUIEnum.KNOWLEDGEBASE);
 	}
 
@@ -44,6 +48,10 @@ public class KnowledgeBaseViewModel extends ViewModel {
 			setCurrentState(GUIEnum.KNOWLEDGEBASE);
 		}
 		fireInvalidationEvent();
+	}
+
+	public User getSignedInUser() {
+		return userFacade.getSignedInUser();
 	}
 
 	public ArrayList<String> getDetailsNewKbItem() {

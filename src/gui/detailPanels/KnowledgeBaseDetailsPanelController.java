@@ -6,7 +6,9 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import domain.Employee;
 import domain.Ticket;
+import domain.enums.EmployeeRole;
 import domain.enums.KbItemType;
 import exceptions.InformationRequiredException;
 import gui.GUIEnum;
@@ -110,7 +112,7 @@ public class KnowledgeBaseDetailsPanelController extends DetailsPanelController 
         btnModify.setText(LanguageResource.getString("modify_KB_item"));
         btnDelete.setVisible(false);
         
-        btnModify.setVisible(true);
+        btnModify.setVisible(((Employee) ((KnowledgeBaseViewModel) viewModel).getSignedInUser()).getRole() != EmployeeRole.TECHNICIAN);
         txtErrorMessage.setVisible(false);
         editing = true;
     }
