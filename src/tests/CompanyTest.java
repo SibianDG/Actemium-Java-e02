@@ -141,7 +141,6 @@ public class CompanyTest implements Attributes {
         } catch (InformationRequiredException e) {
             throw new IllegalArgumentException("Problem with initialize variables before test.");
         }
-
         Assertions.assertEquals(LocalDate.now(), google.getRegistrationDate());
     }
 

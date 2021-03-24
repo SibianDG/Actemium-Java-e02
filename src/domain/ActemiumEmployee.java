@@ -443,7 +443,6 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 				registrationDate = LocalDate.now();
 
 			if (!requiredElements.isEmpty()) {
-				requiredElements.forEach(System.out::println);
 				throw new InformationRequiredException(requiredElements);
 			}
 		}

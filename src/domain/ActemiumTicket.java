@@ -958,7 +958,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 			if (attachments == null)
 				this.attachments = String.format("(%s)", LanguageResource.getString("none"));
 			if (!requiredElements.isEmpty()) {
-				//requiredElements.forEach(element -> System.out.println(element));
 				throw new InformationRequiredException(requiredElements);
 			}
 		}
