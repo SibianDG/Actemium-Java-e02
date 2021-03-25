@@ -34,7 +34,7 @@ public class ActemiumCompany implements Company, Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long companyId;
+	private int companyId;
 
 	@Transient
 	private StringProperty name = new SimpleStringProperty();

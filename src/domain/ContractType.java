@@ -16,7 +16,7 @@ public interface ContractType {
 	 *
 	 * @return the contract type id
 	 */
-	long getContractTypeId();
+	int getContractTypeId();
 
 	/**
 	 * Gets name.

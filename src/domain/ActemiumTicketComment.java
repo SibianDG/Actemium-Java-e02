@@ -32,7 +32,7 @@ public class ActemiumTicketComment implements TicketComment, Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long ticketCommentId;
+	private int ticketCommentId;
 
 	@ManyToOne
 	private ActemiumTicket ticket;

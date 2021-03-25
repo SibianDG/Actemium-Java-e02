@@ -26,7 +26,7 @@ public class ActemiumContractType implements ContractType, Serializable {
 		
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long contractTypeId;
+	private int contractTypeId;
 
 	@Transient
 	private StringProperty name = new SimpleStringProperty();
@@ -74,7 +74,7 @@ public class ActemiumContractType implements ContractType, Serializable {
 	 *
 	 * @return contract type ID
 	 */
-	public long getContractTypeId() {
+	public int getContractTypeId() {
 		return contractTypeId;
 	}
 

@@ -51,7 +51,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long ticketId;
+	private int ticketId;
 	
 	@Transient
 	private IntegerProperty ticketIdInt = new SimpleIntegerProperty();

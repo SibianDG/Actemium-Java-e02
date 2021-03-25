@@ -31,7 +31,7 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long ticketChangeId;
+	private int ticketChangeId;
 
 	@ManyToOne
 	private ActemiumTicket ticket;

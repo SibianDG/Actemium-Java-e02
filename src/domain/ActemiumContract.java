@@ -39,7 +39,7 @@ public class ActemiumContract implements Contract, Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long contractId;
+	private int contractId;
 
 	@Transient
 	private IntegerProperty contractIdInt = new SimpleIntegerProperty();

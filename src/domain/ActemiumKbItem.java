@@ -34,7 +34,7 @@ public class ActemiumKbItem implements KbItem, Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long kbItemId;
+	private int kbItemId;
 
 	@Transient
 	private StringProperty title = new SimpleStringProperty();
