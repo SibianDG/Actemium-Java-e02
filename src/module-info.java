@@ -1,4 +1,4 @@
-module E.Project.Java {
+module E02.Project2.Java {
     requires javafx.graphics;
     requires javafx.controls;
 
