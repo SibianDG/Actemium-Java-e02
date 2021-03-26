@@ -21,7 +21,7 @@ public class LoginAttempt implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(columnDefinition = "TIMESTAMP")
+	@Column(columnDefinition = "DATE")
 	private LocalDateTime dateAndTime;
 	private String username;
 	@Enumerated(EnumType.STRING)
