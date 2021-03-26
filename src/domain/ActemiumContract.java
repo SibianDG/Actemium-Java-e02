@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -205,6 +206,7 @@ public class ActemiumContract implements Contract, Serializable {
 	 * @return start date
 	 */
 	@Access(AccessType.PROPERTY)
+	@Column(columnDefinition = "DATE")
 	public LocalDate getStartDate() {
 		return LocalDate.parse(startDate.get());
 	}
@@ -233,6 +235,7 @@ public class ActemiumContract implements Contract, Serializable {
 	 * @return end date
 	 */
 	@Access(AccessType.PROPERTY)
+	@Column(columnDefinition = "DATE")
 	public LocalDate getEndDate() {
 		return LocalDate.parse(endDate.get());
 	}

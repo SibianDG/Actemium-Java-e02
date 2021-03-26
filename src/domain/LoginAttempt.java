@@ -1,12 +1,19 @@
 package domain;
 
-import domain.enums.LoginStatus;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import domain.enums.LoginStatus;
 
 /**
  * The type Login attempt.
@@ -20,8 +27,8 @@ public class LoginAttempt implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-
-	@Column(columnDefinition = "DATE")
+	
+	@Column(columnDefinition = "DATETIME")
 	private LocalDateTime dateAndTime;
 	private String username;
 	@Enumerated(EnumType.STRING)

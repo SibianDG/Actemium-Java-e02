@@ -1,12 +1,12 @@
 package gui.viewModels;
 
-import domain.facades.UserFacade;
-import exceptions.InformationRequiredException;
-import languages.LanguageResource;
-
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import domain.facades.UserFacade;
+import exceptions.InformationRequiredException;
+import languages.LanguageResource;
 
 public class ProfileViewModel extends ViewModel {
 

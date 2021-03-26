@@ -1,6 +1,14 @@
 package domain.facades;
 
-import domain.*;
+import java.util.stream.Collectors;
+
+import domain.Contract;
+import domain.ContractType;
+import domain.Customer;
+import domain.Employee;
+import domain.KbItem;
+import domain.Ticket;
+import domain.User;
 import domain.enums.EmployeeRole;
 import domain.enums.KbItemType;
 import domain.enums.TicketStatus;
@@ -8,8 +16,6 @@ import domain.enums.TicketType;
 import domain.manager.Actemium;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.util.stream.Collectors;
 
 /**
  * The interface Facade.

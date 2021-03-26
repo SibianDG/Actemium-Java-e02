@@ -1,5 +1,13 @@
 package gui.viewModels;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import domain.Ticket;
 import domain.enums.TicketStatus;
 import domain.enums.TicketType;
@@ -8,11 +16,6 @@ import domain.facades.ContractTypeFacade;
 import domain.facades.TicketFacade;
 import domain.facades.UserFacade;
 import languages.LanguageResource;
-
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class ChartViewModel{
 

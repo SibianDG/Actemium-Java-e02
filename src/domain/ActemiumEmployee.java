@@ -3,12 +3,19 @@ package domain;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Transient;
 
 import domain.enums.EmployeeRole;
 import domain.enums.RequiredElement;
@@ -40,9 +47,6 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 	@Transient
 	private StringProperty role = new SimpleStringProperty();
 
-	@Column(columnDefinition = "DATE")
-	private LocalDate registrationDate;
-
 	@ElementCollection(targetClass = TicketType.class)
 	@Enumerated(EnumType.STRING)
 	private Set<TicketType> specialties;
@@ -58,7 +62,6 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 		this.phoneNumber = builder.phoneNumber;
 		this.emailAddress = builder.emailAddress;
 		this.roleProperty().set(String.valueOf(builder.role));
-		this.registrationDate = builder.registrationDate;
 		this.specialties = new HashSet<>();
 	}
 
@@ -76,7 +79,7 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 	 */
 	@Override
 	public int giveSeniority() {
-		return LocalDate.now().getYear() - registrationDate.getYear();
+		return LocalDate.now().getYear() - super.getRegistrationDate().getYear();
 	}
 
 	/**
@@ -140,24 +143,6 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 	 */
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
-	}
-
-	/**
-	 * Gets the registration date.
-	 *
-	 * @return registration date
-	 */
-	public LocalDate getRegistrationDate() {
-		return registrationDate;
-	}
-
-	/**
-	 * Sets registration date.
-	 *
-	 * @param registrationDate the registration date
-	 */
-	public void setRegistrationDate(LocalDate registrationDate) {
-		this.registrationDate = registrationDate;
 	}
 
 	/**
@@ -386,12 +371,10 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 				requiredElements.add(RequiredElement.AddressRequired);
 			if (phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches("[0-9 /-]+"))
 				requiredElements.add(RequiredElement.PhoneRequired);
-			if (emailAddress == null || emailAddress.isBlank() || !emailAddress.matches("^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+[.][a-zA-Z0-9-]{2,4}$"))
+			if (emailAddress == null || emailAddress.isBlank() || !emailAddress.matches("^[a-zA-Z0-9_!#$%&ï¿½*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+[.][a-zA-Z0-9-]{2,4}$"))
 				requiredElements.add(RequiredElement.EmailRequired);
 			if (role == null)
 				requiredElements.add(RequiredElement.EmployeeRoleRequired);
-			if (registrationDate == null)
-				registrationDate = LocalDate.now();
 
 			if (!requiredElements.isEmpty()) {
 				throw new InformationRequiredException(requiredElements);

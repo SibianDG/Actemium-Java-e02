@@ -2,6 +2,7 @@ package domain;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -25,7 +27,6 @@ import javax.persistence.Transient;
 import domain.enums.UserStatus;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import languages.LanguageResource;
 
 /**
  * The type User model.
@@ -54,6 +55,8 @@ public abstract class UserModel implements User, Serializable {
 	)
 	private List<LoginAttempt> loginAttempts = new ArrayList<>();
 
+	private int failedLoginAttempts;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int userId;
@@ -65,9 +68,11 @@ public abstract class UserModel implements User, Serializable {
 	private StringProperty firstName = new SimpleStringProperty();
 	@Transient
 	private StringProperty lastName = new SimpleStringProperty();
-	private int failedLoginAttempts;
 	@Transient
-	private StringProperty status = new SimpleStringProperty();
+	private StringProperty status = new SimpleStringProperty();	
+
+	@Column(columnDefinition = "DATE")
+	private LocalDate registrationDate;
 
 	/**
 	 * Instantiates a new User model.
@@ -91,6 +96,7 @@ public abstract class UserModel implements User, Serializable {
 		setLastName(lastName);
 		setFailedLoginAttempts(0);
 		setStatus(UserStatus.ACTIVE);
+		setRegistrationDate(LocalDate.now());
 	}
 
 	/**
@@ -254,6 +260,24 @@ public abstract class UserModel implements User, Serializable {
 	 */
 	public void setStatus(UserStatus status) {
 		this.status.set(String.valueOf(status));
+	}
+	
+	/**
+	 * Gets the registration date of a user.
+	 *
+	 * @return registration date
+	 */
+	public LocalDate getRegistrationDate() {
+		return registrationDate;
+	}
+
+	/**
+	 * Sets registration date.
+	 *
+	 * @param registrationDate the registration date
+	 */
+	public void setRegistrationDate(LocalDate registrationDate) {
+		this.registrationDate = registrationDate;
 	}
 
 	/**

@@ -16,13 +16,11 @@ public class UserDaoJpa extends GenericDaoJpa<UserModel> implements UserDao {
 		super(UserModel.class);
 	}
 
+	// unused method
 	@Override
-	public void registerLoginAttempt(UserModel userModel, LoginStatus loginStatus) {
-		
-		LoginAttempt loginAttempt = new LoginAttempt(userModel, loginStatus);
-				
+	public void registerLoginAttempt(UserModel userModel, LoginStatus loginStatus) {		
+		LoginAttempt loginAttempt = new LoginAttempt(userModel, loginStatus);				
 		em.persist(loginAttempt);		
-		
 	}
 
 	@Override

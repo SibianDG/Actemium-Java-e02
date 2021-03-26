@@ -1,8 +1,18 @@
 package gui.viewModels;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
-import domain.*;
+import domain.ActemiumCustomer;
+import domain.ActemiumEmployee;
+import domain.Customer;
+import domain.Employee;
+import domain.User;
+import domain.UserModel;
 import domain.enums.EmployeeRole;
 import domain.enums.TicketType;
 import domain.enums.UserStatus;

@@ -9,6 +9,7 @@ public interface UserDao extends GenericDao<UserModel> {
 
 	public UserModel findByUsername(String username) throws EntityNotFoundException;
 
+	// unused method
 	public void registerLoginAttempt(UserModel userModel, LoginStatus loginStatus);
 
 	UserModel findByEmail(String email) throws EntityNotFoundException;

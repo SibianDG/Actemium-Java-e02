@@ -177,7 +177,6 @@ public class KnowledgeBaseTableViewPanelController<T,E> extends TableViewPanelCo
 			} else {
 				throw new IllegalStateException(LanguageResource.getString("unexpectedValue") + " " + fieldName);
 			}
-			System.out.println(newPredicate.toString());
 			return newPredicate;				
 		}
 		return null;

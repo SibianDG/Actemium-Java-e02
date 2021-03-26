@@ -7,7 +7,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import domain.enums.RequiredElement;
 import exceptions.InformationRequiredException;
@@ -39,9 +44,6 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 			   cascade = CascadeType.PERSIST)
 	private List<ActemiumTicket> tickets = new ArrayList<>();
 
-	@Column(columnDefinition = "DATE")
-	private LocalDate registrationDate;
-
 	/**
 	 * Instantiates a new Actemium customer.
 	 */
@@ -49,7 +51,6 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 		super();
 	}
 	
-
 
 	/**
 	 * Instantiates a new Actemium customer.
@@ -59,9 +60,7 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	public ActemiumCustomer(CustomerBuilder builder){
 		super(builder.username, builder.password, builder.firstName, builder.lastName);
 		this.company = builder.company;
-		this.registrationDate = builder.registrationDate;
 	}
-
 
 	/**
 	 *	Gets the customer nr. In fact the userid.
@@ -127,24 +126,6 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	}
 
 	/**
-	 * Gets the registration date of a customer.
-	 *
-	 * @return registration date
-	 */
-	public LocalDate getRegistrationDate() {
-		return registrationDate;
-	}
-
-	/**
-	 * Sets registration date.
-	 *
-	 * @param registrationDate the registration date
-	 */
-	public void setRegistrationDate(LocalDate registrationDate) {
-		this.registrationDate = registrationDate;
-	}
-
-	/**
 	 * Add ticket.
 	 *
 	 * @param ticket the ticket
@@ -169,7 +150,7 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	 */
 	@Override
 	public int giveSeniority() {
-		return LocalDate.now().getYear() - registrationDate.getYear();
+		return LocalDate.now().getYear() - super.getRegistrationDate().getYear();
 	}
 
 	/**
@@ -184,7 +165,7 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 				.firstName(super.firstNameProperty().get())
 				.lastName(super.lastNameProperty().get())
 				.company(this.company)
-				.registrationDate(this.registrationDate)
+				.registrationDate(super.getRegistrationDate())
 				.build();
 	}
 
@@ -292,8 +273,6 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 				requiredElements.add(RequiredElement.LastnameRequired);
 			if (company == null)
 				requiredElements.add(RequiredElement.CompanyNameRequired);
-			if (registrationDate == null)
-				registrationDate = LocalDate.now();
 
 			if (!requiredElements.isEmpty())
 				throw new InformationRequiredException(requiredElements);

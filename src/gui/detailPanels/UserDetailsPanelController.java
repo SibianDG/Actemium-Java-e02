@@ -1,17 +1,20 @@
 package gui.detailPanels;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import static java.util.stream.Collectors.toList;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import domain.Contract;
-import domain.Employee;
 import domain.enums.EmployeeRole;
-import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import domain.enums.UserStatus;
 import exceptions.InformationRequiredException;
 import gui.GUIEnum;
-import gui.viewModels.TicketViewModel;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
 import javafx.beans.Observable;
@@ -21,14 +24,19 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import languages.LanguageResource;
-
-import static java.util.stream.Collectors.toList;
 
 
 public class UserDetailsPanelController extends DetailsPanelController { 

@@ -1,11 +1,16 @@
 package gui.tableViewPanels;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import domain.ActemiumTicket;
 import domain.Ticket;
 import domain.enums.EmployeeRole;
 import domain.enums.TicketPriority;
@@ -250,7 +255,7 @@ public class TicketTableViewPanelController<T, E> extends TableViewPanelControll
 
 	protected Predicate giveFilterPredicate(String fieldName, String filterText){
 		fieldName = fieldName.toLowerCase();
-			//TODO
+			//TODO -> specify?? -> languageResource?
 			if (fieldName.length() > 0 && !filterText.toLowerCase().contains(LanguageResource.getString("select"))){
 				System.out.println("FIELDNAME: "+fieldName);
 				Predicate<Ticket> newPredicate;

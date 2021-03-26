@@ -1,14 +1,18 @@
 package domain.facades;
 
-import domain.*;
+import java.util.Set;
+
+import domain.ActemiumCompany;
+import domain.ActemiumCustomer;
+import domain.ActemiumEmployee;
+import domain.Employee;
+import domain.UserModel;
 import domain.enums.EmployeeRole;
 import domain.enums.TicketType;
 import domain.enums.UserStatus;
 import domain.manager.Actemium;
 import exceptions.InformationRequiredException;
 import languages.LanguageResource;
-
-import java.util.Set;
 
 /**
  * The type User facade.

@@ -60,15 +60,12 @@ public class ActemiumTicket implements Ticket, Serializable {
 	private StringProperty status = new SimpleStringProperty();
 	@Transient
 	private StringProperty priority = new SimpleStringProperty();
-
-	@Column(columnDefinition = "DATE")
-	private LocalDate dateOfCreation;
 	@Transient
 	private StringProperty completionDate = new SimpleStringProperty();
 
-	@Column(columnDefinition = "DATE")
+	@Column(columnDefinition = "DATETIME")
 	private LocalDateTime dateAndTimeOfCreation;
-	@Column(columnDefinition = "DATE")
+	@Column(columnDefinition = "DATETIME")
 	private LocalDateTime dateAndTimeOfCompletion;
 
 	@Transient
@@ -129,8 +126,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 		this.status.set(TicketStatus.CREATED.toString());
 		this.priority.set(String.valueOf(builder.ticketPriority));
 		this.ticketType.set(String.valueOf(builder.ticketType));
-		//this.ticketType.set(String.valueOf());
-		this.dateOfCreation = builder.dateOfCreation;
 		this.dateAndTimeOfCreation = builder.dateAndTimeOfCreation;
 		this.dateAndTimeOfCompletion = builder.dateAndTimeOfCompletion;
 		this.title.set(builder.title);
@@ -270,16 +265,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 	 * @return date of creation
 	 */
 	public LocalDate getDateOfCreation() {
-		return dateOfCreation;
-	}
-
-	/**
-	 * Sets date of creation.
-	 *
-	 * @param dateOfCreation the date of creation
-	 */
-	public void setDateOfCreation(LocalDate dateOfCreation) {
-		this.dateOfCreation = dateOfCreation;
+		return getDateAndTimeOfCreation().toLocalDate();
 	}
 
 	/**
@@ -651,7 +637,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 		private TicketStatus ticketStatus;
 		private TicketPriority ticketPriority;
 		private TicketType ticketType;
-		private LocalDate dateOfCreation;
 		private LocalDateTime dateAndTimeOfCreation;
 		private LocalDateTime dateAndTimeOfCompletion;
 		private String title;
@@ -730,17 +715,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 		 */
 		public TicketBuilder ticketStatus(TicketStatus ticketStatus){
 			this.ticketStatus = ticketStatus;
-			return this;
-		}
-
-		/**
-		 * Date of creation ticket builder.
-		 *
-		 * @param dateOfCreation the date of creation
-		 * @return the ticket builder
-		 */
-		public TicketBuilder dateOfCreation(LocalDate dateOfCreation){
-			this.dateOfCreation = dateOfCreation;
 			return this;
 		}
 
@@ -865,8 +839,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 				requiredElements.add(RequiredElement.TicketCustomerIDRequired);
 			if (ticketStatus == null)
 				this.ticketStatus = TicketStatus.CREATED;
-			if (dateOfCreation == null)
-				this.dateOfCreation = LocalDate.now();
 			if (dateAndTimeOfCreation == null)
 				this.dateAndTimeOfCreation = LocalDateTime.now();
 			if (solution == null)
