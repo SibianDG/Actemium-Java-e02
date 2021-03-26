@@ -54,10 +54,9 @@ public abstract class UserModel implements User, Serializable {
 	)
 	private List<LoginAttempt> loginAttempts = new ArrayList<>();
 
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long userId;
+	private int userId;
 
 	@Transient
 	private StringProperty username = new SimpleStringProperty();
@@ -122,7 +121,7 @@ public abstract class UserModel implements User, Serializable {
 	 *
 	 * @return user id int
 	 */
-	public long getUserId() {
+	public int getUserId() {
 		return userId;
 	}
 

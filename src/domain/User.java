@@ -15,7 +15,7 @@ public interface User {
 	 *
 	 * @return the user id
 	 */
-	long getUserId();
+	int getUserId();
 
 	/**
 	 * Gets username.
