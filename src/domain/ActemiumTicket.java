@@ -60,12 +60,15 @@ public class ActemiumTicket implements Ticket, Serializable {
 	private StringProperty status = new SimpleStringProperty();
 	@Transient
 	private StringProperty priority = new SimpleStringProperty();
-	
+
+	@Column(columnDefinition = "DATE")
 	private LocalDate dateOfCreation;
 	@Transient
 	private StringProperty completionDate = new SimpleStringProperty();
 
+	@Column(columnDefinition = "TIMESTAMP")
 	private LocalDateTime dateAndTimeOfCreation;
+	@Column(columnDefinition = "TIMESTAMP")
 	private LocalDateTime dateAndTimeOfCompletion;
 
 	@Transient

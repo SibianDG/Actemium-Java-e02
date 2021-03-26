@@ -39,6 +39,7 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 			   cascade = CascadeType.PERSIST)
 	private List<ActemiumTicket> tickets = new ArrayList<>();
 
+	@Column(columnDefinition = "DATE")
 	private LocalDate registrationDate;
 
 	/**

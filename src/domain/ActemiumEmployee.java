@@ -40,6 +40,7 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 	@Transient
 	private StringProperty role = new SimpleStringProperty();
 
+	@Column(columnDefinition = "DATE")
 	private LocalDate registrationDate;
 
 	@ElementCollection(targetClass = TicketType.class)
