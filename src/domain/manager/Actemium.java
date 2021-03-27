@@ -496,7 +496,7 @@ public class Actemium {
 	 * @param companyId the company id
 	 * @return the actemium company
 	 */
-	public ActemiumCompany findCompanyById(long companyId){
+	public ActemiumCompany findCompanyById(int companyId){
 		return companyDaoJpa.get(companyId);
 	}
 
@@ -573,7 +573,7 @@ public class Actemium {
 	 * @param userId the user id
 	 * @return the user model
 	 */
-	public UserModel findUserById(long userId){
+	public UserModel findUserById(int userId){
 		return userDaoJpa.get(userId);
 	}
 
@@ -748,7 +748,7 @@ public class Actemium {
 	 * @param contractTypeId the contract type id
 	 * @return the actemium contract type
 	 */
-	public ActemiumContractType findContractTypeById(long contractTypeId){
+	public ActemiumContractType findContractTypeById(int contractTypeId){
 		return contractTypeDaoJpa.get(contractTypeId);
 	}
 

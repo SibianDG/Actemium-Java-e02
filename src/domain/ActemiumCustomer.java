@@ -33,16 +33,16 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	@Serial
 	private static final long serialVersionUID = 1L;
 	
-	@OneToMany(mappedBy = "customer",
-			   cascade = CascadeType.PERSIST)
-	private List<ActemiumContract> contracts = new ArrayList<>();;
+//	@OneToMany(mappedBy = "customer",
+//			   cascade = CascadeType.PERSIST)
+//	private List<ActemiumContract> contracts = new ArrayList<>();
 	
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	private ActemiumCompany company;
 	
-	@OneToMany(mappedBy = "customer",
-			   cascade = CascadeType.PERSIST)
-	private List<ActemiumTicket> tickets = new ArrayList<>();
+//	@OneToMany(mappedBy = "customer",
+//			   cascade = CascadeType.PERSIST)
+//	private List<ActemiumTicket> tickets = new ArrayList<>();
 
 	/**
 	 * Instantiates a new Actemium customer.
@@ -77,7 +77,7 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	 * @return the contracts
 	 */
 	public List<ActemiumContract> getContracts() {
-		return contracts;
+		return company.getActemiumContracts();
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	 * @return ObservableList of contracts
 	 */
 	public ObservableList<Contract> giveContracts() {
-		return (ObservableList<Contract>) (Object) FXCollections.observableList(contracts);
+		return (ObservableList<Contract>) (Object) FXCollections.observableList(company.giveContracts());
 	}
 
 	/**
@@ -94,9 +94,9 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	 *
 	 * @param contracts the contracts
 	 */
-	public void setContracts(List<ActemiumContract> contracts) {
-		this.contracts = contracts;
-	}
+//	public void setContracts(List<ActemiumContract> contracts) {
+//		this.contracts = contracts;
+//	}
 
 	/**
 	 * Gets company.
@@ -131,7 +131,8 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	 * @param ticket the ticket
 	 */
 	public void addTicket(ActemiumTicket ticket) {
-		tickets.add(ticket);
+//		tickets.add(ticket);
+		company.addActemiumTicket(ticket);
 	}
 
 	/**
@@ -140,7 +141,8 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	 * @param contract the contract
 	 */
 	public void addContract(ActemiumContract contract) {
-		contracts.add(contract);
+//		contracts.add(contract);
+		company.addActemiumContract(contract);
 	}
 
 	/**

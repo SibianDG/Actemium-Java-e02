@@ -53,8 +53,10 @@ public class ActemiumContract implements Contract, Serializable {
 	/**
 	 * The Customer with the contract.
 	 */
+//	@ManyToOne
+//	ActemiumCustomer customer;
 	@ManyToOne
-	ActemiumCustomer customer;
+	ActemiumCompany company;
 
 	@Transient
 	private StringProperty status = new SimpleStringProperty();
@@ -80,7 +82,8 @@ public class ActemiumContract implements Contract, Serializable {
 		this.contractType = builder.contractType;
 		this.status.set(String.valueOf(builder.status));
 		this.contractTypeName.set(String.valueOf(builder.contractType));
-		this.customer = builder.customer;
+//		this.customer = builder.customer;
+		this.company = builder.company;
 		this.startDate.set(String.valueOf(builder.startDate));
 		this.endDate.set(String.valueOf(builder.endDate));
 	}
@@ -144,31 +147,58 @@ public class ActemiumContract implements Contract, Serializable {
 		this.contractTypeName.set(String.valueOf(contractType.getName()));
 	}
 
+//	/**
+//	 * Gets customer.
+//	 *
+//	 * @return the customer
+//	 */
+//	public ActemiumCustomer getCustomer() {
+//		return customer;
+//	}
+//
+//	/**
+//	 * Gives customer.
+//	 *
+//	 * @return customer
+//	 */
+//	public Customer giveCustomer() {
+//		return (Customer) customer;
+//	}
+//
+//	/**
+//	 * Sets customer.
+//	 *
+//	 * @param customer the customer
+//	 */
+//	public void setCustomer(ActemiumCustomer customer) {
+//		this.customer = customer;
+//	}
+
 	/**
 	 * Gets customer.
 	 *
 	 * @return the customer
 	 */
-	public ActemiumCustomer getCustomer() {
-		return customer;
+	public ActemiumCompany getCompany() {
+		return company;
 	}
-
+	
 	/**
 	 * Gives customer.
 	 *
 	 * @return customer
 	 */
-	public Customer giveCustomer() {
-		return (Customer) customer;
+	public Company giveCompany() {
+		return (Company) company;
 	}
-
+	
 	/**
 	 * Sets customer.
 	 *
 	 * @param customer the customer
 	 */
-	public void setCustomer(ActemiumCustomer customer) {
-		this.customer = customer;
+	public void setCompany(ActemiumCompany company) {
+		this.company = company;
 	}
 
 	/**
@@ -304,7 +334,8 @@ public class ActemiumContract implements Contract, Serializable {
 		// Ms. Malfait her idea
 		new ContractBuilder()
 				.contractType(this.getContractType())
-				.customer(this.getCustomer())
+//				.customer(this.getCustomer())
+				.company(this.getCompany())
 				.status(this.getStatus())
 				.startDate(this.getStartDate())
 				.endDate(this.getEndDate())
@@ -316,7 +347,8 @@ public class ActemiumContract implements Contract, Serializable {
 	 */
 	public static class ContractBuilder {
 		private ActemiumContractType contractType;
-		private ActemiumCustomer customer;
+//		private ActemiumCustomer customer;
+		private ActemiumCompany company;
 		private ContractStatus status;
 		private LocalDate startDate;
 		private LocalDate endDate;
@@ -334,14 +366,24 @@ public class ActemiumContract implements Contract, Serializable {
 			return this;
 		}
 
+//		/**
+//		 * Customer contract builder.
+//		 *
+//		 * @param customer the customer
+//		 * @return the contract builder
+//		 */
+//		public ContractBuilder customer(ActemiumCustomer customer) {
+//			this.customer = customer;
+//			return this;
+//		}
 		/**
 		 * Customer contract builder.
 		 *
 		 * @param customer the customer
 		 * @return the contract builder
 		 */
-		public ContractBuilder customer(ActemiumCustomer customer) {
-			this.customer = customer;
+		public ContractBuilder company(ActemiumCompany company) {
+			this.company = company;
 			return this;
 		}
 
@@ -393,7 +435,9 @@ public class ActemiumContract implements Contract, Serializable {
 		private void checkAttributesEmployeeBuilder() throws InformationRequiredException {
 			if (contractType == null)
 				requiredElements.add(RequiredElement.ContractTypeRequired);
-			if (customer == null)
+//			if (customer == null)
+//				requiredElements.add(RequiredElement.CustomerRequired);
+			if (company == null)
 				requiredElements.add(RequiredElement.CustomerRequired);
 			if (startDate == null)
 				startDate = LocalDate.now();
@@ -438,7 +482,8 @@ public class ActemiumContract implements Contract, Serializable {
 		try {
 			cloned = new ContractBuilder()
 					.contractType(this.getContractType())
-					.customer(this.getCustomer())
+//					.customer(this.getCustomer())
+					.company(this.getCompany())
 					.status(this.getStatus())
 					.startDate(this.getStartDate())
 					.endDate(this.getEndDate())

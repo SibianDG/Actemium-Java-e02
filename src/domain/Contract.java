@@ -30,7 +30,13 @@ public interface Contract {
 	 *
 	 * @return the customer
 	 */
-	Customer giveCustomer();
+	Company giveCompany();
+//	/**
+//	 * Give customer customer.
+//	 *
+//	 * @return the customer
+//	 */
+//	Customer giveCustomer();
 
 	/**
 	 * Gets status as string.

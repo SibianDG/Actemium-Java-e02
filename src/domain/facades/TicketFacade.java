@@ -47,7 +47,7 @@ public class TicketFacade extends Facade {
 	 * @throws InformationRequiredException the information required exception
 	 */
 	public void registerTicket(TicketPriority priority, TicketType ticketType, String title, String description,
-							String commentText, String attachments, long customerId, List<ActemiumEmployee> techniciansAsignedToTicket) throws InformationRequiredException {
+							String commentText, String attachments, int customerId, List<ActemiumEmployee> techniciansAsignedToTicket) throws InformationRequiredException {
 		// check to see if signed in user is Support Manger
 		actemium.checkPermission(EmployeeRole.SUPPORT_MANAGER);
 		ActemiumCustomer customer = (ActemiumCustomer) actemium.findUserById(customerId);
@@ -56,7 +56,8 @@ public class TicketFacade extends Facade {
 							.ticketPriority(priority)
 							.ticketType(ticketType)
 							.description(description)
-							.customer(customer)
+//							.customer(customer)
+							.company(customer.getCompany())
 							.attachments(attachments)
 							.build();
 		ticket.setTechnicians(techniciansAsignedToTicket);
@@ -64,7 +65,8 @@ public class TicketFacade extends Facade {
 		ticket.addTicketComment(createTicketComment(ticket, commentText));
 		
 		List<String> changeList = new ArrayList<>();
-		changeList.add(String.format("Ticket was added for customer: \"%s\".", ticket.getCustomer().getCompany().getName()));
+//		changeList.add(String.format("Ticket was added for customer: \"%s\".", ticket.getCustomer().getCompany().getName()));
+		changeList.add(String.format("Ticket was added for customer: \"%s\".", ticket.getCompany().getName()));
 		changeList.add(String.format("Ticket Priority was set to \"%s\".", priority));
 		changeList.add(String.format("Ticket Type was set to \"%s\".", ticketType));
 		changeList.add(String.format("Ticket Status was initialized as \"%s\".", ticket.getStatus()));

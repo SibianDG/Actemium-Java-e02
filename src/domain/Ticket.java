@@ -105,7 +105,13 @@ public interface Ticket {
 	 *
 	 * @return the customer
 	 */
-	Customer giveCustomer();
+	Company giveCompany();
+//	/**
+//	 * Give customer customer.
+//	 *
+//	 * @return the customer
+//	 */
+//	Customer giveCustomer();
 
 	/**
 	 * Give comments list.

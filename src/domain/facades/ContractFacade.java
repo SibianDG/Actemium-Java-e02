@@ -57,7 +57,7 @@ public class ContractFacade extends Facade {
 	 * @param duration       the duration
 	 * @throws InformationRequiredException the information required exception
 	 */
-	public void registerContract(Long customerId, long contractTypeId, LocalDate startDate,
+	public void registerContract(int customerId, int contractTypeId, LocalDate startDate,
 			int duration) throws InformationRequiredException {
 		// check to see if signed in user is Support Manager
 		actemium.checkPermission(EmployeeRole.SUPPORT_MANAGER);
@@ -66,7 +66,8 @@ public class ContractFacade extends Facade {
 		LocalDate endDate = startDate.plusYears(duration);
 		ActemiumContract contract = new ActemiumContract.ContractBuilder()
 				.contractType(contractType)
-				.customer(customer)
+//				.customer(customer)
+				.company(customer.getCompany())
 				.startDate(startDate)
 				.endDate(endDate)
 				.build();

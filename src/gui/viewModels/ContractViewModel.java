@@ -48,7 +48,8 @@ public class ContractViewModel extends ViewModel {
         Contract contract = selectedContract;
         Map<String,Map<Boolean, Object>> details = new LinkedHashMap<>();
         details.put(LanguageResource.getString("contract_ID"), Collections.singletonMap(false, contract.getContractIdString()));
-        details.put(LanguageResource.getString("company"), Collections.singletonMap(false, contract.giveCustomer().giveCompany().getName()));
+        details.put(LanguageResource.getString("company"), Collections.singletonMap(false, contract.giveCompany().getName()));
+//        details.put(LanguageResource.getString("company"), Collections.singletonMap(false, contract.giveCustomer().giveCompany().getName()));
         details.put(LanguageResource.getString("type"), Collections.singletonMap(false, contract.giveContractType().getName()));
         details.put(LanguageResource.getString("status"), Collections.singletonMap(true, contract.getStatus()));
         details.put(LanguageResource.getString("start_date"), Collections.singletonMap(false, contract.getStartDate().toString()));
@@ -61,7 +62,7 @@ public class ContractViewModel extends ViewModel {
         contractFacade.modifyContract((ActemiumContract) selectedContract, status);
     }
     
-    public void registerContract(Long customer, long contractTypeId, LocalDate startDate, int duration) throws InformationRequiredException {
+    public void registerContract(int customer, int contractTypeId, LocalDate startDate, int duration) throws InformationRequiredException {
     	contractFacade.registerContract(customer, contractTypeId, startDate, duration);
     	setSelectedContract(contractFacade.getLastAddedContract());
     }

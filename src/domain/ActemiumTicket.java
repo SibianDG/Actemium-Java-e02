@@ -73,8 +73,8 @@ public class ActemiumTicket implements Ticket, Serializable {
 	@Lob
 	@Column
 	private String description;
-	@ManyToOne
-	private ActemiumCustomer customer;
+//	@ManyToOne
+//	private ActemiumCustomer customer;
 
 	@ManyToOne
 	private ActemiumCompany company;
@@ -130,7 +130,8 @@ public class ActemiumTicket implements Ticket, Serializable {
 		this.dateAndTimeOfCompletion = builder.dateAndTimeOfCompletion;
 		this.title.set(builder.title);
 		this.description = builder.description;
-		this.customer = builder.customer;
+		this.company = builder.company;
+//		this.customer = builder.customer;
 		this.comments = builder.comments;
 		this.solution = builder.solution;
 		this.quality = builder.quality;
@@ -348,8 +349,8 @@ public class ActemiumTicket implements Ticket, Serializable {
 	 *
 	 * @return the customer
 	 */
-	public ActemiumCustomer getCustomer() {
-		return customer;
+	public ActemiumCompany getCompany() {
+		return company;
 	}
 
 	/**
@@ -358,8 +359,8 @@ public class ActemiumTicket implements Ticket, Serializable {
 	 * @return customer
 	 */
 	@Override
-	public Customer giveCustomer() {
-		return (Customer) customer;
+	public Company giveCompany() {
+		return (Company) company;
 	}
 
 	/**
@@ -368,10 +369,39 @@ public class ActemiumTicket implements Ticket, Serializable {
 	 * @param customer the customer
 	 * @throws InformationRequiredException the information required exception
 	 */
-	public void setCustomer(ActemiumCustomer customer) throws InformationRequiredException {
-		this.customer = customer;
+	public void setCompany(ActemiumCompany company) throws InformationRequiredException {
+		this.company = company;
 		checkAttributes();
 	}
+//	/**
+//	 * Gets customer.
+//	 *
+//	 * @return the customer
+//	 */
+//	public ActemiumCustomer getCustomer() {
+//		return customer;
+//	}
+//	
+//	/**
+//	 * Gives the customer for the ticker.
+//	 *
+//	 * @return customer
+//	 */
+//	@Override
+//	public Customer giveCustomer() {
+//		return (Customer) customer;
+//	}
+//	
+//	/**
+//	 * Sets customer.
+//	 *
+//	 * @param customer the customer
+//	 * @throws InformationRequiredException the information required exception
+//	 */
+//	public void setCustomer(ActemiumCustomer customer) throws InformationRequiredException {
+//		this.customer = customer;
+//		checkAttributes();
+//	}
 
 	/**
 	 * Gives a list of Ticket comments.
@@ -624,7 +654,8 @@ public class ActemiumTicket implements Ticket, Serializable {
 				.ticketType(getTicketType())
 				.title(this.title.get())
 				.description(this.description)
-				.customer(this.customer)
+				.company(this.company)
+//				.customer(this.customer)
 				.build();
 
 	}
@@ -641,7 +672,8 @@ public class ActemiumTicket implements Ticket, Serializable {
 		private LocalDateTime dateAndTimeOfCompletion;
 		private String title;
 		private String description;
-		private ActemiumCustomer customer;
+		private ActemiumCompany company;
+//		private ActemiumCustomer customer;
 		private List<ActemiumTicketComment> comments;
 		private String attachments;
 //		private List<String> attachments;
@@ -702,10 +734,20 @@ public class ActemiumTicket implements Ticket, Serializable {
 		 * @param customer the customer
 		 * @return the ticket builder
 		 */
-		public TicketBuilder customer(ActemiumCustomer customer){
-			this.customer = customer;
+		public TicketBuilder company(ActemiumCompany company){
+			this.company = company;
 			return this;
 		}
+//		/**
+//		 * Customer ticket builder.
+//		 *
+//		 * @param customer the customer
+//		 * @return the ticket builder
+//		 */
+//		public TicketBuilder customer(ActemiumCustomer customer){
+//			this.customer = customer;
+//			return this;
+//		}
 
 		/**
 		 * Ticket status ticket builder.
@@ -835,8 +877,10 @@ public class ActemiumTicket implements Ticket, Serializable {
 				requiredElements.add(RequiredElement.TicketTitleRequired);
 			if (description == null || description.isBlank())
 				requiredElements.add(RequiredElement.TicketDescriptionRequired);
-			if (customer == null)
+			if (company == null)
 				requiredElements.add(RequiredElement.TicketCustomerIDRequired);
+//			if (customer == null)
+//				requiredElements.add(RequiredElement.TicketCustomerIDRequired);
 			if (ticketStatus == null)
 				this.ticketStatus = TicketStatus.CREATED;
 			if (dateAndTimeOfCreation == null)
@@ -874,7 +918,8 @@ public class ActemiumTicket implements Ticket, Serializable {
 					.ticketType(this.getTicketType())
 					.title(this.getTitle())
 					.description(this.getDescription())
-					.customer(this.getCustomer())
+					.company(this.getCompany())
+//					.customer(this.getCustomer())
 					.comments(this.getComments())
 					.attachments(this.getAttachments())
 					.solution(this.getSolution())

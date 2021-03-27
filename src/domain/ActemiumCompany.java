@@ -67,6 +67,10 @@ public class ActemiumCompany implements Company, Serializable {
 	@OneToMany(mappedBy = "company",
 				   cascade = CascadeType.PERSIST)
 	private List<ActemiumTicket> actemiumTickets = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "company",
+			   cascade = CascadeType.PERSIST)
+	private List<ActemiumContract> actemiumContracts = new ArrayList<>();
 
 	/**
 	 * Instantiates a new Actemium company.
@@ -249,6 +253,29 @@ public class ActemiumCompany implements Company, Serializable {
 	 */
 	public void addActemiumTicket(ActemiumTicket ticket) {
 		this.actemiumTickets.add(ticket);
+	}
+	
+	/**
+	 * Gets actemium contracts.
+	 *
+	 * @return the actemium contracts
+	 */
+	public List<ActemiumContract> getActemiumContracts() {
+		return actemiumContracts;
+	}
+
+
+	public List<Contract> giveContracts() {
+		return (List<Contract>) (Object) actemiumContracts;
+	}
+
+	/**
+	 * Add actemium contracts.
+	 *
+	 * @param contract the contract
+	 */
+	public void addActemiumContract(ActemiumContract contract) {
+		this.actemiumContracts.add(contract);
 	}
 
 	/**

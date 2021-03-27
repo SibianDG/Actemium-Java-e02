@@ -44,7 +44,8 @@ public class ContractTableViewPanelController<T,E> extends TableViewPanelControl
 		this.mainData = (ObservableList<T>) ((ContractViewModel) viewModel).giveContracts();
 		this.tableViewData = new FilteredList<>(mainData);
 		propertyMap.put(LanguageResource.getString("ID"), item -> (Property<E>)((Contract) item).contractIdProperty()); // IntegerProperty
-		propertyMap.put(LanguageResource.getString("company"), item -> (Property<E>)((Contract) item).giveCustomer().giveCompany().nameProperty());
+//		propertyMap.put(LanguageResource.getString("company"), item -> (Property<E>)((Contract) item).giveCustomer().giveCompany().nameProperty());
+		propertyMap.put(LanguageResource.getString("company"), item -> (Property<E>)((Contract) item).giveCompany().nameProperty());
 		propertyMap.put(LanguageResource.getString("type"), item -> (Property<E>)((Contract) item).contractTypeNameProperty());
 		propertyMap.put(LanguageResource.getString("status"), item -> (Property<E>)((Contract) item).contractStatusProperty());
 		btnAdd.setText(String.format("%s %s", LanguageResource.getString("add"), currentState.toString().toLowerCase()));
@@ -165,7 +166,8 @@ public class ContractTableViewPanelController<T,E> extends TableViewPanelControl
 				if (fieldName.equalsIgnoreCase("contract id")){
 					newPredicate = e -> e.getContractIdString().equals(filterText);
 				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("company_name")) || fieldName.equalsIgnoreCase("timestamp")){
-					newPredicate = e -> e.giveCustomer().giveCompany().getName().toLowerCase().contains(filterText);
+					newPredicate = e -> e.giveCompany().getName().toLowerCase().contains(filterText);
+//					newPredicate = e -> e.giveCustomer().giveCompany().getName().toLowerCase().contains(filterText);
 				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("contract_type_name")) || fieldName.equalsIgnoreCase("contract type name")){
 					newPredicate = e -> e.giveContractType().getName().toLowerCase().contains(filterText);
 				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("select_status")) || fieldName.equalsIgnoreCase("contractstatus")){

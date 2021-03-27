@@ -86,7 +86,7 @@ public class UserFacade extends Facade {
 	 */
 
 	// We hadn't time to implement this feature in the GUI
-	public void registerCustomerUsingExistingCompany(String username, String password, String firstName, String lastName, Long companyId) throws InformationRequiredException {
+	public void registerCustomerUsingExistingCompany(String username, String password, String firstName, String lastName, int companyId) throws InformationRequiredException {
 		// check to see if signed in user is Admin
 		actemium.checkPermission(EmployeeRole.ADMINISTRATOR);
 		actemium.existingUsername(username);

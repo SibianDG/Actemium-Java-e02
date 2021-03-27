@@ -112,7 +112,7 @@ public class TicketDetailsPanelController extends DetailsPanelController {
 	                    , getTextFromGridItem(6)
 	                    , getTextFromGridItem(7)
 	                    , getTextFromGridItem(8)
-	                    , Long.parseLong(getTextFromGridItem(5))
+	                    , Integer.parseInt(getTextFromGridItem(5))
 	            );
 	            showPopupMessageAddItem("popupSuccess", LanguageResource.getString("ticket_created_success"));
 	        }            

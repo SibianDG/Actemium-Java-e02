@@ -260,65 +260,77 @@ public class PopulateDB {
 
         ActemiumContract bContract = new ActemiumContract.ContractBuilder()
                                                             .contractType(bCtype)
-                                                            .customer(barak)
+//                                                          .customer(barak)
+                                                            .company(barak.getCompany())
                                                             .endDate(LocalDate.now().plusYears(1))
                                                             .build();
         ActemiumContract bContract02 = new ActemiumContract.ContractBuilder()
                 .contractType(bCtype02)
-                .customer(barak)
+//              .customer(barak)
+                .company(barak.getCompany())
                 .endDate(LocalDate.now().plusYears(1))
                 .build();
         ActemiumContract jContract = new ActemiumContract.ContractBuilder()
                 .contractType(jCtype)
-                .customer(jeff)
+//              .customer(jeff)
+                .company(jeff.getCompany())
                 .endDate(LocalDate.now().plusYears(3))
                 .build();
         ActemiumContract jContract02 = new ActemiumContract.ContractBuilder()
                 .contractType(jCtype02)
-                .customer(jeff)
+//              .customer(jeff)
+                .company(jeff.getCompany())
                 .endDate(LocalDate.now().plusYears(3))
                 .build();
 
         ActemiumContract mContract = new ActemiumContract.ContractBuilder()
                 .contractType(cCtype)
-                .customer(mark)
+//              .customer(mark)
+                .company(mark.getCompany())
                 .endDate(LocalDate.now().plusYears(1))
                 .build();
         ActemiumContract mContract02 = new ActemiumContract.ContractBuilder()
                 .contractType(gCtype)
-                .customer(mark)
+//              .customer(bill)
+                .company(bill.getCompany())
                 .endDate(LocalDate.now().plusYears(1))
                 .build();
         ActemiumContract gContract = new ActemiumContract.ContractBuilder()
                 .contractType(dCtype)
-                .customer(bill)
+//              .customer(bill)
+                .company(bill.getCompany())
                 .endDate(LocalDate.now().plusYears(1))
                 .build();
 
         ActemiumContract gContract02 = new ActemiumContract.ContractBuilder()
                 .contractType(dCtype)
-                .customer(bill)
+//              .customer(bill)
+                .company(bill.getCompany())
                 .endDate(LocalDate.now().plusYears(1))
                 .build();
         ActemiumContract lContract = new ActemiumContract.ContractBuilder()
                 .contractType(eCtype)
-                .customer(bill)
+//              .customer(larry)
+                .company(larry.getCompany())
                 .endDate(LocalDate.now().plusYears(3))
                 .build();
         ActemiumContract lContract02 = new ActemiumContract.ContractBuilder()
                 .contractType(eCtype)
-                .customer(larry)
+//              .customer(larry)
+                .company(larry.getCompany())
                 .endDate(LocalDate.now().plusYears(3))
                 .build();
 
         ActemiumContract eContract = new ActemiumContract.ContractBuilder()
                 .contractType(fCtype)
-                .customer(elon)
+//              .customer(elon)
+                .company(elon.getCompany())
                 .endDate(LocalDate.now().plusYears(2))
                 .build();
         ActemiumContract eContract02 = new ActemiumContract.ContractBuilder()
                 .contractType(pCtype)
-                .customer(elon)
+//              .customer(elon)
+                .company(elon.getCompany())
                 .endDate(LocalDate.now().plusYears(2))
                 .build();
 
@@ -376,7 +388,8 @@ public class PopulateDB {
                                                     .ticketType(TicketType.DATABASE)
                                                     .title("Ticket1")
                                                     .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
-                                                    .customer(barak)
+                                                    .company(barak.getCompany())
+//                                                  .customer(barak)
                                                     .build();
         ticket01.addTicketComment(createTicketComment(ticket01, tech, String.format("(%s)", LanguageResource.getString("none"))));
         ActemiumTicket ticket02 = new ActemiumTicket.TicketBuilder()
@@ -384,7 +397,8 @@ public class PopulateDB {
                 .ticketType(TicketType.HARDWARE)
                 .title("Ticket2")
                 .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
-                .customer(jeff)
+                .company(jeff.getCompany())
+//              .customer(jeff)
                 .build();
         ticket02.addTicketComment(createTicketComment(ticket02, tech, String.format("(%s)", LanguageResource.getString("none"))));
         ActemiumTicket ticket03 = new ActemiumTicket.TicketBuilder()
@@ -392,7 +406,8 @@ public class PopulateDB {
                 .ticketType(TicketType.INFRASTRUCTURE)
                 .title("BBQ grill stopt working")
                 .description("I was smoking these meats with sweet baby rays saus and suddenly my BBQ stopped working")
-                .customer(mark)
+                .company(mark.getCompany())
+//              .customer(mark)
                 .build();
         ticket03.addTicketComment(createTicketComment(ticket03, tech, String.format("(%s)", LanguageResource.getString("none"))));
         ActemiumTicket ticket04 = new ActemiumTicket.TicketBuilder()
@@ -400,7 +415,8 @@ public class PopulateDB {
                 .ticketType(TicketType.NETWORK)
                 .title("Microchips in vaccine not working")
                 .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
-                .customer(bill)
+                .company(bill.getCompany())
+//              .customer(bill)
                 .build();
         ticket04.addTicketComment(createTicketComment(ticket04, tech, String.format("(%s)", LanguageResource.getString("none"))));
         ActemiumTicket ticket05 = new ActemiumTicket.TicketBuilder()
@@ -408,7 +424,8 @@ public class PopulateDB {
                 .ticketType(TicketType.SOFTWARE)
                 .title("Ticket5")
                 .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
-                .customer(larry)
+                .company(larry.getCompany())
+//              .customer(larry)
                 .build();
         ticket05.addTicketComment(createTicketComment(ticket05, tech, String.format("(%s)", LanguageResource.getString("none"))));
         ActemiumTicket ticket06 = new ActemiumTicket.TicketBuilder()
@@ -416,7 +433,8 @@ public class PopulateDB {
                 .ticketType(TicketType.SOFTWARE)
                 .title("Ticket6")
                 .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
-                .customer(elon)
+                .company(elon.getCompany())
+//              .customer(elon)
                 .build();        
         ticket06.addTicketComment(createTicketComment(ticket06, tech, String.format("(%s)", LanguageResource.getString("none"))));       
         
@@ -617,7 +635,8 @@ public class PopulateDB {
                                                     .ticketType(types[randomGen.nextInt(types.length)])
                                                     .title(String.format("%s %d", LanguageResource.getString("title_random"), i))
                                                     .description(String.format("%s %d", LanguageResource.getString("description"), i))
-                                                    .customer(bill)
+                                                    .company(bill.getCompany())
+//                                                  .customer(bill)
                                                     .comments(null)
                                                     .attachments(String.format("%s%d.png", LanguageResource.getString("screenshot"), i))
                                                     .build();
