@@ -211,12 +211,12 @@ public enum RequiredElement {
     }
     ,
     /**
-     * The Customer required.
+     * The Company required.
      */
-    CustomerRequired {
+    CompanyRequired {
         @Override
         public String toString() {
-            return LanguageResource.getString("customer_invalid");
+            return LanguageResource.getString("company_invalid");
         }
     }
     ,

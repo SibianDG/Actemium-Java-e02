@@ -57,7 +57,7 @@ public class TicketFacadeTest implements Attributes {
                     .ticketType(TicketType.SOFTWARE)
                     .title("Printer Broken")
                     .description("Cannot print labels")
-                    .customer(cust)
+	                .company(cust.getCompany())
                     .build();
 
 
@@ -76,7 +76,7 @@ public class TicketFacadeTest implements Attributes {
                     .ticketType(TicketType.SOFTWARE)
                     .title("Printer Broken")
                     .description("Cannot print labels")
-                    .customer(cust)
+	                .company(cust.getCompany())
                     .build();
         } catch (InformationRequiredException e) {
             throw new IllegalArgumentException("Problem with initialize variables before test.");

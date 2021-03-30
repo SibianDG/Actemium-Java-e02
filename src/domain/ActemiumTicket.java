@@ -73,8 +73,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 	@Lob
 	@Column
 	private String description;
-//	@ManyToOne
-//	private ActemiumCustomer customer;
 
 	@ManyToOne
 	private ActemiumCompany company;
@@ -114,8 +112,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 	public ActemiumTicket() {
 		super();
 	}
-
-
 
 	/**
 	 * Instantiates a new Actemium ticket via the builder pattern.
@@ -345,18 +341,18 @@ public class ActemiumTicket implements Ticket, Serializable {
 	}
 
 	/**
-	 * Gets customer.
+	 * Gets company.
 	 *
-	 * @return the customer
+	 * @return the company
 	 */
 	public ActemiumCompany getCompany() {
 		return company;
 	}
 
 	/**
-	 * Gives the customer for the ticker.
+	 * Gives the company for the ticker.
 	 *
-	 * @return customer
+	 * @return company
 	 */
 	@Override
 	public Company giveCompany() {
@@ -364,44 +360,15 @@ public class ActemiumTicket implements Ticket, Serializable {
 	}
 
 	/**
-	 * Sets customer.
+	 * Sets company.
 	 *
-	 * @param customer the customer
+	 * @param company the company
 	 * @throws InformationRequiredException the information required exception
 	 */
 	public void setCompany(ActemiumCompany company) throws InformationRequiredException {
 		this.company = company;
 		checkAttributes();
 	}
-//	/**
-//	 * Gets customer.
-//	 *
-//	 * @return the customer
-//	 */
-//	public ActemiumCustomer getCustomer() {
-//		return customer;
-//	}
-//	
-//	/**
-//	 * Gives the customer for the ticker.
-//	 *
-//	 * @return customer
-//	 */
-//	@Override
-//	public Customer giveCustomer() {
-//		return (Customer) customer;
-//	}
-//	
-//	/**
-//	 * Sets customer.
-//	 *
-//	 * @param customer the customer
-//	 * @throws InformationRequiredException the information required exception
-//	 */
-//	public void setCustomer(ActemiumCustomer customer) throws InformationRequiredException {
-//		this.customer = customer;
-//		checkAttributes();
-//	}
 
 	/**
 	 * Gives a list of Ticket comments.
@@ -729,25 +696,15 @@ public class ActemiumTicket implements Ticket, Serializable {
 		}
 
 		/**
-		 * Customer ticket builder.
+		 * company ticket builder.
 		 *
-		 * @param customer the customer
+		 * @param company the company
 		 * @return the ticket builder
 		 */
 		public TicketBuilder company(ActemiumCompany company){
 			this.company = company;
 			return this;
 		}
-//		/**
-//		 * Customer ticket builder.
-//		 *
-//		 * @param customer the customer
-//		 * @return the ticket builder
-//		 */
-//		public TicketBuilder customer(ActemiumCustomer customer){
-//			this.customer = customer;
-//			return this;
-//		}
 
 		/**
 		 * Ticket status ticket builder.
@@ -878,9 +835,8 @@ public class ActemiumTicket implements Ticket, Serializable {
 			if (description == null || description.isBlank())
 				requiredElements.add(RequiredElement.TicketDescriptionRequired);
 			if (company == null)
-				requiredElements.add(RequiredElement.TicketCustomerIDRequired);
-//			if (customer == null)
 //				requiredElements.add(RequiredElement.TicketCustomerIDRequired);
+				requiredElements.add(RequiredElement.CompanyRequired);
 			if (ticketStatus == null)
 				this.ticketStatus = TicketStatus.CREATED;
 			if (dateAndTimeOfCreation == null)

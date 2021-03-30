@@ -24,6 +24,7 @@ import domain.LoginAttempt;
 import domain.Ticket;
 import domain.UserModel;
 import domain.enums.EmployeeRole;
+import domain.enums.KbItemType;
 import domain.enums.LoginStatus;
 import domain.enums.TicketStatus;
 import domain.enums.UserStatus;
@@ -833,7 +834,18 @@ public class Actemium {
 	 * @return the observable list
 	 */
 	public ObservableList<KbItem> giveActemiumKbItems() {
-		return FXCollections.unmodifiableObservableList(actemiumKbItems);
+		if (signedInUser instanceof Employee) {
+			if (((Employee) signedInUser).getRole() == EmployeeRole.SUPPORT_MANAGER) {
+				return FXCollections.unmodifiableObservableList(actemiumKbItems);
+			}
+		}
+		return FXCollections.unmodifiableObservableList(giveActemiumKbItemsNonArchived());
+	}
+	
+	private ObservableList<KbItem> giveActemiumKbItemsNonArchived() {
+		return FXCollections.observableArrayList(actemiumKbItems.stream()
+				.filter(k -> !k.getType().equals(KbItemType.ARCHIVED))
+				.collect(Collectors.toList()));
 	}
 
 	/**

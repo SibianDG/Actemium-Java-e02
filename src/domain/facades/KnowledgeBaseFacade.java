@@ -86,7 +86,8 @@ public class KnowledgeBaseFacade extends Facade {
     public void delete(ActemiumKbItem kbItem) {
 		// check to see if signed in user is Support Manager
 		actemium.checkPermission(EmployeeRole.SUPPORT_MANAGER);
-		// physical delete for kb item?
+		// physical delete for kb item? => Archived logical delete
+		kbItem.setType(KbItemType.ARCHIVED);
         actemium.modifyKbItem(kbItem);
     }
 

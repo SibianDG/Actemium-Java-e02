@@ -81,6 +81,7 @@ public class UserViewModel extends ViewModel {
                 detailsMap.put(LanguageResource.getString("company_seniority"), Collections.singletonMap(false, String.valueOf(employee.giveSeniority())));
                 detailsMap.put(LanguageResource.getString("role"), Collections.singletonMap(true, employee.getRole()));
                 detailsMap.put(LanguageResource.getString("status"), Collections.singletonMap(true, employee.getStatus()));
+                if(employee.getRole().equals(EmployeeRole.TECHNICIAN))
                 detailsMap.put(LanguageResource.getString("specialties"), Collections.singletonMap(true, employee.getSpecialties()));
                 return detailsMap;
             }

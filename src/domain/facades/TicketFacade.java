@@ -56,7 +56,6 @@ public class TicketFacade extends Facade {
 							.ticketPriority(priority)
 							.ticketType(ticketType)
 							.description(description)
-//							.customer(customer)
 							.company(customer.getCompany())
 							.attachments(attachments)
 							.build();
@@ -65,8 +64,8 @@ public class TicketFacade extends Facade {
 		ticket.addTicketComment(createTicketComment(ticket, commentText));
 		
 		List<String> changeList = new ArrayList<>();
-//		changeList.add(String.format("Ticket was added for customer: \"%s\".", ticket.getCustomer().getCompany().getName()));
-		changeList.add(String.format("Ticket was added for customer: \"%s\".", ticket.getCompany().getName()));
+		changeList.add(String.format("Ticket was added on behalf of customer (=Contact Pers.): \"%s %s\".", customer.getFirstName(), customer.getLastName()));
+		changeList.add(String.format("Ticket was added for company: \"%s\".", ticket.getCompany().getName()));
 		changeList.add(String.format("Ticket Priority was set to \"%s\".", priority));
 		changeList.add(String.format("Ticket Type was set to \"%s\".", ticketType));
 		changeList.add(String.format("Ticket Status was initialized as \"%s\".", ticket.getStatus()));

@@ -2,7 +2,6 @@ package domain;
 
 import java.io.Serial;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,7 +11,6 @@ import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import domain.enums.RequiredElement;
 import exceptions.InformationRequiredException;
@@ -33,17 +31,9 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	@Serial
 	private static final long serialVersionUID = 1L;
 	
-//	@OneToMany(mappedBy = "customer",
-//			   cascade = CascadeType.PERSIST)
-//	private List<ActemiumContract> contracts = new ArrayList<>();
-	
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	private ActemiumCompany company;
 	
-//	@OneToMany(mappedBy = "customer",
-//			   cascade = CascadeType.PERSIST)
-//	private List<ActemiumTicket> tickets = new ArrayList<>();
-
 	/**
 	 * Instantiates a new Actemium customer.
 	 */
@@ -88,15 +78,6 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	public ObservableList<Contract> giveContracts() {
 		return (ObservableList<Contract>) (Object) FXCollections.observableList(company.giveContracts());
 	}
-
-	/**
-	 * Sets contracts.
-	 *
-	 * @param contracts the contracts
-	 */
-//	public void setContracts(List<ActemiumContract> contracts) {
-//		this.contracts = contracts;
-//	}
 
 	/**
 	 * Gets company.
@@ -305,7 +286,5 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 		}
 		return cloned;
 	}
-
-
 
 }

@@ -170,7 +170,7 @@ public class ContractTest {
 	public void createContract_ValidAttributes02_DoesNotThrowException(ActemiumContractType contractType, ActemiumCustomer customer, LocalDate endDate) {
 		Assertions.assertDoesNotThrow(() -> new ActemiumContract.ContractBuilder()
 				.contractType(contractType)
-				.customer(customer)
+                .company(customer.getCompany())
 				.endDate(endDate)
 				.build());
 	}
@@ -182,7 +182,7 @@ public class ContractTest {
 
 		Assertions.assertThrows(InformationRequiredException.class, () -> new ActemiumContract.ContractBuilder()
 				.contractType(contractType)
-				.customer(customer)
+                .company(customer.getCompany())
 				.endDate(endDate)
 				.build());
 	}
@@ -195,7 +195,7 @@ public class ContractTest {
 
 		Assertions.assertDoesNotThrow(() -> new ActemiumContract.ContractBuilder()
 				.contractType(contractType)
-				.customer(customer)
+                .company(customer.getCompany())
 				.startDate(startDate)
 				.endDate(endDate)
 				.build());
@@ -207,7 +207,7 @@ public class ContractTest {
     public void createContract_InValidAttributes03_ThrowsIllegalArgumentException(ActemiumContractType contractType, ActemiumCustomer customer, LocalDate startDate, LocalDate endDate) {
     	Assertions.assertThrows(InformationRequiredException.class, () -> new ActemiumContract.ContractBuilder()
 				.contractType(contractType)
-				.customer(customer)
+                .company(customer.getCompany())
 				.startDate(startDate)
 				.endDate(endDate)
 				.build());
@@ -220,7 +220,7 @@ public class ContractTest {
 		try {
 			contract = new ActemiumContract.ContractBuilder()
 					.contractType(contractType01)
-					.customer(mark)
+	                .company(mark.getCompany())
 					.endDate(nextYear)
 					.build();
 		} catch (InformationRequiredException e) {
@@ -237,7 +237,7 @@ public class ContractTest {
 		try {
 			contract = new ActemiumContract.ContractBuilder()
 					.contractType(contractType01)
-					.customer(mark)
+	                .company(mark.getCompany())
 					.startDate(today)
 					.endDate(nextYear)
 					.build();
@@ -254,7 +254,7 @@ public class ContractTest {
 		try {
 			contract = new ActemiumContract.ContractBuilder()
 					.contractType(contractType01)
-					.customer(mark)
+	                .company(mark.getCompany())
 					.startDate(nextWeek)
 					.endDate(nextYearNextWeek)
 					.build();
@@ -270,7 +270,7 @@ public class ContractTest {
 		initializeAttributes();
 		Assertions.assertThrows(NullPointerException.class, () -> new ActemiumContract.ContractBuilder()
 				.contractType(contractType01)
-				.customer(mark)
+                .company(mark.getCompany())
 				.startDate(nextWeek)
 				.endDate(null)
 				.build());

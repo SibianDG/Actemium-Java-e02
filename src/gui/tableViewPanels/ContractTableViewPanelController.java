@@ -167,7 +167,6 @@ public class ContractTableViewPanelController<T,E> extends TableViewPanelControl
 					newPredicate = e -> e.getContractIdString().equals(filterText);
 				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("company_name")) || fieldName.equalsIgnoreCase("timestamp")){
 					newPredicate = e -> e.giveCompany().getName().toLowerCase().contains(filterText);
-//					newPredicate = e -> e.giveCustomer().giveCompany().getName().toLowerCase().contains(filterText);
 				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("contract_type_name")) || fieldName.equalsIgnoreCase("contract type name")){
 					newPredicate = e -> e.giveContractType().getName().toLowerCase().contains(filterText);
 				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("select_status")) || fieldName.equalsIgnoreCase("contractstatus")){

@@ -1,7 +1,5 @@
 package domain.enums;
 
-import languages.LanguageResource;
-
 /**
  * The enum Kb item type.
  */
@@ -40,5 +38,12 @@ public enum KbItemType {
      * Other kb item type.
      */
     OTHER
+    
+    ,
+    /**
+     * kb item has been archived (logical delete)
+     * visible for support manager, invisible for the others
+     */
+    ARCHIVED
 
 }

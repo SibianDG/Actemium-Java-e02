@@ -45,7 +45,7 @@ public class TicketCommentTest {
                     .ticketType(TicketType.SOFTWARE)
                     .title("Title")
                     .description("Cannot print labels")
-                    .customer(customer)
+	                .company(customer.getCompany())
                     .build();
         } catch (InformationRequiredException e) {
             throw new IllegalArgumentException("Problem with initialize variables before test.");

@@ -131,7 +131,7 @@ public class TicketTest implements Attributes {
 																.ticketType(ticketType)
 																.title(title)
 																.description(description)
-																.customer(customer)
+												                .company(customer.getCompany())
 																.build());
 	}
 
@@ -145,7 +145,7 @@ public class TicketTest implements Attributes {
 										.ticketType(ticketType)
 										.title(title)
 										.description(description)
-										.customer(customer)
+						                .company(customer.getCompany())
 										.build());
 	}
 
@@ -159,7 +159,7 @@ public class TicketTest implements Attributes {
 										.ticketType(ticketType)
 										.title(title)
 										.description(description)
-										.customer(customer)
+						                .company(customer.getCompany())
 										.attachments(attachments)
 										.build());
 	}
@@ -174,7 +174,7 @@ public class TicketTest implements Attributes {
 										.ticketType(ticketType)
 										.title(title)
 										.description(description)
-										.customer(customer)
+						                .company(customer.getCompany())
 										.attachments(attachments)
 										.build());
 	}
@@ -196,7 +196,7 @@ public class TicketTest implements Attributes {
 					.ticketType(TicketType.SOFTWARE)
 					.title("Printer Broken")
 					.description("Cannot print labels")
-					.customer(customer)
+	                .company(customer.getCompany())
 					.build();
 		} catch (InformationRequiredException e) {
 			throw new IllegalArgumentException("Problem with initialize variables before test.");

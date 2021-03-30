@@ -8,6 +8,7 @@ import java.util.Set;
 
 import domain.Employee;
 import domain.Ticket;
+import domain.UserModel;
 import domain.enums.EmployeeRole;
 import domain.enums.KbItemType;
 import exceptions.InformationRequiredException;
@@ -102,7 +103,7 @@ public class KnowledgeBaseDetailsPanelController extends DetailsPanelController 
         addGridDetails(((KnowledgeBaseViewModel) viewModel).getDetails());
         txtDetailsTitle.setText(String.format("%s: %s", LanguageResource.getString("title"), ((KnowledgeBaseViewModel) viewModel).getTitleSelectedKbItem()));
         btnModify.setText(LanguageResource.getString("modify_KB_item"));
-        btnDelete.setVisible(false);
+        btnDelete.setVisible(true);
         
         btnModify.setVisible(((Employee) ((KnowledgeBaseViewModel) viewModel).getSignedInUser()).getRole() != EmployeeRole.TECHNICIAN);
         txtErrorMessage.setVisible(false);

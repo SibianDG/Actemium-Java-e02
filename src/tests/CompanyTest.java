@@ -171,7 +171,7 @@ public class CompanyTest implements Attributes {
                         .ticketType(TicketType.SOFTWARE)
                         .title("Ticket"+i)
                         .description("Cannot print labels")
-                        .customer(cust)
+                        .company(cust.getCompany())
                         .build();
             } catch (InformationRequiredException e) {
                 throw new IllegalArgumentException("Problem with initialize variables before test.");
@@ -241,7 +241,7 @@ public class CompanyTest implements Attributes {
                     .ticketType(TicketType.SOFTWARE)
                     .title("Printer Broken")
                     .description("Cannot print labels")
-                    .customer(cust)
+                    .company(cust.getCompany())
                     .build();
         } catch (InformationRequiredException e) {
             throw new IllegalArgumentException("Problem with initialize variables before test.");

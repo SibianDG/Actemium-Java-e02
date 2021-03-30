@@ -89,7 +89,6 @@ public class TicketViewModel extends ViewModel {
         details.put(LanguageResource.getString("type"), Collections.singletonMap(editable, ticket.getTicketType()));
         details.put(LanguageResource.getString("status"), Collections.singletonMap(editable || techPermissions, ticket.getStatus()));
         details.put(LanguageResource.getString("description"), Collections.singletonMap(editable, ticket.getDescription()));
-//        details.put(LanguageResource.getString("customer/company"), Collections.singletonMap(false, ticket.giveCustomer().giveCompany().getName()));
         details.put(LanguageResource.getString("customer/company"), Collections.singletonMap(false, ticket.giveCompany().getName()));
         details.put(LanguageResource.getString("technicians"), Collections.singletonMap(editable, ticket.giveTechnicians()));
         details.put(LanguageResource.getString("comments"), Collections.singletonMap(false, ticket.giveComments().stream().map(Object::toString).collect(Collectors.joining("\n"))));

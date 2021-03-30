@@ -66,7 +66,6 @@ public class ContractFacade extends Facade {
 		LocalDate endDate = startDate.plusYears(duration);
 		ActemiumContract contract = new ActemiumContract.ContractBuilder()
 				.contractType(contractType)
-//				.customer(customer)
 				.company(customer.getCompany())
 				.startDate(startDate)
 				.endDate(endDate)

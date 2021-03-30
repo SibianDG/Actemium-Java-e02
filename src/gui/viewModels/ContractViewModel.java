@@ -49,7 +49,6 @@ public class ContractViewModel extends ViewModel {
         Map<String,Map<Boolean, Object>> details = new LinkedHashMap<>();
         details.put(LanguageResource.getString("contract_ID"), Collections.singletonMap(false, contract.getContractIdString()));
         details.put(LanguageResource.getString("company"), Collections.singletonMap(false, contract.giveCompany().getName()));
-//        details.put(LanguageResource.getString("company"), Collections.singletonMap(false, contract.giveCustomer().giveCompany().getName()));
         details.put(LanguageResource.getString("type"), Collections.singletonMap(false, contract.giveContractType().getName()));
         details.put(LanguageResource.getString("status"), Collections.singletonMap(true, contract.getStatus()));
         details.put(LanguageResource.getString("start_date"), Collections.singletonMap(false, contract.getStartDate().toString()));

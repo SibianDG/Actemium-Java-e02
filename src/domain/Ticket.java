@@ -101,17 +101,11 @@ public interface Ticket {
 	String getDescription();
 
 	/**
-	 * Give customer customer.
+	 * Give company
 	 *
-	 * @return the customer
+	 * @return the company
 	 */
 	Company giveCompany();
-//	/**
-//	 * Give customer customer.
-//	 *
-//	 * @return the customer
-//	 */
-//	Customer giveCustomer();
 
 	/**
 	 * Give comments list.
