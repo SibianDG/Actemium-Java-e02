@@ -76,7 +76,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 
 	@ManyToOne
 	private ActemiumCompany company;
-	@ManyToMany(cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "ticket", cascade = CascadeType.PERSIST)
 	private List<ActemiumTicketComment> comments = new ArrayList<>();
 	private String attachments;	
 	
@@ -127,7 +127,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 		this.title.set(builder.title);
 		this.description = builder.description;
 		this.company = builder.company;
-//		this.customer = builder.customer;
 		this.comments = builder.comments;
 		this.solution = builder.solution;
 		this.quality = builder.quality;
@@ -640,7 +639,6 @@ public class ActemiumTicket implements Ticket, Serializable {
 		private String title;
 		private String description;
 		private ActemiumCompany company;
-//		private ActemiumCustomer customer;
 		private List<ActemiumTicketComment> comments;
 		private String attachments;
 //		private List<String> attachments;
