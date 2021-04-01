@@ -46,6 +46,10 @@ public class ActemiumEmployee extends UserModel implements Employee, Seniority, 
 
 	@Transient
 	private StringProperty role = new SimpleStringProperty();
+	
+	// JPA automatically does this, so no need to write it
+//	@ManyToMany(mappedBy = "technicians")
+//	private List<ActemiumTicket> ticketsTechnicianIsAssignedTo = new ArrayList<>();
 
 	@ElementCollection(targetClass = TicketType.class)
 	@Enumerated(EnumType.STRING)

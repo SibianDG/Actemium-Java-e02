@@ -81,7 +81,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 	private String attachments;	
 	
 	// List of technicians contain all the technicians assigned to the ticket
-	@ManyToMany(cascade = CascadeType.PERSIST)
+	@ManyToMany
 	private List<ActemiumEmployee> technicians = new ArrayList<>();
 
 	@Transient

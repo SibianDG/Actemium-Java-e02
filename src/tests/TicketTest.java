@@ -59,12 +59,12 @@ public class TicketTest implements Attributes {
 	private static Stream<Arguments> validActemiumTicketAttributes04() {
 		setAttributes();
         return Stream.of(
-                Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer),
-                Arguments.of(TicketPriority.P2, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer),
-                Arguments.of(TicketPriority.P3, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer),
-				Arguments.of(TicketPriority.P1, TicketType.HARDWARE, "Printer Broken", "Cannot print labels", customer),
-				Arguments.of(TicketPriority.P1, TicketType.NETWORK, "Printer Broken", "Cannot print labels", customer),
-				Arguments.of(TicketPriority.P1, TicketType.INFRASTRUCTURE, "Printer Broken", "Cannot print labels", customer)
+                Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", google),
+                Arguments.of(TicketPriority.P2, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", google),
+                Arguments.of(TicketPriority.P3, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", google),
+				Arguments.of(TicketPriority.P1, TicketType.HARDWARE, "Printer Broken", "Cannot print labels", google),
+				Arguments.of(TicketPriority.P1, TicketType.NETWORK, "Printer Broken", "Cannot print labels", google),
+				Arguments.of(TicketPriority.P1, TicketType.INFRASTRUCTURE, "Printer Broken", "Cannot print labels", google)
 				);
     }
 
@@ -72,21 +72,21 @@ public class TicketTest implements Attributes {
 		setAttributes();
 		return Stream.of(
                 // title: not null or empty or blank, but (special chars)? and digits are ok
-        		Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, null, "Cannot print labels", customer),
-                Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "", "Cannot print labels", customer),
-                Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "   ", "Cannot print labels", customer),
+        		Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, null, "Cannot print labels", google),
+                Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "", "Cannot print labels", google),
+                Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "   ", "Cannot print labels", google),
                 
                 // description: not null or empty or blank, but special chars and digits are ok
-                Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", null, customer),
-                Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "", customer),
-                Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "    ", customer),
+                Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", null, google),
+                Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "", google),
+                Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "    ", google),
                                 
                 // customer: not null
                 Arguments.of(TicketPriority.P1, TicketType.SOFTWARE,"Printer Broken", "Cannot print labels", null),
 
 				//Enums null
-				Arguments.of(null, TicketType.HARDWARE, "Printer Broken", "Cannot print labels", customer),
-				Arguments.of(TicketPriority.P1, null, "Printer Broken", "Cannot print labels", customer)
+				Arguments.of(null, TicketType.HARDWARE, "Printer Broken", "Cannot print labels", google),
+				Arguments.of(TicketPriority.P1, null, "Printer Broken", "Cannot print labels", google)
 		);
 
 	}
@@ -94,13 +94,13 @@ public class TicketTest implements Attributes {
     private static Stream<Arguments> validActemiumTicketAttributes06() {
 		setAttributes();
 		return Stream.of(
-    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer, null, null),
-    			Arguments.of(TicketPriority.P2, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer, "", null),
-    			Arguments.of(TicketPriority.P3, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer, null, ""),
-    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", customer, "Remarks", "Attachment"),
-    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels 123", customer, "Remarks 123", "Attachment 123"),
-    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels 123", customer, "", ""),
-    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels 123", customer, "    ", "    ")
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", google, null, null),
+    			Arguments.of(TicketPriority.P2, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", google, "", null),
+    			Arguments.of(TicketPriority.P3, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", google, null, ""),
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", google, "Remarks", "Attachment"),
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels 123", google, "Remarks 123", "Attachment 123"),
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels 123", google, "", ""),
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels 123", google, "    ", "    ")
     			);
     }
     
@@ -108,14 +108,14 @@ public class TicketTest implements Attributes {
 		setAttributes();
 		return Stream.of(
     			// title: not null or empty or blank, but (special chars)? and digits are ok
-    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, null, "Cannot print labels", customer, null, null),
-    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "", "Cannot print labels", customer, null, null),
-    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "   ", "Cannot print labels", customer, null, null),
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, null, "Cannot print labels", google, null, null),
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "", "Cannot print labels", google, null, null),
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "   ", "Cannot print labels", google, null, null),
     			
     			// description: not null or empty or blank, but special chars and digits are ok
-    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", null, customer, null, null),
-    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "", customer, null, null),
-    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "    ", customer, null, null),
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", null, google, null, null),
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "", google, null, null),
+    			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "    ", google, null, null),
     			
     			// customer: not null
     			Arguments.of(TicketPriority.P1, TicketType.SOFTWARE, "Printer Broken", "Cannot print labels", null, null, null)
@@ -125,41 +125,41 @@ public class TicketTest implements Attributes {
 	@ParameterizedTest
 	@MethodSource("validActemiumTicketAttributes04")
 	public void createActemiumTicket_ValidAttributes04_DoesNotThrowException(TicketPriority ticketPriority, TicketType ticketType,
-			String title, String description, ActemiumCustomer customer) {
+			String title, String description, ActemiumCompany company) {
 		Assertions.assertDoesNotThrow(() -> new ActemiumTicket.TicketBuilder()
 																.ticketPriority(ticketPriority)
 																.ticketType(ticketType)
 																.title(title)
 																.description(description)
-												                .company(customer.getCompany())
+												                .company(company)
 																.build());
 	}
 
 	@ParameterizedTest
 	@MethodSource("invalidActemiumTicketAttributes04")
 	public void createActemiumTicket_InValidAttributes04_ThrowsIllegalArgumentException(TicketPriority ticketPriority, TicketType ticketType,
-			String title, String description, ActemiumCustomer customer) {
+			String title, String description, ActemiumCompany company) {
 		Assertions.assertThrows(InformationRequiredException.class,
 				() -> new ActemiumTicket.TicketBuilder()
 										.ticketPriority(ticketPriority)
 										.ticketType(ticketType)
 										.title(title)
 										.description(description)
-						                .company(customer.getCompany())
+						                .company(company)
 										.build());
 	}
 
 	@ParameterizedTest
 	@MethodSource("validActemiumTicketAttributes06")
 	public void createActemiumTicket_ValidAttributes06_DoesNotThrowException(TicketPriority ticketPriority, TicketType ticketType,
-			String title, String description, ActemiumCustomer customer, String remarks, String attachments) {
+			String title, String description, ActemiumCompany company, String remarks, String attachments) {
 		Assertions.assertDoesNotThrow(
 				() -> new ActemiumTicket.TicketBuilder()
 										.ticketPriority(ticketPriority)
 										.ticketType(ticketType)
 										.title(title)
 										.description(description)
-						                .company(customer.getCompany())
+						                .company(company)
 										.attachments(attachments)
 										.build());
 	}
@@ -167,14 +167,14 @@ public class TicketTest implements Attributes {
 	@ParameterizedTest
 	@MethodSource("invalidActemiumTicketAttributes06")
 	public void createActemiumTicket_InValidAttributes06_ThrowsIllegalArgumentException(TicketPriority ticketPriority, TicketType ticketType,
-			String title, String description, ActemiumCustomer customer, String remarks, String attachments) {
+			String title, String description, ActemiumCompany company, String remarks, String attachments) {
 		Assertions.assertThrows(InformationRequiredException.class,
 				() -> new ActemiumTicket.TicketBuilder()
 										.ticketPriority(ticketPriority)
 										.ticketType(ticketType)
 										.title(title)
 										.description(description)
-						                .company(customer.getCompany())
+						                .company(company)
 										.attachments(attachments)
 										.build());
 	}
