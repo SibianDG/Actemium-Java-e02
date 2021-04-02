@@ -78,35 +78,35 @@ public class ChartViewModel{
         return mapStatus;
     }
 
-    public Map<Long, Integer> barChartDataAmountOfResolvedTicketsAsignedToTechnician() {
-        Map<Long, Integer> mapTechniciansResolved = new HashMap<>();
+    public Map<Integer, Integer> barChartDataAmountOfResolvedTicketsAsignedToTechnician() {
+        Map<Integer, Integer> mapTechniciansResolved = new HashMap<>();
 
         //Technician is unique by its UserID
         ticketFacade.getAllTechnicians()
-                .forEach(tech -> mapTechniciansResolved.put((long) tech.getUserId(), 0));
+                .forEach(tech -> mapTechniciansResolved.put(tech.getUserId(), 0));
 
         ticketFacade.giveActemiumTicketsResolved()
                 .forEach(ticket -> ticket.giveTechnicians()
-                        .forEach(tech -> mapTechniciansResolved.put((long) tech.getUserId(), mapTechniciansResolved.get(tech.getUserId()) + 1)));
+                        .forEach(tech -> mapTechniciansResolved.put(tech.getUserId(), mapTechniciansResolved.get(tech.getUserId()) + 1)));
 
         return mapTechniciansResolved;
     }
 
-    public Map<Long, Integer> barChartDataAmountOfOutstandingTicketsAsignedToTechnician() {
-        Map<Long, Integer> mapTechniciansOutstanding = new HashMap<>();
+    public Map<Integer, Integer> barChartDataAmountOfOutstandingTicketsAsignedToTechnician() {
+        Map<Integer, Integer> mapTechniciansOutstanding = new HashMap<>();
 
         //Technician is unique by its UserID
         ticketFacade.getAllTechnicians()
-                .forEach(tech -> mapTechniciansOutstanding.put((long) tech.getUserId(), 0));
+                .forEach(tech -> mapTechniciansOutstanding.put(tech.getUserId(), 0));
 
         ticketFacade.giveActemiumTicketsOutstanding()
                 .forEach(ticket -> ticket.giveTechnicians()
-                        .forEach(tech -> mapTechniciansOutstanding.put((long) tech.getUserId(), mapTechniciansOutstanding.get(tech.getUserId()) + 1)));
+                        .forEach(tech -> mapTechniciansOutstanding.put(tech.getUserId(), mapTechniciansOutstanding.get(tech.getUserId()) + 1)));
 
         return mapTechniciansOutstanding;
     }
 
-    public String getnameOftechnicianByID(long id) {
+    public String getnameOftechnicianByID(int id) {
         return userFacade.getNameByID(id);
     }
 

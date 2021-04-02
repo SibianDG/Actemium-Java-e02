@@ -183,7 +183,7 @@ public abstract class Facade {
      * @param id the id
      * @return the name by id
      */
-    public String getNameByID(long id) {
+    public String getNameByID(int id) {
         return actemium.getNameByID(id);
     }
 

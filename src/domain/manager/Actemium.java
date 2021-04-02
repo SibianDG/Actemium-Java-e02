@@ -234,7 +234,7 @@ public class Actemium {
 	 * @param id the id
 	 * @return the name by id
 	 */
-	public String getNameByID(long id) {
+	public String getNameByID(int id) {
 		return String.format("%s %s", userDaoJpa.get(id).getFirstName(), userDaoJpa.get(id).getLastName());
 	}
 

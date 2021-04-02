@@ -194,8 +194,8 @@ public class ChartController extends GridPane {
         StackedBarChart<String, Integer> barChart = new StackedBarChart(xAxis, yAxis);
         barChart.setTitle(LanguageResource.getString("ticketsTechnician"));
 
-        Map<Long, Integer> data1 = chartViewModel.barChartDataAmountOfResolvedTicketsAsignedToTechnician();
-        Map<Long, Integer> data2 = chartViewModel.barChartDataAmountOfOutstandingTicketsAsignedToTechnician();
+        Map<Integer, Integer> data1 = chartViewModel.barChartDataAmountOfResolvedTicketsAsignedToTechnician();
+        Map<Integer, Integer> data2 = chartViewModel.barChartDataAmountOfOutstandingTicketsAsignedToTechnician();
 
         XYChart.Series<String, Integer> dataSeries1 = new XYChart.Series<>();
         dataSeries1.setName(LanguageResource.getString("resolved"));
