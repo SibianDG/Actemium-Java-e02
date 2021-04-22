@@ -41,7 +41,7 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 	private UserModel user;
 	private String userRole;
 
-	@Column(columnDefinition = "DATETIME")
+	@Column(columnDefinition = "DATETIME2")
 	private LocalDateTime dateTimeOfChange;
 
 	private String changeDescription;

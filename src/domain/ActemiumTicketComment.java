@@ -41,7 +41,7 @@ public class ActemiumTicketComment implements TicketComment, Serializable {
 	private UserModel user;
 	private String userRole;
 
-	@Column(columnDefinition = "DATETIME")
+	@Column(columnDefinition = "DATETIME2")
 	private LocalDateTime dateTimeOfComment;
 
 	@Lob

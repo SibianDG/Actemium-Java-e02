@@ -63,9 +63,9 @@ public class ActemiumTicket implements Ticket, Serializable {
 	@Transient
 	private StringProperty completionDate = new SimpleStringProperty();
 
-	@Column(columnDefinition = "DATETIME")
+	@Column(columnDefinition = "DATETIME2")
 	private LocalDateTime dateAndTimeOfCreation;
-	@Column(columnDefinition = "DATETIME")
+	@Column(columnDefinition = "DATETIME2")
 	private LocalDateTime dateAndTimeOfCompletion;
 
 	@Transient
