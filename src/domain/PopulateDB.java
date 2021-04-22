@@ -215,11 +215,11 @@ public class PopulateDB {
 
 
 
-        ActemiumCustomer barak = new ActemiumCustomer.CustomerBuilder()
-                .username("cust01Barak")
+        ActemiumCustomer florian = new ActemiumCustomer.CustomerBuilder()
+                .username("cust01Florian")
                 .password("Passwd123&")
-                .firstName("Barak")
-                .lastName("Obama")
+                .firstName("Florian")
+                .lastName("Goossens")
                 .company(theWhiteHouse)
                 .build();
         ActemiumCustomer jeff = new ActemiumCustomer.CustomerBuilder()
@@ -260,12 +260,12 @@ public class PopulateDB {
 
         ActemiumContract bContract = new ActemiumContract.ContractBuilder()
                                                             .contractType(bCtype)
-                                                            .company(barak.getCompany())
+                                                            .company(florian.getCompany())
                                                             .endDate(LocalDate.now().plusYears(1))
                                                             .build();
         ActemiumContract bContract02 = new ActemiumContract.ContractBuilder()
                 .contractType(bCtype02)
-                .company(barak.getCompany())
+                .company(florian.getCompany())
                 .endDate(LocalDate.now().plusYears(1))
                 .build();
         ActemiumContract jContract = new ActemiumContract.ContractBuilder()
@@ -322,8 +322,8 @@ public class PopulateDB {
                 .endDate(LocalDate.now().plusYears(2))
                 .build();
 
-        barak.addContract(bContract);
-        barak.addContract(bContract02);
+        florian.addContract(bContract);
+        florian.addContract(bContract02);
 
         jeff.addContract(jContract);
         jeff.addContract(jContract02);
@@ -343,13 +343,13 @@ public class PopulateDB {
         mark.setStatus(UserStatus.BLOCKED);
         larry.setStatus(UserStatus.INACTIVE);
         ActemiumEmployee tech = new ActemiumEmployee.EmployeeBuilder()
-                .username("joe123")
+                .username("bartvdb123")
                 .password("Passwd123&")
-                .firstName("Joe (HARDWARE)")
-                .lastName("Biden")
+                .firstName("Bart (HARDWARE)")
+                .lastName("Vandenbosche")
                 .address("Overwale 42")
                 .phoneNumber("091354864")
-                .emailAddress("1@hogent.be")
+                .emailAddress("bartvdb@hogent.be")
                 .role(EmployeeRole.TECHNICIAN)
                 .build();
         tech.addSpecialty(TicketType.HARDWARE);
@@ -358,11 +358,11 @@ public class PopulateDB {
         ActemiumEmployee tech2 = new ActemiumEmployee.EmployeeBuilder()
                 .username("don123")
                 .password("Passwd123&")
-                .firstName("Donald(Soft)")
-                .lastName("Trump")
+                .firstName("Don (Soft)")
+                .lastName("Verstekker")
                 .address("Overwale 42")
                 .phoneNumber("091354864")
-                .emailAddress("3@hogent.be")
+                .emailAddress("don.verstekker@hogent.be")
                 .role(EmployeeRole.TECHNICIAN)
                 .build();
         tech2.addSpecialty(TicketType.SOFTWARE);
@@ -374,55 +374,55 @@ public class PopulateDB {
         ActemiumTicket ticket01 = new ActemiumTicket.TicketBuilder()
                                                     .ticketPriority(TicketPriority.P1)
                                                     .ticketType(TicketType.DATABASE)
-                                                    .title("Ticket1")
-                                                    .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
-                                                    .company(barak.getCompany())
+                                                    .title("Database issues")
+                                                    .description("I have had some issues with my database. I'll need some help!")
+                                                    .company(florian.getCompany())
                                                     .build();
         ticket01.addTicketComment(createTicketComment(ticket01, tech, String.format("(%s)", LanguageResource.getString("none"))));
         ActemiumTicket ticket02 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.HARDWARE)
-                .title("Ticket2")
-                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+                .title("My mouse doesn't move")
+                .description("Help my mouse won't move on my screen! I don't know how to fix it.")
                 .company(jeff.getCompany())
                 .build();
         ticket02.addTicketComment(createTicketComment(ticket02, tech, String.format("(%s)", LanguageResource.getString("none"))));
         ActemiumTicket ticket03 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.INFRASTRUCTURE)
-                .title("BBQ grill stopt working")
-                .description("I was smoking these meats with sweet baby rays saus and suddenly my BBQ stopped working")
+                .title("Printer stopped working")
+                .description("I was printing a document when all of a sudden the printer stopped working.")
                 .company(mark.getCompany())
                 .build();
         ticket03.addTicketComment(createTicketComment(ticket03, tech, String.format("(%s)", LanguageResource.getString("none"))));
         ActemiumTicket ticket04 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.NETWORK)
-                .title("Microchips in vaccine not working")
-                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+                .title("Wifi issues")
+                .description("I have some issues with connecting my laptop to the wifi.")
                 .company(bill.getCompany())
                 .build();
         ticket04.addTicketComment(createTicketComment(ticket04, tech, String.format("(%s)", LanguageResource.getString("none"))));
         ActemiumTicket ticket05 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.SOFTWARE)
-                .title("Ticket5")
-                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+                .title("Problems with the installation of word")
+                .description("I don't know how to install word. I would like to have some help!")
                 .company(larry.getCompany())
                 .build();
         ticket05.addTicketComment(createTicketComment(ticket05, tech, String.format("(%s)", LanguageResource.getString("none"))));
         ActemiumTicket ticket06 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.SOFTWARE)
-                .title("Ticket6")
-                .description("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+                .title("Problems with the installation of word powerpoint")
+                .description("I don't know how to install powerpoint. I would like to have some help!")
                 .company(elon.getCompany())
                 .build();        
         ticket06.addTicketComment(createTicketComment(ticket06, tech, String.format("(%s)", LanguageResource.getString("none"))));       
         
         ticket05.setStatus(TicketStatus.COMPLETED);
 
-        barak.addTicket(ticket01);
+        florian.addTicket(ticket01);
         jeff.addTicket(ticket02);
         mark.addTicket(ticket03);
         bill.addTicket(ticket04);
@@ -440,31 +440,31 @@ public class PopulateDB {
         userDao.insert( new ActemiumEmployee.EmployeeBuilder()
                 .username("Admin123")
                 .password("Passwd123&")
-                .firstName("Admin")
-                .lastName("Istrator")
-                .address("Overwale 42")
+                .firstName("Ward")
+                .lastName("De Bever")
+                .address("Langemunt 12")
                 .phoneNumber("091354864")
-                .emailAddress("5@hogent.be")
+                .emailAddress("ward.db@hogent.be")
                 .role(EmployeeRole.ADMINISTRATOR)
                 .build());
         userDao.insert( new ActemiumEmployee.EmployeeBuilder()
                 .username("Sup123")
                 .password("Passwd123&")
-                .firstName("Support")
-                .lastName("Manager")
-                .address("Overwale 42")
+                .firstName("Thomas")
+                .lastName("Dekker")
+                .address("Hoekstraat 4")
                 .phoneNumber("091354864")
-                .emailAddress("6@hogent.be")
+                .emailAddress("thomas.dekker@hogent.be")
                 .role(EmployeeRole.SUPPORT_MANAGER)
                 .build());
         ActemiumEmployee tech3 = new ActemiumEmployee.EmployeeBuilder()
                 .username("Tech123")
                 .password("Passwd123&")
-                .firstName("Tech(DB)")
+                .firstName("Jonas(DB)")
                 .lastName("Nician")
-                .address("Overwale 42")
+                .address("Poortstraat 2")
                 .phoneNumber("091354864")
-                .emailAddress("7@hogent.be")
+                .emailAddress("jonas.nician@hogent.be")
                 .role(EmployeeRole.TECHNICIAN)
                 .build();
         tech3.addSpecialty(TicketType.DATABASE);
@@ -478,7 +478,7 @@ public class PopulateDB {
                 .lastName("Dirven")
                 .address("Overwale 42")
                 .phoneNumber("091354864")
-                .emailAddress("8@hogent.be")
+                .emailAddress("thomas.dirven@hogent.be")
                 .role(EmployeeRole.ADMINISTRATOR)
                 .build());
         userDao.insert( new ActemiumEmployee.EmployeeBuilder()
@@ -513,30 +513,30 @@ public class PopulateDB {
                 .build());
 
         ActemiumEmployee badguy = new ActemiumEmployee.EmployeeBuilder()
-                .username("badGuy")
+                .username("bartje123")
                 .password("Passwd123&")
-                .firstName("bad")
-                .lastName("guy")
+                .firstName("Bart")
+                .lastName("Bommel")
                 .address("Hoogstraat 89")
                 .phoneNumber("091354864")
-                .emailAddress("bad.guy@hogent.be")
+                .emailAddress("bart.bommel@hogent.be")
                 .role(EmployeeRole.SUPPORT_MANAGER)
                 .build();
         ActemiumEmployee inactive = new ActemiumEmployee.EmployeeBuilder()
-                .username("fired")
+                .username("tommie123")
                 .password("Passwd123&")
-                .firstName("bad")
-                .lastName("guy")
+                .firstName("Tom")
+                .lastName("Timmerman")
                 .address("Hoogstraat 89")
                 .phoneNumber("091354864")
-                .emailAddress("fired@hogent.be")
+                .emailAddress("tom.timmerman@hogent.be")
                 .role(EmployeeRole.SUPPORT_MANAGER)
                 .build();
         badguy.setStatus(UserStatus.BLOCKED);
         inactive.setStatus(UserStatus.INACTIVE);
         userDao.insert(badguy);
         userDao.insert(inactive);
-        userDao.insert(barak);
+        userDao.insert(florian);
         userDao.insert(jeff);
         userDao.insert(mark);
         userDao.insert(bill);
@@ -544,7 +544,7 @@ public class PopulateDB {
         userDao.insert(elon);
 
         userDao.insert(new ActemiumCustomer.CustomerBuilder()
-                .username("cust02Johan")
+                .username("cust02Willy")
                 .password("Passwd123&")
                 .firstName("Willy")
                 .lastName("Naessens")
@@ -554,22 +554,22 @@ public class PopulateDB {
                 .username("BObieTHeBuilder")
                 .password("Passwd123&")
                 .firstName("Bob(infra)")
-                .lastName("The Builder")
+                .lastName("Berkmans")
                 .address("Stationstraat 56")
                 .phoneNumber("092548736")
-                .emailAddress("bob.thebuilder@hogent.be")
+                .emailAddress("bob.berkmans@hogent.be")
                 .role(EmployeeRole.TECHNICIAN)
                 .build();
         tech4.addSpecialty(TicketType.INFRASTRUCTURE);
         tech4.addSpecialty(TicketType.OTHER);
         ActemiumEmployee tech5 = new ActemiumEmployee.EmployeeBuilder()
-                .username("theInternet")
+                .username("jhonnyboy")
                 .password("Passwd123&")
-                .firstName("LAN(network)")
-                .lastName("The Cable")
+                .firstName("Jhon (network)")
+                .lastName("Opmeer")
                 .address("Stationstraat 56")
                 .phoneNumber("092548736")
-                .emailAddress("lan.thecable@hogent.be")
+                .emailAddress("jhon.opmeer@hogent.be")
                 .role(EmployeeRole.TECHNICIAN)
                 .build();
         tech5.addSpecialty(TicketType.NETWORK);
@@ -610,12 +610,14 @@ public class PopulateDB {
         TicketType[] types = TicketType.values() ;
 
         TicketStatus[] status = TicketStatus.values();
-
-        for (int i = 0; i < 20; i++) {
+        
+        String[] ticketNames = new String[] {"Internet problems", "Wifi problems", "Hardware problems", "Mouse problems", "Screen problems", "Database not available", "Error occured while installing excel", "Not enough disk space", "I have a virus on my laptop", "Printing problems"};
+        
+        for (int i = 0; i < 10; i++) {
             ActemiumTicket t = new ActemiumTicket.TicketBuilder()
                                                     .ticketPriority(prios[randomGen.nextInt(3)])
                                                     .ticketType(types[randomGen.nextInt(types.length)])
-                                                    .title(String.format("%s %d", LanguageResource.getString("title_random"), i))
+                                                    .title(ticketNames[i])
                                                     .description(String.format("%s %d", LanguageResource.getString("description"), i))
                                                     .company(bill.getCompany())
                                                     .comments(null)
@@ -648,18 +650,21 @@ public class PopulateDB {
 		
 		kbItemDao.startTransaction();
 		kbItemDao.insert(new ActemiumKbItem.KbItemBuilder()
-				.title("Test title")
-				.keywords("easyfix")
+				.title("Word installation")
+				.keywords("word")
 				.type(KbItemType.DATABASE)
-				.text("some sample text here")
+				.text("In this article you will find out how to install microsoft word...")
 				.build());
         KbItemType[] kbItemTypes = KbItemType.values();
-        for (int i = 0; i < 20; i++) {
+        
+        String[] articleNames = new String[] {"powerpoint", "excel", "connecting to the internet", "printing files", "installing powerpoint", "installing anti virus software", "connecting to a database", "deleting files", "saving word documents", "databases"};
+        for (int i = 0; i < 10; i++) {
+        	KbItemType randomKbItem = kbItemTypes[randomGen.nextInt(kbItemTypes.length)];
         	kbItemDao.insert(new ActemiumKbItem.KbItemBuilder()
-                                    .title("Random KB article Title"+i)
-                                    .keywords("keyword "+i)
-                                    .type(kbItemTypes[randomGen.nextInt(kbItemTypes.length)])
-                                    .text("Sample Text"+i)
+                                    .title("Article about " + articleNames[i])
+                                    .keywords(randomKbItem.toString())
+                                    .type(randomKbItem)
+                                    .text("This article is about tells you everything about " + articleNames[i] + "...")
                                     .build());
         }
 		kbItemDao.commitTransaction();
