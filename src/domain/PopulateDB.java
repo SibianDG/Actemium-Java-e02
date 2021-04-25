@@ -24,6 +24,44 @@ public class PopulateDB {
     	System.out.println("DBTester - creating and persisting multiple user objects");
     	
         userDao.startTransaction();
+        
+        userDao.insert( new ActemiumEmployee.EmployeeBuilder()
+                .username("Admin123")
+                .password("Passwd123&")
+                .firstName("Ward")
+                .lastName("De Bever")
+                .address("Langemunt 12")
+                .phoneNumber("091354864")
+                .emailAddress("ward.db@hogent.be")
+                .role(EmployeeRole.ADMINISTRATOR)
+                .build());
+        
+        ActemiumEmployee supMan = new ActemiumEmployee.EmployeeBuilder()
+                .username("Sup123")
+                .password("Passwd123&")
+                .firstName("Thomas")
+                .lastName("Dekker")
+                .address("Hoekstraat 4")
+                .phoneNumber("091354864")
+                .emailAddress("thomas.dekker@hogent.be")
+                .role(EmployeeRole.SUPPORT_MANAGER)
+                .build();
+        userDao.insert(supMan);
+        
+        ActemiumEmployee tech3 = new ActemiumEmployee.EmployeeBuilder()
+                .username("Tech123")
+                .password("Passwd123&")
+                .firstName("Jonas")
+                .lastName("Mertens (DB)")
+                .address("Poortstraat 2")
+                .phoneNumber("091354864")
+                .emailAddress("jonas.nician@hogent.be")
+                .role(EmployeeRole.TECHNICIAN)
+                .build();
+        tech3.addSpecialty(TicketType.DATABASE);
+        tech3.addSpecialty(TicketType.OTHER);
+
+        userDao.insert(tech3);
 
         ActemiumCompany theWhiteHouse = new ActemiumCompany.CompanyBuilder()
                 .name("The White House")
@@ -345,8 +383,8 @@ public class PopulateDB {
         ActemiumEmployee tech = new ActemiumEmployee.EmployeeBuilder()
                 .username("bartvdb123")
                 .password("Passwd123&")
-                .firstName("Bart (HARDWARE)")
-                .lastName("Vandenbosche")
+                .firstName("Bart")
+                .lastName("Vandenbosche (HARDWARE)")
                 .address("Overwale 42")
                 .phoneNumber("091354864")
                 .emailAddress("bartvdb@hogent.be")
@@ -358,8 +396,8 @@ public class PopulateDB {
         ActemiumEmployee tech2 = new ActemiumEmployee.EmployeeBuilder()
                 .username("don123")
                 .password("Passwd123&")
-                .firstName("Don (Soft)")
-                .lastName("Verstekker")
+                .firstName("Don")
+                .lastName("Verstekker (Soft)")
                 .address("Overwale 42")
                 .phoneNumber("091354864")
                 .emailAddress("don.verstekker@hogent.be")
@@ -368,19 +406,28 @@ public class PopulateDB {
         tech2.addSpecialty(TicketType.SOFTWARE);
         tech2.addSpecialty(TicketType.OTHER);
 
-
         userDao.insert(tech);
         userDao.insert(tech2);
+        
         ActemiumTicket ticket01 = new ActemiumTicket.TicketBuilder()
                                                     .ticketPriority(TicketPriority.P1)
                                                     .ticketType(TicketType.DATABASE)
-                                                    .title("Database issues")
-                                                    .description("I have had some issues with my database. I'll need some help!")
-                                                    .company(florian.getCompany())
+                                                    .title("Database issues, userinfo security breach")
+                                                    .description("I have had some issues with my database. All the private info of 3 billion facebook users has been leaked. I'll need some help!")
+                                                    .company(mark.getCompany())
                                                     .supportNeeded("")
                                                     .attachments("I use a sql server database.")
                                                     .build();
-        ticket01.addTicketComment(createTicketComment(ticket01, tech, String.format("(%s)", LanguageResource.getString("none"))));
+        ticket01.addTicketComment(createTicketComment(ticket01, supMan, String.format("%s", "I will assign a technician specialized in Database problems within the next 10 minutes."), null));
+        ticket01.addTicketComment(createTicketComment(ticket01, tech3, String.format("%s", "This problem will need onsite maintenance, I will be there in 35min."), LocalDateTime.now().plusMinutes(7)));
+        ticket01.addTicketComment(createTicketComment(ticket01, supMan, String.format("%s%n%s%n%s, %s", 
+        					"@Mark Zuckerberg, is the address in our database still correct?", mark.getCompany().getAddress(), mark.getCompany().getCity(), mark.getCompany().getCountry()), LocalDateTime.now().plusMinutes(9)));
+        ticket01.addTicketComment(createTicketComment(ticket01, mark, String.format("%s", "Yes, that is the correct address, thank you for verifying with me"), LocalDateTime.now().plusMinutes(10)));
+        ticket01.addTicketComment(createTicketComment(ticket01, mark, String.format("%s %s %s", "Technician", tech3.getFirstName() + tech3.getLastName(), "may enter the premise through gate G12."), LocalDateTime.now().plusMinutes(11)));
+        ticket01.addTicketComment(createTicketComment(ticket01, tech3, String.format("%s", "I'm at the entrance gate, ready to solve your problem"), LocalDateTime.now().plusMinutes(42)));
+        ticket01.addTicketComment(createTicketComment(ticket01, mark, String.format("%s %s %s", "Technician", tech3.getFirstName() + tech3.getLastName(), "solved our problem, thank you very much!"), LocalDateTime.now().plusMinutes(110)));
+        ticket01.addTicketComment(createTicketComment(ticket01, supMan, String.format("%s", "Could you give our support a quality rating in the Actemium Web App?"), LocalDateTime.now().plusMinutes(115)));
+                
         ActemiumTicket ticket02 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.HARDWARE)
@@ -390,9 +437,14 @@ public class PopulateDB {
                 .attachments("The mouse is from logitech.")
                 .build();
         
-        ticket02.addTicketComment(createTicketComment(ticket02, tech, String.format("(%s)", LanguageResource.getString("none"))));
-        ticket02.addTicketComment(createTicketComment(ticket02, tech, String.format("(%s)", "Try to reconnect your mouse.")));
-        ticket02.addTicketComment(createTicketComment(ticket02, tech, String.format("(%s)", "The problem was solved.")));
+        ticket02.addTicketComment(createTicketComment(ticket02, supMan, String.format("%s", "I will assign a technician within the next 10 minutes"), LocalDateTime.now().plusMinutes(3)));
+        ticket02.addTicketComment(createTicketComment(ticket02, tech, String.format("%s", "Try to reconnect your mouse."), LocalDateTime.now().plusMinutes(25)));        
+        ticket02.addTicketComment(createTicketComment(ticket02, jeff, String.format("%s", "That didn't work."), LocalDateTime.now().plusMinutes(29)));    
+        ticket02.addTicketComment(createTicketComment(ticket02, tech, String.format("%s", "Can you send me the error message?"), LocalDateTime.now().plusMinutes(31)));     
+        ticket02.addTicketComment(createTicketComment(ticket02, jeff, String.format("%s%n%s", "Yes, it says...", "Driver no found, please install appropriate driver for pointer device."), LocalDateTime.now().plusMinutes(33)));     
+        ticket02.addTicketComment(createTicketComment(ticket02, tech, String.format("%s", "I'll install the driver via remote destkop, I will take over your desktop for a short period of time"), LocalDateTime.now().plusMinutes(34)));
+        ticket02.addTicketComment(createTicketComment(ticket02, jeff, String.format("%s", "The problem was solved."), LocalDateTime.now().plusMinutes(55)));
+        ticket02.addTicketComment(createTicketComment(ticket02, supMan, String.format("%s", "Could you give our support a quality rating in the Actemium Web App?"), LocalDateTime.now().plusMinutes(57)));
         
         ActemiumTicket ticket03 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
@@ -400,11 +452,11 @@ public class PopulateDB {
                 .title("Printer stopped working")
                 .description("I was printing a document when all of a sudden the printer stopped working.")
                 .company(mark.getCompany())
-                .supportNeeded("A printer is not infrastructure but hardware.")
+                .supportNeeded("A printer is not infrastructure but hardware, wrong type was selected by the customer.")
                 .attachments("I have a printer from hp")
                 .build();
         
-        ticket03.addTicketComment(createTicketComment(ticket03, tech, String.format("(%s)", "Try reading the article about printers in the knowledge base.")));
+        ticket03.addTicketComment(createTicketComment(ticket03, tech, String.format("%s", "Try reading the article about printers in the knowledge base."), null));
         
         
         ActemiumTicket ticket04 = new ActemiumTicket.TicketBuilder()
@@ -413,12 +465,12 @@ public class PopulateDB {
                 .title("Wifi issues")
                 .description("I have some issues with connecting my laptop to the wifi.")
                 .company(bill.getCompany())
-                .supportNeeded("No support needed.")
+                .supportNeeded("Right technicians were assigned (NETWORK)")
                 .attachments("screenshot")
                 .build();
-        ticket04.addTicketComment(createTicketComment(ticket04, tech, String.format("(%s)", "Try to reboot your router.")));
-        ticket04.addTicketComment(createTicketComment(ticket04, tech, String.format("(%s)", "Look at your wifi settings.")));
-        ticket04.addTicketComment(createTicketComment(ticket04, tech, String.format("(%s)", "If the previous actions don't work, try to read the article about wifi problems in the knowledge base.")));
+        ticket04.addTicketComment(createTicketComment(ticket04, tech, String.format("%s", "Try to reboot your router."), null));
+        ticket04.addTicketComment(createTicketComment(ticket04, tech, String.format("%s", "Look at your wifi settings."), null));
+        ticket04.addTicketComment(createTicketComment(ticket04, tech, String.format("%s", "If the previous actions don't work, try to read the article about wifi problems in the knowledge base."), null));
         
         ActemiumTicket ticket05 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
@@ -427,9 +479,9 @@ public class PopulateDB {
                 .description("I don't know how to install word. I would like to have some help!")
                 .company(larry.getCompany())
                 .attachments("screenshot")
-                .supportNeeded("No support needed.")
+                .supportNeeded("Right technicians were assigned (SOFTWARE)")
                 .build();
-        ticket05.addTicketComment(createTicketComment(ticket05, tech, String.format("(%s)", "Read the article about the installation of word in the knowledge base.")));
+        ticket05.addTicketComment(createTicketComment(ticket05, tech, String.format("%s", "Read the article about the installation of word in the knowledge base."), null));
         
         ActemiumTicket ticket06 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
@@ -438,20 +490,20 @@ public class PopulateDB {
                 .description("I don't know how to install powerpoint. I would like to have some help!")
                 .company(elon.getCompany())
                 .attachments("screenshot")
-                .supportNeeded("No support needed.")
+                .supportNeeded("Right technicians were assigned (SOFTWARE)")
                 .build();        
-        ticket06.addTicketComment(createTicketComment(ticket06, tech, String.format("(%s)", "Read the article about the installation of powerpoint in the knowledge base.")));       
+        ticket06.addTicketComment(createTicketComment(ticket06, tech, String.format("%s", "Read the article about the installation of powerpoint in the knowledge base."), null));       
         
         ticket05.setStatus(TicketStatus.COMPLETED);
 
-        florian.addTicket(ticket01);
+        mark.addTicket(ticket01);
         jeff.addTicket(ticket02);
         mark.addTicket(ticket03);
         bill.addTicket(ticket04);
         larry.addTicket(ticket05);
         elon.addTicket(ticket06);
         
-        ticket01.addTechnician(tech);
+        ticket01.addTechnician(tech3);
         ticket02.addTechnician(tech);
         ticket03.addTechnician(tech);
         ticket04.addTechnician(tech2);
@@ -459,40 +511,7 @@ public class PopulateDB {
         ticket06.addTechnician(tech);
         ticket06.addTechnician(tech2);
         
-        userDao.insert( new ActemiumEmployee.EmployeeBuilder()
-                .username("Admin123")
-                .password("Passwd123&")
-                .firstName("Ward")
-                .lastName("De Bever")
-                .address("Langemunt 12")
-                .phoneNumber("091354864")
-                .emailAddress("ward.db@hogent.be")
-                .role(EmployeeRole.ADMINISTRATOR)
-                .build());
-        userDao.insert( new ActemiumEmployee.EmployeeBuilder()
-                .username("Sup123")
-                .password("Passwd123&")
-                .firstName("Thomas")
-                .lastName("Dekker")
-                .address("Hoekstraat 4")
-                .phoneNumber("091354864")
-                .emailAddress("thomas.dekker@hogent.be")
-                .role(EmployeeRole.SUPPORT_MANAGER)
-                .build());
-        ActemiumEmployee tech3 = new ActemiumEmployee.EmployeeBuilder()
-                .username("Tech123")
-                .password("Passwd123&")
-                .firstName("Jonas(DB)")
-                .lastName("Nician")
-                .address("Poortstraat 2")
-                .phoneNumber("091354864")
-                .emailAddress("jonas.nician@hogent.be")
-                .role(EmployeeRole.TECHNICIAN)
-                .build();
-        tech3.addSpecialty(TicketType.DATABASE);
-        tech3.addSpecialty(TicketType.OTHER);
-
-        userDao.insert(tech3);
+        
         userDao.insert( new ActemiumEmployee.EmployeeBuilder()
                 .username("thomas123")
                 .password("Passwd123&")
@@ -575,8 +594,8 @@ public class PopulateDB {
         ActemiumEmployee tech4 = new ActemiumEmployee.EmployeeBuilder()
                 .username("BObieTHeBuilder")
                 .password("Passwd123&")
-                .firstName("Bob(infra)")
-                .lastName("Berkmans")
+                .firstName("Bob")
+                .lastName("Berkmans (infra)")
                 .address("Stationstraat 56")
                 .phoneNumber("092548736")
                 .emailAddress("bob.berkmans@hogent.be")
@@ -587,8 +606,8 @@ public class PopulateDB {
         ActemiumEmployee tech5 = new ActemiumEmployee.EmployeeBuilder()
                 .username("jhonnyboy")
                 .password("Passwd123&")
-                .firstName("Jhon (network)")
-                .lastName("Opmeer")
+                .firstName("John")
+                .lastName("Opmeer (network)")
                 .address("Stationstraat 56")
                 .phoneNumber("092548736")
                 .emailAddress("jhon.opmeer@hogent.be")
@@ -644,10 +663,10 @@ public class PopulateDB {
                                                     .company(bill.getCompany())
                                                     .comments(null)
                                                     .attachments(String.format("%s.png", LanguageResource.getString("screenshot")))
-                                                    .supportNeeded("No support needed.")
+                                                    .supportNeeded("Right technicians were assigned.")
                                                     .build();
             t.setStatus(status[randomGen.nextInt(status.length)]);
-            t.addTicketComment(createTicketComment(t, tech, String.format("%s", LanguageResource.getString("remark"))));
+            t.addTicketComment(createTicketComment(t, tech, String.format("%s", LanguageResource.getString("remark")), null));
             mark.addTicket(t);
         }
                 
@@ -694,13 +713,22 @@ public class PopulateDB {
 		
     }
 
-	private ActemiumTicketComment createTicketComment(ActemiumTicket ticket, ActemiumEmployee tech, String commentText) {
+	private ActemiumTicketComment createTicketComment(ActemiumTicket ticket, UserModel user, String commentText, LocalDateTime timeStamp) {
+		if (timeStamp == null) {
+			timeStamp = LocalDateTime.now();
+		}
 		try {
+			String userRole = "NoUserRoleFound";
+			if (user instanceof ActemiumEmployee) {
+				userRole = ((ActemiumEmployee) user).getRole().toString();
+			} else if (user instanceof ActemiumCustomer) {
+				userRole = "Customer";
+			}
 			return new ActemiumTicketComment.TicketCommentBuilder()
 					.ticket(ticket)
-					.user(tech)
-					.userRole(tech.getRole().toString())
-					.dateTimeOfComment(LocalDateTime.now())
+					.user(user)
+					.userRole(userRole)
+					.dateTimeOfComment(timeStamp)
 					.commentText(commentText)
 					.build();
 		} catch (InformationRequiredException e) {
