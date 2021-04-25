@@ -377,6 +377,8 @@ public class PopulateDB {
                                                     .title("Database issues")
                                                     .description("I have had some issues with my database. I'll need some help!")
                                                     .company(florian.getCompany())
+                                                    .supportNeeded("")
+                                                    .attachments("I use a sql server database.")
                                                     .build();
         ticket01.addTicketComment(createTicketComment(ticket01, tech, String.format("(%s)", LanguageResource.getString("none"))));
         ActemiumTicket ticket02 = new ActemiumTicket.TicketBuilder()
@@ -385,40 +387,60 @@ public class PopulateDB {
                 .title("My mouse doesn't move")
                 .description("Help my mouse won't move on my screen! I don't know how to fix it.")
                 .company(jeff.getCompany())
+                .attachments("The mouse is from logitech.")
                 .build();
+        
         ticket02.addTicketComment(createTicketComment(ticket02, tech, String.format("(%s)", LanguageResource.getString("none"))));
+        ticket02.addTicketComment(createTicketComment(ticket02, tech, String.format("(%s)", "Try to reconnect your mouse.")));
+        ticket02.addTicketComment(createTicketComment(ticket02, tech, String.format("(%s)", "The problem was solved.")));
+        
         ActemiumTicket ticket03 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.INFRASTRUCTURE)
                 .title("Printer stopped working")
                 .description("I was printing a document when all of a sudden the printer stopped working.")
                 .company(mark.getCompany())
+                .supportNeeded("A printer is not infrastructure but hardware.")
+                .attachments("I have a printer from hp")
                 .build();
-        ticket03.addTicketComment(createTicketComment(ticket03, tech, String.format("(%s)", LanguageResource.getString("none"))));
+        
+        ticket03.addTicketComment(createTicketComment(ticket03, tech, String.format("(%s)", "Try reading the article about printers in the knowledge base.")));
+        
+        
         ActemiumTicket ticket04 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.NETWORK)
                 .title("Wifi issues")
                 .description("I have some issues with connecting my laptop to the wifi.")
                 .company(bill.getCompany())
+                .supportNeeded("No support needed.")
+                .attachments("screenshot")
                 .build();
-        ticket04.addTicketComment(createTicketComment(ticket04, tech, String.format("(%s)", LanguageResource.getString("none"))));
+        ticket04.addTicketComment(createTicketComment(ticket04, tech, String.format("(%s)", "Try to reboot your router.")));
+        ticket04.addTicketComment(createTicketComment(ticket04, tech, String.format("(%s)", "Look at your wifi settings.")));
+        ticket04.addTicketComment(createTicketComment(ticket04, tech, String.format("(%s)", "If the previous actions don't work, try to read the article about wifi problems in the knowledge base.")));
+        
         ActemiumTicket ticket05 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.SOFTWARE)
                 .title("Problems with the installation of word")
                 .description("I don't know how to install word. I would like to have some help!")
                 .company(larry.getCompany())
+                .attachments("screenshot")
+                .supportNeeded("No support needed.")
                 .build();
-        ticket05.addTicketComment(createTicketComment(ticket05, tech, String.format("(%s)", LanguageResource.getString("none"))));
+        ticket05.addTicketComment(createTicketComment(ticket05, tech, String.format("(%s)", "Read the article about the installation of word in the knowledge base.")));
+        
         ActemiumTicket ticket06 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
                 .ticketType(TicketType.SOFTWARE)
                 .title("Problems with the installation of word powerpoint")
                 .description("I don't know how to install powerpoint. I would like to have some help!")
                 .company(elon.getCompany())
+                .attachments("screenshot")
+                .supportNeeded("No support needed.")
                 .build();        
-        ticket06.addTicketComment(createTicketComment(ticket06, tech, String.format("(%s)", LanguageResource.getString("none"))));       
+        ticket06.addTicketComment(createTicketComment(ticket06, tech, String.format("(%s)", "Read the article about the installation of powerpoint in the knowledge base.")));       
         
         ticket05.setStatus(TicketStatus.COMPLETED);
 
@@ -612,19 +634,20 @@ public class PopulateDB {
         TicketStatus[] status = TicketStatus.values();
         
         String[] ticketNames = new String[] {"Internet problems", "Wifi problems", "Hardware problems", "Mouse problems", "Screen problems", "Database not available", "Error occured while installing excel", "Not enough disk space", "I have a virus on my laptop", "Printing problems"};
-        
+        String[] ticketDescriptions = new String[] {"I have some problems with my internet.", "I have some problems with my wifi.", "I have some problems with my printer.", "I have some problems with my mouse.", "I have some problems with my screen.", "I have some problems with my database.", "I have some problems with the installation of excel.", "I have some problems with disk space.", "I have some problems with a virus.", "I have some problems when printing my word document.",};
         for (int i = 0; i < 10; i++) {
             ActemiumTicket t = new ActemiumTicket.TicketBuilder()
                                                     .ticketPriority(prios[randomGen.nextInt(3)])
                                                     .ticketType(types[randomGen.nextInt(types.length)])
                                                     .title(ticketNames[i])
-                                                    .description(String.format("%s %d", LanguageResource.getString("description"), i))
+                                                    .description(String.format("%s", ticketDescriptions[i]))
                                                     .company(bill.getCompany())
                                                     .comments(null)
-                                                    .attachments(String.format("%s%d.png", LanguageResource.getString("screenshot"), i))
+                                                    .attachments(String.format("%s.png", LanguageResource.getString("screenshot")))
+                                                    .supportNeeded("No support needed.")
                                                     .build();
             t.setStatus(status[randomGen.nextInt(status.length)]);
-            t.addTicketComment(createTicketComment(t, tech, String.format("%s %d", LanguageResource.getString("remark"), i)));
+            t.addTicketComment(createTicketComment(t, tech, String.format("%s", LanguageResource.getString("remark"))));
             mark.addTicket(t);
         }
                 
@@ -664,7 +687,7 @@ public class PopulateDB {
                                     .title("Article about " + articleNames[i])
                                     .keywords(randomKbItem.toString())
                                     .type(randomKbItem)
-                                    .text("This article is about tells you everything about " + articleNames[i] + "...")
+                                    .text("This article tells you everything about " + articleNames[i] + "...")
                                     .build());
         }
 		kbItemDao.commitTransaction();
