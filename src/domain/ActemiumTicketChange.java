@@ -11,10 +11,12 @@ import java.util.Set;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 
 import domain.enums.RequiredElement;
@@ -46,7 +48,15 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 
 	private String changeDescription;
 
-	private List<String> changeContent;
+	// we propably don't need these but leave em here in case we do
+//	@Lob
+//	@Column
+	// this should be a working option, but there are errors
+//	@Convert(converter = StringListConverter.class)
+	// this could be a working option but then we need to use the extra class ActemiumTicketChangeContent in .NET
+	// because elementcolletion creates an extra table in our DB
+//	@ElementCollection
+	public List<String> changeContent;
 
 	/**
 	 * Instantiates a new Actemium ticket change.
