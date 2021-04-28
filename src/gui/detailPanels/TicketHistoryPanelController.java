@@ -108,7 +108,7 @@ public class TicketHistoryPanelController extends GridPane implements Invalidati
     	
 		changeInfo.add(String.format("%s: %s %s", change.getUserRole(), change.getUser().getFirstName(), change.getUser().getLastName()));
 		changeInfo.add(String.format("%s", change.getChangeDescription()));
-        changeInfo.addAll(change.getChangeContent());
+        changeInfo.addAll(change.getChangeContents().stream().map(c -> c.getChangeContent()).collect(Collectors.toList()));
 
         return changeInfo.stream()
                 .map(this::createChangeInfoNode)

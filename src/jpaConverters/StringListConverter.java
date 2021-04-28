@@ -14,6 +14,8 @@ public class StringListConverter implements AttributeConverter<List<String>, Str
     
     @Override
     public String convertToDatabaseColumn(List<String> stringList) {
+    	System.out.println("HIERHIERHIERHIERHHIERHIEHRIEHRIERHIEHRIEHR");
+    	stringList.forEach(s -> System.out.println(s));
         return stringList != null ? String.join(SPLIT_CHAR, stringList) : "";
     }
 

@@ -4,23 +4,28 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import domain.enums.RequiredElement;
 import exceptions.InformationRequiredException;
+import jpaConverters.StringListConverter;
 import languages.LanguageResource;
 
 /**
@@ -55,8 +60,13 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 //	@Convert(converter = StringListConverter.class)
 	// this could be a working option but then we need to use the extra class ActemiumTicketChangeContent in .NET
 	// because elementcolletion creates an extra table in our DB
-//	@ElementCollection
-	public List<String> changeContent;
+//	@Column(nullable = false)
+//	@ElementCollection(fetch=FetchType.EAGER)
+//	public List<String> changeContent;	
+	
+	// above would have been cooler but way to difficult with EF Core in .NET
+	@OneToMany(mappedBy = "ticketChange", cascade = CascadeType.PERSIST)
+	public List<ActemiumTicketChangeContent> changeContents;
 
 	/**
 	 * Instantiates a new Actemium ticket change.
@@ -76,7 +86,7 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 		this.userRole = builder.userRole;
 		this.dateTimeOfChange = builder.dateTimeOfChange;
 		this.changeDescription = builder.changeDescription;
-		this.changeContent = builder.changeContent;
+		this.changeContents = builder.changeContents;
 	}
 
 	/**
@@ -174,8 +184,8 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 	 *
 	 * @return List of strings of the changed content
 	 */
-	public List<String> getChangeContent() {
-		return changeContent;
+	public List<ActemiumTicketChangeContent> getChangeContents() {
+		return changeContents;
 	}
 
 	/**
@@ -183,8 +193,12 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 	 *
 	 * @param changeContent the change content
 	 */
-	public void setChangeContent(List<String> changeContent) {
-		this.changeContent = changeContent;
+	public void setChangeContent(List<ActemiumTicketChangeContent> changeContents) {
+		this.changeContents = changeContents;
+	}
+	
+	public void addChangeContent(ActemiumTicketChangeContent changeContent){
+		this.changeContents.add(changeContent);
 	}
 
 	/**
@@ -198,7 +212,7 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 				.userRole(this.getUserRole())
 				.dateTimeOfChange(this.getDateTimeOfChange())
 				.changeDescription(this.getChangeDescription())
-				.changeContent(this.getChangeContent())
+				.changeContents(this.getChangeContents())
 				.build();
 	}
 
@@ -211,7 +225,7 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 		private String userRole;
 		private LocalDateTime dateTimeOfChange;
 		private String changeDescription;
-		private List<String> changeContent;
+		private List<ActemiumTicketChangeContent> changeContents;
 
 		private Set<RequiredElement> requiredElements;
 
@@ -276,8 +290,11 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 		 * @param changeContent the change content
 		 * @return the ticket change builder
 		 */
-		public TicketChangeBuilder changeContent(List<String> changeContent) {
-			this.changeContent = changeContent;
+		public TicketChangeBuilder changeContents(List<ActemiumTicketChangeContent> changeContents) {
+			if (changeContents != null) {
+				this.changeContents = changeContents;
+			}
+			this.changeContents = new ArrayList<>();
 			return this;
 		}
 
@@ -326,7 +343,7 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 					.userRole(this.getUserRole())
 					.dateTimeOfChange(this.getDateTimeOfChange())
 					.changeDescription(this.getChangeDescription())
-					.changeContent(this.getChangeContent())
+					.changeContents(this.getChangeContents())
 					.build();
 		} catch (InformationRequiredException e) {
 			e.printStackTrace();
@@ -344,7 +361,7 @@ public class ActemiumTicketChange implements TicketChange, Serializable {
 		ticketChange.append(String.format("%s: %s%n", LanguageResource.getString("time"), getDateTimeOfChange().format(formatDateTime)));
 		ticketChange.append(String.format("%s: %s%n", LanguageResource.getString("description"), getChangeDescription()));
 		ticketChange.append(String.format("%s: %n", LanguageResource.getString("change_content")));
-		getChangeContent().forEach(c -> ticketChange.append(String.format("%s%n", c)));
+		getChangeContents().forEach(c -> ticketChange.append(String.format("%s%n", c.getChangeContent())));
 		return ticketChange.toString();
 	}
 

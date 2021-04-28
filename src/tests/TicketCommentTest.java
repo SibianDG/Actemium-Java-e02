@@ -106,7 +106,8 @@ public class TicketCommentTest {
                 .userRole(userRole)
                 .dateTimeOfChange(localDateTime)
                 .changeDescription(changeDescription)
-                .changeContent(changeContent)
+//              .changeContents(changeContent)
+                .changeContents(null)
                 .build());
     }
 
@@ -120,7 +121,8 @@ public class TicketCommentTest {
                 .userRole(userRole)
                 .dateTimeOfChange(localDateTime)
                 .changeDescription(changeDescription)
-                .changeContent(changeContent)
+//                .changeContents(changeContent)
+                .changeContents(null)
                 .build());
     }
 

@@ -36,6 +36,7 @@ public interface TicketChange {
 	 *
 	 * @return the change content
 	 */
-	List<String> getChangeContent();
+	List<ActemiumTicketChangeContent> getChangeContents();
+//	List<String> getChangeContent();
 
 }

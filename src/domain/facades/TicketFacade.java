@@ -8,6 +8,7 @@ import domain.ActemiumCustomer;
 import domain.ActemiumEmployee;
 import domain.ActemiumTicket;
 import domain.ActemiumTicketChange;
+import domain.ActemiumTicketChangeContent;
 import domain.ActemiumTicketComment;
 import domain.Employee;
 import domain.enums.EmployeeRole;
@@ -60,8 +61,6 @@ public class TicketFacade extends Facade {
 							.attachments(attachments)
 							.build();
 		ticket.setTechnicians(techniciansAsignedToTicket);
-
-		ticket.addTicketComment(createTicketComment(ticket, commentText));
 		
 		List<String> changeList = new ArrayList<>();
 		changeList.add(String.format("Ticket was added on behalf of customer (=Contact Pers.): \"%s %s\".", customer.getFirstName(), customer.getLastName()));
@@ -75,7 +74,8 @@ public class TicketFacade extends Facade {
 			changeList.add(String.format("%s \"%s %s\" %s: %d %s.", "Technician"/*(LanguageResource.getString("TECHNICIAN").substring(0,1).toUpperCase() + LanguageResource.getString("TECHNICIAN").substring(1).toLowerCase())*/,
 					technician.getFirstName(), technician.getLastName(), LanguageResource.getString("with_id") ,technician.getUserId(), LanguageResource.getString("got_added_to_the_ticket")));
 		}
-		if (!commentText.equals("(none)")) {
+		if (!(commentText == null || commentText.isBlank() || commentText.equals("(none)"))) {
+			ticket.addTicketComment(createTicketComment(ticket, commentText));
 			changeList.add(String.format("Ticket Remark/Comment was added."));
 		}
 		if (!attachments.equals("(none)")) {
@@ -87,6 +87,7 @@ public class TicketFacade extends Facade {
 		actemium.registerTicket(ticket, customer);		
 		
 		ticket = (ActemiumTicket) actemium.getLastAddedTicket();
+		
 		ticket.addTicketChange(createTicketChange(ticket, "registerTicket", changeList));
 		
 		actemium.modifyTicket(ticket);
@@ -250,14 +251,23 @@ public class TicketFacade extends Facade {
 		}
 		changeDescription.append(ticket.getTicketIdString());
 		
-		return new ActemiumTicketChange.TicketChangeBuilder()
-				.ticket(ticket)
-				.user(actemium.getSignedInUser())
-				.userRole(actemium.giveUserRole())
-				.dateTimeOfChange(LocalDateTime.now())
-				.changeDescription(changeDescription.toString())
-				.changeContent(changeList)
-				.build();
+		ActemiumTicketChange ticketChange = new ActemiumTicketChange.TicketChangeBuilder()
+																.ticket(ticket)
+																.user(actemium.getSignedInUser())
+																.userRole(actemium.giveUserRole())
+																.dateTimeOfChange(LocalDateTime.now())
+																.changeDescription(changeDescription.toString())
+																.changeContents(null)
+																.build();
+		
+		// I don't wanna use a parallel stream, I want to keep the right order => using classical for-loop
+//		changeList.forEach(c -> ticketChange.addChangeContent(new ActemiumTicketChangeContent(ticketChange, c)));
+		// still doesn't help me in .net because jpa persists it in a parallel order
+		for (String change : changeList) {
+			ticketChange.addChangeContent(new ActemiumTicketChangeContent(ticketChange, change));
+		}
+		
+		return ticketChange;
 	}
 	
 	private ActemiumTicketComment createTicketComment(ActemiumTicket ticket, String commentText) throws InformationRequiredException {				
