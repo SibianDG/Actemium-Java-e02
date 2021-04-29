@@ -134,11 +134,13 @@ public class TicketFacade extends Facade {
 				ticket.setPriority(priority);
 			}
 			if (!ticket.getTicketType().equals(ticketType)) {
-				changeList.add(String.format("%s \"%s\" %s \"%s\".",LanguageResource.getString("ticket_priority_changed_from") , ticket.getTicketType(), LanguageResource.getString("to"), ticketType));
+//				changeList.add(String.format("%s \"%s\" %s \"%s\".",LanguageResource.getString("ticket_priority_changed_from") , ticket.getTicketType(), LanguageResource.getString("to"), ticketType));
+				changeList.add(String.format("%s \"%s\" %s \"%s\".","Ticket Type changed from " , ticket.getTicketType(), LanguageResource.getString("to"), ticketType));
 				ticket.setTicketType(ticketType);
 			}
 			if (!ticket.getTitle().equals(title)) {
-				changeList.add(String.format("%s \"%s\" %s \"%s\".",LanguageResource.getString("ticket_priority_changed_from") , ticket.getTitle(), LanguageResource.getString("to"), title));
+//				changeList.add(String.format("%s \"%s\" %s \"%s\".",LanguageResource.getString("ticket_priority_changed_from") , ticket.getTitle(), LanguageResource.getString("to"), title));
+				changeList.add(String.format("%s \"%s\" %s \"%s\".", "Ticket Title changed from " , ticket.getTitle(), LanguageResource.getString("to"), title));
 				ticket.setTitle(title);
 			}
 			if (!ticket.getDescription().equals(description)) {

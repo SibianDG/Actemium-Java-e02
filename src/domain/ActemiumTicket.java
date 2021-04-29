@@ -20,6 +20,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -82,6 +84,9 @@ public class ActemiumTicket implements Ticket, Serializable {
 	
 	// List of technicians contain all the technicians assigned to the ticket
 	@ManyToMany
+	@JoinTable(name = "ActemiumTicket_ActemiumEmployee", 
+    joinColumns = @JoinColumn(name = "ticketId"), 
+    inverseJoinColumns = @JoinColumn(name = "userId"))
 	private List<ActemiumEmployee> technicians = new ArrayList<>();
 
 	@Transient
