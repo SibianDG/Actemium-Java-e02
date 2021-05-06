@@ -424,15 +424,15 @@ public class PopulateDB {
                                                     .supportNeeded("")
                                                     .attachments("I use a sql server database.")
                                                     .build();
-        ticket01.addTicketComment(createTicketComment(ticket01, supMan, String.format("%s", "I will assign a technician specialized in Database problems within the next 10 minutes."), null));
-        ticket01.addTicketComment(createTicketComment(ticket01, tech3, String.format("%s", "This problem will need onsite maintenance, I will be there in 35min."), LocalDateTime.now().plusMinutes(7)));
+        ticket01.addTicketComment(createTicketComment(ticket01, supMan, String.format("%s", "I will assign a technician specialized in Database problems within the next 10 minutes."), LocalDateTime.now().minusMinutes(115)));
+        ticket01.addTicketComment(createTicketComment(ticket01, tech3, String.format("%s", "This problem will need onsite maintenance, I will be there in 35min."), LocalDateTime.now().minusMinutes(113)));
         ticket01.addTicketComment(createTicketComment(ticket01, supMan, String.format("%s%n%s%n%s, %s", 
-        					"@Mark Zuckerberg, is the address in our database still correct?", mark.getCompany().getAddress(), mark.getCompany().getCity(), mark.getCompany().getCountry()), LocalDateTime.now().plusMinutes(9)));
-        ticket01.addTicketComment(createTicketComment(ticket01, mark, String.format("%s", "Yes, that is the correct address, thank you for verifying with me"), LocalDateTime.now().plusMinutes(10)));
-        ticket01.addTicketComment(createTicketComment(ticket01, mark, String.format("%s %s %s", "Technician", tech3.getFirstName() + tech3.getLastName(), "may enter the premise through gate G12."), LocalDateTime.now().plusMinutes(11)));
-        ticket01.addTicketComment(createTicketComment(ticket01, tech3, String.format("%s", "I'm at the entrance gate, ready to solve your problem"), LocalDateTime.now().plusMinutes(42)));
-        ticket01.addTicketComment(createTicketComment(ticket01, mark, String.format("%s %s %s", "Technician", tech3.getFirstName() + tech3.getLastName(), "solved our problem, thank you very much!"), LocalDateTime.now().plusMinutes(110)));
-        ticket01.addTicketComment(createTicketComment(ticket01, supMan, String.format("%s", "Could you give our support a quality rating in the Actemium Web App?"), LocalDateTime.now().plusMinutes(115)));
+        					"@Mark Zuckerberg, is the address in our database still correct?", mark.getCompany().getAddress(), mark.getCompany().getCity(), mark.getCompany().getCountry()), LocalDateTime.now().minusMinutes(112)));
+        ticket01.addTicketComment(createTicketComment(ticket01, mark, String.format("%s", "Yes, that is the correct address, thank you for verifying with me"), LocalDateTime.now().minusMinutes(111)));
+        ticket01.addTicketComment(createTicketComment(ticket01, mark, String.format("%s %s %s", "Technician", tech3.getFirstName() + tech3.getLastName(), "may enter the premise through gate G12."), LocalDateTime.now().minusMinutes(110)));
+        ticket01.addTicketComment(createTicketComment(ticket01, tech3, String.format("%s", "I'm at the entrance gate, ready to solve your problem"), LocalDateTime.now().minusMinutes(78)));
+        ticket01.addTicketComment(createTicketComment(ticket01, mark, String.format("%s %s %s", "Technician", tech3.getFirstName() + tech3.getLastName(), "solved our problem, thank you very much!"), LocalDateTime.now().minusMinutes(5)));
+        ticket01.addTicketComment(createTicketComment(ticket01, supMan, String.format("%s", "Could you give our support a quality rating in the Actemium Web App?"), null));
                 
         ActemiumTicket ticket02 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
@@ -443,14 +443,14 @@ public class PopulateDB {
                 .attachments("The mouse is from logitech.")
                 .build();
         
-        ticket02.addTicketComment(createTicketComment(ticket02, supMan, String.format("%s", "I will assign a technician within the next 10 minutes"), LocalDateTime.now().plusMinutes(3)));
-        ticket02.addTicketComment(createTicketComment(ticket02, tech, String.format("%s", "Try to reconnect your mouse."), LocalDateTime.now().plusMinutes(25)));        
-        ticket02.addTicketComment(createTicketComment(ticket02, jeff, String.format("%s", "That didn't work."), LocalDateTime.now().plusMinutes(29)));    
-        ticket02.addTicketComment(createTicketComment(ticket02, tech, String.format("%s", "Can you send me the error message?"), LocalDateTime.now().plusMinutes(31)));     
-        ticket02.addTicketComment(createTicketComment(ticket02, jeff, String.format("%s%n%s", "Yes, it says...", "Driver no found, please install appropriate driver for pointer device."), LocalDateTime.now().plusMinutes(33)));     
-        ticket02.addTicketComment(createTicketComment(ticket02, tech, String.format("%s", "I'll install the driver via remote destkop, I will take over your desktop for a short period of time"), LocalDateTime.now().plusMinutes(34)));
-        ticket02.addTicketComment(createTicketComment(ticket02, jeff, String.format("%s", "The problem was solved."), LocalDateTime.now().plusMinutes(55)));
-        ticket02.addTicketComment(createTicketComment(ticket02, supMan, String.format("%s", "Could you give our support a quality rating in the Actemium Web App?"), LocalDateTime.now().plusMinutes(57)));
+        ticket02.addTicketComment(createTicketComment(ticket02, supMan, String.format("%s", "I will assign a technician within the next 10 minutes"), LocalDateTime.now().minusMinutes(50)));
+        ticket02.addTicketComment(createTicketComment(ticket02, tech, String.format("%s", "Try to reconnect your mouse."), LocalDateTime.now().minusMinutes(29)));        
+        ticket02.addTicketComment(createTicketComment(ticket02, jeff, String.format("%s", "That didn't work."), LocalDateTime.now().minusMinutes(24)));    
+        ticket02.addTicketComment(createTicketComment(ticket02, tech, String.format("%s", "Can you send me the error message?"), LocalDateTime.now().minusMinutes(23)));     
+        ticket02.addTicketComment(createTicketComment(ticket02, jeff, String.format("%s%n%s", "Yes, it says...", "Driver no found, please install appropriate driver for pointer device."), LocalDateTime.now().minusMinutes(21)));     
+        ticket02.addTicketComment(createTicketComment(ticket02, tech, String.format("%s", "I'll install the driver via remote destkop, I will take over your desktop for a short period of time"), LocalDateTime.now().minusMinutes(20)));
+        ticket02.addTicketComment(createTicketComment(ticket02, jeff, String.format("%s", "The problem was solved."), LocalDateTime.now().minusMinutes(5)));
+        ticket02.addTicketComment(createTicketComment(ticket02, supMan, String.format("%s", "Could you give our support a quality rating in the Actemium Web App?"), LocalDateTime.now().minusMinutes(2)));
         
         ActemiumTicket ticket03 = new ActemiumTicket.TicketBuilder()
                 .ticketPriority(TicketPriority.P1)
