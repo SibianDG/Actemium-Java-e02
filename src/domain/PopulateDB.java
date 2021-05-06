@@ -258,6 +258,7 @@ public class PopulateDB {
                 .password("Passwd123&")
                 .firstName("Florian")
                 .lastName("Goossens")
+                .emailAddress("cust01Florian@customer.com")
                 .company(theWhiteHouse)
                 .build();
         ActemiumCustomer jeff = new ActemiumCustomer.CustomerBuilder()
@@ -265,6 +266,7 @@ public class PopulateDB {
                 .password("Passwd123&")
                 .firstName("Jeff")
                 .lastName("Bezos")
+                .emailAddress("cust02Jeff@customer.com")
                 .company(amazon)
                 .build();
         ActemiumCustomer mark = new ActemiumCustomer.CustomerBuilder()
@@ -272,6 +274,7 @@ public class PopulateDB {
                 .password("Passwd123&")
                 .firstName("Mark")
                 .lastName("Zuckerberg")
+                .emailAddress("cust03Mark@customer.com")
                 .company(facebook)
                 .build();
         ActemiumCustomer bill = new ActemiumCustomer.CustomerBuilder()
@@ -279,6 +282,7 @@ public class PopulateDB {
                 .password("Passwd123&")
                 .firstName("Bill")
                 .lastName("Gates")
+                .emailAddress("cust04Bill@customer.com")
                 .company(microsoft)
                 .build();
         ActemiumCustomer larry = new ActemiumCustomer.CustomerBuilder()
@@ -286,6 +290,7 @@ public class PopulateDB {
                 .password("Passwd123&")
                 .firstName("Larry")
                 .lastName("Page")
+                .emailAddress("cust05Larry@customer.com")
                 .company(google)
                 .build();
         ActemiumCustomer elon = new ActemiumCustomer.CustomerBuilder()
@@ -293,6 +298,7 @@ public class PopulateDB {
                 .password("Passwd123&")
                 .firstName("Elon")
                 .lastName("Musk")
+                .emailAddress("cust06Elon@customer.com")
                 .company(tesla)
                 .build();
 
@@ -589,6 +595,7 @@ public class PopulateDB {
                 .password("Passwd123&")
                 .firstName("Willy")
                 .lastName("Naessens")
+                .emailAddress("cust02Willy@customer.com")
                 .company(naessensNV)
                 .build());
         ActemiumEmployee tech4 = new ActemiumEmployee.EmployeeBuilder()
@@ -642,6 +649,7 @@ public class PopulateDB {
                 .password("Passwd123&")
                 .firstName("Jorge")
                 .lastName("Bergoglio")
+                .emailAddress("PopeFrancis@customer.com")
                 .company(vatican)
                 .build();
         userDao.insert(pope);

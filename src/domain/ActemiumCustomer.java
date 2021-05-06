@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -34,6 +35,9 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	private ActemiumCompany company;
 	
+	@Column(unique = true)
+	private String emailAddress;
+	
 	/**
 	 * Instantiates a new Actemium customer.
 	 */
@@ -50,6 +54,25 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	public ActemiumCustomer(CustomerBuilder builder){
 		super(builder.username, builder.password, builder.firstName, builder.lastName);
 		this.company = builder.company;
+		this.emailAddress = builder.emailAddress;
+	}
+
+	/**
+	 * Gets the email address.
+	 *
+	 * @return email address
+	 */
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+
+	/**
+	 * Sets email address.
+	 *
+	 * @param emailAddress the email address
+	 */
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 
 	/**
@@ -160,6 +183,7 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 		private String password;
 		private String firstName;
 		private String lastName;
+		private String emailAddress;
 
 		private ActemiumCompany company;
 		private LocalDate registrationDate;
@@ -208,6 +232,17 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 		 */
 		public CustomerBuilder lastName(String lastName) {
 			this.lastName = lastName;
+			return this;
+		}
+
+		/**
+		 * Email address customer builder.
+		 *
+		 * @param emailAddress the email address
+		 * @return the customer builder
+		 */
+		public CustomerBuilder emailAddress(String emailAddress) {
+			this.emailAddress = emailAddress;
 			return this;
 		}
 
@@ -279,6 +314,7 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 					.password(this.getPassword())
 					.firstName(this.firstNameProperty().get())
 					.lastName(this.lastNameProperty().get())
+					.emailAddress(this.getEmailAddress())
 					.company(this.getCompany())
 					.build();
 		} catch (InformationRequiredException e) {
