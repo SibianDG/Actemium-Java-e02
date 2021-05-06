@@ -1,7 +1,6 @@
 package domain;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import javafx.collections.ObservableList;
 
@@ -17,7 +16,14 @@ public interface Customer extends User {
 	 *
 	 * @return the customer nr
 	 */
-	int getCustomerNr();
+	int getCustomerNr();	
+
+	/**
+	 * Gets email address.
+	 *
+	 * @return the email address
+	 */
+	String getEmailAddress();
 
 	/**
 	 * Give company company.

@@ -61,7 +61,7 @@ public class UserViewModel extends ViewModel {
     
     public ArrayList<String> getDetailsNewCustomer(){
         return new ArrayList<String>(Arrays.asList(LanguageResource.getString("username"), LanguageResource.getString("firstname")
-                , LanguageResource.getString("lastname"), LanguageResource.getString("company_name"), LanguageResource.getString("company_country"),
+                , LanguageResource.getString("lastname"), LanguageResource.getString("email_address"), LanguageResource.getString("company_name"), LanguageResource.getString("company_country"),
                 LanguageResource.getString("company_city"), LanguageResource.getString("company_address"), LanguageResource.getString("company_phone_number")));
     }
 
@@ -103,6 +103,7 @@ public class UserViewModel extends ViewModel {
                 detailsMap.put(LanguageResource.getString("contact_person"), Collections.singletonMap(false, ""));
                 detailsMap.put(LanguageResource.getString("firstname"), Collections.singletonMap(true, customer.getFirstName()));
                 detailsMap.put(LanguageResource.getString("lastname"), Collections.singletonMap(true, customer.getLastName()));
+                detailsMap.put(LanguageResource.getString("email"), Collections.singletonMap(true, customer.getEmailAddress()));
                 detailsMap.put(LanguageResource.getString("seniority"), Collections.singletonMap(true, String.valueOf(customer.giveSeniority())));
                 detailsMap.put(LanguageResource.getString("status"), Collections.singletonMap(true, customer.getStatus()));
                 detailsMap.put(LanguageResource.getString("contracts"), Collections.singletonMap(true, customer.giveContracts()));
@@ -132,15 +133,15 @@ public class UserViewModel extends ViewModel {
 				phoneNumber, emailAddress, role, status, this.specialties);
 	}
 
-	public void registerCustomer(String username, String firstName, String lastName, String companyName,
+	public void registerCustomer(String username, String firstName, String lastName, String email, String companyName,
 			String companyCountry, String companyCity, String companyAddress, String companyPhone) throws InformationRequiredException {
-		userFacade.registerCustomer(username, "Passwd123&", firstName, lastName, companyName, companyCountry, companyCity, companyAddress,	companyPhone);
+		userFacade.registerCustomer(username, "Passwd123&", firstName, lastName, email, companyName, companyCountry, companyCity, companyAddress,	companyPhone);
 		setSelectedUser(userFacade.getLastAddedCustomer());
 	}
 
-	public void modifyCustomer(String username, String password, String firstName, String lastName, String status,
+	public void modifyCustomer(String username, String password, String firstName, String lastName, String email, String status,
 			String companyName, String companyCountry, String companyCity, String companyAddress, String companyPhone) throws InformationRequiredException {
-		userFacade.modifyCustomer((ActemiumCustomer) this.selectedUser, username, password, firstName, lastName,
+		userFacade.modifyCustomer((ActemiumCustomer) this.selectedUser, username, password, firstName, lastName, email,
 				UserStatus.valueOf(status), companyName, companyCountry, companyCity, companyAddress, companyPhone);
 	}
 

@@ -52,7 +52,7 @@ public class UserFacade extends Facade {
 	 * @param companyPhone   the company phone
 	 * @throws InformationRequiredException the information required exception
 	 */
-	public void registerCustomer(String username, String password, String firstName, String lastName, String companyName,
+	public void registerCustomer(String username, String password, String firstName, String lastName, String email, String companyName,
 			String companyCountry, String companyCity, String companyAddress, String companyPhone) throws InformationRequiredException {
 		// check to see if signed in user is Admin
 		actemium.checkPermission(EmployeeRole.ADMINISTRATOR);
@@ -69,6 +69,7 @@ public class UserFacade extends Facade {
 				.password(password)
 				.firstName(firstName)
 				.lastName(lastName)
+				.emailAddress(email)
 				.company(company)
 				.build();
 		actemium.registerCustomer(newCustomer);
@@ -86,7 +87,8 @@ public class UserFacade extends Facade {
 	 */
 
 	// We hadn't time to implement this feature in the GUI
-	public void registerCustomerUsingExistingCompany(String username, String password, String firstName, String lastName, int companyId) throws InformationRequiredException {
+	public void registerCustomerUsingExistingCompany(String username, String password, String firstName, String lastName, 
+			String email, int companyId) throws InformationRequiredException {
 		// check to see if signed in user is Admin
 		actemium.checkPermission(EmployeeRole.ADMINISTRATOR);
 		actemium.existingUsername(username);
@@ -96,6 +98,7 @@ public class UserFacade extends Facade {
 				.password(password)
 				.firstName(firstName)
 				.lastName(lastName)
+				.emailAddress(email)
 				.company(company)
 				.build();
 
@@ -151,7 +154,7 @@ public class UserFacade extends Facade {
 	 * @throws InformationRequiredException the information required exception
 	 */
 	public void modifyCustomer(ActemiumCustomer customer, String username,
-							   String password, String firstName, String lastName, UserStatus status,
+							   String password, String firstName, String lastName, String email, UserStatus status,
 							   String companyName, String companyCountry, String companyCity,
 							   String companyAddress, String companyPhone) throws InformationRequiredException {
 		try {
@@ -161,7 +164,7 @@ public class UserFacade extends Facade {
 			actemium.checkPermission(EmployeeRole.ADMINISTRATOR);
 
 			// Changes to company of the contactPerson (=Customer)
-			ActemiumCompany companyClone = cloneCustomer.getCompany().clone();
+			ActemiumCompany companyClone = customer.getCompany().clone();
 
 			companyClone.setName(companyName);
 			companyClone.setCountry(companyCountry);
@@ -170,9 +173,9 @@ public class UserFacade extends Facade {
 			companyClone.setPhoneNumber(companyPhone);
 
 			// only needs to be checked if you changed the username
-			if (!cloneCustomer.getUsername().equals(username)) {
+			if (!customer.getUsername().equals(username)) {
 				actemium.existingUsername(username);
-				customer.setUsername(username);
+				cloneCustomer.setUsername(username);
 			}
 
 			if (!(password.equals("********") || password.isBlank())) {
@@ -181,6 +184,7 @@ public class UserFacade extends Facade {
 
 			cloneCustomer.setFirstName(firstName);
 			cloneCustomer.setLastName(lastName);
+			cloneCustomer.setEmailAddress(email);
 			cloneCustomer.setStatus(status);
 
 			companyClone.checkAttributes();
@@ -193,11 +197,12 @@ public class UserFacade extends Facade {
 			company.setCity(companyCity);
 			company.setAddress(companyAddress);
 			company.setPhoneNumber(companyPhone);
-
-			customer.setUsername(username);
-			customer.setPassword(password);
+			
+			customer.setUsername(cloneCustomer.getUsername());
+			customer.setPassword(cloneCustomer.getPassword());
 			customer.setFirstName(firstName);
 			customer.setLastName(lastName);
+			customer.setEmailAddress(email);
 			customer.setStatus(status);
 
 			actemium.modifyCustomer(customer);

@@ -3,7 +3,6 @@ package tests;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import exceptions.InformationRequiredException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,7 +18,7 @@ import domain.enums.EmployeeRole;
 import domain.enums.UserStatus;
 import domain.facades.UserFacade;
 import domain.manager.Actemium;
-import repository.GenericDao;
+import exceptions.InformationRequiredException;
 import repository.UserDao;
 
 @ExtendWith(MockitoExtension.class)
@@ -69,6 +68,7 @@ public class UserFacadeTest {
 					.password("PassWd123&")
 					.firstName("John")
 					.lastName("Smith")
+					.emailAddress("john.smith@student.hogent.be")
 					.company(google)
 					.build();
 		} catch (InformationRequiredException e) {
@@ -104,7 +104,8 @@ public class UserFacadeTest {
 		trainDummy();
 		initUserFacadeAdmin();
 		assertThrows(IllegalArgumentException.class,
-				() -> userFacade.registerCustomer(ADMINUSERNAME, PASSWORD, "John", "Smith", "Google", "United States",
+				() -> userFacade.registerCustomer(ADMINUSERNAME, PASSWORD, "John", "Smith", 
+						"john.smith@student.hogent.be", "Google", "United States",
 						"Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000"));
 		Mockito.verify(userRepoDummy, Mockito.times(2)).findByUsername(ADMINUSERNAME);
 	}
@@ -115,7 +116,7 @@ public class UserFacadeTest {
     	initUserFacadeAdmin();
 		assertThrows(IllegalArgumentException.class,
 				() -> userFacade.modifyCustomer((ActemiumCustomer) cust, ADMINUSERNAME, PASSWORD, "John", "Smith",
-						UserStatus.ACTIVE, "Google", "United States", "Mountain View, CA 94043",
+						"john.smith@student.hogent.be", UserStatus.ACTIVE, "Google", "United States", "Mountain View, CA 94043",
 						"1600 Amphitheatre Parkway", "+1-650-253-0000"));
 		Mockito.verify(userRepoDummy, Mockito.times(2)).findByUsername(ADMINUSERNAME);
     }
@@ -145,7 +146,8 @@ public class UserFacadeTest {
     public void createCustomer_UsernameAvailable_DoesNotThrowException() {
     	trainDummy();
     	initUserFacadeAdmin();
-		assertDoesNotThrow(() -> userFacade.registerCustomer(USERNAMEAVAILABLE, PASSWORD, "John", "Smith", "Google",
+		assertDoesNotThrow(() -> userFacade.registerCustomer(USERNAMEAVAILABLE, PASSWORD, "John", "Smith", 
+				"john.smith@student.hogent.be", "Google",
 				"United States", "Mountain View, CA 94043", "1600 Amphitheatre Parkway", "+1-650-253-0000"));
 		Mockito.verify(userRepoDummy).findByUsername(ADMINUSERNAME);
     	Mockito.verify(userRepoDummy).findByUsername(USERNAMEAVAILABLE);
@@ -156,7 +158,7 @@ public class UserFacadeTest {
     	trainDummy();
     	initUserFacadeAdmin();
 		assertDoesNotThrow(() -> userFacade.modifyCustomer((ActemiumCustomer) cust, USERNAMEAVAILABLE, PASSWORD, "John",
-				"Smith", UserStatus.ACTIVE, "Google", "United States", "Mountain View, CA 94043",
+				"Smith", "john.smith@student.hogent.be", UserStatus.ACTIVE, "Google", "United States", "Mountain View, CA 94043",
 				"1600 Amphitheatre Parkway", "+1-650-253-0000"));
 		Mockito.verify(userRepoDummy).findByUsername(ADMINUSERNAME);
     	Mockito.verify(userRepoDummy).findByUsername(USERNAMEAVAILABLE);

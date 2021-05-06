@@ -78,7 +78,8 @@ public class UserDetailsPanelController extends DetailsPanelController {
                                 , getTextFromGridItem(2)
                                 , getTextFromGridItem(10)
                                 , getTextFromGridItem(11)
-                                , getTextFromGridItem(13)
+                                , getTextFromGridItem(12)
+                                , getTextFromGridItem(14)
                                 , getTextFromGridItem(4)
                                 , getTextFromGridItem(5)
                                 , getTextFromGridItem(6)
@@ -113,6 +114,7 @@ public class UserDetailsPanelController extends DetailsPanelController {
                             , getTextFromGridItem(5)
                             , getTextFromGridItem(6)
                             , getTextFromGridItem(7)
+                            , getTextFromGridItem(8)
                     );
                     showPopupMessageAddItem("popupSuccess", LanguageResource.getString("customer_registred_success"));
                 }

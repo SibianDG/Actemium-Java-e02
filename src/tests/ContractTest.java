@@ -87,6 +87,7 @@ public class ContractTest {
 					.password("Passwd123&")
 					.firstName("Mark")
 					.lastName("Zuckerberg")
+					.emailAddress("john.smith@student.hogent.be")
 					.company(facebook)
 					.build();
 			System.out.println(4);

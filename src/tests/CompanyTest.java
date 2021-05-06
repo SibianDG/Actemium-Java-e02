@@ -35,6 +35,7 @@ public class CompanyTest implements Attributes {
                     .password("PassWd123&")
                     .firstName("John")
                     .lastName("Smith")
+					.emailAddress("john.smith@student.hogent.be")
                     .company(google)
                     .build();
         } catch (InformationRequiredException e) {
@@ -219,6 +220,7 @@ public class CompanyTest implements Attributes {
                         .password("PassWd123&")
                         .firstName("John")
                         .lastName("Smith")
+    					.emailAddress("john.smith@student.hogent.be")
                         .company(google)
                         .build();
 

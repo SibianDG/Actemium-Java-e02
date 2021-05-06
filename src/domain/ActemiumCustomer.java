@@ -170,6 +170,7 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 				.password(super.getPassword())
 				.firstName(super.firstNameProperty().get())
 				.lastName(super.lastNameProperty().get())
+				.emailAddress(this.getEmailAddress())
 				.company(this.company)
 				.registrationDate(super.getRegistrationDate())
 				.build();
@@ -289,6 +290,8 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 				requiredElements.add(RequiredElement.FirstnameRequired);
 			if(lastName == null || lastName.isBlank() || !lastName.matches("[^0-9]+"))
 				requiredElements.add(RequiredElement.LastnameRequired);
+			if (emailAddress == null || emailAddress.isBlank() || !emailAddress.matches("^[a-zA-Z0-9_!#$%&�*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+[.][a-zA-Z0-9-]{2,4}$"))
+				requiredElements.add(RequiredElement.EmailRequired);
 			if (company == null)
 				requiredElements.add(RequiredElement.CompanyNameRequired);
 

@@ -95,6 +95,7 @@ public class ActemiumTest {
                     .password("PassWd123&")
                     .firstName("John")
                     .lastName("Smith")
+					.emailAddress("john.smith@student.hogent.be")
                     .company(google)
                     .build();
         } catch (InformationRequiredException e) {
