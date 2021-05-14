@@ -443,7 +443,7 @@ public class DashboardFrameController <T,E> extends GridPane implements Invalida
         alert.setTitle("Notifications");
 
         if (((Employee) userViewModel.getSignedInUser()).getRole() == EmployeeRole.SUPPORT_MANAGER)
-            alert.setContentText(String.format("Customers in Request: %d%nTickets with unassigned technicians: %d%n",
+            alert.setContentText(String.format("Contracts in Request: %d%nTickets with unassigned technicians: %d%n",
                     (int) userViewModel.giveCustomers().stream().filter(c -> c.getStatus() == UserStatus.IN_REQUEST).count(),
                     (int) ticketViewModel.giveTicketsOutstanding().stream().filter(t -> t.giveTechnicians().size() == 0).count()
             ));
