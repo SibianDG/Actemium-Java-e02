@@ -220,7 +220,7 @@ public class DashboardFrameController <T,E> extends GridPane implements Invalida
         }
         	
         for(int i = 0; i < itemNames.length; i++) {
-        	if(itemNames[i].equals("outstanding tickets")) {
+        	if(itemNames[i].equals(LanguageResource.getString("outstanding_tickets"))) {
         		StringBuilder text = new StringBuilder();
         		text.append(itemNames[i]);
 
