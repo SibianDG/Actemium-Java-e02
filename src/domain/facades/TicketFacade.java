@@ -250,6 +250,7 @@ public class TicketFacade extends Facade {
 			case "registerTicket" -> changeDescription.append(String.format("%s: ", LanguageResource.getString("created_ticket_with_ID")));
 			case "modifyTicketOutstanding" -> changeDescription.append(String.format("%s: ", LanguageResource.getString("modified_outstanding_ticket_with_ID")));
 			case "modifyTicketResolved" -> changeDescription.append(String.format("%s: ", LanguageResource.getString("modified_resolved_ticket_with_ID")));
+			case "delete" -> changeDescription.append(String.format("%s: ", LanguageResource.getString("deleted_outstanding_ticket_with_ID")));
 		}
 		changeDescription.append(ticket.getTicketIdString());
 		
@@ -291,6 +292,12 @@ public class TicketFacade extends Facade {
 	public void delete(ActemiumTicket ticket) throws InformationRequiredException {
 		// check to see if signed in user is Support Manger
 		actemium.checkPermission(EmployeeRole.SUPPORT_MANAGER);
+
+		List<String> changeList = new ArrayList<>();
+
+		changeList.add(String.format("%s %s \"%s\" %s \"%s\".", LanguageResource.getString("ticket_status"), LanguageResource.getString("changed_from"), ticket.getStatus(), LanguageResource.getString("to"), TicketStatus.CANCELLED));
+		ticket.addTicketChange(createTicketChange(ticket, "delete", changeList));
+
 		ticket.setStatus(TicketStatus.CANCELLED);
 		actemium.modifyTicket(ticket);
     }
