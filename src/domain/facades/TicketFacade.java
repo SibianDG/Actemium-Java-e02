@@ -302,4 +302,8 @@ public class TicketFacade extends Facade {
 		actemium.modifyTicket(ticket);
     }
 
+	public void refreshTicketData() {
+		actemium.refreshTicketData();		
+	}
+
 }

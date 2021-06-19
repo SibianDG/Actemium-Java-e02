@@ -861,4 +861,25 @@ public class Actemium {
 			}
 		}
 	}
+
+	public void refreshUserData() {
+		fillInUserLists();		
+	}
+
+	public void refreshTicketData() {
+		fillTicketList();		
+	}
+
+	public void refreshContractTypeData() {
+		fillContractTypeList();		
+	}
+
+	public void refreshContractData() {
+		fillContractList();		
+	}
+
+	public void refreshKbItemData() {
+		fillKbItemList();		
+	}
+	
 }

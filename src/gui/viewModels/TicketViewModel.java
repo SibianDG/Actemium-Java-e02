@@ -161,4 +161,9 @@ public class TicketViewModel extends ViewModel {
     public User getSignedInUser() {
         return userFacade.getSignedInUser();
     }
+
+	public void refreshTicketData() {
+		ticketFacade.refreshTicketData();		
+	}
+	
 }

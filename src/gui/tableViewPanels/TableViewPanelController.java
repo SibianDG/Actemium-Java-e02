@@ -46,6 +46,9 @@ public abstract class TableViewPanelController<T, E> extends GridPane {
 	
 	@FXML
 	protected Button btnResetFilters;
+
+	@FXML
+	protected Button btnRefreshData;
 	
 	@FXML
 	protected Button btnP1;
@@ -84,6 +87,11 @@ public abstract class TableViewPanelController<T, E> extends GridPane {
 
 	@FXML
 	void addOnMouseClicked(MouseEvent event) {
+		//
+	}
+	
+	@FXML
+	void refreshDataOnMouseClicked(MouseEvent event) {
 		//
 	}
 

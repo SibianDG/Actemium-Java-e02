@@ -47,28 +47,14 @@ public class TicketTableViewPanelController<T, E> extends TableViewPanelControll
 	public TicketTableViewPanelController(DashboardFrameController dashboardFrameController, ViewModel viewModel, GUIEnum currentState, EmployeeRole employeeRole) {
 		super(dashboardFrameController, viewModel, currentState, employeeRole);
 		
-		if (TicketStatus.isOutstanding()) {
-			this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTicketsOutstanding();
-			
-			changeTicketPriorityButtons(this.mainData);
-						
-			this.mainData.addListener((ListChangeListener<T>) c -> {
-				while(c.next()) {
-					if(c.wasAdded()) {
-						changeTicketPriorityButtons(c.getList());
-
-					} else if(c.wasRemoved()) {
-						changeTicketPriorityButtons(c.getList());
-					}
-				}
-			});
-			
+		initData();
+		
+		if (TicketStatus.isOutstanding()) {					
 			btnP1.setVisible(true);
 			btnP2.setVisible(true);
 			btnP3.setVisible(true);	
 			
 		} else {
-			this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTicketsResolved();
 			btnAdd.setVisible(false);
 		}
 
@@ -79,9 +65,30 @@ public class TicketTableViewPanelController<T, E> extends TableViewPanelControll
 		propertyMap.put(LanguageResource.getString("title"), item -> (Property<E>)((Ticket) item).titleProperty());
 		propertyMap.put(LanguageResource.getString("status"), item -> (Property<E>)((Ticket) item).statusProperty());
 		btnAdd.setText(String.format("%s %s", LanguageResource.getString("add"), currentState.toString().toLowerCase()));
-			
+				
 		initializeFilters();
 		initializeTableViewSub();
+	}
+	
+	private void initData() {
+		if (TicketStatus.isOutstanding()) {
+			this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTicketsOutstanding();
+			
+			changeTicketPriorityButtons(this.mainData);						
+			this.mainData.addListener((ListChangeListener<T>) c -> {
+				while(c.next()) {
+					if(c.wasAdded()) {
+						changeTicketPriorityButtons(c.getList());
+
+					} else if(c.wasRemoved()) {
+						changeTicketPriorityButtons(c.getList());
+					}
+				}
+			});			
+		} else {
+			this.mainData = (ObservableList<T>) ((TicketViewModel) viewModel).giveTicketsResolved();
+		}
+		this.tableViewData = new FilteredList<>(mainData);
 	}
 	
 	private void changeTicketPriorityButtons(ObservableList<? extends T> observableList) {
@@ -111,13 +118,19 @@ public class TicketTableViewPanelController<T, E> extends TableViewPanelControll
 		Predicate<Ticket>  newPredicate = e -> e.getPriority().equals(TicketPriority.P3);
 		tableViewData.setPredicate((Predicate<T>) newPredicate);
 	}
-		
+
 	@FXML
 	void addOnMouseClicked(MouseEvent event) {
 		if (alertChangesOnTabelView()) {		
 			((TicketViewModel) viewModel).setCurrentState(GUIEnum.TICKET);
 			((TicketViewModel) viewModel).setSelectedTicket(null);			
 		}
+	}
+	
+	@FXML
+	void refreshDataOnMouseClicked(MouseEvent event) {
+		((TicketViewModel) viewModel).refreshTicketData();
+		initData();
 	}
 		
 	protected void initializeFilters() {
