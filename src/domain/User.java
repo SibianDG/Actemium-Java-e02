@@ -72,7 +72,7 @@ public interface User {
 	 * @return the string property
 	 */
 	StringProperty usernameProperty();
-
+	
 	/**
 	 * Status property string property.
 	 *

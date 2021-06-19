@@ -28,6 +28,7 @@ import gui.tableViewPanels.ContractTypeTableViewPanelController;
 import gui.tableViewPanels.CustomerTableViewPanelController;
 import gui.tableViewPanels.EmployeeTableViewPanelController;
 import gui.tableViewPanels.KnowledgeBaseTableViewPanelController;
+import gui.tableViewPanels.SelectCustomerIdTableViewPanelController;
 import gui.tableViewPanels.TableViewPanelController;
 import gui.tableViewPanels.TicketTableViewPanelController;
 import gui.viewModels.ChartViewModel;
@@ -384,7 +385,8 @@ public class DashboardFrameController <T,E> extends GridPane implements Invalida
 
 		switch(viewModel.getClass().getSimpleName()) {
 		case "UserViewModel" -> detailsPanelController = new UserDetailsPanelController(viewModel, gridContent);
-		case "TicketViewModel" -> detailsPanelController = new TicketDetailsPanelController(viewModel, gridContent, userFacade.getEmployeeRole());
+		case "TicketViewModel" -> detailsPanelController = new TicketDetailsPanelController(viewModel, gridContent, userFacade.getEmployeeRole(),
+				new SelectCustomerIdTableViewPanelController<>(this, userViewModel, GUIEnum.CUSTOMER, EmployeeRole.valueOf(userFacade.giveUserRole())));
 		case "ContractTypeViewModel" -> detailsPanelController = new ContractTypeDetailsPanelController(viewModel, gridContent);
 		case "ContractViewModel" -> detailsPanelController = new ContractDetailsPanelController(viewModel, gridContent);
 		case "KnowledgeBaseViewModel" -> detailsPanelController = new KnowledgeBaseDetailsPanelController(viewModel, gridContent);

@@ -19,6 +19,7 @@ import domain.enums.TicketStatus;
 import domain.enums.TicketType;
 import exceptions.InformationRequiredException;
 import gui.GUIEnum;
+import gui.tableViewPanels.SelectCustomerIdTableViewPanelController;
 import gui.viewModels.TicketViewModel;
 import gui.viewModels.ViewModel;
 import javafx.beans.Observable;
@@ -27,7 +28,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -35,10 +38,15 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
 import languages.LanguageResource;
 
 
@@ -46,10 +54,17 @@ public class TicketDetailsPanelController extends DetailsPanelController {
     
 	private EmployeeRole signedInEmployeeRole;
     private TicketHistoryPanelController ticketHistoryPanelController;
-
-    public TicketDetailsPanelController(ViewModel viewModel, GridPane gridContent, EmployeeRole signedInEmployeeRole)  {
+    private SelectCustomerIdTableViewPanelController selectCustomerIdTableViewPanelController;
+    
+    private Stage customerIdStage;
+    
+    public TicketDetailsPanelController(ViewModel viewModel, GridPane gridContent, EmployeeRole signedInEmployeeRole,
+    		SelectCustomerIdTableViewPanelController selectCustomerIdTableViewPanelController)  {
         super(viewModel, gridContent);
         this.signedInEmployeeRole = signedInEmployeeRole;
+        this.selectCustomerIdTableViewPanelController = selectCustomerIdTableViewPanelController;
+        
+        initCustomerIdScreen();
     }
 
     @Override
@@ -212,13 +227,38 @@ public class TicketDetailsPanelController extends DetailsPanelController {
                 if(fields.get(i).equals(LanguageResource.getString("creation_date"))) {
                 	textField.setEditable(false);
                 }
+                if(fields.get(i).equals(LanguageResource.getString("customer_ID"))) {
+                	setCustomerIdTextField(textField);
+                	textField.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
+            			if (KeyCode.F4.equals(e.getCode())) {  
+            				customerIdStage.show();
+            				Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+            		        customerIdStage.setX((primScreenBounds.getWidth() - customerIdStage.getWidth()) / 2);
+            		        customerIdStage.setY((primScreenBounds.getHeight() - customerIdStage.getHeight()) / 2);
+            			}
+            		});
+                }
                 node = textField;
             }
             gridDetails.add(node, 1, i);
         }
     }
+    
+    private void initCustomerIdScreen() {    	
+        Stage customerIdStage = new Stage();
+        Scene scene = new Scene(selectCustomerIdTableViewPanelController);
+        customerIdStage.setScene(scene);        
+        customerIdStage.setTitle(LanguageResource.getString("select_customer"));        
+        customerIdStage.getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
+        
+        this.customerIdStage = customerIdStage;
+	}
+    
+    private void setCustomerIdTextField(TextField customerIdTextField) {
+    	selectCustomerIdTableViewPanelController.setCustomerIdTextField(customerIdTextField);
+	}
 
-    private void addGridDetails(Map<String, Map<Boolean, Object>> details){
+	private void addGridDetails(Map<String, Map<Boolean, Object>> details){
         int i = 0;
         // Using LinkedHashSet so the order of the map values doesn't change
         Set<String> keys = new LinkedHashSet<String>(details.keySet());

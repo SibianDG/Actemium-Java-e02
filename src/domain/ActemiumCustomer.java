@@ -12,9 +12,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import domain.enums.RequiredElement;
 import exceptions.InformationRequiredException;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -36,7 +39,10 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	private ActemiumCompany company;
 	
 	@Column(unique = true)
-	private String emailAddress;
+	private String emailAddress;	
+
+	@Transient
+	private StringProperty customerIdProperty = new SimpleStringProperty();
 	
 	/**
 	 * Instantiates a new Actemium customer.
@@ -82,6 +88,16 @@ public class ActemiumCustomer extends UserModel implements Customer, Seniority {
 	 */
 	public int getCustomerNr() {
 		return (int) super.getUserId();
+	}
+	
+	/**
+	 *	Gets the property customer nr. In fact the userid.
+	 *
+	 * @return customer nr
+	 */
+	public StringProperty customerIdProperty() {
+		customerIdProperty.set(Integer.toString(super.getUserId()));
+		return customerIdProperty;
 	}
 
 	/**

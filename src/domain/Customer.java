@@ -2,6 +2,7 @@ package domain;
 
 import java.time.LocalDate;
 
+import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 
 /**
@@ -17,6 +18,13 @@ public interface Customer extends User {
 	 * @return the customer nr
 	 */
 	int getCustomerNr();	
+	
+	/**
+	 * customerId property string property.
+	 *
+	 * @return the string property
+	 */
+	StringProperty customerIdProperty();
 
 	/**
 	 * Gets email address.
