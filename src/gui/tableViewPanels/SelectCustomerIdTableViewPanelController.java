@@ -10,11 +10,9 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import domain.Customer;
-import domain.User;
 import domain.enums.EmployeeRole;
 import gui.DashboardFrameController;
 import gui.GUIEnum;
-import gui.detailPanels.TicketDetailsPanelController;
 import gui.viewModels.UserViewModel;
 import gui.viewModels.ViewModel;
 import javafx.beans.property.Property;
@@ -47,8 +45,7 @@ public class SelectCustomerIdTableViewPanelController<T,E> extends TableViewPane
 		propertyMap.put(LanguageResource.getString("customer_ID"), item -> (Property<E>)((Customer)item).customerIdProperty());
 		propertyMap.put(LanguageResource.getString("firstname"), item -> (Property<E>)((Customer)item).firstNameProperty());
 		propertyMap.put(LanguageResource.getString("lastname"), item -> (Property<E>)((Customer)item).lastNameProperty());
-//		btnAdd.setText(String.format("%s %s", LanguageResource.getString("add"), currentState.toString().toLowerCase()));			
-		btnAdd.setText("Select Customer");			
+		btnAdd.setText(LanguageResource.getString("select_customer"));
 
 		initializeFilters();
 		initializeTableViewSub();
@@ -61,9 +58,11 @@ public class SelectCustomerIdTableViewPanelController<T,E> extends TableViewPane
 	@FXML
 	void addOnMouseClicked(MouseEvent event) {
 		Customer selectedCustomer = (Customer) tableView.getSelectionModel().selectedItemProperty().get();
-		customerIdTextField.setText(Integer.toString(selectedCustomer.getCustomerNr()));
-		Stage stage = (Stage) this.getScene().getWindow();
-		stage.close();
+		if (selectedCustomer != null) {
+			customerIdTextField.setText(Integer.toString(selectedCustomer.getCustomerNr()));
+			Stage stage = (Stage) this.getScene().getWindow();
+			stage.close();
+		}
 	}	
 	
 	protected void initializeFilters() {
@@ -109,11 +108,6 @@ public class SelectCustomerIdTableViewPanelController<T,E> extends TableViewPane
 		});
 
 		initializeTableViewSuper();
-		
-		tableView.setOnMouseClicked((MouseEvent m) -> {
-				T data = (T) tableView.getSelectionModel().selectedItemProperty().get();				
-				((UserViewModel) viewModel).setSelectedUser((User) data);	
-		});
 	}
 
 	protected Predicate giveFilterPredicate(String fieldName, String filterText){
@@ -123,8 +117,8 @@ public class SelectCustomerIdTableViewPanelController<T,E> extends TableViewPane
 
 				if (fieldName.equalsIgnoreCase(LanguageResource.getString("company"))){
 					newPredicate = e -> e.giveCompany().getName().toLowerCase().contains(filterText);
-				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("customer_ID")) || fieldName.equalsIgnoreCase("customerid")){
-					newPredicate = e -> Integer.toString(e.getCustomerNr()).toLowerCase().equals(filterText);
+				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("customer_ID"))) {
+					newPredicate = e -> Integer.toString(e.getCustomerNr()).equals(filterText);
 				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("firstname"))){
 					newPredicate = e -> e.getFirstName().toLowerCase().contains(filterText);
 				} else if (fieldName.equalsIgnoreCase(LanguageResource.getString("lastname"))) {

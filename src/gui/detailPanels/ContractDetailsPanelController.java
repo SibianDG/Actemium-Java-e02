@@ -11,6 +11,7 @@ import java.util.Set;
 import domain.enums.ContractStatus;
 import exceptions.InformationRequiredException;
 import gui.GUIEnum;
+import gui.tableViewPanels.SelectContractTypeIdTableViewPanelController;
 import gui.tableViewPanels.SelectCustomerIdTableViewPanelController;
 import gui.viewModels.ContractViewModel;
 import gui.viewModels.ViewModel;
@@ -41,13 +42,18 @@ import languages.LanguageResource;
 public class ContractDetailsPanelController extends DetailsPanelController {
 
     private SelectCustomerIdTableViewPanelController selectCustomerIdTableViewPanelController;    
+    private SelectContractTypeIdTableViewPanelController selectContractTypeIdTableViewPanelController;    
     private Stage customerIdStage;
+    private Stage contractTypeIdStage;
     
 	public ContractDetailsPanelController(ViewModel viewModel, GridPane gridContent,
-    		SelectCustomerIdTableViewPanelController selectCustomerIdTableViewPanelController) {
+    		SelectCustomerIdTableViewPanelController selectCustomerIdTableViewPanelController,
+    		SelectContractTypeIdTableViewPanelController selectContractTypeIdTableViewPanelController) {
         super(viewModel, gridContent);
         this.selectCustomerIdTableViewPanelController = selectCustomerIdTableViewPanelController;
+        this.selectContractTypeIdTableViewPanelController = selectContractTypeIdTableViewPanelController;
         initCustomerIdScreen();
+        initContractTypeIdScreen();
     }
 
     @Override
@@ -171,6 +177,16 @@ public class ContractDetailsPanelController extends DetailsPanelController {
             		        customerIdStage.setY((primScreenBounds.getHeight() - customerIdStage.getHeight()) / 2);
             			}
             		});
+                } else if(fields.get(i).equals(LanguageResource.getString("contract_type_ID"))) {
+                	setContractTypeIdTextField(textField);
+                	textField.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
+            			if (KeyCode.F4.equals(e.getCode())) {  
+            				contractTypeIdStage.show();
+            				Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+            				contractTypeIdStage.setX((primScreenBounds.getWidth() - contractTypeIdStage.getWidth()) / 2);
+            		        contractTypeIdStage.setY((primScreenBounds.getHeight() - contractTypeIdStage.getHeight()) / 2);
+            			}
+            		});
                 }
                 node = textField;
             }
@@ -188,8 +204,22 @@ public class ContractDetailsPanelController extends DetailsPanelController {
         this.customerIdStage = customerIdStage;
 	}
     
+    private void initContractTypeIdScreen() {    	
+        Stage contractTypeIdStage = new Stage();
+        Scene scene = new Scene(selectContractTypeIdTableViewPanelController);
+        contractTypeIdStage.setScene(scene);        
+        contractTypeIdStage.setTitle(LanguageResource.getString("select_contract_type"));
+        contractTypeIdStage.getIcons().add(new Image(getClass().getResourceAsStream("/pictures/icon.png")));
+        
+        this.contractTypeIdStage = contractTypeIdStage;
+	}
+    
     private void setCustomerIdTextField(TextField customerIdTextField) {
     	selectCustomerIdTableViewPanelController.setCustomerIdTextField(customerIdTextField);
+	}
+    
+    private void setContractTypeIdTextField(TextField contractTypeIdTextField) {
+    	selectContractTypeIdTableViewPanelController.setContractTypeIdTextField(contractTypeIdTextField);
 	}
     
     private void addGridDetails(Map<String, Map<Boolean, Object>> details){

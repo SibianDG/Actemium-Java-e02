@@ -28,6 +28,7 @@ import gui.tableViewPanels.ContractTypeTableViewPanelController;
 import gui.tableViewPanels.CustomerTableViewPanelController;
 import gui.tableViewPanels.EmployeeTableViewPanelController;
 import gui.tableViewPanels.KnowledgeBaseTableViewPanelController;
+import gui.tableViewPanels.SelectContractTypeIdTableViewPanelController;
 import gui.tableViewPanels.SelectCustomerIdTableViewPanelController;
 import gui.tableViewPanels.TableViewPanelController;
 import gui.tableViewPanels.TicketTableViewPanelController;
@@ -389,8 +390,8 @@ public class DashboardFrameController <T,E> extends GridPane implements Invalida
 				new SelectCustomerIdTableViewPanelController<>(this, userViewModel, GUIEnum.CUSTOMER, EmployeeRole.valueOf(userFacade.giveUserRole())));
 		case "ContractTypeViewModel" -> detailsPanelController = new ContractTypeDetailsPanelController(viewModel, gridContent);
 		case "ContractViewModel" -> detailsPanelController = new ContractDetailsPanelController(viewModel, gridContent,
-				new SelectCustomerIdTableViewPanelController<>(this, userViewModel, GUIEnum.CUSTOMER, EmployeeRole.valueOf(userFacade.giveUserRole()))
-				);
+				new SelectCustomerIdTableViewPanelController<>(this, userViewModel, GUIEnum.CUSTOMER, EmployeeRole.valueOf(userFacade.giveUserRole())),
+				new SelectContractTypeIdTableViewPanelController<>(this, contractTypeViewModel, GUIEnum.CONTRACTTYPE, EmployeeRole.valueOf(userFacade.giveUserRole())));
 		case "KnowledgeBaseViewModel" -> detailsPanelController = new KnowledgeBaseDetailsPanelController(viewModel, gridContent);
 		}
 		gridContent.add(tableViewPanelCompanion, 0, 0);

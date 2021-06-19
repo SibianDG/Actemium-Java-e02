@@ -221,10 +221,7 @@ public class TicketDetailsPanelController extends DetailsPanelController {
                 TextField textField;
                 textField = new TextField(demoValues.get(i));
                 textField.setFont(Font.font("Arial", 14));
-                textField.setPromptText(fields.get(i));
-                if(fields.get(i).equals(LanguageResource.getString("creation_date"))) {
-                	textField.setEditable(false);
-                }
+                textField.setPromptText(fields.get(i));                
                 if(fields.get(i).equals(LanguageResource.getString("customer_ID"))) {
                 	setCustomerIdTextField(textField);
                 	textField.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
@@ -235,6 +232,8 @@ public class TicketDetailsPanelController extends DetailsPanelController {
             		        customerIdStage.setY((primScreenBounds.getHeight() - customerIdStage.getHeight()) / 2);
             			}
             		});
+                } else if(fields.get(i).equals(LanguageResource.getString("creation_date"))) {
+                	textField.setEditable(false);
                 }
                 node = textField;
             }

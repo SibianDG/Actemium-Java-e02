@@ -17,6 +17,13 @@ public interface ContractType {
 	 * @return the contract type id
 	 */
 	int getContractTypeId();
+	
+	/**
+	 * contractTypeId property string property.
+	 *
+	 * @return the string property
+	 */
+	StringProperty contractTypeIdProperty();
 
 	/**
 	 * Gets name.

@@ -21,6 +21,7 @@ import domain.enums.Timestamp;
 import exceptions.InformationRequiredException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.property.StringPropertyBase;
 import languages.LanguageResource;
 
 /**
@@ -53,6 +54,9 @@ public class ActemiumContractType implements ContractType, Serializable {
 	// Price per year?
 	private double price;
 
+	@Transient
+	private StringPropertyBase contractTypeIdProperty = new SimpleStringProperty();
+
 	/**
 	 * Instantiates a new Actemium contract type.
 	 */
@@ -84,6 +88,16 @@ public class ActemiumContractType implements ContractType, Serializable {
 	 */
 	public int getContractTypeId() {
 		return contractTypeId;
+	}	
+	
+	/**
+	 *	Gets the property customer nr. In fact the userid.
+	 *
+	 * @return customer nr
+	 */
+	public StringProperty contractTypeIdProperty() {
+		contractTypeIdProperty.set(Integer.toString(getContractTypeId()));
+		return contractTypeIdProperty;
 	}
 
 	/**
