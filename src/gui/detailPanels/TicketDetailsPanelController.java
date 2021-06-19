@@ -54,16 +54,14 @@ public class TicketDetailsPanelController extends DetailsPanelController {
     
 	private EmployeeRole signedInEmployeeRole;
     private TicketHistoryPanelController ticketHistoryPanelController;
-    private SelectCustomerIdTableViewPanelController selectCustomerIdTableViewPanelController;
-    
+    private SelectCustomerIdTableViewPanelController selectCustomerIdTableViewPanelController;    
     private Stage customerIdStage;
     
     public TicketDetailsPanelController(ViewModel viewModel, GridPane gridContent, EmployeeRole signedInEmployeeRole,
-    		SelectCustomerIdTableViewPanelController selectCustomerIdTableViewPanelController)  {
+    		SelectCustomerIdTableViewPanelController selectCustomerIdTableViewPanelController) {
         super(viewModel, gridContent);
         this.signedInEmployeeRole = signedInEmployeeRole;
-        this.selectCustomerIdTableViewPanelController = selectCustomerIdTableViewPanelController;
-        
+        this.selectCustomerIdTableViewPanelController = selectCustomerIdTableViewPanelController;        
         initCustomerIdScreen();
     }
 

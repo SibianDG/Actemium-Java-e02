@@ -388,7 +388,9 @@ public class DashboardFrameController <T,E> extends GridPane implements Invalida
 		case "TicketViewModel" -> detailsPanelController = new TicketDetailsPanelController(viewModel, gridContent, userFacade.getEmployeeRole(),
 				new SelectCustomerIdTableViewPanelController<>(this, userViewModel, GUIEnum.CUSTOMER, EmployeeRole.valueOf(userFacade.giveUserRole())));
 		case "ContractTypeViewModel" -> detailsPanelController = new ContractTypeDetailsPanelController(viewModel, gridContent);
-		case "ContractViewModel" -> detailsPanelController = new ContractDetailsPanelController(viewModel, gridContent);
+		case "ContractViewModel" -> detailsPanelController = new ContractDetailsPanelController(viewModel, gridContent,
+				new SelectCustomerIdTableViewPanelController<>(this, userViewModel, GUIEnum.CUSTOMER, EmployeeRole.valueOf(userFacade.giveUserRole()))
+				);
 		case "KnowledgeBaseViewModel" -> detailsPanelController = new KnowledgeBaseDetailsPanelController(viewModel, gridContent);
 		}
 		gridContent.add(tableViewPanelCompanion, 0, 0);
