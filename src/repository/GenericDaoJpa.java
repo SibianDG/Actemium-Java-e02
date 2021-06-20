@@ -37,6 +37,9 @@ public class GenericDaoJpa<T> implements GenericDao<T>, AutoCloseable{
 
     @Override
     public List<T> findAll() {
+    	// TODO - remove sysouts, here for debugging
+    	System.out.printf("select entity from " + type.getName() + " entity", type);
+    	System.out.println();
         return em.createQuery("select entity from " + type.getName() + " entity", type).getResultList();
     }
 

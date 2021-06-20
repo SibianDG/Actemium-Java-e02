@@ -58,7 +58,6 @@ public class TicketTableViewPanelController<T, E> extends TableViewPanelControll
 			btnAdd.setVisible(false);
 		}
 
-		this.tableViewData = new FilteredList<>(mainData);
 		propertyMap.put(LanguageResource.getString("ID"), item -> (Property<E>)((Ticket) item).ticketIdProperty()); // IntegerProperty
 		propertyMap.put(LanguageResource.getString("type"), item -> (Property<E>)((Ticket) item).ticketTypeProperty());
 		propertyMap.put(LanguageResource.getString("priority"), item -> (Property<E>)((Ticket) item).priorityProperty());
@@ -131,6 +130,7 @@ public class TicketTableViewPanelController<T, E> extends TableViewPanelControll
 	void refreshDataOnMouseClicked(MouseEvent event) {
 		((TicketViewModel) viewModel).refreshTicketData();
 		initData();
+		initializeTableViewSub();
 	}
 		
 	protected void initializeFilters() {
@@ -248,6 +248,7 @@ public class TicketTableViewPanelController<T, E> extends TableViewPanelControll
 	}
 
 	protected void initializeTableViewSub() {
+		tableView.getColumns().clear();
 		propertyMap.forEach((key, prop) -> {
 			TableColumn<T, E> c = createColumn(key, prop);
 			tableView.getColumns().add(c);
@@ -268,7 +269,7 @@ public class TicketTableViewPanelController<T, E> extends TableViewPanelControll
 
 	protected Predicate giveFilterPredicate(String fieldName, String filterText){
 		fieldName = fieldName.toLowerCase();
-			//TODO -> specify?? -> languageResource?
+
 			if (fieldName.length() > 0 && !filterText.toLowerCase().contains(LanguageResource.getString("select"))){
 				System.out.println("FIELDNAME: "+fieldName);
 				Predicate<Ticket> newPredicate;

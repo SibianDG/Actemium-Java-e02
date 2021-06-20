@@ -20,8 +20,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -140,6 +140,16 @@ public class ActemiumTicket implements Ticket, Serializable {
 		this.attachments = builder.attachments;
 	}
 
+	// TODO - just here for debugging
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(title);
+		sb.append(status);
+		sb.append(priority);
+		return String.format("%s", sb);		
+	}
+	
+	
 	/**
 	 *	Gets the ticket ID as string.
 	 *

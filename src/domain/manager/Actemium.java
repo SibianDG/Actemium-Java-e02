@@ -35,6 +35,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import languages.LanguageResource;
 import repository.GenericDao;
+import repository.GenericDaoJpa;
 import repository.UserDao;
 import repository.UserDaoJpa;
 
@@ -132,6 +133,31 @@ public class Actemium {
 	 */
 	public void fillTicketList() {
 		List<ActemiumTicket> ticketList = ticketDaoJpa.findAll();
+
+    	// TODO - remove sysout, here for debugging
+		ticketList.forEach(System.out::println);
+		
+		this.actemiumTickets = FXCollections.observableArrayList((List<Ticket>)(Object)ticketList);
+		List<TicketStatus> outstanding = Arrays.asList(TicketStatus.CREATED, TicketStatus.IN_PROGRESS, TicketStatus.WAITING_ON_USER_INFORMATION, TicketStatus.USER_INFORMATION_RECEIVED, TicketStatus.IN_DEVELOPMENT);
+        this.actemiumTicketsOutstanding = FXCollections.observableArrayList((List<Ticket>)(Object)ticketList
+                .stream()
+                .filter(t -> outstanding.contains(t.getStatus()))
+                .collect(Collectors.toList()));
+		List<TicketStatus> resolved = Arrays.asList(TicketStatus.COMPLETED, TicketStatus.CANCELLED);
+        this.actemiumTicketsResolved = FXCollections.observableArrayList((List<Ticket>)(Object)ticketList
+                .stream()
+                .filter(t -> resolved.contains(t.getStatus()))
+                .collect(Collectors.toList()));
+	}	
+
+	// TODO - remove this method, here for debugging
+	// wanted to see if creating a new DAO would make any difference but it doesn't
+	public void fillTicketList2() {
+        GenericDaoJpa<ActemiumTicket> ticketDaoJpa = new GenericDaoJpa<>(ActemiumTicket.class);
+		List<ActemiumTicket> ticketList = ticketDaoJpa.findAll();
+		ticketList.forEach(System.out::println);
+		ActemiumTicket tick = ticketDaoJpa.get(1);
+		System.out.println(tick);
 		this.actemiumTickets = FXCollections.observableArrayList((List<Ticket>)(Object)ticketList);
 		List<TicketStatus> outstanding = Arrays.asList(TicketStatus.CREATED, TicketStatus.IN_PROGRESS, TicketStatus.WAITING_ON_USER_INFORMATION, TicketStatus.USER_INFORMATION_RECEIVED, TicketStatus.IN_DEVELOPMENT);
         this.actemiumTicketsOutstanding = FXCollections.observableArrayList((List<Ticket>)(Object)ticketList
@@ -867,7 +893,9 @@ public class Actemium {
 	}
 
 	public void refreshTicketData() {
-		fillTicketList();		
+		fillTicketList();
+    	// TODO - remove this method, here for debugging
+		fillTicketList2();
 	}
 
 	public void refreshContractTypeData() {
