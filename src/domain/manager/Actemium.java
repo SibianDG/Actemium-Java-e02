@@ -2,6 +2,7 @@ package domain.manager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -114,7 +115,7 @@ public class Actemium {
 	
 	// Fill up ObservableLists
 	private void fillInUserLists(){
-		List<UserModel> userList = userDaoJpa.findAll();
+		Collection<UserModel> userList = userDaoJpa.findAll();
 		List<ActemiumCustomer> customerList = userList.stream()
 				.filter(c -> c instanceof ActemiumCustomer)
 				.map(c -> (ActemiumCustomer) c)
@@ -132,10 +133,18 @@ public class Actemium {
 	 * Fill ticket list.
 	 */
 	public void fillTicketList() {
-		List<ActemiumTicket> ticketList = ticketDaoJpa.findAll();
-
+//		ticketDaoJpa.closePersistency();
+//      GenericDaoJpa<ActemiumTicket> ticketDaoJpa = new GenericDaoJpa<>(ActemiumTicket.class);
+//		ticketDaoJpa.startTransaction();
+		
+//		ticketDaoJpa.refresh();
+		
+		Collection<ActemiumTicket> ticketList = ticketDaoJpa.findAll();
+		
     	// TODO - remove sysout, here for debugging
 		ticketList.forEach(System.out::println);
+		
+//		ticketList.refresh();
 		
 		this.actemiumTickets = FXCollections.observableArrayList((List<Ticket>)(Object)ticketList);
 		List<TicketStatus> outstanding = Arrays.asList(TicketStatus.CREATED, TicketStatus.IN_PROGRESS, TicketStatus.WAITING_ON_USER_INFORMATION, TicketStatus.USER_INFORMATION_RECEIVED, TicketStatus.IN_DEVELOPMENT);
@@ -154,10 +163,10 @@ public class Actemium {
 	// wanted to see if creating a new DAO would make any difference but it doesn't
 	public void fillTicketList2() {
         GenericDaoJpa<ActemiumTicket> ticketDaoJpa = new GenericDaoJpa<>(ActemiumTicket.class);
-		List<ActemiumTicket> ticketList = ticketDaoJpa.findAll();
+		Collection<ActemiumTicket> ticketList = ticketDaoJpa.findAll();
 		ticketList.forEach(System.out::println);
-		ActemiumTicket tick = ticketDaoJpa.get(1);
-		System.out.println(tick);
+//		ActemiumTicket tick = ticketDaoJpa.get(1);
+//		System.out.println(tick);
 		this.actemiumTickets = FXCollections.observableArrayList((List<Ticket>)(Object)ticketList);
 		List<TicketStatus> outstanding = Arrays.asList(TicketStatus.CREATED, TicketStatus.IN_PROGRESS, TicketStatus.WAITING_ON_USER_INFORMATION, TicketStatus.USER_INFORMATION_RECEIVED, TicketStatus.IN_DEVELOPMENT);
         this.actemiumTicketsOutstanding = FXCollections.observableArrayList((List<Ticket>)(Object)ticketList
@@ -175,7 +184,7 @@ public class Actemium {
 	 * Fill contract type list.
 	 */
 	public void fillContractTypeList() {
-		List<ActemiumContractType> contractTypeList = contractTypeDaoJpa.findAll();
+		Collection<ActemiumContractType> contractTypeList = contractTypeDaoJpa.findAll();
 		this.actemiumContractTypes = FXCollections.observableArrayList((List<ContractType>)(Object)contractTypeList);
 	}
 
@@ -183,7 +192,7 @@ public class Actemium {
 	 * Fill contract list.
 	 */
 	public void fillContractList() {
-		List<ActemiumContract> contractList = contractDaoJpa.findAll();
+		Collection<ActemiumContract> contractList = contractDaoJpa.findAll();
 		this.actemiumContracts = FXCollections.observableArrayList((List<Contract>)(Object)contractList);
 	}
 
@@ -191,7 +200,7 @@ public class Actemium {
 	 * Fill kb item list.
 	 */
 	public void fillKbItemList() {
-		List<ActemiumKbItem> kbItemList = kbItemDaoJpa.findAll();
+		Collection<ActemiumKbItem> kbItemList = kbItemDaoJpa.findAll();
 		this.actemiumKbItems = FXCollections.observableArrayList((List<KbItem>)(Object)kbItemList);
 	}
 

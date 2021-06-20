@@ -18,6 +18,7 @@ import domain.enums.UserStatus;
 import gui.DashboardFrameController;
 import gui.GUIEnum;
 import gui.viewModels.ContractViewModel;
+import gui.viewModels.TicketViewModel;
 import gui.viewModels.ViewModel;
 import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
@@ -41,10 +42,9 @@ public class ContractTableViewPanelController<T,E> extends TableViewPanelControl
 	public ContractTableViewPanelController(DashboardFrameController dashboardFrameController, ViewModel viewModel, GUIEnum currentState, EmployeeRole employeeRole) {
 		super(dashboardFrameController, viewModel, currentState, employeeRole);
 
-		this.mainData = (ObservableList<T>) ((ContractViewModel) viewModel).giveContracts();
-		this.tableViewData = new FilteredList<>(mainData);
+		initData();
+		
 		propertyMap.put(LanguageResource.getString("ID"), item -> (Property<E>)((Contract) item).contractIdProperty()); // IntegerProperty
-//		propertyMap.put(LanguageResource.getString("company"), item -> (Property<E>)((Contract) item).giveCustomer().giveCompany().nameProperty());
 		propertyMap.put(LanguageResource.getString("company"), item -> (Property<E>)((Contract) item).giveCompany().nameProperty());
 		propertyMap.put(LanguageResource.getString("type"), item -> (Property<E>)((Contract) item).contractTypeNameProperty());
 		propertyMap.put(LanguageResource.getString("status"), item -> (Property<E>)((Contract) item).contractStatusProperty());
@@ -60,6 +60,18 @@ public class ContractTableViewPanelController<T,E> extends TableViewPanelControl
 			((ContractViewModel) viewModel).setCurrentState(GUIEnum.CONTRACT);
 			((ContractViewModel) viewModel).setSelectedContract(null);
 		}
+	}
+	
+	private void initData() {
+		this.mainData = (ObservableList<T>) ((ContractViewModel) viewModel).giveContracts();
+		this.tableViewData = new FilteredList<>(mainData);		
+	}	
+
+	@FXML
+	void refreshDataOnMouseClicked(MouseEvent event) {
+		((ContractViewModel) viewModel).refreshContractData();
+		initData();
+		initializeTableViewSub();
 	}
 		
 	protected void initializeFilters() {
@@ -144,6 +156,7 @@ public class ContractTableViewPanelController<T,E> extends TableViewPanelControl
 	}
 
 	protected void initializeTableViewSub() {
+		tableView.getColumns().clear();
 		propertyMap.forEach((key, prop) -> {
 			TableColumn<T, E> c = createColumn(key, prop);
 			tableView.getColumns().add(c);

@@ -74,4 +74,8 @@ public class ContractFacade extends Facade {
 		actemium.registerContract(contract);
 	}
 
+	public void refreshContractData() {
+		actemium.refreshContractData();
+	}
+
 }

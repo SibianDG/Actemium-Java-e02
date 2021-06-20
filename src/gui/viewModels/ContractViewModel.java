@@ -83,4 +83,8 @@ public class ContractViewModel extends ViewModel {
 		// Unnecessary for this class but has to be implemented
 	}
 
+	public void refreshContractData() {
+		contractFacade.refreshContractData();		
+	}
+
 }

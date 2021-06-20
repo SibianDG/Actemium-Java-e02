@@ -25,6 +25,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
@@ -47,6 +49,9 @@ import languages.LanguageResource;
  */
 @Entity
 @Access(AccessType.FIELD)
+@NamedQueries({ 
+	@NamedQuery(name = "ActemiumTicket.findAll", query = "SELECT t FROM ActemiumTicket t")
+})
 public class ActemiumTicket implements Ticket, Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;

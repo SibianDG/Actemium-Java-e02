@@ -1,6 +1,6 @@
 package repository;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface GenericDao<T> {
 	
@@ -8,8 +8,9 @@ public interface GenericDao<T> {
     public Class<? extends Throwable> startTransaction() ;
     public void commitTransaction() ;
     public void rollbackTransaction() ;
-	
-    public List<T> findAll();  
+
+//    public List<T> findAll();
+    public Collection<T> findAll();
     public <U> T get(U id);
     public T update(T object);
     public void delete(T object);
