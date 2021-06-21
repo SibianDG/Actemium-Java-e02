@@ -91,4 +91,8 @@ public class KnowledgeBaseFacade extends Facade {
         actemium.modifyKbItem(kbItem);
     }
 
+	public void refreshKbData() {
+		actemium.refreshKbData();
+	}
+
 }

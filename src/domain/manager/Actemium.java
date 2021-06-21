@@ -880,7 +880,7 @@ public class Actemium {
 		fillContractList();		
 	}
 
-	public void refreshKbItemData() {
+	public void refreshKbData() {
 		fillKbItemList();		
 	}
 	

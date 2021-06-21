@@ -308,4 +308,8 @@ public class UserFacade extends Facade {
 			actemium.modifyCustomer((ActemiumCustomer) user);
 	}
 
+	public void refreshUserData() {
+		actemium.refreshUserData();
+	}
+
 }

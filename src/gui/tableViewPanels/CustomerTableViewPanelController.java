@@ -41,8 +41,8 @@ public class CustomerTableViewPanelController<T,E> extends TableViewPanelControl
 	public CustomerTableViewPanelController(DashboardFrameController dashboardFrameController, ViewModel viewModel, GUIEnum currentState, EmployeeRole employeeRole) {
 		super(dashboardFrameController, viewModel, currentState, employeeRole);			
 		
-		this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).giveCustomers();
-		this.tableViewData = new FilteredList<>(mainData);
+		initData();
+		
 		propertyMap.put(LanguageResource.getString("company"), item -> (Property<E>)((Customer)item).giveCompany().nameProperty());
 		propertyMap.put(LanguageResource.getString("status"), item -> (Property<E>)((Customer)item).statusProperty());
 		propertyMap.put(LanguageResource.getString("firstname"), item -> (Property<E>)((Customer)item).firstNameProperty());
@@ -59,7 +59,19 @@ public class CustomerTableViewPanelController<T,E> extends TableViewPanelControl
 			((UserViewModel) viewModel).setCurrentState(GUIEnum.CUSTOMER);
 			((UserViewModel) viewModel).setSelectedUser(null);			
 		}
+	}
+	
+	private void initData() {
+		this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).giveCustomers();
+		this.tableViewData = new FilteredList<>(mainData);
 	}	
+
+	@FXML
+	void refreshDataOnMouseClicked(MouseEvent event) {
+		((UserViewModel) viewModel).refreshUserData();
+		initData();
+		initializeTableViewSub();
+	}
 	
 	protected void initializeFilters() {
 		Map<GUIEnum, ArrayList<Object>> filterMap = new HashMap<>();
@@ -157,6 +169,7 @@ public class CustomerTableViewPanelController<T,E> extends TableViewPanelControl
 	}
 
 	protected void initializeTableViewSub() {
+		tableView.getColumns().clear();
 		propertyMap.forEach((key, prop) -> {
 			TableColumn<T, E> c = createColumn(key, prop);
 			tableView.getColumns().add(c);

@@ -89,4 +89,8 @@ public class ContractTypeViewModel extends ViewModel {
     public void delete() {
         contractTypeFacade.delete((ActemiumContractType) selectedContractType);
     }
+
+	public void refreshContractTypeData() {
+		contractTypeFacade.refreshContractTypeData();
+	}
 }

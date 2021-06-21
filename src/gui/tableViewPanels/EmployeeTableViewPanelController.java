@@ -40,9 +40,9 @@ public class EmployeeTableViewPanelController<T,E> extends TableViewPanelControl
 	
 	public EmployeeTableViewPanelController(DashboardFrameController dashboardFrameController, ViewModel viewModel, GUIEnum currentState, EmployeeRole employeeRole) {
 		super(dashboardFrameController, viewModel, currentState, employeeRole);
+
+		initData();
 		
-		this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).giveEmployees();
-		this.tableViewData = new FilteredList<>(mainData);
 		propertyMap.put(LanguageResource.getString("firstname"), item -> (Property<E>)((Employee)item).firstNameProperty());
 		propertyMap.put(LanguageResource.getString("lastname"), item -> (Property<E>)((Employee)item).lastNameProperty());
 		propertyMap.put(LanguageResource.getString("role"), item -> (Property<E>)((Employee)item).roleProperty());
@@ -59,6 +59,18 @@ public class EmployeeTableViewPanelController<T,E> extends TableViewPanelControl
 				((UserViewModel) viewModel).setCurrentState(GUIEnum.EMPLOYEE);
 				((UserViewModel) viewModel).setSelectedUser(null);		
 		}
+	}
+	
+	private void initData() {
+		this.mainData = (ObservableList<T>) ((UserViewModel) viewModel).giveEmployees();
+		this.tableViewData = new FilteredList<>(mainData);
+	}	
+
+	@FXML
+	void refreshDataOnMouseClicked(MouseEvent event) {
+		((UserViewModel) viewModel).refreshUserData();
+		initData();
+		initializeTableViewSub();
 	}
 	
 	protected void initializeFilters() {
@@ -155,7 +167,8 @@ public class EmployeeTableViewPanelController<T,E> extends TableViewPanelControl
 		predicates.forEach(this::setPredicateForFilteredList);
 	}
 
-	protected void initializeTableViewSub() {				
+	protected void initializeTableViewSub() {	
+		tableView.getColumns().clear();			
 		propertyMap.forEach((key, prop) -> {
 			TableColumn<T, E> c = createColumn(key, prop);
 			tableView.getColumns().add(c);

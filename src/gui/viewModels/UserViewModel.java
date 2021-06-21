@@ -169,4 +169,8 @@ public class UserViewModel extends ViewModel {
     public Set<TicketType> getSpecialties() {
         return specialties;
     }
+
+	public void refreshUserData() {
+		userFacade.refreshUserData();
+	}
 }

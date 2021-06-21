@@ -118,5 +118,8 @@ public class ContractTypeFacade extends Facade{
         actemium.modifyContractType(contractType);
     }
 
+	public void refreshContractTypeData() {
+		actemium.refreshContractTypeData();
+	}
 
 }

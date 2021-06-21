@@ -41,9 +41,9 @@ public class ContractTypeTableViewPanelController<T,E> extends TableViewPanelCon
 	
 	public ContractTypeTableViewPanelController(DashboardFrameController dashboardFrameController, ViewModel viewModel, GUIEnum currentState, EmployeeRole employeeRole) {
 		super(dashboardFrameController, viewModel, currentState, employeeRole);				
-				
-		this.mainData = (ObservableList<T>) ((ContractTypeViewModel) viewModel).giveContractTypes();
-		this.tableViewData = new FilteredList<>(mainData);
+		
+		initData();
+		
 		propertyMap.put(LanguageResource.getString("name"), item -> (Property<E>)((ContractType) item).contractTypeNameProperty());
 		propertyMap.put(LanguageResource.getString("timestamp"), item -> (Property<E>)((ContractType) item).contractTypestampProperty());
 		propertyMap.put(LanguageResource.getString("status"), item -> (Property<E>)((ContractType) item).contractTypeStatusProperty());
@@ -60,6 +60,18 @@ public class ContractTypeTableViewPanelController<T,E> extends TableViewPanelCon
 			((ContractTypeViewModel) viewModel).setSelectedContractType(null);		
 		}
 	}	
+	
+	private void initData() {
+		this.mainData = (ObservableList<T>) ((ContractTypeViewModel) viewModel).giveContractTypes();
+		this.tableViewData = new FilteredList<>(mainData);	
+	}	
+
+	@FXML
+	void refreshDataOnMouseClicked(MouseEvent event) {
+		((ContractTypeViewModel) viewModel).refreshContractTypeData();
+		initData();
+		initializeTableViewSub();
+	}
 	
 	protected void initializeFilters() {
 		Map<GUIEnum, ArrayList<Object>> filterMap = new HashMap<>();
@@ -157,6 +169,7 @@ public class ContractTypeTableViewPanelController<T,E> extends TableViewPanelCon
 	}
 
 	protected void initializeTableViewSub() {
+		tableView.getColumns().clear();
 		propertyMap.forEach((key, prop) -> {
 			TableColumn<T, E> c = createColumn(key, prop);
 			tableView.getColumns().add(c);

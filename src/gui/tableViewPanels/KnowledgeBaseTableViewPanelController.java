@@ -40,9 +40,9 @@ public class KnowledgeBaseTableViewPanelController<T,E> extends TableViewPanelCo
 	
 	public KnowledgeBaseTableViewPanelController(DashboardFrameController dashboardFrameController, ViewModel viewModel, GUIEnum currentState, EmployeeRole employeeRole) {
 		super(dashboardFrameController, viewModel, currentState, employeeRole);				
+
+		initData();
 		
-		this.mainData = (ObservableList<T>) ((KnowledgeBaseViewModel) viewModel).giveKbItems();
-		this.tableViewData = new FilteredList<>(mainData);
 		propertyMap.put(LanguageResource.getString("title"), item -> (Property<E>)((KbItem) item).titleProperty());
 		propertyMap.put(LanguageResource.getString("type"), item -> (Property<E>)((KbItem) item).typeProperty());
 		btnAdd.setText(String.format("%s %s %s", LanguageResource.getString("add"), currentState.toString().toLowerCase(), "item"));
@@ -57,6 +57,18 @@ public class KnowledgeBaseTableViewPanelController<T,E> extends TableViewPanelCo
 			((KnowledgeBaseViewModel) viewModel).setCurrentState(GUIEnum.KNOWLEDGEBASE);
 			((KnowledgeBaseViewModel) viewModel).setSelectedKbItem(null);		
 		}
+	}
+		
+	private void initData() {
+		this.mainData = (ObservableList<T>) ((KnowledgeBaseViewModel) viewModel).giveKbItems();
+		this.tableViewData = new FilteredList<>(mainData);	
+	}	
+
+	@FXML
+	void refreshDataOnMouseClicked(MouseEvent event) {
+		((KnowledgeBaseViewModel) viewModel).refreshKbData();
+		initData();
+		initializeTableViewSub();
 	}
 		
 	protected void initializeFilters() {
@@ -142,6 +154,7 @@ public class KnowledgeBaseTableViewPanelController<T,E> extends TableViewPanelCo
 	}
 
 	protected void initializeTableViewSub() {
+		tableView.getColumns().clear();
 		propertyMap.forEach((key, prop) -> {
 			TableColumn<T, E> c = createColumn(key, prop);
 			tableView.getColumns().add(c);

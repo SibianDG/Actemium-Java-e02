@@ -18,7 +18,6 @@ import domain.enums.UserStatus;
 import gui.DashboardFrameController;
 import gui.GUIEnum;
 import gui.viewModels.ContractViewModel;
-import gui.viewModels.TicketViewModel;
 import gui.viewModels.ViewModel;
 import javafx.beans.property.Property;
 import javafx.collections.FXCollections;

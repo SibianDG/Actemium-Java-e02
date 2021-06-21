@@ -91,4 +91,8 @@ public class KnowledgeBaseViewModel extends ViewModel {
 	public void delete() {
 		knowledgeBaseFacade.delete((ActemiumKbItem) selectedKbItem);
 	}
+
+	public void refreshKbData() {
+		knowledgeBaseFacade.refreshKbData();
+	}
 }
