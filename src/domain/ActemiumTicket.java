@@ -154,8 +154,7 @@ public class ActemiumTicket implements Ticket, Serializable {
 		sb.append(status);
 		sb.append(priority);
 		return String.format("%s", sb);		
-	}
-	
+	}	
 	
 	/**
 	 *	Gets the ticket ID as string.

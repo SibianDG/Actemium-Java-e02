@@ -36,30 +36,11 @@ public class GenericDaoJpa<T> implements GenericDao<T>, AutoCloseable{
         em.getTransaction().rollback();
     }
 
-    // Mehtod for debugging and testing untill solution is found
     @Override
     public Collection<T> findAll() {
-    	System.out.printf("select entity from " + type.getName() + " entity", type);
-    	System.out.println();
-    	System.out.printf(type.getSimpleName()+".findAll", type);
-    	System.out.println();
-		if (type.getSimpleName().equals("ActemiumTicket")) {
-			System.out.println("named query");
-//			em.refresh();
-			em.clear();
-			return em.createNamedQuery(type.getSimpleName() + ".findAll", type).getResultList();
-		} else {
-			em.clear();
-			em.clear();
-			return em.createQuery("select entity from " + type.getName() + " entity", type).getResultList();
-		}
+		em.clear(); // em cache needs to be cleared for refresh data
+		return em.createQuery("select entity from " + type.getName() + " entity", type).getResultList();		
     }
-    
-    // TODO - once problem is fixed replace above method with the one below
-//    @Override
-//    public Collection<T> findAll() {
-//		return em.createQuery("select entity from " + type.getName() + " entity", type).getResultList();		
-//    }
 
     @Override
     public <U> T get(U id) {

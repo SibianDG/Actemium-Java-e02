@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,6 +35,7 @@ import languages.LanguageResource;
  */
 @Entity
 @Access(AccessType.FIELD)
+@Cacheable(false)
 public class ActemiumContract implements Contract, Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
