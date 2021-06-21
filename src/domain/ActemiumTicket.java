@@ -12,6 +12,7 @@ import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -52,6 +53,7 @@ import languages.LanguageResource;
 @NamedQueries({ 
 	@NamedQuery(name = "ActemiumTicket.findAll", query = "SELECT t FROM ActemiumTicket t")
 })
+@Cacheable(false)
 public class ActemiumTicket implements Ticket, Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
