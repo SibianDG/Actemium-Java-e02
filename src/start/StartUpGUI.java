@@ -37,8 +37,8 @@ public class StartUpGUI extends Application {
             GenericDaoJpa<ActemiumContractType> contractTypeDaoJpa = new GenericDaoJpa<>(ActemiumContractType.class);
             GenericDaoJpa<ActemiumContract> contractDaoJpa = new GenericDaoJpa<>(ActemiumContract.class);
             GenericDaoJpa<ActemiumKbItem> kbItemDaoJpa = new GenericDaoJpa<>(ActemiumKbItem.class);
-            PopulateDB populateDB = new PopulateDB();
-            populateDB.run(userDaoJpa,contractTypeDaoJpa, kbItemDaoJpa);
+//            PopulateDB populateDB = new PopulateDB();
+//            populateDB.run(userDaoJpa,contractTypeDaoJpa, kbItemDaoJpa);
 
             Actemium actemium = new Actemium(userDaoJpa, companyDaoJpa, ticketDaoJpa, contractTypeDaoJpa, contractDaoJpa, kbItemDaoJpa);
             UserFacade userFacade = new UserFacade(actemium);

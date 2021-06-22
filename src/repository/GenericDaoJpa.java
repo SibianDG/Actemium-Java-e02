@@ -1,6 +1,6 @@
 package repository;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -37,8 +37,8 @@ public class GenericDaoJpa<T> implements GenericDao<T>, AutoCloseable{
     }
 
     @Override
-    public Collection<T> findAll() {
-		em.clear(); // em cache needs to be cleared for refresh data
+    public List<T> findAll() {
+//		em.clear(); // em cache needs to be cleared for refresh data
 		return em.createQuery("select entity from " + type.getName() + " entity", type).getResultList();		
     }
 

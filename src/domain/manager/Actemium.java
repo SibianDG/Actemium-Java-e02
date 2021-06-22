@@ -2,7 +2,6 @@ package domain.manager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -114,7 +113,7 @@ public class Actemium {
 	
 	// Fill up ObservableLists
 	private void fillInUserLists(){
-		Collection<UserModel> userList = userDaoJpa.findAll();
+		List<UserModel> userList = userDaoJpa.findAll();
 		List<ActemiumCustomer> customerList = userList.stream()
 				.filter(c -> c instanceof ActemiumCustomer)
 				.map(c -> (ActemiumCustomer) c)
@@ -132,7 +131,7 @@ public class Actemium {
 	 * Fill ticket list.
 	 */
 	public void fillTicketList() {
-		Collection<ActemiumTicket> ticketList = ticketDaoJpa.findAll();
+		List<ActemiumTicket> ticketList = ticketDaoJpa.findAll();
 		
 		this.actemiumTickets = FXCollections.observableArrayList((List<Ticket>)(Object)ticketList);
 		List<TicketStatus> outstanding = Arrays.asList(TicketStatus.CREATED, TicketStatus.IN_PROGRESS, TicketStatus.WAITING_ON_USER_INFORMATION, TicketStatus.USER_INFORMATION_RECEIVED, TicketStatus.IN_DEVELOPMENT);
@@ -151,7 +150,7 @@ public class Actemium {
 	 * Fill contract type list.
 	 */
 	public void fillContractTypeList() {
-		Collection<ActemiumContractType> contractTypeList = contractTypeDaoJpa.findAll();
+		List<ActemiumContractType> contractTypeList = contractTypeDaoJpa.findAll();
 		this.actemiumContractTypes = FXCollections.observableArrayList((List<ContractType>)(Object)contractTypeList);
 	}
 
@@ -159,7 +158,7 @@ public class Actemium {
 	 * Fill contract list.
 	 */
 	public void fillContractList() {
-		Collection<ActemiumContract> contractList = contractDaoJpa.findAll();
+		List<ActemiumContract> contractList = contractDaoJpa.findAll();
 		this.actemiumContracts = FXCollections.observableArrayList((List<Contract>)(Object)contractList);
 	}
 
@@ -167,7 +166,7 @@ public class Actemium {
 	 * Fill kb item list.
 	 */
 	public void fillKbItemList() {
-		Collection<ActemiumKbItem> kbItemList = kbItemDaoJpa.findAll();
+		List<ActemiumKbItem> kbItemList = kbItemDaoJpa.findAll();
 		this.actemiumKbItems = FXCollections.observableArrayList((List<KbItem>)(Object)kbItemList);
 	}
 
